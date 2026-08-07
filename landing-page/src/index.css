@@ -1,0 +1,1029 @@
+/* =========================================================================
+   IGNITHO iSUITE — FOUNDATION
+
+   Colour law (inherited from the main site):
+     · VIOLET/BLUE is the dominant family — every dark surface, every heading,
+       every card block, the whole depth axis.
+     · TEAL is an accent only — primary buttons, links, checkmarks, "the fix".
+       It never fills a section or a card.
+     · Backgrounds alternate A → B → C → B → C …
+         A  dark violet→blue gradient   (hero + closing CTA bookends only)
+         B  lavender tint + dot grid
+         C  near-white + dot grid
+   ========================================================================= */
+
+:root {
+  --ink: #16063a;
+  --violet-800: #2c0a78;
+  --violet-600: #4a12b8;
+  --violet-500: #5b16c4;
+  --purple: #7a00c2;
+  --blue-deep: #123e68;
+  --blue-deepest: #0a5670;
+  --sky: #6ec1e4;
+
+  --teal: #00a274;
+  --teal-ring: #00bc6a;
+
+  --paper: #fbf9ff;
+  --text: #030303;
+  --muted: #54595f;
+  --divider: #b9bbc2;
+
+  /* hairlines — violet-tinted on light, white on dark */
+  --rule: rgba(122, 0, 194, 0.2);
+  --rule-soft: rgba(122, 0, 194, 0.08);
+  --rule-inv: rgba(255, 255, 255, 0.2);
+  --rule-inv-soft: rgba(255, 255, 255, 0.06);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* clears the 84px bar plus a little air */
+  scroll-padding-top: 104px;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  width: 100%;
+  background-color: var(--paper);
+  color: var(--text);
+  font-family: 'Urbanist', ui-sans-serif, system-ui, sans-serif;
+  font-synthesis-weight: none;
+  /* clip, not hidden — `hidden` on the root breaks position:sticky */
+  overflow-x: clip;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--teal);
+  color: #f9f6fe;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(122, 0, 194, 0.32) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(122, 0, 194, 0.3);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 0, 194, 0.55);
+  background-clip: content-box;
+}
+
+/* =========================================================================
+   1. THE THREE BACKGROUND FLAVOURS
+   ========================================================================= */
+
+/* A — FLAT DEEP VIOLET. The closing CTA band, and any full-bleed dark moment.
+   Solid colour only: a blended gradient at this scale reads cheap. */
+.bg-a {
+  position: relative;
+  isolation: isolate;
+  color: var(--paper);
+  background: #16063a;
+}
+.bg-a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* horizontal rules only — the vertical ones made it read as graph paper.
+     Same 56px pitch as the light bands, so the page carries one grid. */
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 100% 56px;
+}
+
+/* B — FLAT LAVENDER TINT. The alternating content band. Flat colour; the
+   texture layers below arrive with `.dots`. */
+.bg-b {
+  position: relative;
+  isolation: isolate;
+  background: #f0e9ff;
+}
+
+/* AURORA — near-black ground with a curtain of violet light standing up from
+   the bottom edge, as on the sign-in screen. Two layers of soft columns drift
+   and breathe against each other on long, offset cycles, so the movement
+   never loops visibly. Everything is transform/opacity, so it composites on
+   the GPU and costs nothing to scroll past. */
+.aurora {
+  position: relative;
+  isolation: isolate;
+  background: #0d0722;
+  color: var(--paper);
+}
+/* The stage. Sits behind everything in the section; owns its own stacking
+   context so the layers below never escape it. */
+.art-surface {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* NOT ONE `filter: blur()` IN HERE, DELIBERATELY.
+   A blur is a separable convolution the GPU re-runs every single frame, and a
+   layer that also animates `scale` has to be re-rasterised before the blur
+   even starts. Five full-bleed blurred layers is what made this hero drag.
+
+   Every softness below is baked into the gradient's own colour stops instead.
+   A gradient rasterises once and is then pure compositing — translate, scale
+   and opacity are free from that point on, however long the animation runs.
+   At these periods the two are visually indistinguishable: blurring a stop
+   ramp that is already 30–90px wide barely moves it. */
+
+/* The bloom the folds stand in front of. A radial gradient is smooth by
+   definition — it was carrying a 72px blur that changed nothing. */
+.glow {
+  position: absolute;
+  left: 50%;
+  bottom: -20%;
+  width: 92%;
+  height: 74%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    50% 50% at 50% 100%,
+    rgba(150, 70, 255, 0.5) 0%,
+    rgba(126, 48, 226, 0.34) 24%,
+    rgba(91, 22, 196, 0.22) 45%,
+    rgba(91, 22, 196, 0.08) 62%,
+    transparent 78%
+  );
+  animation: glow-breathe 11s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.curtain-field {
+  position: absolute;
+  inset: 0;
+}
+.curtain {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: 0;
+  height: 100%;
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+/* back — wide, slow folds reading as depth behind the rest */
+.curtain-c {
+  background: repeating-linear-gradient(
+    94deg,
+    rgba(91, 22, 196, 0) 0px,
+    rgba(91, 22, 196, 0.12) 30px,
+    rgba(91, 22, 196, 0.36) 60px,
+    rgba(91, 22, 196, 0.55) 92px,
+    rgba(122, 0, 194, 0.44) 130px,
+    rgba(122, 0, 194, 0.28) 176px,
+    rgba(122, 0, 194, 0.12) 220px,
+    rgba(91, 22, 196, 0) 262px
+  );
+  animation: fold-c 17s ease-in-out infinite alternate;
+}
+
+/* mid — hung inside a billowing frame */
+.billow {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  animation: billow 19s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.curtain-b {
+  background: repeating-linear-gradient(
+    88deg,
+    rgba(138, 58, 246, 0) 0px,
+    rgba(138, 58, 246, 0.14) 20px,
+    rgba(138, 58, 246, 0.36) 38px,
+    rgba(138, 58, 246, 0.5) 56px,
+    rgba(163, 98, 255, 0.34) 82px,
+    rgba(163, 98, 255, 0.22) 112px,
+    rgba(163, 98, 255, 0.09) 140px,
+    rgba(138, 58, 246, 0) 168px
+  );
+  animation: fold-b 13s ease-in-out infinite alternate;
+}
+
+/* front — the crisp folds. Period widened from 92px to 120px: this was the
+   one layer whose blur was doing real work, so the ramps carry it instead. */
+.curtain-a {
+  background: repeating-linear-gradient(
+    91deg,
+    rgba(196, 150, 255, 0) 0px,
+    rgba(196, 150, 255, 0.16) 12px,
+    rgba(196, 150, 255, 0.4) 30px,
+    rgba(196, 150, 255, 0.22) 52px,
+    rgba(122, 0, 194, 0.16) 76px,
+    rgba(122, 0, 194, 0.06) 98px,
+    rgba(196, 150, 255, 0) 120px
+  );
+  animation: fold-a 9s ease-in-out infinite alternate;
+}
+
+/* A slow highlight travelling across the field. The box was 180% × 140% —
+   two and a half screens of fill rate for one soft band. Tightened, with the
+   travel pulled in to match. */
+.sheen {
+  position: absolute;
+  inset: -8% -26%;
+  background: linear-gradient(
+    102deg,
+    transparent 34%,
+    rgba(255, 255, 255, 0.04) 42%,
+    rgba(255, 255, 255, 0.1) 48%,
+    rgba(255, 255, 255, 0.04) 54%,
+    rgba(255, 255, 255, 0.01) 60%,
+    transparent 70%
+  );
+  animation: sheen-sweep 14s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* The floor-up falloff, as paint rather than as a mask.
+
+   This used to be `mask-image` on the wrapper — which forces the browser to
+   render all four animated children into an offscreen surface, mask it, then
+   composite that, every frame. The ground is a flat colour, so an opaque veil
+   of that same colour laid over the top gives an identical result for the
+   price of one static layer. */
+.curtain-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 7, 34, 0) 0%,
+    rgba(13, 7, 34, 0.12) 30%,
+    rgba(13, 7, 34, 0.55) 60%,
+    rgba(13, 7, 34, 0.92) 82%,
+    #0d0722 94%
+  );
+}
+
+/* Scrolled past, the whole stage stops: paused animations cost the compositor
+   nothing, and dropping `will-change` hands back the GPU textures — six
+   full-bleed layers' worth — for as long as the hero is out of view. */
+.art-idle .glow,
+.art-idle .curtain,
+.art-idle .billow,
+.art-idle .sheen {
+  animation-play-state: paused;
+  will-change: auto;
+}
+
+/* Phones get the two layers that carry the effect and neither of the two that
+   only enrich it. Same picture, two thirds of the fill rate. */
+@media (max-width: 767px) {
+  .billow,
+  .sheen {
+    display: none;
+  }
+}
+
+/* horizontal rules only, cleared through the middle */
+.art-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 100% 56px;
+  /* cleared out of the middle, where the headline sits */
+  -webkit-mask-image: radial-gradient(ellipse 70% 58% at 48% 44%, transparent 18%, #000 88%);
+  mask-image: radial-gradient(ellipse 70% 58% at 48% 44%, transparent 18%, #000 88%);
+}
+
+/* grid-intersection marks — the drawing detail, corners only */
+.crosshair {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+}
+.crosshair::before,
+.crosshair::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+.crosshair::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.crosshair::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+/* The cycles are deliberately co-prime-ish (11 / 17 / 13 / 19 / 9 / 14s) so
+   the layers never come back into phase — the field reads as continuously
+   alive rather than as a loop, even though every one of these is a plain
+   two-keyframe alternate. */
+@keyframes glow-breathe {
+  from {
+    transform: translateX(-50%) scale(0.94);
+    opacity: 0.66;
+  }
+  to {
+    transform: translateX(-56%) scale(1.24);
+    opacity: 1;
+  }
+}
+@keyframes fold-c {
+  from {
+    transform: translate3d(-7%, 0, 0) scaleY(0.96);
+  }
+  to {
+    transform: translate3d(7%, 0, 0) scaleY(1.2);
+  }
+}
+@keyframes fold-b {
+  from {
+    transform: translate3d(6%, 0, 0) scaleY(1.14);
+    opacity: 0.75;
+  }
+  to {
+    transform: translate3d(-6%, 0, 0) scaleY(0.9);
+    opacity: 1;
+  }
+}
+@keyframes fold-a {
+  from {
+    transform: translate3d(-4%, 0, 0) scaleY(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate3d(4%, 0, 0) scaleY(1.1);
+    opacity: 1;
+  }
+}
+@keyframes billow {
+  from {
+    transform: skewX(-2.6deg) scaleX(1.06);
+  }
+  to {
+    transform: skewX(2.6deg) scaleX(0.97);
+  }
+}
+/* travel kept inside the box's 26% overhang, so no edge ever shows */
+@keyframes sheen-sweep {
+  0% {
+    transform: translate3d(-20%, 0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(20%, 0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-20%, 0, 0);
+    opacity: 0.5;
+  }
+}
+
+/* C — NEAR-WHITE */
+.bg-c {
+  position: relative;
+  isolation: isolate;
+  background: #fbf9ff;
+}
+
+/* -------------------------------------------------------------------------
+   THE TEXTURE — the main site's own grid, rebuilt to spec.
+
+   Two layers, exactly as the background-texture system describes: a 28px dot
+   field with a 56px rule field over it. Both run edge to edge at full
+   strength, so no band ever reads as bare paper. Nothing is masked away by
+   guesswork about where the copy might land — instead every block of text
+   wears a `.plate`, which clears the texture directly beneath it.
+
+   Tone comes from the flavour class, so one pair of rules serves both.
+   ------------------------------------------------------------------------- */
+.dots::before,
+.dots::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.dots::before {
+  background-image: radial-gradient(var(--dot) 1.35px, transparent 1.35px);
+  background-size: 28px 28px;
+}
+/* horizontal rules only — the verticals made it read as graph paper */
+.dots::after {
+  background-image: linear-gradient(to bottom, var(--rule-grid) 1px, transparent 1px);
+  background-size: 100% 56px;
+}
+
+.bg-b {
+  --dot: rgba(122, 0, 194, 0.18);
+  --rule-grid: rgba(122, 0, 194, 0.06);
+  --plate: #f0e9ff;
+}
+.bg-c {
+  --dot: rgba(122, 0, 194, 0.14);
+  --rule-grid: rgba(122, 0, 194, 0.045);
+  --plate: #fbf9ff;
+}
+
+/* A soft wash of the section's own colour, sitting between the texture and a
+   block of copy. Because it is blurred it reads as the paper simply being
+   clear there, rather than as a patch laid over the grid — and because it is
+   driven by `--plate` it always matches whichever band it lands in.
+
+   `z-index: 0` gives the block its own stacking context, so the wash stays
+   pinned behind its own text and above the section texture. */
+.plate {
+  position: relative;
+  z-index: 0;
+}
+.plate::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -28px -36px -22px -36px;
+  border-radius: 48px;
+  background: var(--plate, #fbf9ff);
+  filter: blur(26px);
+  pointer-events: none;
+}
+
+/* Same field inverted, for the dark surfaces (uses ::after — the horizontal
+   rules already own ::before there) */
+.dots-inv::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1.35px, transparent 1.35px);
+  background-size: 28px 28px;
+}
+
+/* =========================================================================
+   2. TYPE
+   ========================================================================= */
+
+.stroke-ink {
+  -webkit-text-stroke: 1.2px var(--ink);
+  color: transparent;
+}
+.stroke-paper {
+  -webkit-text-stroke: 1.2px var(--paper);
+  color: transparent;
+}
+.stroke-violet {
+  -webkit-text-stroke: 1.2px var(--violet-500);
+  color: transparent;
+}
+.stroke-lilac {
+  -webkit-text-stroke: 1.2px #b79bff;
+  color: transparent;
+}
+@media (min-width: 768px) {
+  .stroke-ink,
+  .stroke-paper,
+  .stroke-violet,
+  .stroke-lilac {
+    -webkit-text-stroke-width: 2px;
+  }
+}
+
+/* Outlined numeral fills solid when its row is hovered */
+.group:hover .stroke-hover {
+  -webkit-text-stroke-width: 0;
+  color: var(--ink);
+}
+.group:hover .stroke-hover-paper {
+  -webkit-text-stroke-width: 0;
+  color: var(--paper);
+}
+
+/* Instrument Serif sits optically small next to Urbanist — nudge it up */
+.serif-accent {
+  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08em;
+  letter-spacing: -0.005em;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* =========================================================================
+   3. MOTION
+   ========================================================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 0.6s var(--ease-out),
+    transform 0.6s var(--ease-out);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.line-mask > span {
+  display: block;
+  transform: translate3d(0, 110%, 0);
+  transition: transform 0.9s var(--ease-out);
+}
+.is-in .line-mask > span {
+  transform: none;
+}
+
+.pop-br {
+  animation: pop-in 0.32s var(--ease-out) both;
+  transform-origin: bottom right;
+}
+.pop-c {
+  animation: pop-in 0.28s var(--ease-out) both;
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translate3d(0, 10px, 0);
+  }
+}
+
+.msg-in {
+  animation: msg-in 0.26s var(--ease-out) both;
+}
+@keyframes msg-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+@keyframes dot-bounce {
+  0%,
+  60%,
+  100% {
+    transform: none;
+    opacity: 0.3;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+.dot-1 {
+  animation: dot-bounce 1.1s infinite;
+}
+.dot-2 {
+  animation: dot-bounce 1.1s 0.14s infinite;
+}
+.dot-3 {
+  animation: dot-bounce 1.1s 0.28s infinite;
+}
+
+/* Sticky stack — each card pins with its MIDDLE at the viewport's middle, so
+   the stack builds in the centre of the screen rather than up under the nav.
+   `--i` (set per card) steps each one a little lower than the last.
+   max() keeps it clear of the masthead on short viewports. */
+.stack-item {
+  position: sticky;
+  top: max(84px, calc(50vh - 170px + var(--i) * 14px));
+}
+@media (min-width: 768px) {
+  .stack-item {
+    top: max(92px, calc(50vh - 200px + var(--i) * 16px));
+  }
+}
+
+/* =========================================================================
+   4. FILMSTRIP — native horizontal scroll, snapped. No scroll hijacking.
+   ========================================================================= */
+
+.strip {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* first card lines up with the shell's text edge; the track bleeds right */
+  padding-inline: max(1.25rem, calc((100% - 1360px) / 2 + 1.25rem));
+}
+.strip::-webkit-scrollbar {
+  display: none;
+}
+.strip > * {
+  scroll-snap-align: start;
+}
+@media (min-width: 768px) {
+  .strip {
+    padding-inline: max(2rem, calc((100% - 1360px) / 2 + 2rem));
+  }
+}
+
+/* =========================================================================
+   4b. THE SWAP BUTTON
+   Two full faces stacked vertically inside a clipped pill. On hover both
+   translate up by exactly one height, so the resting face leaves as the
+   incoming one arrives — no seam, no background flash. The label inside each
+   face carries its own small counter-rotation so the text feels hand-set
+   rather than mechanically slid. An invisible ghost copy sets the size.
+   ========================================================================= */
+
+/* THREE bands ride a single track: the resting face, a short middle band in a
+   colour half-way between the two, then the arriving face. The whole track is
+   held at -2.5deg and over-hangs the pill by 12% on each side, so every colour
+   edge sweeps through on a diagonal and no corner is ever exposed. The labels
+   counter-rotate back to level at rest and at the end, tilting only in transit.
+
+   Track geometry (all % of the button's height):
+     face A   -30 → 130      mid  130 → 170      face B  170 → 330
+   Hover shifts the track by -200%, landing face B exactly where face A was. */
+
+.swap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 999px;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(1);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.swap:hover,
+.swap:focus-visible {
+  transform: scale(1.045);
+}
+.swap:active {
+  transform: scale(0.985);
+}
+
+/* Ripple — a soft disc blooming out of the centre on every hover */
+.swap-ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  margin-left: -75%;
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%) scale(0);
+}
+.swap:hover .swap-ripple,
+.swap:focus-visible .swap-ripple {
+  animation: swap-ripple 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes swap-ripple {
+  0% {
+    transform: translateY(-50%) scale(0);
+    opacity: 0.42;
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    opacity: 0;
+  }
+}
+.swap-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.swap-track {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 0;
+  height: 100%;
+  transform: translate3d(0, 0, 0) rotate(-2.5deg);
+  transition: transform 0.62s cubic-bezier(0.34, 1.4, 0.5, 1);
+  /* deliberately no `will-change`: there are ~25 of these on the page and it
+     was holding a compositor layer for every one of them, permanently. The
+     browser promotes a transform transition on its own for its duration. */
+}
+.swap:hover .swap-track,
+.swap:focus-visible .swap-track {
+  transform: translate3d(0, -200%, 0) rotate(-2.5deg);
+}
+.swap-face {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 160%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swap-face--a {
+  top: -30%;
+}
+.swap-mid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 130%;
+  height: 40%;
+}
+.swap-face--b {
+  top: 170%;
+}
+.swap-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transform: rotate(2.5deg);
+  transition: transform 0.62s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+.swap-face--b .swap-text {
+  transform: rotate(8.5deg);
+}
+.swap:hover .swap-face--a .swap-text,
+.swap:focus-visible .swap-face--a .swap-text {
+  transform: rotate(-3.5deg);
+}
+.swap:hover .swap-face--b .swap-text,
+.swap:focus-visible .swap-face--b .swap-text {
+  transform: rotate(2.5deg);
+}
+
+/* Hover-peek card. The wrapper is positioned by rAF; this layer only owns
+   the entrance, so the two never fight over `transform`. */
+.peek {
+  transform-origin: center;
+  transform: scale(0.86) rotate(-5deg);
+  opacity: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.4, 0.5, 1),
+    opacity 0.32s var(--ease-out);
+}
+.peek.is-on {
+  transform: scale(1) rotate(-3deg);
+  opacity: 1;
+}
+/* Row-to-row change: every panel is rendered once into a single tall reel,
+   and changing suites moves ONE transform. Nothing mounts, nothing unmounts,
+   no image reloads, no opacity churn — the browser only recomposites a layer
+   it already has, which is as smooth as this gets on any device.
+   Expo-out: covers most of the distance immediately, then settles. */
+.peek-reel {
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* owned here rather than relying on the CDN build shipping line-clamp */
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Direction-aware row fill: grows from whichever edge the pointer crossed,
+   and retracts toward the edge it leaves by. */
+.row-fill {
+  transform-origin: var(--fill-origin, bottom);
+}
+
+/* Pointer-driven flourishes are meaningless without a pointer */
+@media (hover: none), (pointer: coarse) {
+  .peek {
+    display: none !important;
+  }
+}
+
+/* =========================================================================
+   4c. MENU OVERLAY
+   ========================================================================= */
+
+/* Opens by sliding down, closes by sliding back up the same way — no fade.
+   `visibility` is the only thing that steps, and it waits out the full slide
+   so the exit is never cut short. */
+.sheet {
+  visibility: hidden;
+  transition: visibility 0.66s step-end;
+}
+.sheet.is-open {
+  visibility: visible;
+  transition: visibility 0s;
+}
+/* same reasoning — a full-viewport layer held for a panel that is shut
+   almost all of the time */
+.sheet-panel {
+  transform: translate3d(0, -100%, 0);
+  transition: transform 0.66s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.sheet.is-open .sheet-panel {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Items animate IN only. Their resting state is visible, so on close they
+   ride out with the panel instead of vanishing underneath it. */
+.sheet-item {
+  opacity: 1;
+}
+.sheet.is-open .sheet-item {
+  animation: sheet-in 0.55s var(--ease-out) backwards;
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+}
+
+/* =========================================================================
+   5. CONTROLS
+   ========================================================================= */
+
+/* The visible track is a sibling div; this input is an invisible 26px-tall
+   hit area laid over it, carrying only the handle. The handle is a soft
+   round grip — it should read as "drag me", and it eases rather than snaps. */
+.ig-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 26px;
+  background: transparent;
+  outline: none;
+  cursor: grab;
+}
+.ig-range:active {
+  cursor: grabbing;
+}
+.ig-range::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent;
+}
+.ig-range::-moz-range-track {
+  height: 6px;
+  background: transparent;
+}
+.ig-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 26px;
+  width: 26px;
+  margin-top: -10px;
+  border-radius: 999px;
+  background: var(--teal);
+  border: 4px solid #ffffff;
+  box-shadow: 0 2px 10px rgba(22, 6, 58, 0.28);
+  cursor: grab;
+  transition:
+    transform 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+.ig-range:hover::-webkit-slider-thumb {
+  transform: scale(1.14);
+}
+.ig-range:active::-webkit-slider-thumb {
+  transform: scale(1.14);
+  box-shadow: 0 4px 18px rgba(0, 162, 116, 0.45);
+  cursor: grabbing;
+}
+.ig-range::-moz-range-thumb {
+  height: 26px;
+  width: 26px;
+  border-radius: 999px;
+  background: var(--teal);
+  border: 4px solid #ffffff;
+  box-shadow: 0 2px 10px rgba(22, 6, 58, 0.28);
+  transition: transform 0.4s var(--ease-out);
+}
+.ig-range:hover::-moz-range-thumb {
+  transform: scale(1.14);
+}
+.ig-range:focus-visible {
+  outline: 2px solid var(--teal-ring);
+  outline-offset: 10px;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* Text inputs never draw their own box — their wrapper carries the focus
+   state, so a square outline inside a rounded field is just noise. */
+:where(input[type='text']):focus,
+:where(input[type='text']):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Mobile nav disclosure. Named `disclose` — Tailwind owns `.collapse`. */
+.disclose {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.34s var(--ease-out), opacity 0.24s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.disclose.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+.disclose > div {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .line-mask > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+    .dot-1,
+  .dot-2,
+  .dot-3,
+  .swap-ripple,
+  .curtain,
+  .glow,
+  .billow,
+  .sheen {
+    animation: none !important;
+  }
+  .swap:hover,
+  .swap:focus-visible {
+    transform: none !important;
+  }
+  .peek {
+    display: none !important;
+  }
+  .pop-br,
+  .pop-c,
+  .msg-in {
+    animation-duration: 0.01ms !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

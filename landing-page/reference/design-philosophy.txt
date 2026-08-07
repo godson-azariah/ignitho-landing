@@ -1,0 +1,404 @@
+IGNITHO AI — DESIGN SYSTEM & PHILOSOPHY REFERENCE
+====================================================
+Purpose of this file: a portable description of the VISUAL DESIGN LANGUAGE used on this
+site (colors, type, spacing, components, motion, responsive rules). It intentionally
+excludes page copy/content — use it to make an AI or design tool replicate the LOOK AND
+FEEL on a different page or project, not to recreate this specific site.
+
+Tech context (for compatibility, not required): built with Tailwind CSS v4 (CSS-first
+@theme config) + React + a small amount of Framer Motion for micro-interactions. Any
+stack can replicate this system as long as it can produce the same CSS output.
+
+
+1. DESIGN PHILOSOPHY (the "why" behind the choices)
+----------------------------------------------------
+- "Enterprise-premium, not corporate-boring." Dark, saturated violet→teal gradients are
+  used for high-impact moments (hero, CTA, dark feature cards) instead of flat corporate
+  blue/white. The goal is to feel like a confident, modern AI product, not a generic
+  SaaS brochure.
+- "Bold color-blocked cards over tables/lists." Whenever content could be shown as a
+  plain list, checklist, or comparison table, prefer a solid-gradient card treatment
+  with icon badges instead — tables and plain bullet lists were explicitly rejected
+  during design review as "too generic." Take inspiration from real premium component
+  patterns (shadcn/ui, Aceternity UI, pricing-card layouts) rather than inventing
+  arbitrary custom layouts from scratch.
+- "Texture over flatness, but quiet." Every section background carries a very subtle
+  dot-grid or line-grid texture (1–2px, low opacity) rather than being pure flat color.
+  It should read as "premium paper texture," never as a distracting pattern — opacity
+  stays under ~0.2 always.
+- "Two-tone headline pattern." Nearly every section headline is two lines: the first
+  line in the neutral near-black text color, the second line in the brand purple accent
+  color. This is a consistent, repeatable rhythm across the whole site, not a one-off.
+  Section headline copy is always followed by a purple-accent supporting paragraph.
+- "Restraint in motion." Animation is used only for small, functional interactive UI
+  (opening/closing a chat widget, a mobile menu sliding down, a card lifting on hover).
+  There is no scroll-triggered reveal choreography, no parallax, no decorative motion.
+  Every transition is fast (250–350ms) and physically plausible (spring or ease-out).
+- "Never hide functionality behind a breakpoint." If content is important on desktop
+  (navigation links, a hero visual, a key illustration), it must have an adapted mobile
+  equivalent — resized, restacked, or moved into a menu — never just `display:none` with
+  nothing to replace it.
+- "Consistent horizontal rhythm." Every section shares the same content max-width and
+  the same left/right padding, so edges line up perfectly as the user scrolls, on every
+  viewport width. Avoid nested max-width containers that can drift out of alignment on
+  very wide screens.
+- "No trailing full stops, anywhere." No piece of copy on the site ends with a period —
+  not headlines, not card descriptions, not metric/ROI values, not footer text, not
+  chatbot messages, not helper captions. This is a deliberate house-style rule, applied
+  site-wide with zero exceptions (including short punchy hero lines that "look like"
+  complete sentences). See section 3 for the exact punctuation rule and what stays
+  untouched (mid-paragraph sentence separators, true ellipses).
+
+
+2. COLOR SYSTEM
+----------------------------------------------------
+Primary brand / CTA color — TEAL (used for all primary actions, links, "positive" or
+"solution" framing, active/online states):
+  --color-ignitho-teal:         #00A274   (base — primary buttons, active links, accents)
+  --color-ignitho-teal-hover:   #0C8C74   (hover state for teal buttons)
+  --color-ignitho-teal-border:  #00BC6A   (border ring on teal buttons, brighter lime-teal)
+
+Secondary brand / depth color — VIOLET / PURPLE (used for dark gradient surfaces, and as
+the accent color for the second line of every two-tone headline):
+  Headline/body accent purple:   #7A00C2  (text-only accent, not used as a fill)
+  --color-ignitho-violet-950:    #16063A  (darkest — gradient anchor, near-black-violet)
+  --color-ignitho-violet-800:    #2C0A78
+  --color-ignitho-violet-600:    #4A12B8
+  --color-ignitho-violet-500:    #5B16C4  (brightest violet — gradient highlight stop)
+  --color-ignitho-purple-600:    #3D08B8  (secondary "problem card" gradient stop)
+  --color-ignitho-purple-700:    #5008D0
+
+Deep teal-blue gradient stops (used at the tail end of the hero/CTA gradient, to bridge
+violet into a cooler tone):
+  --color-ignitho-teal-deep:     #123E68
+  --color-ignitho-teal-deepest:  #0A5670
+
+Secondary "fix / positive outcome" gradient family (green-teal, used opposite the violet
+"problem" gradient in side-by-side comparisons):
+  --color-ignitho-green-950:     #043620
+  --color-ignitho-green-600:     #07924F
+  --color-ignitho-green-500:     #0D8E92
+
+Neutrals:
+  --color-ignitho-text:          #030303  (headings/body — near-black, not pure black)
+  --color-ignitho-muted:         #54595F  (secondary/caption text)
+  --color-ignitho-divider:       #B9BBC2  (hairline borders/dividers)
+  Card borders on white cards typically use Tailwind slate-200 (#E2E8F0).
+
+Sparing accent:
+  --color-ignitho-accent-blue:   #6EC1E4  (used only for small tech/status details — the
+                                  chatbot "online" dot, one hero headline word — never as
+                                  a large fill; a light sky-blue that reads as "signal/AI".)
+
+Color usage rules:
+  - Teal = action / positive / "the fix". Used for every primary button, every link
+    hover state, checkmarks, and anything meant to read as "the good outcome."
+  - Violet/purple = brand depth / premium / "the problem" or dark surfaces. Even negative
+    framing (a "problem" card) stays inside the brand's violet family rather than
+    switching to red/orange — the palette never uses alarm colors.
+  - White/near-white with a faint tinted texture = default content background. Two
+    interchangeable flavors (see section 3) are alternated between adjacent sections to
+    create quiet visual rhythm without introducing new colors.
+  - Pure white cards (SuiteCard-style) are reserved for content that needs to feel
+    "light/approachable" (product catalog cards) vs. the dark violet cards which are
+    reserved for "impact statement" content (pillars, security features, comparisons).
+
+
+3. TYPOGRAPHY
+----------------------------------------------------
+Font: "Urbanist" (Google Fonts variable font, weights 300–900), fallback ui-sans-serif /
+system-ui / sans-serif. Loaded once globally, applied via a CSS custom property
+(--font-sans) rather than a Tailwind config file (Tailwind v4 CSS-first @theme).
+
+Scale & usage patterns:
+  - Hero H1:            44px → 58px → 60px (mobile → tablet → desktop), font-bold,
+                         leading-[1.15], tracking tight (-0.5px mobile, -1.5px desktop).
+  - Section H2 (every    text-3xl → text-4xl → 42px → 48px, font-bold,
+    section uses this):  tracking-[-0.5px], leading-[1.15]. Always exactly two lines via
+                         two <span class="block"> elements: line 1 neutral text color,
+                         line 2 purple accent (#7A00C2).
+  - Section supporting   text-lg → text-2xl, purple accent color (#7A00C2, same as the
+    paragraph:           headline's second line — body copy under a headline is NOT
+                         neutral gray, it continues the accent color at lower weight),
+                         leading-relaxed.
+  - Card headings:       text-xl to text-2xl, font-bold, white (on dark cards) or
+                         near-black #16063A (on white cards).
+  - Card body text:      text-sm to text-base, relaxed leading, ~90% opacity white on
+                         dark cards (text-white/90) or slate/muted on white cards.
+  - Micro-labels/badges: text-[10px] to text-xs, font-bold/font-extrabold, often
+                         uppercase with letter-spacing (tracking-wide/tracking-[0.15em]).
+
+Rule of thumb: headings are always font-bold or heavier, tracked slightly tighter than
+default; never use a regular/light weight for a heading.
+
+Punctuation & polish rules:
+  - No trailing full stops. Strip the final period from the end of every text block —
+    headings, subheadings, card/feature descriptions, taglines, ROI or metric values,
+    footer lines, chatbot replies, helper captions. If a string in code currently ends
+    in `.'` or `."`, remove that last period.
+  - Keep INTERNAL periods that separate two independent clauses inside one longer
+    flowing sentence (e.g. "Book a 30-minute briefing. We will show you exactly which
+    suites map to your priorities" keeps its middle period — only the very last period
+    of the whole block is dropped). Removing a mid-paragraph separator would merge two
+    sentences into a confusing run-on, which is not the goal — the rule targets the
+    trailing full stop, not internal grammar.
+  - Compound two-line headlines (e.g. "Enterprise-Wide Outcomes. Nine AI Suites" /
+    "Twenty-Seven AI Agents") follow the same logic: an internal period between two
+    short clauses on the first line stays; the very last period at the end of the whole
+    headline is dropped.
+  - True ellipses ("...") are a different thing — a loading/continuation indicator (a
+    terminal-style progress line, an input placeholder hinting at more text) — and are
+    NOT affected by the no-full-stop rule. Don't strip them, and don't confuse a decimal
+    point (e.g. a timestamp like "00:02.50", or a multiplier like "3.4x") with a
+    sentence-ending period either — only touch a single period that is genuinely the
+    last character of a sentence/phrase.
+  - Metric/ROI values may cite a source in parentheses directly after the figure, name
+    only, never a hyperlink — e.g. "40% Faster Sales Velocity (Gartner)",
+    "70% reduction in data entry requirements (IBM & Deloitte)". The citation sits
+    inside the same trailing-period-free string.
+
+
+4. LAYOUT & SPACING SYSTEM
+----------------------------------------------------
+- Global content width: max-w-[1360px], centered (mx-auto), horizontal inset px-5 (20px)
+  on every standard section — this exact combination repeats on nearly every section in
+  the site and is what keeps all section edges visually aligned.
+- Wider "showcase" sections (e.g. a CTA with a large side illustration) use a wider
+  shared container (max-w-[1600px]) with responsive padding (px-6 → md:px-12 → lg:px-16)
+  — but critically, ALL content inside that section (text block AND any side visual)
+  shares that one container/padding, rather than the visual being positioned relative to
+  the raw viewport. This was a fixed bug: positioning a decorative visual with
+  viewport-relative offsets while text uses a container causes a growing, unbalanced gap
+  on wide screens.
+- Vertical rhythm: sections use py-16 (mobile) → md:py-20 (desktop) — 64px → 80px —
+  consistently. This is the single vertical spacing unit used almost everywhere; avoid
+  introducing new arbitrary section padding values.
+- Section heading block: centered, max-w-6xl mx-auto, margin-bottom ~40-48px (mb-10/12)
+  before the content grid begins.
+- Card grids: CSS grid, 1 column mobile → 2 columns small/tablet → 3 or 4 columns
+  desktop (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 or lg:grid-cols-4), gap-6 to gap-8.
+  Equal-height cards are enforced with `flex h-full flex-col` on the card plus
+  `justify-between` (or `mt-auto` on the bottom block) so footers/CTAs align across a
+  row regardless of body-copy length.
+- Border radius scale: small chips/badges = rounded-full or rounded-lg/xl; cards =
+  rounded-[24px] to rounded-[28px] (a distinctly large, soft radius — not the default
+  Tailwind rounded-2xl feel, always a custom arbitrary value in the 24–28px range);
+  large containers/panels = rounded-3xl.
+- Size a hero/band section by its PADDING, not a min-height. A short, high-impact band
+  (hero, closing CTA) should hug its text with a deliberate, symmetric-reading gap above
+  and below — pt-[N] / pb-[N] tuned directly on the section — rather than a large
+  min-height plus flex-centering, which tends to leave obviously "too much" empty space
+  top and bottom. When a band needs to feel shorter, shrink the padding values directly;
+  when the text itself grows (e.g. wraps to an extra line), the section should grow with
+  it automatically because height is content-driven, never fixed.
+- Balance the gap ABOVE a divider line with the gap BELOW it. A common bug: a card has a
+  heading/body block, then a horizontal divider, then more text below — and the margin
+  before the divider is visually bigger than the padding after it, making the block feel
+  top-heavy. Keep the two gaps close in size (e.g. a small margin-top like mt-2 into the
+  divider, matching a pt-4/pt-5 out of it), and re-check visually — don't assume a
+  Tailwind default spacing step (mt-5, mb-6, etc.) is automatically balanced against its
+  neighbor.
+- When a row of cards has a bottom "footer" line of variable-length text (a metric, a
+  target, a short stat) that might wrap to one line on some cards and two lines on
+  others, give that footer container a min-height sized for the WORST CASE — including
+  its own top padding, not just the text's own line-height — so the divider line above
+  it sits at the exact same y-position across every card in the row, regardless of how
+  many lines any individual card's footer text wraps to.
+- Numbered badges (e.g. a "Suite 01" chip on a card) restart at 01 for each independent
+  logical group of content rather than continuing a running count from a prior group —
+  the reset itself communicates "this is a separate set," not a continuation of the one
+  before it.
+
+
+5. BACKGROUND TEXTURE SYSTEM (reusable utility classes)
+----------------------------------------------------
+Three interchangeable section-background "flavors," alternated down the page for quiet
+depth. All three share the same technique: a base color/gradient, plus one or two
+pseudo-element texture overlays (dot-grid and/or line-grid), with real content lifted
+above the texture via z-index.
+
+A) DARK HERO / CTA GRADIENT — .bg-ignitho-hero
+   Used for: hero section, closing CTA banner, dark illustrative panels.
+   background:
+     radial-gradient(ellipse 95% 85% at 22% 18%, rgba(118,0,200,0.55) 0%, transparent 58%),
+     linear-gradient(125deg, #16063A 0%, #2C0A78 28%, #4A12B8 52%, #123E68 86%, #0A5670 100%);
+   ::before overlay: a faint 60px×60px white grid (two 1px linear-gradients at
+   rgba(255,255,255,0.05)), pointer-events:none, absolutely positioned inset:0.
+   Effect: a moody violet-to-teal diagonal glow with a barely-visible technical grid.
+
+B) LIGHT TINTED SECTION — .bg-ignitho-light-grid
+   Used for: sections that should feel soft/lavender-tinted (alternates with C below).
+   background: linear-gradient(160deg, #F9F6FF 0%, #F0E8FF 50%, #F5F0FF 100%);
+   ::before: 28px dot grid, radial-gradient dot at rgba(122,0,194,0.18).
+   ::after: 56px line grid, two 1px linear-gradients at rgba(122,0,194,0.06).
+   Children get position:relative + z-index:2 (`.bg-ignitho-light-grid > *`) so content
+   always renders above the texture layers.
+
+C) WHITE/NEAR-WHITE SECTION — .bg-ignitho-white-grid
+   Used for: alternates with B for section-to-section rhythm without repeating color.
+   background: solid #FBF9FF (a near-white, very slightly violet-tinted white — chosen
+   deliberately over pure #FFFFFF so it doesn't feel stark against the tinted sections).
+   Same dot-grid (::before, rgba(122,0,194,0.14)) and line-grid (::after,
+   rgba(122,0,194,0.045)) overlays as B, just ~20% lower opacity since the base is
+   already near-white.
+
+Pattern: alternate B/C between adjacent content sections; reserve A for the very top
+(hero) and very bottom (final CTA) of a page, i.e. as "bookend" high-impact moments.
+
+
+6. COMPONENT PATTERNS
+----------------------------------------------------
+a) PRIMARY BUTTON (pill, teal):
+   rounded-full, bg-ignitho-teal, border border-ignitho-teal-border, text white
+   (#F9F6FE, an off-white not pure white), font-medium, px-6 py-3.5, hover: darker
+   teal background + brighter border + pure white text. Icon (if present, e.g. an
+   arrow) sits after the label with a small gap, and nudges further on hover
+   (group-hover:translate-x-0.5).
+
+b) SECONDARY BUTTON (pill, outline — used on dark backgrounds):
+   rounded-full, border border-white/25, transparent fill, white text, hover: subtle
+   bg-white/10. No border-color change on hover, just a fill wash.
+
+c) DARK GRADIENT FEATURE CARD (Pillars / Security-style):
+   rounded-[24px], padding ~24-28px, background: linear-gradient(160deg,#16063A 0%,
+   #5B16C4 100%), border border-white/10, shadow shadow-[0_18px_46px_rgba(80,8,208,0.25)].
+   Header row: heading (left) + icon badge (right) — icon badge is a small square
+   (p-3, bg-white/10, border-white/15, rounded-xl) containing a plain white lucide
+   icon. On hover: card lifts (-translate-y-1) and the icon badge scales up slightly
+   and rotates a few degrees (group-hover:scale-[1.08] group-hover:rotate-6) — a
+   signature micro-interaction used on every dark feature card.
+   Body copy sits below, flex-1 so it fills remaining height; an optional footer
+   (a metric/target line) is separated by a top hairline border (border-white/15).
+
+d) TWO-TONE COMPARISON CARD (Problem/Fix-style — the "pricing card" pattern):
+   Side-by-side pair, each rounded-[28px], solid saturated diagonal gradient fill
+   (one card violet family #16063A→#5B16C4, the opposing card green-teal family
+   #043620→#00A274), text always white. Decorative: two concentric large circles
+   (border only, border-white/10) bleeding off the top-right corner, subtly scaling up
+   on hover (group-hover:scale-110) for a "shine" effect.
+   Header: icon + title INLINE on the same row (flex items-center gap-3) — not
+   stacked — this is a deliberate, corrected choice (an earlier stacked-with-matching-
+   left-edge layout was tried and replaced because icon+heading are meant to read as
+   one unit on one line).
+   Body: a vertical list of rows, each row = a small white circular icon badge
+   (h-6 w-6, bg-white, icon colored in the card's accent hex, not pure black) + a
+   line of white/90 text. Rows have a min-height so short/long text rows still line up.
+   Whole card lifts and deepens its shadow on hover (hover:-translate-y-1.5 plus a
+   larger shadow value) — the same restrained hover language as the dark feature card.
+
+e) PRODUCT/CATALOG CARD (white, e.g. SuiteCard):
+   White card, rounded-[26px], border-slate-200, soft shadow. Top third is an image
+   with a dark violet gradient wash overlay (so any photo reads on-brand) plus a thin
+   1px gradient accent bar along the very top edge (violet → teal, i.e. the brand
+   gradient compressed into a single accent line) and a small pill badge + icon badge
+   overlaid on the image. The white content area overlaps the image slightly
+   (negative margin-top, -mt-6, with its own rounded-t corners) for a layered/stacked
+   look. A callout box uses a colored left border (border-l-2) + tinted background
+   (bg-violet-50) rather than a full colored fill — a lighter-touch way to highlight a
+   key stat inside an otherwise white card. Card lifts on hover; the image scales up
+   slightly (group-hover:scale-105) inside its overflow-hidden frame.
+
+f) STAT CARD (simple metric card):
+   Plain white, border-slate-200, rounded-2xl, centered text, a large bold number in
+   the teal brand color (text-3xl/4xl font-black) above a small muted caption. No
+   gradient, no icon — used when a grid of many small metrics needs to stay low-key.
+
+g) FLOATING/OVERLAY UI (chat widget, modals):
+   Dark near-black panel (#0A0620) with a soft accent-blue border tint, rounded-3xl,
+   heavy shadow — visually distinct from the rest of the site (feels like a "console"),
+   consistent with the accent-blue being reserved for "live/technical" moments.
+
+h) BADGES / PILLS / CHIPS:
+   Small rounded-full or rounded-lg elements, low-opacity tinted background matching
+   whatever accent color is contextually relevant (e.g. bg-ignitho-teal/10 with
+   text-ignitho-teal and a matching low-opacity border) — this "10% tint fill + full
+   color text/border" formula is the standard way to make a small label feel branded
+   without using a solid fill.
+
+
+7. MOTION & INTERACTION PRINCIPLES
+----------------------------------------------------
+- Hover on any card: lift (translate-y -2px to -6px) + shadow deepens (larger blur/
+  spread, same hue, slightly higher opacity) + duration-300 ease-out. This exact
+  three-part formula (lift + shadow + duration-300) is the single hover language used
+  across every card type on the site — don't invent a different hover effect per
+  component.
+- Icon badges inside cards often add a secondary hover flourish on top of the card
+  lift: scale up slightly (1.05–1.1) and/or rotate a few degrees — signals
+  "interactive/alive" without being distracting.
+- Floating UI (chat widget, dropdown menus) uses spring-physics transitions (via
+  Framer Motion: type "spring", stiffness ~320-340, damping ~24-28) for open/close,
+  scaling from the anchor corner (transformOrigin set to the corner it's pinned to,
+  e.g. "bottom right") rather than the element's center — prevents any lateral drift
+  during the animation.
+- Slide-down menus/panels animate height (0 → auto) + opacity together,
+  duration ~0.25s, ease "easeInOut" — used for mobile nav dropdowns.
+- No scroll-triggered animations, no parallax, no auto-playing carousels of content
+  (the one exception is a slow, pausable marquee/logo-scroll style animation used only
+  for passive, non-critical strip content — 25s linear loop, pauses on hover).
+- Buttons/links: color/background transitions only (transition-colors), no movement,
+  keeping primary actions feeling stable and "clickable" rather than playful.
+
+
+8. RESPONSIVE DESIGN RULES (hard-won — corrected during development)
+----------------------------------------------------
+- Never use `hidden` on mobile for something that has no other way to be reached.
+  (Concrete case: navigation links were originally `hidden md:flex` with literally no
+  mobile alternative — links were unreachable. Fix: add a mobile hamburger trigger that
+  reveals the same links in a stacked slide-down panel, keep desktop untouched.)
+- Never use `hidden` on mobile for a meaningful visual element without a resized
+  replacement. (Concrete case: a large decorative side-illustration was fully hidden
+  below the desktop breakpoint. Fix: show a smaller, lower-opacity version of the same
+  asset stacked below the text content on mobile, instead of removing it entirely.)
+- Keep one consistent horizontal padding value per breakpoint across the whole page —
+  don't let one section use `px-5` while a sibling uses a differently-nested container
+  that produces a different effective inset; misaligned edges are very noticeable when
+  scrolling.
+- Absolutely-positioned floating elements that use only `right`/`bottom` (no `left`/
+  `top`) can collapse to a shrink-to-fit width and wrap their text unexpectedly — pin
+  them with an explicit anchor on all relevant sides or force `width:max-content` and
+  `whitespace-nowrap` on the label.
+- Elements meant to be read as one unit (an icon next to a heading, a label next to a
+  value) should stay on one row (`flex items-center gap-x`) at every breakpoint rather
+  than stacking, unless there is a deliberate, explicit reason to stack them.
+- Verify zero horizontal scroll/overflow at small viewports (320–414px) after any
+  layout change — this was used as the pass/fail check throughout development.
+- Equal-height grids: rely on CSS Grid's default row-stretch behavior plus
+  `flex h-full flex-col` on each card, not manually-set heights.
+
+
+9. ICONOGRAPHY
+----------------------------------------------------
+Icon set: lucide-react (simple, consistent-stroke line icons). Icons are always either
+pure white (on dark surfaces) or the section's single accent color (on light surfaces)
+— never multi-color, never filled/solid style. Typical sizes: 14–16px inline within
+badges, 20–28px as a standalone card-header icon. Stroke weight is occasionally bumped
+above the default (stroke-[2.5] to stroke-[3]) specifically for small icons (≤16px)
+sitting inside a tight badge, so they don't look too thin at small sizes.
+
+
+10. QUICK-REFERENCE CHECKLIST FOR REPLICATING THIS SYSTEM ELSEWHERE
+----------------------------------------------------
+[ ] Load Urbanist (or a similar humanist grotesque variable font), weights 300-900.
+[ ] Set up the 3-part color system: one teal action color, one violet/purple depth
+    family (5-6 stops from near-black to bright violet), one green-teal "positive"
+    gradient family, plus near-black text and muted gray captions.
+[ ] Build the two-tone headline pattern (neutral line 1 / accent-purple line 2) and the
+    accent-purple supporting paragraph as a reusable heading block.
+[ ] Build the 3 background-texture utility classes (dark hero gradient+grid, light
+    tinted+dot-grid, white+dot-grid) and alternate the two light ones between sections.
+[ ] Build one pill-button component (teal solid + white/outline variants).
+[ ] Build one dark-gradient-card component with the icon-badge-hover-rotate detail.
+[ ] Build the two-tone comparison-card pattern for any "before/after" or "us vs them"
+    content instead of a table.
+[ ] Apply the single hover formula (lift + shadow + 300ms ease-out) to every card type.
+[ ] Audit every section at 320-414px width: nothing is `hidden` without a replacement,
+    no horizontal scroll, icon+label pairs stay inline, paddings match across sections.
+[ ] Strip every trailing full stop from copy (headings, cards, ROI/metric values,
+    footers, chatbot text) — keep only internal sentence-separator periods and true
+    ellipses; never touch decimal points or multipliers (e.g. "3.4x").
+[ ] Size hero/band sections by padding (content-driven height), not a fixed min-height —
+    check the gap above and below the text reads as deliberate, not oversized.
+[ ] On any card with a divider line, compare the gap above it to the gap below it — they
+    should read as balanced, not top-heavy — and give variable-length footer text a
+    min-height so dividers align across a card row regardless of line-wrap differences.

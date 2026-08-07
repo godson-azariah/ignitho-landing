@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ignitho AI | Ignitho Technologies</title>
+
+    <!--
+      Type system — three voices, no decoration:
+      Urbanist        display + UI  (the structure)
+      Instrument Serif  italic accents  (the editorial voice)
+      JetBrains Mono   labels, indices, figures  (the machine layer)
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- every suite image comes from here; open the socket before one is asked for -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Urbanist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
+              mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+            },
+            colors: {
+              ig: {
+                /* VIOLET / BLUE — the dominant family. Depth, surfaces,
+                   headings, every dark moment on the page. */
+                ink: '#16063A',        // violet-950 — darkest, also body/heading colour
+                violet: '#16063A',
+                'violet-800': '#2C0A78',
+                'violet-600': '#4A12B8',
+                'violet-500': '#5B16C4',
+                'purple-700': '#5008D0',
+                purple: '#7A00C2',     // text-only accent (2nd headline line, supporting copy)
+                'blue-deep': '#123E68',
+                'blue-deepest': '#0A5670',
+                sky: '#6EC1E4',        // sparing signal accent
+                console: '#0A0620',
+
+                /* TEAL — action only. Buttons, links, checkmarks, "the fix". */
+                teal: '#00A274',
+                'teal-hover': '#0C8C74',
+                'teal-ring': '#00BC6A',
+
+                /* GROUND + NEUTRALS */
+                paper: '#FBF9FF',      // near-white (flavour C) and text-on-dark
+                'paper-2': '#F0E9FF',  // flat lavender tint (flavour B)
+                card: '#FFFFFF',
+                text: '#030303',
+                muted: '#54595F',
+                divider: '#B9BBC2',
+              },
+            },
+            transitionTimingFunction: {
+              out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            },
+          },
+        },
+      }
+    </script>
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
