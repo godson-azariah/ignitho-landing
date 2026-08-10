@@ -20,7 +20,9 @@
   --purple: #7a00c2;
   --blue-deep: #123e68;
   --blue-deepest: #0a5670;
+  --indigo: #4a2fd4;
   --sky: #6ec1e4;
+  --lavender: #d6cdee;
 
   --teal: #00a274;
   --teal-ring: #00bc6a;
@@ -137,10 +139,31 @@ body {
    and breathe against each other on long, offset cycles, so the movement
    never loops visibly. Everything is transform/opacity, so it composites on
    the GPU and costs nothing to scroll past. */
+/* The brand's wide-hero ground, verbatim from the spec (§5A). Held in a
+   variable because the veil further down has to repaint the identical
+   gradient over the curtains — a single flat colour would have done before,
+   but nothing flat can stand in for this. Both boxes are inset:0 of the same
+   section, so the two gradients register exactly.
+
+   The violet anchor at 0–52% is the point of it: a straight blue-to-teal ramp
+   with no violet in it is what reads generic. */
+:root {
+  --aurora-ground:
+    radial-gradient(ellipse 95% 85% at 22% 18%, rgba(118, 0, 200, 0.55) 0%, transparent 58%),
+    linear-gradient(
+      125deg,
+      #16063a 0%,
+      #2c0a78 28%,
+      #4a12b8 52%,
+      #123e68 86%,
+      #0a5670 100%
+    );
+}
+
 .aurora {
   position: relative;
   isolation: isolate;
-  background: #0d0722;
+  background: var(--aurora-ground);
   color: var(--paper);
 }
 /* The stage. Sits behind everything in the section; owns its own stacking
@@ -173,13 +196,16 @@ body {
   width: 92%;
   height: 74%;
   transform: translateX(-50%);
+  /* the spec's ambient bloom — indigo core falling away to violet. Sized
+     explicitly rather than with `closest-side`: the centre sits on the bottom
+     edge, so the nearest side is zero away and the gradient degenerates. */
   background: radial-gradient(
-    50% 50% at 50% 100%,
-    rgba(150, 70, 255, 0.5) 0%,
-    rgba(126, 48, 226, 0.34) 24%,
-    rgba(91, 22, 196, 0.22) 45%,
-    rgba(91, 22, 196, 0.08) 62%,
-    transparent 78%
+    62% 56% at 50% 100%,
+    rgba(90, 63, 232, 0.58) 0%,
+    rgba(82, 55, 224, 0.44) 26%,
+    rgba(74, 18, 184, 0.3) 55%,
+    rgba(74, 18, 184, 0.1) 74%,
+    transparent 100%
   );
   animation: glow-breathe 11s ease-in-out infinite alternate;
   will-change: transform, opacity;
@@ -203,14 +229,14 @@ body {
 .curtain-c {
   background: repeating-linear-gradient(
     94deg,
-    rgba(91, 22, 196, 0) 0px,
-    rgba(91, 22, 196, 0.12) 30px,
-    rgba(91, 22, 196, 0.36) 60px,
-    rgba(91, 22, 196, 0.55) 92px,
-    rgba(122, 0, 194, 0.44) 130px,
-    rgba(122, 0, 194, 0.28) 176px,
-    rgba(122, 0, 194, 0.12) 220px,
-    rgba(91, 22, 196, 0) 262px
+    rgba(74, 18, 184, 0) 0px,
+    rgba(74, 18, 184, 0.14) 30px,
+    rgba(74, 18, 184, 0.4) 60px,
+    rgba(91, 22, 196, 0.58) 92px,
+    rgba(122, 0, 194, 0.46) 130px,
+    rgba(122, 0, 194, 0.3) 176px,
+    rgba(91, 22, 196, 0.13) 220px,
+    rgba(74, 18, 184, 0) 262px
   );
   animation: fold-c 17s ease-in-out infinite alternate;
 }
@@ -226,14 +252,14 @@ body {
 .curtain-b {
   background: repeating-linear-gradient(
     88deg,
-    rgba(138, 58, 246, 0) 0px,
-    rgba(138, 58, 246, 0.14) 20px,
-    rgba(138, 58, 246, 0.36) 38px,
-    rgba(138, 58, 246, 0.5) 56px,
-    rgba(163, 98, 255, 0.34) 82px,
-    rgba(163, 98, 255, 0.22) 112px,
-    rgba(163, 98, 255, 0.09) 140px,
-    rgba(138, 58, 246, 0) 168px
+    rgba(74, 47, 212, 0) 0px,
+    rgba(74, 47, 212, 0.16) 20px,
+    rgba(82, 55, 224, 0.38) 38px,
+    rgba(90, 63, 232, 0.52) 56px,
+    rgba(90, 63, 232, 0.36) 82px,
+    rgba(74, 47, 212, 0.23) 112px,
+    rgba(74, 47, 212, 0.09) 140px,
+    rgba(74, 47, 212, 0) 168px
   );
   animation: fold-b 13s ease-in-out infinite alternate;
 }
@@ -243,13 +269,13 @@ body {
 .curtain-a {
   background: repeating-linear-gradient(
     91deg,
-    rgba(196, 150, 255, 0) 0px,
-    rgba(196, 150, 255, 0.16) 12px,
-    rgba(196, 150, 255, 0.4) 30px,
-    rgba(196, 150, 255, 0.22) 52px,
-    rgba(122, 0, 194, 0.16) 76px,
-    rgba(122, 0, 194, 0.06) 98px,
-    rgba(196, 150, 255, 0) 120px
+    rgba(163, 152, 246, 0) 0px,
+    rgba(163, 152, 246, 0.17) 12px,
+    rgba(190, 182, 250, 0.4) 30px,
+    rgba(163, 152, 246, 0.23) 52px,
+    rgba(90, 63, 232, 0.17) 76px,
+    rgba(74, 47, 212, 0.07) 98px,
+    rgba(163, 152, 246, 0) 120px
   );
   animation: fold-a 9s ease-in-out infinite alternate;
 }
@@ -273,23 +299,33 @@ body {
   will-change: transform, opacity;
 }
 
-/* The floor-up falloff, as paint rather than as a mask.
+/* The floor-up falloff: the ground itself, repainted over the folds and faded
+   out toward the bottom edge, so light only rises from the floor.
 
-   This used to be `mask-image` on the wrapper — which forces the browser to
-   render all four animated children into an offscreen surface, mask it, then
-   composite that, every frame. The ground is a flat colour, so an opaque veil
-   of that same colour laid over the top gives an identical result for the
-   price of one static layer. */
+   Masking the *field* is what was expensive — that wrapper holds four animated
+   children, so every frame had to be rendered into an offscreen surface,
+   masked, and composited. This layer is static: it rasterises once, mask and
+   all, and is a plain cached texture from then on. Same technique, applied
+   where it costs nothing. */
 .curtain-veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(13, 7, 34, 0) 0%,
-    rgba(13, 7, 34, 0.12) 30%,
-    rgba(13, 7, 34, 0.55) 60%,
-    rgba(13, 7, 34, 0.92) 82%,
-    #0d0722 94%
+  background: var(--aurora-ground);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    rgba(0, 0, 0, 0.94) 20%,
+    rgba(0, 0, 0, 0.5) 48%,
+    rgba(0, 0, 0, 0.12) 74%,
+    transparent 90%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    rgba(0, 0, 0, 0.94) 20%,
+    rgba(0, 0, 0, 0.5) 48%,
+    rgba(0, 0, 0, 0.12) 74%,
+    transparent 90%
   );
 }
 
@@ -519,7 +555,7 @@ body {
   color: transparent;
 }
 .stroke-lilac {
-  -webkit-text-stroke: 1.2px #b79bff;
+  -webkit-text-stroke: 1.2px var(--lavender);
   color: transparent;
 }
 @media (min-width: 768px) {
@@ -636,13 +672,18 @@ body {
    the stack builds in the centre of the screen rather than up under the nav.
    `--i` (set per card) steps each one a little lower than the last.
    max() keeps it clear of the masthead on short viewports. */
+/* The step used to be 14–16px, which showed a sliver so thin the stack read as
+   one card on an empty field. At 18–24px the cards beneath are legibly a deck,
+   which is what fills the space around the pinned card. */
 .stack-item {
   position: sticky;
-  top: max(84px, calc(50vh - 170px + var(--i) * 14px));
+  top: max(84px, calc(50vh - 176px + var(--i) * 18px));
 }
 @media (min-width: 768px) {
+  /* half the card's height — kept in step with it, or the stack builds
+     off-centre. The cards now size to their content, around 330px. */
   .stack-item {
-    top: max(92px, calc(50vh - 200px + var(--i) * 16px));
+    top: max(92px, calc(50vh - 164px + var(--i) * 24px));
   }
 }
 
@@ -839,9 +880,51 @@ body {
 }
 
 /* Direction-aware row fill: grows from whichever edge the pointer crossed,
-   and retracts toward the edge it leaves by. */
+   and retracts toward the edge it leaves by.
+
+   Both states are owned HERE, rather than half here and half in Tailwind's
+   `scale-y-0` / `group-hover:scale-y-100`. Those utilities emit a six-function
+   transform list (translate · rotate · skewX · skewY · scaleX · scaleY), so
+   pairing them with a plain `transform: scaleY(1)` leaves the two states with
+   mismatched function lists — which cannot interpolate component-wise, so the
+   browser falls back to matrix interpolation from a singular scale-0 matrix
+   and the fill snaps instead of growing. Same function on both sides, one
+   component changing, and it animates properly. */
 .row-fill {
+  transform: scaleY(0);
   transform-origin: var(--fill-origin, bottom);
+  transition: transform 0.45s cubic-bezier(0, 0, 0.2, 1);
+}
+/* pointer-derived on the suite list, plain :hover on the accelerator rows */
+.row-on .row-fill,
+.group:hover .row-fill {
+  transform: scaleY(1);
+}
+
+/* THE LIT ROW.
+
+   Keyed off `.row-on`, which JavaScript sets from the pointer's position —
+   NOT off `:hover`. The browser does not re-evaluate :hover while the page
+   scrolls beneath a stationary cursor, so a hover-driven fill stays stuck on
+   whichever row you were over before the scroll started. Deriving it from the
+   pointer means the fill and the preview card always agree.
+
+   Each rule is a class on a class, so it outranks the Tailwind utility that
+   sets the resting colour without needing !important. */
+.row-on .row-ink,
+.row-on .row-name {
+  color: #ffffff;
+}
+.row-on .row-num {
+  color: var(--teal-ring);
+}
+.row-on .row-tag {
+  color: var(--sky);
+}
+.row-on .row-cta {
+  border-color: var(--teal-ring);
+  background: var(--teal);
+  color: #ffffff;
 }
 
 /* Pointer-driven flourishes are meaningless without a pointer */

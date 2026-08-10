@@ -612,9 +612,13 @@ export default function App() {
      suite is kept in state through the fade-out so it never blanks. */
   const listRef = useRef(null);
   const previewRef = useRef(null);
-  const overRow = useRef(null);
+  const activeRow = useRef(null);
   const [previewSuite, setPreviewSuite] = useState(null);
   const [previewOn, setPreviewOn] = useState(false);
+  /* Which row is lit. Driven from the pointer rather than by CSS :hover — the
+     browser does not re-run :hover while the page scrolls under a still
+     cursor, which is why the fill used to stay behind on the old row. */
+  const [hoverId, setHoverId] = useState(null);
   const aim = useRef({ x: 0, y: 0 });
   const at = useRef({ x: 0, y: 0 });
   const settled = useRef(false);
@@ -626,23 +630,105 @@ export default function App() {
   const PEEK_W = 300;
   const PEEK_H = 292;
 
-  const onListMove = (e) => {
-    const box = listRef.current?.getBoundingClientRect();
-    if (!box) return;
-    const x = e.clientX - box.left;
-    aim.current = { x, y: e.clientY - box.top };
+  /* The pointer, in VIEWPORT coordinates.
+
+     This is the whole fix for the scroll behaviour. The card is positioned
+     inside the list, so scrolling moves the list — and the card with it — out
+     from under a cursor that has not moved. Anything stored relative to the
+     list is stale the instant the page scrolls; the viewport is the only frame
+     of reference that survives it. */
+  const pointer = useRef(null);
+
+  /* The single source of truth for the whole hover behaviour: where the card
+     sits, whether it is inside the live zone, which row is lit, and which way
+     that row's fill grows. Everything is derived from the pointer plus a fresh
+     measurement, so a scroll and a mouse move produce the same answer. */
+  const syncPeek = useCallback(() => {
+    const list = listRef.current;
+    const p = pointer.current;
+    if (!list || !p) return;
+    const box = list.getBoundingClientRect();
+
+    /* Cheap bounds test first — this runs on every mouse move anywhere on the
+       page, and there is no reason to hit-test the document unless the pointer
+       is actually over the list. */
+    const inside =
+      p.x >= box.left && p.x <= box.right && p.y >= box.top && p.y <= box.bottom;
+
+    /* Hit-test for the row rather than trusting mouseenter. Firefox does not
+       fire it at all while the page scrolls under a still cursor, and Chrome
+       defers it. The card is pointer-events:none, so this can never find the
+       card instead of the row underneath it. */
+    let row = null;
+    if (inside) {
+      const hit = document.elementFromPoint(p.x, p.y);
+      row = hit?.closest?.('[data-suite-id]') || null;
+    }
+
+    /* Direction-aware fill, set once per change of row — the leaving row
+       retracts toward the edge the pointer left by, the arriving one grows
+       from the edge it came in by. Setting this every frame would move the
+       origin mid-transition. */
+    if (row !== activeRow.current) {
+      for (const el of [activeRow.current, row]) {
+        if (!el) continue;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--fill-origin', p.y < r.top + r.height / 2 ? 'top' : 'bottom');
+      }
+      activeRow.current = row;
+      setHoverId(row ? row.getAttribute('data-suite-id') : null);
+    }
+
+    if (!row) {
+      setPreviewOn(false);
+      return;
+    }
+
+    aim.current = { x: p.x - box.left, y: p.y - box.top };
     if (!settled.current) {
       at.current = { ...aim.current };
       settled.current = true;
     }
-    const inZone = x > PEEK_EDGE_L && x < box.width - PEEK_EDGE_R;
-    setPreviewOn(Boolean(overRow.current) && inZone);
-  };
 
-  const leaveList = () => {
-    overRow.current = null;
-    setPreviewOn(false);
-  };
+    // same object identity each time, so React bails out on a no-op set
+    const suite = SUITES.find((s) => s.id === row.getAttribute('data-suite-id'));
+    if (suite) setPreviewSuite(suite);
+
+    const inZone = aim.current.x > PEEK_EDGE_L && aim.current.x < box.width - PEEK_EDGE_R;
+    setPreviewOn(inZone);
+  }, []);
+
+  /* Tracked on the window, not on the list.
+
+     Bound to the list, the pointer was unknown until you moved it *inside* the
+     list — so scrolling the section up under a cursor that was already sitting
+     over a row did nothing until you jiggled the mouse. On the window, the
+     position is already known by the time the list arrives, and the scroll
+     handler can light the right row immediately.
+
+     Both events share one rAF gate, so this costs one derivation per frame at
+     most, and `syncPeek` returns immediately when the list is not mounted. */
+  useEffect(() => {
+    let ticking = false;
+    const schedule = () => {
+      if (ticking || !pointer.current) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        syncPeek();
+      });
+    };
+    const onMove = (e) => {
+      pointer.current = { x: e.clientX, y: e.clientY };
+      schedule();
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('scroll', schedule);
+    };
+  }, [syncPeek]);
 
   useEffect(() => {
     if (!previewOn) {
@@ -972,10 +1058,10 @@ export default function App() {
               className="flex shrink-0 items-baseline gap-1.5"
               aria-label="Ignitho AI"
             >
-              <span className="text-[20px] font-black tracking-[-0.03em] text-ig-ink md:text-[22px]">
+              <span className="text-[21px] font-black tracking-[-0.03em] text-ig-ink md:text-[24px]">
                 Ignitho
               </span>
-              <span className="serif-accent text-[23px] leading-none text-ig-purple md:text-[26px]">
+              <span className="serif-accent text-[25px] leading-none text-ig-purple md:text-[29px]">
                 AI
               </span>
             </button>
@@ -985,7 +1071,7 @@ export default function App() {
                 <button
                   key={label}
                   onClick={navAction(label)}
-                  className="group relative py-2 text-[14px] font-medium tracking-[-0.01em] text-ig-muted transition-colors duration-300 hover:text-ig-ink"
+                  className="group relative py-2 text-[15px] font-medium tracking-[-0.01em] text-ig-muted transition-colors duration-300 hover:text-ig-ink"
                 >
                   {label}
                   {/* wipes in from the left, out to the right */}
@@ -1003,7 +1089,7 @@ export default function App() {
               {/* below lg the action lives in the menu sheet, so the bar keeps
                   to a wordmark and one control */}
               <div className="hidden lg:block">
-                <TealButton className="!px-6 !py-3.5 !text-[12.5px]">
+                <TealButton className="!px-6 !py-3.5 !text-[13.5px]">
                   <span className="whitespace-nowrap">Schedule Executive Briefing</span>
                 </TealButton>
               </div>
@@ -1123,10 +1209,11 @@ export default function App() {
             <div className={SHELL}>
               <div className="relative">
                 <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-white/15 py-4">
-                  <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-white/60 md:text-[11px]">
+                  {/* the eyebrow — sky, per the brand's rule for dark surfaces */}
+                  <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-sky md:text-[11px]">
                     Transforming Ignitho into an AI-First Enterprise Partner
                   </span>
-                  <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-white/35 md:text-[11px]">
+                  <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-lavender/45 md:text-[11px]">
                     Enterprise AI Platform
                   </span>
                 </div>
@@ -1140,9 +1227,9 @@ export default function App() {
                     <span className="line-mask">
                       <span style={{ transitionDelay: '90ms' }}>
                         AI Solutions{' '}
-                        <span className="serif-accent font-normal text-ig-teal-ring">
-                          Delivering
-                        </span>
+                        {/* headline stays white on dark; the serif italic and
+                            the outlined word carry the accent, not colour */}
+                        <span className="serif-accent font-normal text-white">Delivering</span>
                       </span>
                     </span>
                     <span className="line-mask">
@@ -1155,7 +1242,7 @@ export default function App() {
 
                 <div className="mt-12 grid grid-cols-12 items-end gap-x-10 gap-y-10 border-t border-white/15 pt-10 md:mt-16">
                   <Reveal className="col-span-12 lg:col-span-6">
-                    <p className="max-w-xl text-[17px] leading-[1.45] tracking-[-0.01em] text-white/70 md:text-[21px]">
+                    <p className="max-w-xl text-[17px] leading-[1.45] tracking-[-0.01em] text-ig-lavender/75 md:text-[21px]">
                       Move away from unguided prompt chats.{' '}
                       <span className="serif-accent text-white">Ignitho AI</span> delivers
                       pre-built, domain-specific AI accelerators that automate complex business
@@ -1196,7 +1283,7 @@ export default function App() {
                         <span className="stroke-paper stroke-hover-paper font-mono text-[46px] font-bold leading-none tracking-[-0.05em] transition-colors duration-300 md:text-[58px]">
                           {cell.n}
                         </span>
-                        <span className="max-w-[13ch] font-mono text-[11.5px] font-bold leading-[1.5] tracking-[0.05em] text-white/55 transition-colors duration-300 group-hover:text-white">
+                        <span className="max-w-[13ch] font-mono text-[11.5px] font-bold leading-[1.5] tracking-[0.05em] text-ig-lavender/70 transition-colors duration-300 group-hover:text-white">
                           {cell.label}
                         </span>
                       </span>
@@ -1214,12 +1301,12 @@ export default function App() {
           {/* ================================================================= */}
           {/* 02 — PILLARS · FLAVOUR B (lavender tint)                          */}
           {/* ================================================================= */}
-          <section id="pillars" className="bg-b dots relative py-24 md:py-32">
+          <section id="pillars" className="bg-b dots relative pt-16 md:pt-24">
             <div className={SHELL}>
               <Cross className="-top-11 left-1 md:left-3" />
               <Cross className="-top-11 right-1 md:right-3" />
 
-              <Reveal className="plate relative flex flex-col gap-6 border-b border-ig-ink/15 pb-9 md:flex-row md:items-end md:justify-between">
+              <Reveal className="plate relative flex flex-col gap-6 border-b border-ig-ink/15 pb-7 md:flex-row md:items-end md:justify-between">
                 <div>
                   <Kicker index="02">Strategic Pillars</Kicker>
                   <h2 className="mt-7 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(30px,5vw,62px)] text-ig-ink">
@@ -1236,47 +1323,76 @@ export default function App() {
             </div>
 
             {/* Each card pins a little lower than the last, so they deal
-                themselves into a stack as you scroll. */}
-            <div className={`${SHELL} mt-12 md:mt-16`}>
-              <div className="relative">
+                themselves into a stack as you scroll.
+
+                A sticky element cannot travel past the bottom of its container,
+                and the last card's own bottom edge IS that bottom — so it had
+                exactly zero travel and never pinned at all, which is why it
+                alone dropped straight past the deck. The padding below gives it
+                a dwell like the others. It is the section's former bottom
+                padding, moved inside the container and lengthened: the same
+                space, now doing work instead of sitting empty. */}
+            <div className={`${SHELL} mt-8 md:mt-10`}>
+              {/* the padding belongs on THIS box — a sticky element is
+                  constrained by its containing block's padding box, and this
+                  div, not the shell, is the cards' containing block */}
+              <div className="relative pb-28 md:pb-[220px]">
                 {PILLARS.map((pillar, i) => {
                   const Icon = pillar.icon;
                   return (
                     <div key={pillar.title} className="stack-item" style={{ '--i': i }}>
+                      {/* No min-height and no `justify-between`: the card is
+                          exactly as tall as its two columns need, so there is
+                          no gap left in the middle to push content apart. */}
                       <article
-                        className={`relative flex min-h-[340px] flex-col justify-between overflow-hidden p-8 text-white md:min-h-[400px] md:p-14 ${pillar.bg}`}
+                        className={`relative overflow-hidden p-8 text-white md:p-12 ${pillar.bg}`}
                       >
                         <span
                           aria-hidden="true"
-                          className="pointer-events-none absolute -bottom-12 right-5 select-none font-mono text-[160px] font-bold leading-none text-white/[0.07] md:text-[240px]"
+                          className="pointer-events-none absolute -bottom-14 right-2 select-none font-mono text-[150px] font-bold leading-none text-white/[0.07] md:-bottom-20 md:right-8 md:text-[230px]"
                         >
                           {pillar.n}
                         </span>
 
-                        <div className="relative grid grid-cols-12 gap-x-10 gap-y-6">
-                          <div className="col-span-12 md:col-span-7">
+                        <div className="relative grid grid-cols-12 gap-x-10 gap-y-7">
+                          {/* left — the name of the pillar */}
+                          <div className="col-span-12 flex flex-col md:col-span-6">
                             <span className="font-mono text-[11px] font-bold tracking-[0.07em] text-white/45">
                               {pillar.n}
                             </span>
-                            <h3 className="mt-5 font-extrabold leading-[0.98] tracking-[-0.03em] text-[clamp(28px,3.8vw,50px)]">
+                            {/* the heading absorbs the slack, so the mark below
+                                sits at the foot of the column — level with the
+                                target line opposite — while `mt-8` still
+                                guarantees a gap when there is no slack */}
+                            {/* Two lines' worth of height, always. The titles
+                                run 14–20 characters, so some wrap and some do
+                                not — and an unequal card height means the deck
+                                cannot line up, which reads as a gap between
+                                cards. `1.9em` is exactly two lines at this
+                                leading, so the reservation costs nothing on the
+                                titles that do wrap. */}
+                            <h3 className="mt-5 min-h-[1.9em] flex-1 font-extrabold leading-[0.95] tracking-[-0.032em] text-[clamp(32px,4.6vw,62px)]">
                               {pillar.title}
                             </h3>
+                            <Icon
+                              className="mt-8 hidden h-12 w-12 shrink-0 text-white/30 md:block"
+                              strokeWidth={1.2}
+                            />
                           </div>
-                          <div className="col-span-12 md:col-span-5 md:pt-10">
-                            <p className="max-w-[42ch] text-[15px] leading-[1.6] text-white/70 md:text-[17px]">
+
+                          {/* right — what it does, and the number it aims at */}
+                          <div className="col-span-12 flex flex-col md:col-span-5 md:col-start-8">
+                            <p className="flex-1 text-[17px] leading-[1.5] text-white/70 md:text-[21px]">
                               {pillar.body}
                             </p>
+                            <span className="mt-7 flex items-center gap-3 border-t border-white/15 pt-6 font-mono text-[11.5px] font-bold tracking-[0.055em] text-ig-teal-ring">
+                              <Icon
+                                className="h-4 w-4 shrink-0 text-white/55 md:hidden"
+                                strokeWidth={2}
+                              />
+                              {pillar.target}
+                            </span>
                           </div>
-                        </div>
-
-                        <div className="relative mt-12 flex min-h-[48px] items-center justify-between gap-6 border-t border-white/15 pt-6">
-                          <span className="font-mono text-[11.5px] font-bold tracking-[0.055em] text-ig-teal-ring md:text-[11.5px]">
-                            {pillar.target}
-                          </span>
-                          <Icon
-                            className="h-6 w-6 shrink-0 text-white/55 md:h-8 md:w-8"
-                            strokeWidth={1.6}
-                          />
                         </div>
                       </article>
                     </div>
@@ -1613,44 +1729,43 @@ export default function App() {
               <div className={`${SHELL} mt-10`}>
 
                 {/* The list carries a preview card that trails the pointer */}
-                <div
-                  ref={listRef}
-                  onMouseMove={onListMove}
-                  onMouseLeave={leaveList}
-                  className="relative"
-                >
+                {/* no move/leave handlers — the window-level pointer drives it,
+                    so the list behaves the same whether you move or scroll */}
+                <div ref={listRef} className="relative">
                   {filteredSuites.map((suite, i) => (
                     <Reveal key={suite.id} delay={Math.min(i * 45, 260)}>
+                      {/* `data-suite-id` is the handle syncPeek hit-tests for.
+                          `row-on` is the lit state — a class rather than
+                          :hover, so scrolling a row under the cursor lights it
+                          exactly as moving onto it does. The semantic classes
+                          below let one CSS rule per part carry that state. */}
                       <button
                         onClick={() => openSuite(suite.id)}
-                        onMouseEnter={(e) => {
-                          setFillOrigin(e);
-                          overRow.current = suite.id;
-                          setPreviewSuite(suite);
-                        }}
-                        onMouseLeave={setFillOrigin}
+                        data-suite-id={suite.id}
                         onFocus={() => setPreviewOn(false)}
-                        className="group relative block w-full overflow-hidden border-b border-ig-ink/15 text-left"
+                        className={`row relative block w-full overflow-hidden border-b border-ig-ink/15 text-left ${
+                          hoverId === suite.id ? 'row-on' : ''
+                        }`}
                       >
                         <span
-                          className={`row-fill pointer-events-none absolute inset-0 scale-y-0 transition-transform duration-[450ms] ease-out group-hover:scale-y-100 ${ROW_FILL}`}
+                          className={`row-fill pointer-events-none absolute inset-0 ${ROW_FILL}`}
                         />
 
-                        <span className="relative flex items-center gap-5 px-5 py-7 transition-colors duration-300 group-hover:text-white md:gap-9 md:px-8 md:py-8">
-                          <span className="font-mono text-[11px] font-bold tracking-[0.055em] text-ig-divider transition-colors duration-300 group-hover:text-ig-teal-ring">
+                        <span className="row-ink relative flex items-center gap-5 px-5 py-7 transition-colors duration-300 md:gap-9 md:px-8 md:py-8">
+                          <span className="row-num font-mono text-[11px] font-bold tracking-[0.055em] text-ig-divider transition-colors duration-300">
                             {suite.number}
                           </span>
 
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-[19px] font-extrabold tracking-[-0.025em] text-ig-ink transition-colors duration-300 group-hover:text-white md:text-[28px]">
+                            <span className="row-name block truncate text-[19px] font-extrabold tracking-[-0.025em] text-ig-ink transition-colors duration-300 md:text-[28px]">
                               {suite.name}
                             </span>
-                            <span className="serif-accent mt-1 block truncate text-[15px] text-ig-purple transition-colors duration-300 group-hover:text-ig-sky md:text-[18px]">
+                            <span className="row-tag serif-accent mt-1 block truncate text-[15px] text-ig-purple transition-colors duration-300 md:text-[18px]">
                               {suite.tagline}
                             </span>
                           </span>
 
-                          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ig-ink/20 text-ig-ink transition-colors duration-300 group-hover:border-ig-teal-ring group-hover:bg-ig-teal group-hover:text-white">
+                          <span className="row-cta grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ig-ink/20 text-ig-ink transition-colors duration-300">
                             <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
                           </span>
                         </span>
@@ -1703,7 +1818,7 @@ export default function App() {
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 py-4">
                   <button
                     onClick={goHome}
-                    className="group flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.055em] text-white/60 transition-colors duration-300 hover:text-white"
+                    className="group flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.055em] text-ig-sky transition-colors duration-300 hover:text-white"
                   >
                     <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
                     Back to All Suites
@@ -1720,7 +1835,7 @@ export default function App() {
                     <h1 className="font-extrabold leading-[0.93] tracking-[-0.042em] text-[clamp(32px,5.6vw,78px)] text-white">
                       {activeSuite.name}
                     </h1>
-                    <p className="serif-accent mt-7 max-w-2xl text-[22px] leading-[1.2] text-ig-teal-ring md:text-[32px]">
+                    <p className="serif-accent mt-7 max-w-2xl text-[22px] leading-[1.2] text-ig-lavender/85 md:text-[32px]">
                       {activeSuite.tagline}
                     </p>
                   </div>
@@ -1850,7 +1965,7 @@ export default function App() {
                       className="group relative overflow-hidden border-b border-ig-ink/15"
                     >
                       <span
-                        className={`row-fill pointer-events-none absolute inset-0 scale-y-0 transition-transform duration-[450ms] ease-out group-hover:scale-y-100 ${ROW_FILL}`}
+                        className={`row-fill pointer-events-none absolute inset-0 ${ROW_FILL}`}
                       />
 
                       <div className="relative grid grid-cols-12 items-center gap-x-8 gap-y-5 py-8 transition-colors duration-300 group-hover:text-white">
