@@ -5,16 +5,7 @@ import { HeroStage } from '../components/HeroStage.jsx';
 import { Kicker } from '../components/Kicker.jsx';
 import { Reveal } from '../components/Reveal.jsx';
 import { SwapButton, TealButton } from '../components/SwapButton.jsx';
-import { ROW_FILL, SHELL } from '../lib/layout.js';
-
-/* Grow the row fill from whichever edge the pointer crossed. The suite list
-   derives this from a tracked pointer because it has to survive scrolling;
-   these rows are not in a scroll-hover context, so the events are enough. */
-const setFillOrigin = (e) => {
-  const el = e.currentTarget;
-  const r = el.getBoundingClientRect();
-  el.style.setProperty('--fill-origin', e.clientY - r.top < r.height / 2 ? 'top' : 'bottom');
-};
+import { SHELL } from '../lib/layout.js';
 
 /* One suite, in full. Holds which accelerator is being simulated — the
    simulator itself owns the run. */
@@ -32,38 +23,36 @@ export function Dossier({ suite, goHome }) {
 
         <div className={SHELL}>
           <div className="relative">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 py-4">
-              <button
+            {/* The one way back, so it is a button rather than a line of small
+                type — the same light pill the hero uses for its secondary
+                action, which is what makes it read as pressable at a glance.
+                The teal badge that used to sit opposite it has gone: it
+                classified the suite for a reader who has just chosen it, and
+                it was the loudest thing on the masthead. */}
+            <div className="flex flex-wrap items-center gap-4 border-b border-white/15 py-4">
+              <SwapButton
                 onClick={goHome}
-                className="group flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.055em] text-ig-sky transition-colors duration-300 hover:text-white"
+                variant="light"
+                className="px-5 py-3 text-[12.5px] font-semibold"
               >
-                <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
+                <ArrowLeft className="h-3.5 w-3.5" />
                 Back to All Suites
-              </button>
-              <span className="border border-ig-teal-ring/40 bg-ig-teal/15 px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.055em] text-ig-teal-ring">
-                {suite.type === 'foundation'
-                  ? 'Universal Foundation Platform'
-                  : 'Industry Vertical Suite'}
-              </span>
+              </SwapButton>
             </div>
 
-            <div className="grid grid-cols-12 items-end gap-x-10 pt-12 md:pt-20">
-              <div className="col-span-12 lg:col-span-9">
-                <h1 className="font-extrabold leading-[0.93] tracking-[-0.042em] text-[clamp(32px,5.6vw,78px)] text-white">
-                  {suite.name}
-                </h1>
-                <p className="serif-accent mt-7 max-w-2xl text-[22px] leading-[1.2] text-ig-lavender/85 md:text-[32px]">
-                  {suite.tagline}
-                </p>
-              </div>
-              <div className="col-span-12 mt-10 lg:col-span-3 lg:mt-0 lg:text-right">
-                <span
-                  aria-hidden="true"
-                  className="stroke-lilac block select-none font-mono text-[96px] font-bold leading-[0.8] md:text-[150px]"
-                >
-                  {suite.number}
-                </span>
-              </div>
+            {/* The 150px outlined suite number that used to sit in a column on
+                the right has gone. It was a wireframe device — the only one
+                left anywhere on the site — and it was competing with the
+                headline for the same glance while saying nothing the badge
+                above and the URL do not already say. Losing it also gives the
+                title the full measure, which is what a name this long wants. */}
+            <div className="pt-12 md:pt-20">
+              <h1 className="max-w-[18ch] font-extrabold leading-[0.93] tracking-[-0.042em] text-[clamp(32px,5.6vw,78px)] text-white">
+                {suite.name}
+              </h1>
+              <p className="serif-accent mt-7 max-w-2xl text-[22px] leading-[1.2] text-ig-lavender/85 md:text-[32px]">
+                {suite.tagline}
+              </p>
             </div>
           </div>
         </div>
@@ -78,7 +67,7 @@ export function Dossier({ suite, goHome }) {
                 {suite.executiveSummary}
               </p>
 
-              <div className="mt-12 bg-ig-ink px-7 py-7 text-white md:px-9 md:py-8">
+              <div className="mt-12 rounded-[20px] bg-ig-ink px-7 py-7 text-white md:px-9 md:py-8">
                 <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-teal-ring">
                   Target Business Impact
                 </span>
@@ -107,7 +96,11 @@ export function Dossier({ suite, goHome }) {
 
             <Reveal delay={120} className="col-span-12 lg:col-span-4 lg:col-start-9">
               <div className="lg:sticky lg:top-28">
-                <div className="border border-ig-ink/12 bg-white">
+                {/* `overflow-hidden` is what makes the rounding real here:
+                    the three-segment rule and the image both run to the card's
+                    own edge, so without it they would square off the corners
+                    the border had just rounded. */}
+                <div className="overflow-hidden rounded-[20px] border border-ig-ink/12 bg-white">
                   {/* three flat segments, not a blended bar */}
                   <span className="flex h-[4px] w-full">
                     <span className="flex-1 bg-ig-violet" />
@@ -176,36 +169,43 @@ export function Dossier({ suite, goHome }) {
           <div className="plate relative">
             {suite.accelerators.map((acc, idx) => (
               <Reveal key={acc.name} delay={Math.min(idx * 55, 260)}>
-                <div
-                  onMouseEnter={setFillOrigin}
-                  onMouseLeave={setFillOrigin}
-                  className="group relative overflow-hidden border-b border-ig-ink/15"
-                >
-                  <span
-                    className={`row-fill pointer-events-none absolute inset-0 ${ROW_FILL}`}
-                  />
+                {/* A PLAIN TINT, NOT THE WIPE THE SUITE LIST USES.
 
-                  <div className="relative grid grid-cols-12 items-center gap-x-8 gap-y-5 py-8 transition-colors duration-300 group-hover:text-white">
+                    The catalog's rows are the page's main navigation — nine
+                    destinations, so a violet wipe that inverts the whole row
+                    is doing real work there. These are not destinations; you
+                    read down them and press one button. The same treatment
+                    made every passing cursor repaint a block of text from
+                    dark to white, which read as an event when nothing had
+                    happened.
+
+                    So: the section's own lavender, a straight cross-fade, and
+                    every piece of text left exactly the colour it already
+                    was. The only thing that follows the pointer now is the
+                    title going purple — the same small acknowledgement the
+                    suite cards make. */}
+                <div className="group border-b border-ig-ink/15 transition-colors duration-300 hover:bg-ig-paper-2">
+                  <div className="grid grid-cols-12 items-center gap-x-8 gap-y-5 py-8">
                     <div className="col-span-12 flex items-start gap-5 md:col-span-4">
-                      <span className="mt-1.5 font-mono text-[11px] font-bold tracking-[0.055em] text-ig-divider transition-colors duration-300 group-hover:text-ig-teal-ring">
+                      <span className="mt-1.5 font-mono text-[11px] font-bold tracking-[0.055em] text-ig-divider">
                         {String(idx + 1).padStart(2, '0')}
                       </span>
                       <div className="min-w-0">
-                        <h3 className="text-[20px] font-extrabold leading-tight tracking-[-0.025em] text-ig-ink transition-colors duration-300 group-hover:text-white md:text-[24px]">
+                        <h3 className="text-[20px] font-extrabold leading-tight tracking-[-0.025em] text-ig-ink transition-colors duration-300 group-hover:text-ig-purple md:text-[24px]">
                           {acc.name}
                         </h3>
-                        <span className="serif-accent mt-1 block text-[16px] text-ig-purple transition-colors duration-300 group-hover:text-ig-sky">
+                        <span className="serif-accent mt-1 block text-[16px] text-ig-purple">
                           {acc.type}
                         </span>
                       </div>
                     </div>
 
-                    <p className="col-span-12 text-[13.5px] leading-[1.6] text-ig-muted transition-colors duration-300 group-hover:text-white/65 md:col-span-5 md:text-[14.5px]">
+                    <p className="col-span-12 text-[13.5px] leading-[1.6] text-ig-muted md:col-span-5 md:text-[14.5px]">
                       {acc.desc}
                     </p>
 
                     <div className="col-span-12 flex items-center justify-between gap-4 md:col-span-3 md:justify-end">
-                      <span className="flex items-center gap-1.5 whitespace-nowrap font-mono text-[11px] font-bold tracking-[0.035em] text-ig-teal transition-colors duration-300 group-hover:text-ig-teal-ring">
+                      <span className="flex items-center gap-1.5 whitespace-nowrap font-mono text-[11px] font-bold tracking-[0.035em] text-ig-teal">
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                         Governed DAG Ready
                       </span>

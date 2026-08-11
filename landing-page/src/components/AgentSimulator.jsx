@@ -25,17 +25,27 @@ export function AgentSimulator({ accelerator, onClose }) {
   if (!accelerator) return null;
 
   return (
+    /* The backdrop is lighter than it was and now blurs what is behind it.
+       Both matter: at 88% ink the page was effectively gone, so the panel
+       floated in a void with nothing to cast a shadow onto. Letting the page
+       show through, softened, is what gives the window something to sit in
+       FRONT of. The blur is affordable here because `useOverlay` locks body
+       scroll while this is open, so it rasterises once. */
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-ig-ink/88 p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-ig-ink/55 p-4 backdrop-blur-[5px]"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
+      {/* A window, not a slab: hairline edge instead of the 2px near-black
+          rule, a long soft shadow in the page's own violet, and a title bar
+          that stays put because the panel is a flex column and only the body
+          below it scrolls. */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="pop-c relative max-h-[92vh] w-full max-w-2xl overflow-y-auto border-2 border-ig-ink bg-ig-paper"
+        className="pop-c relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-[22px] border border-ig-ink/10 bg-white shadow-[0_44px_100px_-28px_rgba(22,6,58,0.6),0_8px_24px_-12px_rgba(22,6,58,0.3)]"
       >
-        <div className="flex items-center justify-between border-b border-ig-ink/15 px-6 py-4">
+        <div className="flex shrink-0 items-center justify-between gap-4 border-b border-ig-ink/10 bg-ig-paper-2 px-6 py-4">
           <span className="flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.06em] text-ig-ink">
             <Cpu className="h-3.5 w-3.5 text-ig-purple" strokeWidth={2.4} />
             Live Agent Pipeline Simulator
@@ -43,13 +53,13 @@ export function AgentSimulator({ accelerator, onClose }) {
           <button
             onClick={onClose}
             aria-label="Close"
-            className="text-ig-muted transition-colors hover:text-ig-ink"
+            className="-mr-1.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-ig-muted transition-colors hover:bg-ig-ink/[0.07] hover:text-ig-ink"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="p-6 md:p-8">
+        <div className="overflow-y-auto p-6 md:p-8">
           <h3 className="text-[30px] font-extrabold leading-none tracking-[-0.035em] text-ig-ink md:text-[40px]">
             {accelerator.name}
           </h3>
@@ -79,12 +89,19 @@ export function AgentSimulator({ accelerator, onClose }) {
                     </div>
                   )}
                   <div
-                    className={`flex-1 border p-4 transition-colors duration-500 ${
+                    /* Tints, not solids. The running node used to go to a
+                       filled near-black box mid-pipeline, which was the
+                       single highest-contrast thing in the window and made
+                       the two nodes either side of it look broken rather
+                       than merely waiting. Violet for working, teal for
+                       done — the page's own meanings — at a strength that
+                       still separates the three states. */
+                    className={`flex-1 rounded-[14px] border p-4 transition-colors duration-500 ${
                       running
-                        ? 'border-ig-ink bg-ig-ink text-white'
+                        ? 'border-ig-violet-600/35 bg-ig-violet-600/[0.1] text-ig-ink'
                         : reached
-                          ? 'border-ig-teal bg-ig-teal/10 text-ig-ink'
-                          : 'border-ig-ink/20 text-ig-muted'
+                          ? 'border-ig-teal/35 bg-ig-teal/[0.08] text-ig-ink'
+                          : 'border-ig-ink/12 bg-ig-paper text-ig-muted'
                     }`}
                   >
                     <span className="block font-mono text-[11.5px] font-bold tracking-[0.055em] opacity-50">
@@ -98,7 +115,9 @@ export function AgentSimulator({ accelerator, onClose }) {
                       {n.label}
                     </span>
                     <span className="mt-3 flex h-4 items-center">
-                      {running && <Activity className="h-4 w-4 animate-spin" />}
+                      {running && (
+                        <Activity className="h-4 w-4 animate-spin text-ig-violet-600" />
+                      )}
                       {done && <Check className="h-4 w-4 text-ig-teal" strokeWidth={3} />}
                     </span>
                   </div>
@@ -107,8 +126,11 @@ export function AgentSimulator({ accelerator, onClose }) {
             })}
           </div>
 
-          {/* stream — the one place a true console reads right */}
-          <div className="mt-8 bg-ig-console p-4 font-mono text-[11.5px] leading-relaxed">
+          {/* Stream — still dark, because a console reads right dark and
+              nothing else here does. But on the brand's violet-black rather
+              than the near-black it was, so it belongs to the same page as
+              the window around it. */}
+          <div className="mt-8 rounded-[14px] bg-ig-ink p-4 font-mono text-[11.5px] leading-relaxed">
             <div className="mb-2.5 flex items-center gap-2 border-b border-white/10 pb-2 text-white/35">
               <Terminal className="h-3.5 w-3.5" />
               <span className="tracking-[0.055em]">Execution Status Stream</span>
