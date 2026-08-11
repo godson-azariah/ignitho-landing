@@ -44,7 +44,7 @@ export const SUITES = [
   {
     id: 'data-quality',
     number: '02',
-    name: 'Data Trust & Governance Suite',
+    name: 'Enterprise Data Trust and Governance Suite',
     type: 'foundation',
     icon: BarChart3,
     badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',

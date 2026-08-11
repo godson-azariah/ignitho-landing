@@ -100,13 +100,13 @@ export function Catalog({ openSuite }) {
   );
 
   return (
-    <section id="suites-catalog" className="bg-b relative py-24 md:py-32">
+    <section id="suites-catalog" className="bg-b relative pb-24 pt-12 md:pb-32 md:pt-16">
       <div className={SHELL}>
         <Reveal className="mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center rounded-full bg-white px-6 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-purple shadow-[0_10px_30px_-18px_rgba(22,6,58,0.6)]">
             Enterprise Catalog
           </span>
-          <h2 className="mt-8 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(32px,4.8vw,64px)] text-ig-ink">
+          <h2 className="mt-5 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(32px,4.8vw,64px)] text-ig-ink">
             Our 9 Core{' '}
             <span className="serif-accent font-normal text-ig-purple">
               Enterprise AI Suites
@@ -115,7 +115,7 @@ export function Catalog({ openSuite }) {
         </Reveal>
 
         {/* Segmented control — the indicator measures each tab and glides */}
-        <Reveal delay={80} className="mt-11 flex justify-center">
+        <Reveal delay={80} className="mt-7 flex justify-center">
           <div className="relative inline-flex w-full max-w-full flex-wrap justify-center gap-1 rounded-[28px] bg-white p-1.5 shadow-[0_18px_50px_-30px_rgba(22,6,58,0.7)] sm:w-auto sm:flex-nowrap sm:rounded-full">
             <span
               aria-hidden="true"
