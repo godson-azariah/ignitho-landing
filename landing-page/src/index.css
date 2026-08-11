@@ -102,29 +102,9 @@ body {
    1. THE THREE BACKGROUND FLAVOURS
    ========================================================================= */
 
-/* A — FLAT DEEP VIOLET. The closing CTA band, and any full-bleed dark moment.
-   Solid colour only: a blended gradient at this scale reads cheap. */
-.bg-a {
-  position: relative;
-  isolation: isolate;
-  color: var(--paper);
-  background: #16063a;
-}
-.bg-a::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  /* horizontal rules only — the vertical ones made it read as graph paper.
-     Same 56px pitch as the light bands, so the page carries one grid. */
-  background-image: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.06) 1px,
-    transparent 1px
-  );
-  background-size: 100% 56px;
-}
+/* A — the dark bookends. Both of them (hero and closing CTA) now sit on the
+   brand's `--aurora-ground` gradient defined below, so the old flat variant
+   that used to live here has gone with its last user. */
 
 /* B — FLAT LAVENDER TINT. The alternating content band. Flat colour; the
    texture layers below arrive with `.dots`. */
@@ -678,38 +658,19 @@ body {
 .stack-item {
   position: sticky;
   top: max(84px, calc(50vh - 176px + var(--i) * 18px));
+  /* The gap between cards, as padding on the sticky box rather than a margin
+     between them. It shows in the flow — so the rounded corners no longer butt
+     against each other — and vanishes once the cards overlap, since the card
+     above simply covers it. Padding also keeps the last card's sticky travel
+     unchanged, which a margin would not. */
+  padding-bottom: 16px;
 }
 @media (min-width: 768px) {
   /* half the card's height — kept in step with it, or the stack builds
      off-centre. The cards now size to their content, around 330px. */
   .stack-item {
     top: max(92px, calc(50vh - 164px + var(--i) * 24px));
-  }
-}
-
-/* =========================================================================
-   4. FILMSTRIP — native horizontal scroll, snapped. No scroll hijacking.
-   ========================================================================= */
-
-.strip {
-  display: flex;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* first card lines up with the shell's text edge; the track bleeds right */
-  padding-inline: max(1.25rem, calc((100% - 1360px) / 2 + 1.25rem));
-}
-.strip::-webkit-scrollbar {
-  display: none;
-}
-.strip > * {
-  scroll-snap-align: start;
-}
-@media (min-width: 768px) {
-  .strip {
-    padding-inline: max(2rem, calc((100% - 1360px) / 2 + 2rem));
+    padding-bottom: 20px;
   }
 }
 
@@ -872,11 +833,17 @@ body {
   backface-visibility: hidden;
 }
 /* owned here rather than relying on the CDN build shipping line-clamp */
+.clamp-2,
 .clamp-3 {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.clamp-2 {
+  -webkit-line-clamp: 2;
+}
+.clamp-3 {
+  -webkit-line-clamp: 3;
 }
 
 /* Direction-aware row fill: grows from whichever edge the pointer crossed,

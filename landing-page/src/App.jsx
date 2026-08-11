@@ -408,7 +408,7 @@ function ViewToggle({ view, setView }) {
   return (
     <div className="flex items-center gap-1 rounded-full bg-white p-1 shadow-[0_10px_28px_-18px_rgba(22,6,58,0.8)]">
       {[
-        { id: 'strip', Icon: LayoutGrid },
+        { id: 'grid', Icon: LayoutGrid },
         { id: 'index', Icon: List }
       ].map(({ id, Icon }) => (
         <button
@@ -596,12 +596,8 @@ export default function App() {
   const [navHidden, setNavHidden] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [view, setView] = useState('index');
+  const [view, setView] = useState('grid');
   const pendingAnchor = useRef(null);
-
-  // Filmstrip
-  const stripRef = useRef(null);
-  const [stripPct, setStripPct] = useState(0);
 
   // Segmented control — the pill measures the active tab and glides to it
   const tabRefs = useRef([]);
@@ -903,29 +899,6 @@ export default function App() {
     [filteredSuites]
   );
 
-  // Filtering changes the track contents — send it back to the first card
-  useEffect(() => {
-    const el = stripRef.current;
-    if (!el) return;
-    el.scrollTo({ left: 0, behavior: 'auto' });
-    setStripPct(0);
-  }, [activeTab, searchQuery, view]);
-
-  const onStripScroll = () => {
-    const el = stripRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setStripPct(max > 4 ? (el.scrollLeft / max) * 100 : 0);
-  };
-
-  const nudgeStrip = (dir) => {
-    const el = stripRef.current;
-    if (!el) return;
-    const card = el.querySelector('[data-card]');
-    const step = card ? card.getBoundingClientRect().width + 20 : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * step, behavior: 'smooth' });
-  };
-
   const runSimulation = (acc) => {
     setSimAccelerator(acc);
     setSimStep(1);
@@ -1012,10 +985,10 @@ export default function App() {
           onClick={() => openSuite(suite.id)}
           className="group flex items-baseline gap-3.5 border-b border-white/10 py-2 text-left"
         >
-          <span className="font-mono text-[11px] font-bold text-white/30 transition-colors duration-300 group-hover:text-ig-teal-ring">
+          <span className="font-mono text-[11px] font-bold text-ig-lavender/40 transition-colors duration-300 group-hover:text-ig-teal-ring">
             {suite.number}
           </span>
-          <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-white/60 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white">
+          <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-ig-lavender/70 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white">
             {suite.name}
           </span>
         </button>
@@ -1345,7 +1318,7 @@ export default function App() {
                           exactly as tall as its two columns need, so there is
                           no gap left in the middle to push content apart. */}
                       <article
-                        className={`relative overflow-hidden p-8 text-white md:p-12 ${pillar.bg}`}
+                        className={`relative overflow-hidden rounded-[24px] p-8 text-white md:p-12 ${pillar.bg}`}
                       >
                         <span
                           aria-hidden="true"
@@ -1605,123 +1578,91 @@ export default function App() {
                   </SwapButton>
                 </div>
               </div>
-            ) : view === 'strip' ? (
-              /* ---------- FILMSTRIP: native horizontal scroll, snapped ---------- */
-              <div className="mt-12">
-                <div ref={stripRef} onScroll={onStripScroll} className="strip gap-6 pb-2 pt-1">
+            ) : view === 'grid' ? (
+              /* ---------- GRID: a plain responsive grid on the page's own
+                   vertical scroll. No horizontal track, so no snapping, no
+                   progress bar and no arrows to discover — you just scroll.
+
+                   The card is cut down to what earns a place at this size: the
+                   image, what the suite is, and the number it aims at. The
+                   executive summary and the three outcomes belong on the suite
+                   page, which is one click away, and at nine cards abreast they
+                   were the whole reason the old card ran past 700px tall. ---- */
+              <div className={`${SHELL} mt-10`}>
+                <div className="grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredSuites.map((suite, i) => {
                     const Icon = suite.icon;
                     const block = BLOCKS[i % BLOCKS.length];
                     return (
-                      <article
-                        key={suite.id}
-                        data-card
-                        className="group flex w-[84vw] max-w-[430px] shrink-0 flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_10px_36px_-24px_rgba(22,6,58,0.45)] transition-all duration-[400ms] ease-out hover:-translate-y-2 hover:shadow-[0_36px_70px_-32px_rgba(22,6,58,0.55)] sm:w-[380px] md:w-[420px]"
-                      >
-                        {/* one image, with the index and kind riding on it */}
-                        <div className="relative h-[190px] overflow-hidden">
-                          <img
-                            src={suite.imageUrl}
-                            alt=""
-                            loading="lazy"
-                            decoding="async"
-                            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-                          />
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,7,34,0.55)_0%,rgba(13,7,34,0.15)_45%,rgba(13,7,34,0.75)_100%)]"
-                          />
-                          <span className={`absolute left-5 top-5 grid h-11 w-11 place-items-center rounded-full text-white ${block}`}>
-                            <Icon className="h-[18px] w-[18px]" strokeWidth={1.9} />
-                          </span>
-                          <span className="absolute right-5 top-5 rounded-full bg-white/12 px-3 py-1.5 text-[11px] font-semibold text-white/85 backdrop-blur-sm">
-                            {suite.number}
-                          </span>
-                          <span className="absolute inset-x-5 bottom-4 block text-[11.5px] font-medium text-white/70">
-                            {suite.type === 'foundation'
-                              ? 'Universal Foundation Platform'
-                              : 'Industry Vertical Suite'}
-                          </span>
-                        </div>
-
-                        <div className="flex flex-1 flex-col p-7">
-                          <h3 className="text-[21px] font-extrabold leading-[1.12] tracking-[-0.025em] text-ig-ink">
-                            {suite.name}
-                          </h3>
-                          <p className="serif-accent mt-2.5 text-[18px] leading-[1.25] text-ig-purple">
-                            {suite.tagline}
-                          </p>
-                          <p className="mt-4 text-[13px] leading-[1.65] text-ig-muted">
-                            {suite.executiveSummary}
-                          </p>
-
-                          <ul className="mt-6 space-y-3">
-                            {suite.outcomes.map((b) => (
-                              <li key={b} className="flex items-start gap-3">
-                                <span className="mt-[1px] grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full bg-ig-teal/12 text-ig-teal">
-                                  <Check className="h-2.5 w-2.5" strokeWidth={3.4} />
-                                </span>
-                                <span className="text-[12.5px] leading-[1.5] text-ig-text/85">
-                                  {b}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-
-                          <div className="mt-auto pt-7">
-                            <div className="rounded-2xl bg-ig-paper-2 px-5 py-4">
-                              <span className="text-[11.5px] font-semibold text-ig-purple">
-                                Measured Target ROI
-                              </span>
-                              <p className="mt-1.5 text-[12.5px] font-semibold leading-[1.45] text-ig-ink">
-                                {suite.businessImpact}
-                              </p>
-                            </div>
-
-                            <SwapButton
-                              onClick={() => openSuite(suite.id)}
-                              variant="ink"
-                              className="mt-4 w-full px-5 py-4 text-[13px] font-semibold"
+                      <Reveal key={suite.id} delay={Math.min(i * 45, 260)}>
+                        {/* the whole card is the control — an arrow chip reads
+                            as the affordance without a full-width pill's height */}
+                        <button
+                          onClick={() => openSuite(suite.id)}
+                          className="group flex h-full w-full flex-col overflow-hidden rounded-[22px] bg-white text-left shadow-[0_10px_36px_-26px_rgba(22,6,58,0.45)] transition-all duration-[400ms] ease-out hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-32px_rgba(22,6,58,0.55)]"
+                        >
+                          <span className="relative block h-[108px] overflow-hidden">
+                            <img
+                              src={suite.imageUrl}
+                              alt=""
+                              loading="lazy"
+                              decoding="async"
+                              className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                            />
+                            <span
+                              aria-hidden="true"
+                              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,7,34,0.5)_0%,rgba(13,7,34,0.1)_46%,rgba(13,7,34,0.72)_100%)]"
+                            />
+                            <span
+                              className={`absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full text-white ${block}`}
                             >
-                              Open Full Suite Page
-                              <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
-                            </SwapButton>
-                          </div>
-                        </div>
-                      </article>
+                              <Icon className="h-4 w-4" strokeWidth={2} />
+                            </span>
+                            <span className="absolute right-4 top-4 rounded-full bg-white/12 px-2.5 py-1 font-mono text-[10.5px] font-bold text-white/85">
+                              {suite.number}
+                            </span>
+                            <span className="absolute inset-x-4 bottom-3 block truncate text-[11px] font-medium text-white/75">
+                              {suite.type === 'foundation'
+                                ? 'Universal Foundation Platform'
+                                : 'Industry Vertical Suite'}
+                            </span>
+                          </span>
+
+                          {/* The type carries the card now, not the picture.
+                              Each block is clamped to a fixed number of lines,
+                              so every card in a row lands on the same height
+                              without a min-height guess. */}
+                          <span className="flex flex-1 flex-col p-6">
+                            <span className="clamp-2 text-[19px] font-extrabold leading-[1.15] tracking-[-0.022em] text-ig-ink">
+                              {suite.name}
+                            </span>
+                            <span className="serif-accent clamp-2 mt-2 text-[16px] leading-[1.25] text-ig-purple">
+                              {suite.tagline}
+                            </span>
+                            <span className="clamp-2 mt-3 text-[12.5px] leading-[1.6] text-ig-muted">
+                              {suite.executiveSummary}
+                            </span>
+
+                            <span className="mt-auto flex items-end justify-between gap-4 border-t border-ig-ink/10 pt-4">
+                              <span className="min-w-0">
+                                <span className="block font-mono text-[10.5px] font-bold tracking-[0.05em] text-ig-muted">
+                                  Target ROI
+                                </span>
+                                {/* no `block` — `.clamp-2` owns display, and the
+                                    two would fight on equal specificity */}
+                                <span className="clamp-2 mt-1 text-[13px] font-semibold leading-[1.4] text-ig-ink">
+                                  {suite.businessImpact}
+                                </span>
+                              </span>
+                              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-ig-ink/15 text-ig-ink transition-colors duration-300 group-hover:border-ig-teal-ring group-hover:bg-ig-teal group-hover:text-white">
+                                <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
+                              </span>
+                            </span>
+                          </span>
+                        </button>
+                      </Reveal>
                     );
                   })}
-                  <span aria-hidden="true" className="w-5 shrink-0 md:w-8" />
-                </div>
-
-                <div className={`${SHELL} mt-9 flex items-center gap-8`}>
-                  <div className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-ig-ink/10">
-                    <div
-                      className="absolute inset-y-0 left-0 rounded-full bg-ig-teal transition-[width] duration-200 ease-out"
-                      style={{ width: `${Math.max(stripPct, 3)}%` }}
-                    />
-                  </div>
-
-                  <div className="flex shrink-0 items-center gap-2.5">
-                    {filteredSuites.length > 1 && (
-                      <>
-                        <button
-                          onClick={() => nudgeStrip(-1)}
-                          aria-label="Previous"
-                          className="grid h-11 w-11 place-items-center rounded-full bg-white text-ig-ink shadow-[0_10px_28px_-18px_rgba(22,6,58,0.8)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-ig-violet hover:text-white"
-                        >
-                          <ArrowLeft className="h-4 w-4" strokeWidth={2.2} />
-                        </button>
-                        <button
-                          onClick={() => nudgeStrip(1)}
-                          aria-label="Next"
-                          className="grid h-11 w-11 place-items-center rounded-full bg-white text-ig-ink shadow-[0_10px_28px_-18px_rgba(22,6,58,0.8)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-ig-violet hover:text-white"
-                        >
-                          <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-                        </button>
-                      </>
-                    )}
-                  </div>
                 </div>
               </div>
             ) : (
@@ -2133,25 +2074,27 @@ export default function App() {
         {!isChatOpen ? (
           <button
             onClick={() => setIsChatOpen(true)}
-            className="group flex items-center gap-3 bg-ig-ink py-3 pl-4 pr-5 text-white transition-colors duration-300 hover:bg-ig-violet-500"
+            className="group flex items-center gap-3 rounded-full bg-ig-ink py-3.5 pl-5 pr-6 text-white shadow-[0_16px_36px_-18px_rgba(22,6,58,0.7)] transition-colors duration-300 hover:bg-ig-violet-500"
           >
             <span className="relative">
               <Bot className="h-4 w-4" strokeWidth={2} />
-              <span className="absolute -right-1.5 -top-1.5 h-2 w-2 bg-ig-sky" />
+              <span className="absolute -right-1.5 -top-1.5 h-2 w-2 rounded-full bg-ig-sky" />
             </span>
             <span className="font-mono text-[11.5px] font-bold tracking-[0.05em]">
               Ask Ignitho AI
             </span>
           </button>
         ) : (
-          <div className="pop-br flex h-[calc(100vh_-_7rem)] max-h-[520px] w-[calc(100vw_-_2.5rem)] max-w-[370px] flex-col border border-ig-sky/25 bg-ig-console text-white">
+          /* `overflow-hidden` is what makes the radius real — without it the
+             header rule and the scroll area square the corners back off */
+          <div className="pop-br flex h-[calc(100vh_-_7rem)] max-h-[520px] w-[calc(100vw_-_2.5rem)] max-w-[370px] flex-col overflow-hidden rounded-[22px] border border-ig-sky/25 bg-ig-console text-white shadow-[0_28px_64px_-28px_rgba(3,3,3,0.75)]">
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
               <div>
                 <h4 className="text-[13px] font-extrabold tracking-[-0.01em]">
                   Ignitho AI Executive Assistant
                 </h4>
                 <span className="mt-0.5 flex items-center gap-1.5 font-mono text-[11.5px] tracking-[0.05em] text-ig-sky">
-                  <span className="h-1.5 w-1.5 bg-ig-sky" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-ig-sky" />
                   Online • Governed AI
                 </span>
               </div>
@@ -2173,15 +2116,15 @@ export default function App() {
                   }`}
                 >
                   {msg.sender === 'bot' && (
-                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center border border-ig-sky/30 text-ig-sky">
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border border-ig-sky/30 text-ig-sky">
                       <Bot className="h-3.5 w-3.5" />
                     </span>
                   )}
                   <div
-                    className={`max-w-[80%] px-3.5 py-2.5 text-[12.5px] leading-relaxed ${
+                    className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[12.5px] leading-relaxed ${
                       msg.sender === 'user'
-                        ? 'bg-ig-teal text-white'
-                        : 'border border-white/10 bg-white/[0.05] text-white/80'
+                        ? 'rounded-br-md bg-ig-teal text-white'
+                        : 'rounded-bl-md border border-white/10 bg-white/[0.05] text-white/80'
                     }`}
                   >
                     {msg.text}
@@ -2191,13 +2134,13 @@ export default function App() {
 
               {isTyping && (
                 <div className="msg-in flex items-center gap-2.5">
-                  <span className="grid h-6 w-6 shrink-0 place-items-center border border-ig-sky/30 text-ig-sky">
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-ig-sky/30 text-ig-sky">
                     <Bot className="h-3.5 w-3.5" />
                   </span>
-                  <span className="flex items-center gap-1 border border-white/10 bg-white/[0.05] px-4 py-3">
-                    <span className="dot-1 h-1.5 w-1.5 bg-ig-sky" />
-                    <span className="dot-2 h-1.5 w-1.5 bg-ig-sky" />
-                    <span className="dot-3 h-1.5 w-1.5 bg-ig-sky" />
+                  <span className="flex items-center gap-1 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.05] px-4 py-3">
+                    <span className="dot-1 h-1.5 w-1.5 rounded-full bg-ig-sky" />
+                    <span className="dot-2 h-1.5 w-1.5 rounded-full bg-ig-sky" />
+                    <span className="dot-3 h-1.5 w-1.5 rounded-full bg-ig-sky" />
                   </span>
                 </div>
               )}
@@ -2209,7 +2152,7 @@ export default function App() {
                 <button
                   key={q}
                   onClick={() => handleSendMessage(q)}
-                  className="border border-ig-sky/25 px-2.5 py-1.5 font-mono text-[11px] font-bold tracking-[0.03em] text-ig-sky transition-colors duration-300 hover:border-ig-teal-ring hover:bg-ig-teal hover:text-white"
+                  className="rounded-full border border-ig-sky/25 px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.03em] text-ig-sky transition-colors duration-300 hover:border-ig-teal-ring hover:bg-ig-teal hover:text-white"
                 >
                   {q}
                 </button>
@@ -2223,12 +2166,12 @@ export default function App() {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1 border border-white/12 bg-white/[0.04] px-3 py-2.5 font-mono text-[11px] text-white outline-none transition-colors placeholder:text-white/30 focus:border-ig-teal-ring"
+                className="flex-1 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] text-white outline-none transition-colors placeholder:text-white/30 focus:border-ig-teal-ring"
               />
               <button
                 onClick={() => handleSendMessage()}
                 aria-label="Send"
-                className="grid h-10 w-10 shrink-0 place-items-center bg-ig-teal text-white transition-colors duration-300 hover:bg-ig-teal-hover"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ig-teal text-white transition-colors duration-300 hover:bg-ig-teal-hover"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -2240,13 +2183,17 @@ export default function App() {
       {/* ===================================================================== */}
       {/* CLOSING CTA + COLOPHON · FLAVOUR A (the bottom bookend)               */}
       {/* ===================================================================== */}
-      <footer className="bg-a dots-inv relative pt-16 md:pt-20">
+      {/* The closing bookend, on the same ground as the hero rather than a flat
+          dark band. Body copy moves to lavender with it: low-alpha white reads
+          grey and lifeless over this gradient, which is the whole reason the
+          brand specifies a tinted colour for it. */}
+      <footer className="aurora dots-inv relative pt-16 md:pt-20">
         <div className={SHELL}>
           <div className="relative">
             {/* the closing statement */}
             <Reveal className="grid grid-cols-12 items-end gap-x-10 gap-y-8 pb-11">
               <div className="col-span-12 lg:col-span-8">
-                <span className="inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-[11px] font-bold tracking-[0.055em] text-white/70">
+                <span className="inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-lavender/80">
                   Ignitho AI Platform
                 </span>
                 <h2 className="mt-6 max-w-[17ch] font-extrabold leading-[0.98] tracking-[-0.04em] text-[clamp(28px,4.2vw,52px)] text-white">
@@ -2267,7 +2214,7 @@ export default function App() {
             {/* the directory */}
             <Reveal className="grid grid-cols-12 gap-x-10 gap-y-9 border-t border-white/15 py-11">
               <div className="col-span-12 lg:col-span-6">
-                <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-white/35">
+                <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-ig-lavender/45">
                   Enterprise Catalog
                 </span>
                 <div className="mt-4 grid grid-cols-1 gap-x-10 sm:grid-cols-2">
@@ -2276,7 +2223,7 @@ export default function App() {
               </div>
 
               <div className="col-span-6 lg:col-span-3">
-                <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-white/35">
+                <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-ig-lavender/45">
                   Menu
                 </span>
                 <div className="mt-4 flex flex-col items-start gap-3">
@@ -2284,7 +2231,7 @@ export default function App() {
                     <button
                       key={label}
                       onClick={navAction(label)}
-                      className="group relative text-[15px] font-semibold text-white/70 transition-colors duration-300 hover:text-white"
+                      className="group relative text-[15px] font-semibold text-ig-lavender/75 transition-colors duration-300 hover:text-white"
                     >
                       {label}
                       <span className="absolute -bottom-1 left-0 h-px w-0 bg-ig-teal-ring transition-all duration-300 group-hover:w-full" />
@@ -2294,14 +2241,14 @@ export default function App() {
               </div>
 
               <div className="col-span-6 lg:col-span-3">
-                <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-white/35">
+                <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-ig-lavender/45">
                   Compliance
                 </span>
                 <div className="mt-4 flex flex-col gap-3">
                   {CERTS.map((cert) => (
                     <span
                       key={cert}
-                      className="flex items-center gap-2.5 text-[13.5px] font-medium text-white/60"
+                      className="flex items-center gap-2.5 text-[13.5px] font-medium text-ig-lavender/70"
                     >
                       <Check className="h-3.5 w-3.5 shrink-0 text-ig-teal-ring" strokeWidth={3} />
                       {cert}
@@ -2321,7 +2268,7 @@ export default function App() {
         </div>
 
         <div className={`${SHELL} py-5`}>
-          <p className="text-center font-mono text-[11px] tracking-[0.055em] text-white/30">
+          <p className="text-center font-mono text-[11px] tracking-[0.055em] text-ig-lavender/45">
             © 2026 Ignitho Technologies. All rights reserved
           </p>
         </div>
