@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { BLOCKS } from '../lib/layout.js';
+import { noOrphan } from '../lib/noOrphan.js';
 import { splitHeading } from '../lib/splitHeading.js';
 
 /* One suite, as a card.
@@ -20,7 +21,12 @@ import { splitHeading } from '../lib/splitHeading.js';
 export function SuiteCard({ suite, index = 0, accent, onOpen }) {
   const Icon = suite.icon;
   const chip = accent ?? BLOCKS[index % BLOCKS.length];
-  const heading = splitHeading(suite.name);
+  /* Every run of text in the card goes through `noOrphan`, so no line
+     anywhere on it can end up carrying a single stranded word. Applied at
+     the point of use rather than to the data, because it is a typesetting
+     decision about THIS layout — the same suite name in the dossier
+     masthead has a whole column to itself and needs no help. */
+  const heading = splitHeading(suite.name).map(noOrphan);
 
   return (
     /* The whole card is the control; "Read more" is the affordance rather than
@@ -47,7 +53,7 @@ export function SuiteCard({ suite, index = 0, accent, onOpen }) {
           aria-hidden="true"
           className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,7,34,0.62)_0%,rgba(13,7,34,0.3)_55%,rgba(13,7,34,0.5)_100%)]"
         />
-        <span className="absolute left-4 top-3.5 rounded-full border border-white/30 bg-white/12 px-3.5 py-1 text-[12px] font-bold tracking-[-0.01em] text-white">
+        <span className="absolute left-4 top-3.5 whitespace-nowrap rounded-full border border-white/30 bg-white/12 px-3.5 py-1 text-[12px] font-bold tracking-[-0.01em] text-white">
           Suite {suite.number}
         </span>
         <span
@@ -69,20 +75,22 @@ export function SuiteCard({ suite, index = 0, accent, onOpen }) {
         </span>
 
         <span className="clamp-2 mt-2.5 min-h-[2.6em] text-[14px] font-bold leading-[1.35] text-ig-teal">
-          {suite.tagline}
+          {noOrphan(suite.tagline)}
         </span>
 
-        {/* callout: tinted, with a coloured left border */}
-        <span className="mt-4 block rounded-r-md border-l-2 border-ig-purple bg-ig-paper-2 px-4 py-3 text-left">
-          <span className="block text-[11.5px] font-bold tracking-[-0.005em] text-ig-purple">
+        {/* callout: tinted, with a coloured left border. Centred like the rest
+            of the card — it was the one block still set left, which read as a
+            misalignment rather than as a deliberate change of alignment. */}
+        <span className="mt-4 block rounded-r-md border-l-2 border-ig-purple bg-ig-paper-2 px-4 py-3 text-center">
+          <span className="block whitespace-nowrap text-[11.5px] font-bold tracking-[-0.005em] text-ig-purple">
             Measured target ROI
           </span>
           <span className="clamp-2 mt-1.5 min-h-[2.8em] text-[13.5px] leading-[1.45] text-ig-ink">
-            {suite.businessImpact}
+            {noOrphan(suite.businessImpact)}
           </span>
         </span>
 
-        <span className="mt-auto flex items-center justify-center gap-1.5 pt-4 text-[14px] font-bold text-ig-ink transition-colors duration-300 group-hover:text-ig-purple">
+        <span className="mt-auto flex items-center justify-center gap-1.5 whitespace-nowrap pt-4 text-[14px] font-bold text-ig-ink transition-colors duration-300 group-hover:text-ig-purple">
           Read more
           <ArrowUpRight
             className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

@@ -10,10 +10,7 @@ export function ClosingCta() {
       <div className={SHELL}>
         <Reveal className="relative grid grid-cols-12 items-end gap-x-10 gap-y-7">
           <div className="col-span-12 lg:col-span-8">
-            <span className="inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-lavender/80">
-              Ignitho AI Platform
-            </span>
-            <h2 className="mt-6 max-w-[17ch] font-extrabold leading-[0.98] tracking-[-0.04em] text-[clamp(28px,4.2vw,52px)] text-white">
+            <h2 className="max-w-[17ch] font-extrabold leading-[0.98] tracking-[-0.04em] text-[clamp(28px,4.2vw,52px)] text-white">
               Transforming enterprise IT through{' '}
               <span className="serif-accent font-normal text-ig-sky">
                 workflow-driven AI accelerators

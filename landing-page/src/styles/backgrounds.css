@@ -38,6 +38,20 @@
       #123e68 86%,
       #0a5670 100%
     );
+
+  /* ONE KNOB FOR THE HERO'S COLOUR.
+
+     The hero and the closing CTA stand on the identical gradient above, but
+     they did not read as the same colour, because the hero has five lit
+     layers painting violet on top of it and the CTA has none. So the folds
+     no longer supply colour of their own — every one of them is scaled by
+     this multiplier down to where it modulates the ground rather than
+     replacing it. The two bookends now match, and the curtains are still
+     there, still moving, just as texture rather than as paint.
+
+     Raise it toward 1 to bring the old violet field back; drop it to 0 and
+     the hero becomes the CTA's flat ground exactly. */
+  --curtain-strength: 1;
 }
 
 .aurora {
@@ -87,8 +101,9 @@
     rgba(74, 18, 184, 0.1) 74%,
     transparent 100%
   );
-  animation: glow-breathe 11s ease-in-out infinite alternate;
-  will-change: transform, opacity;
+  opacity: calc(0.34 * var(--curtain-strength, 1));
+  animation: glow-breathe 16s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .curtain-field {
@@ -118,7 +133,8 @@
     rgba(91, 22, 196, 0.13) 220px,
     rgba(74, 18, 184, 0) 262px
   );
-  animation: fold-c 17s ease-in-out infinite alternate;
+  opacity: calc(0.36 * var(--curtain-strength, 1));
+  animation: fold-c 25s ease-in-out infinite alternate;
 }
 
 /* mid — hung inside a billowing frame */
@@ -126,7 +142,7 @@
   position: absolute;
   inset: 0;
   transform-origin: top center;
-  animation: billow 19s ease-in-out infinite alternate;
+  animation: billow 29s ease-in-out infinite alternate;
   will-change: transform;
 }
 .curtain-b {
@@ -141,7 +157,8 @@
     rgba(74, 47, 212, 0.09) 140px,
     rgba(74, 47, 212, 0) 168px
   );
-  animation: fold-b 13s ease-in-out infinite alternate;
+  opacity: calc(0.28 * var(--curtain-strength, 1));
+  animation: fold-b 19s ease-in-out infinite alternate;
 }
 
 /* front — the crisp folds. Period widened from 92px to 120px: this was the
@@ -157,7 +174,8 @@
     rgba(74, 47, 212, 0.07) 98px,
     rgba(163, 152, 246, 0) 120px
   );
-  animation: fold-a 9s ease-in-out infinite alternate;
+  opacity: calc(0.26 * var(--curtain-strength, 1));
+  animation: fold-a 15s ease-in-out infinite alternate;
 }
 
 /* A slow highlight travelling across the field. The box was 180% × 140% —
@@ -175,8 +193,9 @@
     rgba(255, 255, 255, 0.01) 60%,
     transparent 70%
   );
-  animation: sheen-sweep 14s ease-in-out infinite;
-  will-change: transform, opacity;
+  opacity: calc(0.24 * var(--curtain-strength, 1));
+  animation: sheen-sweep 23s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* The floor-up falloff: the ground itself, repainted over the folds and faded
@@ -271,69 +290,76 @@
   transform: translateY(-50%);
 }
 
-/* The cycles are deliberately co-prime-ish (11 / 17 / 13 / 19 / 9 / 14s) so
+/* The cycles are deliberately co-prime-ish (16 / 25 / 19 / 29 / 15 / 23s) so
    the layers never come back into phase — the field reads as continuously
    alive rather than as a loop, even though every one of these is a plain
-   two-keyframe alternate. */
+   two-keyframe alternate.
+
+   TRAVEL IS ROUGHLY HALVED THROUGHOUT, AND THE PERIODS ARE HALF AGAIN AS
+   LONG. Both matter, and for different reasons: shrinking the range is what
+   stops a fold crossing the headline, while stretching the period is what
+   drops the per-second rate of change — the same distance covered slowly
+   sits below the threshold at which peripheral vision reports motion at all.
+   Cutting only the distance would have left it just as twitchy, only
+   smaller. The stops themselves are untouched, so the hero still looks
+   identical in a still frame; only the amount it moves has changed. */
+/* NOT ONE OF THESE ANIMATES `opacity` ANY MORE, ON PURPOSE.
+
+   Each layer now declares a fixed opacity above, and a keyframe that also
+   set `opacity` would simply win over it — the dimming would last exactly
+   until the animation started. Holding brightness steady and moving only
+   the transform also removes the last bit of flicker from the hero: what is
+   left is a slow change of shape, with no change of light. */
 @keyframes glow-breathe {
   from {
-    transform: translateX(-50%) scale(0.94);
-    opacity: 0.66;
+    transform: translateX(-50%) scale(0.98);
   }
   to {
-    transform: translateX(-56%) scale(1.24);
-    opacity: 1;
+    transform: translateX(-53%) scale(1.1);
   }
 }
 @keyframes fold-c {
   from {
-    transform: translate3d(-7%, 0, 0) scaleY(0.96);
+    transform: translate3d(-3%, 0, 0) scaleY(1);
   }
   to {
-    transform: translate3d(7%, 0, 0) scaleY(1.2);
+    transform: translate3d(3%, 0, 0) scaleY(1.08);
   }
 }
 @keyframes fold-b {
   from {
-    transform: translate3d(6%, 0, 0) scaleY(1.14);
-    opacity: 0.75;
+    transform: translate3d(2.5%, 0, 0) scaleY(1.05);
   }
   to {
-    transform: translate3d(-6%, 0, 0) scaleY(0.9);
-    opacity: 1;
+    transform: translate3d(-2.5%, 0, 0) scaleY(0.97);
   }
 }
 @keyframes fold-a {
   from {
-    transform: translate3d(-4%, 0, 0) scaleY(1);
-    opacity: 0.6;
+    transform: translate3d(-1.8%, 0, 0) scaleY(1);
   }
   to {
-    transform: translate3d(4%, 0, 0) scaleY(1.1);
-    opacity: 1;
+    transform: translate3d(1.8%, 0, 0) scaleY(1.04);
   }
 }
 @keyframes billow {
   from {
-    transform: skewX(-2.6deg) scaleX(1.06);
+    transform: skewX(-1.1deg) scaleX(1.03);
   }
   to {
-    transform: skewX(2.6deg) scaleX(0.97);
+    transform: skewX(1.1deg) scaleX(0.99);
   }
 }
 /* travel kept inside the box's 26% overhang, so no edge ever shows */
 @keyframes sheen-sweep {
   0% {
-    transform: translate3d(-20%, 0, 0);
-    opacity: 0.5;
+    transform: translate3d(-9%, 0, 0);
   }
   50% {
-    transform: translate3d(20%, 0, 0);
-    opacity: 1;
+    transform: translate3d(9%, 0, 0);
   }
   100% {
-    transform: translate3d(-20%, 0, 0);
-    opacity: 0.5;
+    transform: translate3d(-9%, 0, 0);
   }
 }
 
