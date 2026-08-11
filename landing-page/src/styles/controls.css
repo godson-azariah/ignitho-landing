@@ -1,0 +1,100 @@
+/* =========================================================================
+   5. CONTROLS
+   ========================================================================= */
+
+/* The visible track is a sibling div; this input is an invisible 26px-tall
+   hit area laid over it, carrying only the handle. The handle is a soft
+   round grip — it should read as "drag me", and it eases rather than snaps. */
+.ig-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 26px;
+  background: transparent;
+  outline: none;
+  cursor: grab;
+}
+.ig-range:active {
+  cursor: grabbing;
+}
+/* 8px to match the visible track below it — the thumb's margin-top is
+   (track − thumb) / 2, so it has to move with any change here or the grip
+   drifts off centre. */
+.ig-range::-webkit-slider-runnable-track {
+  height: 8px;
+  background: transparent;
+}
+.ig-range::-moz-range-track {
+  height: 8px;
+  background: transparent;
+}
+.ig-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 26px;
+  width: 26px;
+  margin-top: -9px;
+  border-radius: 999px;
+  background: var(--teal);
+  border: 4px solid #ffffff;
+  box-shadow: 0 2px 10px rgba(22, 6, 58, 0.28);
+  cursor: grab;
+  transition:
+    transform 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+.ig-range:hover::-webkit-slider-thumb {
+  transform: scale(1.14);
+}
+.ig-range:active::-webkit-slider-thumb {
+  transform: scale(1.14);
+  box-shadow: 0 4px 18px rgba(0, 162, 116, 0.45);
+  cursor: grabbing;
+}
+.ig-range::-moz-range-thumb {
+  height: 26px;
+  width: 26px;
+  border-radius: 999px;
+  background: var(--teal);
+  border: 4px solid #ffffff;
+  box-shadow: 0 2px 10px rgba(22, 6, 58, 0.28);
+  transition: transform 0.4s var(--ease-out);
+}
+.ig-range:hover::-moz-range-thumb {
+  transform: scale(1.14);
+}
+.ig-range:focus-visible {
+  outline: 2px solid var(--teal-ring);
+  outline-offset: 10px;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* Text inputs never draw their own box — their wrapper carries the focus
+   state, so a square outline inside a rounded field is just noise. */
+:where(input[type='text']):focus,
+:where(input[type='text']):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Mobile nav disclosure. Named `disclose` — Tailwind owns `.collapse`. */
+.disclose {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.34s var(--ease-out), opacity 0.24s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.disclose.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+.disclose > div {
+  overflow: hidden;
+  min-height: 0;
+}

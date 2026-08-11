@@ -1,0 +1,32 @@
+/* =========================================================================
+   2. TYPE
+   ========================================================================= */
+
+/* Only the lavender outline is still in use — on "Measurable" in the hero
+   headline and the big numeral on the suite masthead. */
+.stroke-lilac {
+  -webkit-text-stroke: 1.2px var(--lavender);
+  color: transparent;
+}
+@media (min-width: 768px) {
+  .stroke-lilac {
+    -webkit-text-stroke-width: 2px;
+  }
+}
+
+/* The fill-on-hover variants went with the hero's entry cells — no outlined
+   numeral on the page is inside a hoverable group any more. */
+
+/* Instrument Serif sits optically small next to Urbanist — nudge it up */
+.serif-accent {
+  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08em;
+  letter-spacing: -0.005em;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}

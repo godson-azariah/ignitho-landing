@@ -1,0 +1,226 @@
+/* =========================================================================
+   4b. THE SWAP BUTTON
+   Two full faces stacked vertically inside a clipped pill. On hover both
+   translate up by exactly one height, so the resting face leaves as the
+   incoming one arrives — no seam, no background flash. The label inside each
+   face carries its own small counter-rotation so the text feels hand-set
+   rather than mechanically slid. An invisible ghost copy sets the size.
+   ========================================================================= */
+
+/* THREE bands ride a single track: the resting face, a short middle band in a
+   colour half-way between the two, then the arriving face. The whole track is
+   held at -2.5deg and over-hangs the pill by 12% on each side, so every colour
+   edge sweeps through on a diagonal and no corner is ever exposed. The labels
+   counter-rotate back to level at rest and at the end, tilting only in transit.
+
+   Track geometry (all % of the button's height):
+     face A   -30 → 130      mid  130 → 170      face B  170 → 330
+   Hover shifts the track by -200%, landing face B exactly where face A was. */
+
+.swap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 999px;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(1);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.swap:hover,
+.swap:focus-visible {
+  transform: scale(1.045);
+}
+.swap:active {
+  transform: scale(0.985);
+}
+
+/* Ripple — a soft disc blooming out of the centre on every hover */
+.swap-ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  margin-left: -75%;
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%) scale(0);
+}
+.swap:hover .swap-ripple,
+.swap:focus-visible .swap-ripple {
+  animation: swap-ripple 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes swap-ripple {
+  0% {
+    transform: translateY(-50%) scale(0);
+    opacity: 0.42;
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    opacity: 0;
+  }
+}
+.swap-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.swap-track {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 0;
+  height: 100%;
+  transform: translate3d(0, 0, 0) rotate(-2.5deg);
+  transition: transform 0.62s cubic-bezier(0.34, 1.4, 0.5, 1);
+  /* deliberately no `will-change`: there are ~25 of these on the page and it
+     was holding a compositor layer for every one of them, permanently. The
+     browser promotes a transform transition on its own for its duration. */
+}
+.swap:hover .swap-track,
+.swap:focus-visible .swap-track {
+  transform: translate3d(0, -200%, 0) rotate(-2.5deg);
+}
+.swap-face {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 160%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swap-face--a {
+  top: -30%;
+}
+.swap-mid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 130%;
+  height: 40%;
+}
+.swap-face--b {
+  top: 170%;
+}
+.swap-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transform: rotate(2.5deg);
+  transition: transform 0.62s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+.swap-face--b .swap-text {
+  transform: rotate(8.5deg);
+}
+.swap:hover .swap-face--a .swap-text,
+.swap:focus-visible .swap-face--a .swap-text {
+  transform: rotate(-3.5deg);
+}
+.swap:hover .swap-face--b .swap-text,
+.swap:focus-visible .swap-face--b .swap-text {
+  transform: rotate(2.5deg);
+}
+
+/* Hover-peek card. The wrapper is positioned by rAF; this layer only owns
+   the entrance, so the two never fight over `transform`. */
+.peek {
+  transform-origin: center;
+  transform: scale(0.86) rotate(-5deg);
+  opacity: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.4, 0.5, 1),
+    opacity 0.32s var(--ease-out);
+}
+.peek.is-on {
+  transform: scale(1) rotate(-3deg);
+  opacity: 1;
+}
+/* Row-to-row change: every panel is rendered once into a single tall reel,
+   and changing suites moves ONE transform. Nothing mounts, nothing unmounts,
+   no image reloads, no opacity churn — the browser only recomposites a layer
+   it already has, which is as smooth as this gets on any device.
+   Expo-out: covers most of the distance immediately, then settles. */
+.peek-reel {
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* owned here rather than relying on the CDN build shipping line-clamp */
+.clamp-2,
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-2 {
+  -webkit-line-clamp: 2;
+}
+.clamp-3 {
+  -webkit-line-clamp: 3;
+}
+
+/* Direction-aware row fill: grows from whichever edge the pointer crossed,
+   and retracts toward the edge it leaves by.
+
+   Both states are owned HERE, rather than half here and half in Tailwind's
+   `scale-y-0` / `group-hover:scale-y-100`. Those utilities emit a six-function
+   transform list (translate · rotate · skewX · skewY · scaleX · scaleY), so
+   pairing them with a plain `transform: scaleY(1)` leaves the two states with
+   mismatched function lists — which cannot interpolate component-wise, so the
+   browser falls back to matrix interpolation from a singular scale-0 matrix
+   and the fill snaps instead of growing. Same function on both sides, one
+   component changing, and it animates properly. */
+.row-fill {
+  transform: scaleY(0);
+  transform-origin: var(--fill-origin, bottom);
+  transition: transform 0.45s cubic-bezier(0, 0, 0.2, 1);
+}
+/* pointer-derived on the suite list, plain :hover on the accelerator rows */
+.row-on .row-fill,
+.group:hover .row-fill {
+  transform: scaleY(1);
+}
+
+/* THE LIT ROW.
+
+   Keyed off `.row-on`, which JavaScript sets from the pointer's position —
+   NOT off `:hover`. The browser does not re-evaluate :hover while the page
+   scrolls beneath a stationary cursor, so a hover-driven fill stays stuck on
+   whichever row you were over before the scroll started. Deriving it from the
+   pointer means the fill and the preview card always agree.
+
+   Each rule is a class on a class, so it outranks the Tailwind utility that
+   sets the resting colour without needing !important. */
+.row-on .row-ink,
+.row-on .row-name {
+  color: #ffffff;
+}
+.row-on .row-num {
+  color: var(--teal-ring);
+}
+.row-on .row-tag {
+  color: var(--sky);
+}
+.row-on .row-cta {
+  border-color: var(--teal-ring);
+  background: var(--teal);
+  color: #ffffff;
+}
+
+/* Pointer-driven flourishes are meaningless without a pointer */
+@media (hover: none), (pointer: coarse) {
+  .peek {
+    display: none !important;
+  }
+}

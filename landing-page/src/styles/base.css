@@ -1,0 +1,107 @@
+/* =========================================================================
+   IGNITHO iSUITE — FOUNDATION
+
+   Colour law (inherited from the main site):
+     · VIOLET/BLUE is the dominant family — every dark surface, every heading,
+       every card block, the whole depth axis.
+     · TEAL is an accent only — primary buttons, links, checkmarks, "the fix".
+       It never fills a section or a card.
+     · Backgrounds alternate A → B → C → B → C …
+         A  dark violet→blue gradient   (hero + closing CTA bookends only)
+         B  lavender tint + dot grid
+         C  near-white + dot grid
+   ========================================================================= */
+
+:root {
+  --ink: #16063a;
+  --violet-800: #2c0a78;
+  --violet-600: #4a12b8;
+  --violet-500: #5b16c4;
+  --purple: #7a00c2;
+  --blue-deep: #123e68;
+  --blue-deepest: #0a5670;
+  --indigo: #4a2fd4;
+  --sky: #6ec1e4;
+  --lavender: #d6cdee;
+
+  --teal: #00a274;
+  --teal-ring: #00bc6a;
+
+  --paper: #fbf9ff;
+  --text: #030303;
+  --muted: #54595f;
+  --divider: #b9bbc2;
+
+  /* hairlines — violet-tinted on light, white on dark */
+  --rule: rgba(122, 0, 194, 0.2);
+  --rule-soft: rgba(122, 0, 194, 0.08);
+  --rule-inv: rgba(255, 255, 255, 0.2);
+  --rule-inv-soft: rgba(255, 255, 255, 0.06);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* NO `scroll-behavior: smooth` here, deliberately.
+
+     Set on the root it does not just affect anchor jumps — it animates every
+     scroll the browser initiates itself: scrollbar drags, Page Up/Down, arrow
+     keys, Home/End, and the shift after a focus change. That is what made
+     scrolling feel unlike scrolling. The two places that genuinely want an
+     animated scroll ask for it directly, with
+     `scrollIntoView({ behavior: 'smooth' })`, which works without this. */
+
+  /* clears the 84px bar plus a little air */
+  scroll-padding-top: 104px;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  width: 100%;
+  background-color: var(--paper);
+  color: var(--text);
+  font-family: 'Urbanist', ui-sans-serif, system-ui, sans-serif;
+  font-synthesis-weight: none;
+  /* clip, not hidden — `hidden` on the root breaks position:sticky */
+  overflow-x: clip;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--teal);
+  color: #f9f6fe;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(122, 0, 194, 0.32) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(122, 0, 194, 0.3);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 0, 194, 0.55);
+  background-clip: content-box;
+}

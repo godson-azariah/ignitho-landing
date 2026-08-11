@@ -1,0 +1,39 @@
+/* =========================================================================
+   4c. MENU OVERLAY
+   ========================================================================= */
+
+/* Opens by sliding down, closes by sliding back up the same way — no fade.
+   `visibility` is the only thing that steps, and it waits out the full slide
+   so the exit is never cut short. */
+.sheet {
+  visibility: hidden;
+  transition: visibility 0.66s step-end;
+}
+.sheet.is-open {
+  visibility: visible;
+  transition: visibility 0s;
+}
+/* same reasoning — a full-viewport layer held for a panel that is shut
+   almost all of the time */
+.sheet-panel {
+  transform: translate3d(0, -100%, 0);
+  transition: transform 0.66s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.sheet.is-open .sheet-panel {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Items animate IN only. Their resting state is visible, so on close they
+   ride out with the panel instead of vanishing underneath it. */
+.sheet-item {
+  opacity: 1;
+}
+.sheet.is-open .sheet-item {
+  animation: sheet-in 0.55s var(--ease-out) backwards;
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+}

@@ -1,0 +1,427 @@
+/* =========================================================================
+   1. THE THREE BACKGROUND FLAVOURS
+   ========================================================================= */
+
+/* A — the dark bookends. Both of them (hero and closing CTA) now sit on the
+   brand's `--aurora-ground` gradient defined below, so the old flat variant
+   that used to live here has gone with its last user. */
+
+/* B — FLAT LAVENDER TINT. The alternating content band. Flat colour; the
+   texture layers below arrive with `.dots`. */
+.bg-b {
+  position: relative;
+  isolation: isolate;
+  background: #f0e9ff;
+}
+
+/* AURORA — near-black ground with a curtain of violet light standing up from
+   the bottom edge, as on the sign-in screen. Two layers of soft columns drift
+   and breathe against each other on long, offset cycles, so the movement
+   never loops visibly. Everything is transform/opacity, so it composites on
+   the GPU and costs nothing to scroll past. */
+/* The brand's wide-hero ground, verbatim from the spec (§5A). Held in a
+   variable because the veil further down has to repaint the identical
+   gradient over the curtains — a single flat colour would have done before,
+   but nothing flat can stand in for this. Both boxes are inset:0 of the same
+   section, so the two gradients register exactly.
+
+   The violet anchor at 0–52% is the point of it: a straight blue-to-teal ramp
+   with no violet in it is what reads generic. */
+:root {
+  --aurora-ground:
+    radial-gradient(ellipse 95% 85% at 22% 18%, rgba(118, 0, 200, 0.55) 0%, transparent 58%),
+    linear-gradient(
+      125deg,
+      #16063a 0%,
+      #2c0a78 28%,
+      #4a12b8 52%,
+      #123e68 86%,
+      #0a5670 100%
+    );
+}
+
+.aurora {
+  position: relative;
+  isolation: isolate;
+  background: var(--aurora-ground);
+  color: var(--paper);
+}
+/* The stage. Sits behind everything in the section; owns its own stacking
+   context so the layers below never escape it. */
+.art-surface {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* NOT ONE `filter: blur()` IN HERE, DELIBERATELY.
+   A blur is a separable convolution the GPU re-runs every single frame, and a
+   layer that also animates `scale` has to be re-rasterised before the blur
+   even starts. Five full-bleed blurred layers is what made this hero drag.
+
+   Every softness below is baked into the gradient's own colour stops instead.
+   A gradient rasterises once and is then pure compositing — translate, scale
+   and opacity are free from that point on, however long the animation runs.
+   At these periods the two are visually indistinguishable: blurring a stop
+   ramp that is already 30–90px wide barely moves it. */
+
+/* The bloom the folds stand in front of. A radial gradient is smooth by
+   definition — it was carrying a 72px blur that changed nothing. */
+.glow {
+  position: absolute;
+  left: 50%;
+  bottom: -20%;
+  width: 92%;
+  height: 74%;
+  transform: translateX(-50%);
+  /* the spec's ambient bloom — indigo core falling away to violet. Sized
+     explicitly rather than with `closest-side`: the centre sits on the bottom
+     edge, so the nearest side is zero away and the gradient degenerates. */
+  background: radial-gradient(
+    62% 56% at 50% 100%,
+    rgba(90, 63, 232, 0.58) 0%,
+    rgba(82, 55, 224, 0.44) 26%,
+    rgba(74, 18, 184, 0.3) 55%,
+    rgba(74, 18, 184, 0.1) 74%,
+    transparent 100%
+  );
+  animation: glow-breathe 11s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.curtain-field {
+  position: absolute;
+  inset: 0;
+}
+.curtain {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: 0;
+  height: 100%;
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+/* back — wide, slow folds reading as depth behind the rest */
+.curtain-c {
+  background: repeating-linear-gradient(
+    94deg,
+    rgba(74, 18, 184, 0) 0px,
+    rgba(74, 18, 184, 0.14) 30px,
+    rgba(74, 18, 184, 0.4) 60px,
+    rgba(91, 22, 196, 0.58) 92px,
+    rgba(122, 0, 194, 0.46) 130px,
+    rgba(122, 0, 194, 0.3) 176px,
+    rgba(91, 22, 196, 0.13) 220px,
+    rgba(74, 18, 184, 0) 262px
+  );
+  animation: fold-c 17s ease-in-out infinite alternate;
+}
+
+/* mid — hung inside a billowing frame */
+.billow {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  animation: billow 19s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.curtain-b {
+  background: repeating-linear-gradient(
+    88deg,
+    rgba(74, 47, 212, 0) 0px,
+    rgba(74, 47, 212, 0.16) 20px,
+    rgba(82, 55, 224, 0.38) 38px,
+    rgba(90, 63, 232, 0.52) 56px,
+    rgba(90, 63, 232, 0.36) 82px,
+    rgba(74, 47, 212, 0.23) 112px,
+    rgba(74, 47, 212, 0.09) 140px,
+    rgba(74, 47, 212, 0) 168px
+  );
+  animation: fold-b 13s ease-in-out infinite alternate;
+}
+
+/* front — the crisp folds. Period widened from 92px to 120px: this was the
+   one layer whose blur was doing real work, so the ramps carry it instead. */
+.curtain-a {
+  background: repeating-linear-gradient(
+    91deg,
+    rgba(163, 152, 246, 0) 0px,
+    rgba(163, 152, 246, 0.17) 12px,
+    rgba(190, 182, 250, 0.4) 30px,
+    rgba(163, 152, 246, 0.23) 52px,
+    rgba(90, 63, 232, 0.17) 76px,
+    rgba(74, 47, 212, 0.07) 98px,
+    rgba(163, 152, 246, 0) 120px
+  );
+  animation: fold-a 9s ease-in-out infinite alternate;
+}
+
+/* A slow highlight travelling across the field. The box was 180% × 140% —
+   two and a half screens of fill rate for one soft band. Tightened, with the
+   travel pulled in to match. */
+.sheen {
+  position: absolute;
+  inset: -8% -26%;
+  background: linear-gradient(
+    102deg,
+    transparent 34%,
+    rgba(255, 255, 255, 0.04) 42%,
+    rgba(255, 255, 255, 0.1) 48%,
+    rgba(255, 255, 255, 0.04) 54%,
+    rgba(255, 255, 255, 0.01) 60%,
+    transparent 70%
+  );
+  animation: sheen-sweep 14s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* The floor-up falloff: the ground itself, repainted over the folds and faded
+   out toward the bottom edge, so light only rises from the floor.
+
+   Masking the *field* is what was expensive — that wrapper holds four animated
+   children, so every frame had to be rendered into an offscreen surface,
+   masked, and composited. This layer is static: it rasterises once, mask and
+   all, and is a plain cached texture from then on. Same technique, applied
+   where it costs nothing. */
+.curtain-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--aurora-ground);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    rgba(0, 0, 0, 0.94) 20%,
+    rgba(0, 0, 0, 0.5) 48%,
+    rgba(0, 0, 0, 0.12) 74%,
+    transparent 90%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    rgba(0, 0, 0, 0.94) 20%,
+    rgba(0, 0, 0, 0.5) 48%,
+    rgba(0, 0, 0, 0.12) 74%,
+    transparent 90%
+  );
+}
+
+/* Scrolled past, the whole stage stops: paused animations cost the compositor
+   nothing, and dropping `will-change` hands back the GPU textures — six
+   full-bleed layers' worth — for as long as the hero is out of view. */
+.art-idle .glow,
+.art-idle .curtain,
+.art-idle .billow,
+.art-idle .sheen {
+  animation-play-state: paused;
+  will-change: auto;
+}
+
+/* Phones get the two layers that carry the effect and neither of the two that
+   only enrich it. Same picture, two thirds of the fill rate. */
+@media (max-width: 767px) {
+  .billow,
+  .sheen {
+    display: none;
+  }
+}
+
+/* horizontal rules only, cleared through the middle */
+.art-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 100% 56px;
+  /* cleared out of the middle, where the headline sits */
+  -webkit-mask-image: radial-gradient(ellipse 70% 58% at 48% 44%, transparent 18%, #000 88%);
+  mask-image: radial-gradient(ellipse 70% 58% at 48% 44%, transparent 18%, #000 88%);
+}
+
+/* grid-intersection marks — the drawing detail, corners only */
+.crosshair {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+}
+.crosshair::before,
+.crosshair::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+.crosshair::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.crosshair::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+/* The cycles are deliberately co-prime-ish (11 / 17 / 13 / 19 / 9 / 14s) so
+   the layers never come back into phase — the field reads as continuously
+   alive rather than as a loop, even though every one of these is a plain
+   two-keyframe alternate. */
+@keyframes glow-breathe {
+  from {
+    transform: translateX(-50%) scale(0.94);
+    opacity: 0.66;
+  }
+  to {
+    transform: translateX(-56%) scale(1.24);
+    opacity: 1;
+  }
+}
+@keyframes fold-c {
+  from {
+    transform: translate3d(-7%, 0, 0) scaleY(0.96);
+  }
+  to {
+    transform: translate3d(7%, 0, 0) scaleY(1.2);
+  }
+}
+@keyframes fold-b {
+  from {
+    transform: translate3d(6%, 0, 0) scaleY(1.14);
+    opacity: 0.75;
+  }
+  to {
+    transform: translate3d(-6%, 0, 0) scaleY(0.9);
+    opacity: 1;
+  }
+}
+@keyframes fold-a {
+  from {
+    transform: translate3d(-4%, 0, 0) scaleY(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate3d(4%, 0, 0) scaleY(1.1);
+    opacity: 1;
+  }
+}
+@keyframes billow {
+  from {
+    transform: skewX(-2.6deg) scaleX(1.06);
+  }
+  to {
+    transform: skewX(2.6deg) scaleX(0.97);
+  }
+}
+/* travel kept inside the box's 26% overhang, so no edge ever shows */
+@keyframes sheen-sweep {
+  0% {
+    transform: translate3d(-20%, 0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(20%, 0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-20%, 0, 0);
+    opacity: 0.5;
+  }
+}
+
+/* C — NEAR-WHITE */
+.bg-c {
+  position: relative;
+  isolation: isolate;
+  background: #fbf9ff;
+}
+
+/* -------------------------------------------------------------------------
+   THE TEXTURE — the main site's own grid, rebuilt to spec.
+
+   Two layers, exactly as the background-texture system describes: a 28px dot
+   field with a 56px rule field over it. Both run edge to edge at full
+   strength, so no band ever reads as bare paper. Nothing is masked away by
+   guesswork about where the copy might land — instead every block of text
+   wears a `.plate`, which clears the texture directly beneath it.
+
+   Tone comes from the flavour class, so one pair of rules serves both.
+   ------------------------------------------------------------------------- */
+.dots::before,
+.dots::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.dots::before {
+  background-image: radial-gradient(var(--dot) 1.35px, transparent 1.35px);
+  background-size: 28px 28px;
+}
+/* horizontal rules only — the verticals made it read as graph paper */
+.dots::after {
+  background-image: linear-gradient(to bottom, var(--rule-grid) 1px, transparent 1px);
+  background-size: 100% 56px;
+}
+
+.bg-b {
+  --dot: rgba(122, 0, 194, 0.18);
+  --rule-grid: rgba(122, 0, 194, 0.06);
+  --plate: #f0e9ff;
+}
+.bg-c {
+  --dot: rgba(122, 0, 194, 0.14);
+  --rule-grid: rgba(122, 0, 194, 0.045);
+  --plate: #fbf9ff;
+}
+
+/* A soft wash of the section's own colour, sitting between the texture and a
+   block of copy. Because it is blurred it reads as the paper simply being
+   clear there, rather than as a patch laid over the grid — and because it is
+   driven by `--plate` it always matches whichever band it lands in.
+
+   `z-index: 0` gives the block its own stacking context, so the wash stays
+   pinned behind its own text and above the section texture. */
+.plate {
+  position: relative;
+  z-index: 0;
+}
+.plate::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -28px -36px -22px -36px;
+  border-radius: 48px;
+  background: var(--plate, #fbf9ff);
+  filter: blur(26px);
+  pointer-events: none;
+}
+
+/* The same two-layer field inverted, for dark surfaces — dot grid plus rule
+   grid, at the same 28px / 56px pitch as the light bands, so the whole page
+   carries one texture whichever ground it is on. */
+.dots-inv::before,
+.dots-inv::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.dots-inv::after {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1.35px, transparent 1.35px);
+  background-size: 28px 28px;
+}
+.dots-inv::before {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 100% 56px;
+}

@@ -1,0 +1,38 @@
+@media (prefers-reduced-motion: reduce) {
+  /* `scroll-behavior` is no longer set on the root, so there is nothing to
+     override here. The scripted scrolls read this preference themselves — a JS
+     `behavior: 'smooth'` ignores CSS, so it has to be checked in JS. */
+  .reveal,
+  .line-mask > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+    .dot-1,
+  .dot-2,
+  .dot-3,
+  .swap-ripple,
+  .curtain,
+  .glow,
+  .billow,
+  .sheen {
+    animation: none !important;
+  }
+  .swap:hover,
+  .swap:focus-visible {
+    transform: none !important;
+  }
+  .peek {
+    display: none !important;
+  }
+  .pop-br,
+  .pop-c,
+  .msg-in {
+    animation-duration: 0.01ms !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
