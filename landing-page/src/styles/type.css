@@ -4,9 +4,17 @@
 
 /* Only the lavender outline is still in use — on "Measurable" in the hero
    headline and the big numeral on the suite masthead. */
+/* A FAINT FILL, NOT A FULLY TRANSPARENT ONE.
+
+   At `color: transparent` this is a wireframe: the counters of a, o and p go
+   the same colour as the ground, so at a glance the word reads as a shape
+   before it reads as a word. A 10% lavender fill closes those counters just
+   enough to give the letters a body, while the stroke still carries the
+   outlined effect. The word stops looking unfinished next to the solid one
+   beside it, and nothing about the device changes. */
 .stroke-lilac {
   -webkit-text-stroke: 1.2px var(--lavender);
-  color: transparent;
+  color: rgba(214, 205, 238, 0.1);
 }
 @media (min-width: 768px) {
   .stroke-lilac {

@@ -101,17 +101,32 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
     [filteredSuites]
   );
 
+  /* `dots` brings the page's two-layer field — 28px dots under 56px rules —
+     to the one band that was still bare. Nothing is masked away by guessing
+     where the copy might land: every block that sits DIRECTLY on this ground
+     wears a `plate`, which clears the texture beneath it with a blurred wash
+     of the band's own colour. The suite cards and the white controls need
+     none of that, because an opaque surface already covers what is behind
+     it. */
   return (
-    <section id="suites-catalog" className="bg-b relative pb-24 pt-12 md:pb-32 md:pt-16">
+    <section id="suites-catalog" className="bg-b dots relative pb-24 pt-12 md:pb-32 md:pt-16">
       <div className={SHELL}>
-        <Reveal className="mx-auto max-w-4xl text-center">
+        <Reveal className="plate mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center rounded-full bg-white px-6 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-purple shadow-[0_10px_30px_-18px_rgba(22,6,58,0.6)]">
             Enterprise Catalog
           </span>
+          {/* Names how the catalogue is actually split, which is the one
+              thing a reader needs before touching the control directly
+              underneath — the tabs offer exactly these two filters, "3
+              Universal Foundations" and "6 Industry Verticals".
+
+              It also drops "built". The hero now reads "built to run", and a
+              heading two sections later repeating the same word spends it
+              twice for no gain. */}
           <h2 className="mt-5 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(32px,4.8vw,64px)] text-ig-ink">
-            Our 9 Core{' '}
+            Three foundations,{' '}
             <span className="serif-accent font-normal text-ig-purple">
-              Enterprise AI Suites
+              six verticals
             </span>
           </h2>
         </Reveal>
@@ -180,7 +195,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
 
       {filteredSuites.length === 0 ? (
         <div className={`${SHELL} mt-14`}>
-          <div className="flex flex-col items-center gap-4 border border-dashed border-ig-ink/25 py-24 text-center">
+          <div className="plate flex flex-col items-center gap-4 rounded-[20px] border border-dashed border-ig-ink/25 py-24 text-center">
             <Search className="h-5 w-5 text-ig-divider" />
             <p className="font-mono text-[11px] tracking-[0.055em] text-ig-muted">
               0 results for “{searchQuery}”
@@ -224,7 +239,17 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
           {/* The list carries a preview card that trails the pointer */}
           {/* no move/leave handlers — the window-level pointer drives it,
               so the list behaves the same whether you move or scroll */}
-          <div ref={listRef} className="relative">
+          {/* The rows are the one place in this section where text sits on
+              the bare ground — the grid's cards are opaque white, so they
+              need nothing. `plate` clears the field behind the whole list at
+              once rather than per row, which also keeps the dividing rules
+              reading as one continuous set.
+
+              It is safe for the hover preview: `plate` sets `z-index: 0` and
+              so opens a stacking context, but the peek card is a child of
+              this element and carries `z-30`, so it still sits above every
+              row inside it. */}
+          <div ref={listRef} className="plate relative">
             {filteredSuites.map((suite, i) => (
               <Reveal key={suite.id} delay={Math.min(i * 45, 260)}>
                 {/* `data-suite-id` is the handle syncPeek hit-tests for.

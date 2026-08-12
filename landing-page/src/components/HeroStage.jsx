@@ -47,8 +47,15 @@ export function HeroStage() {
         <div className="art-grid" />
       </div>
 
-      {/* Grid-intersection marks — the drawing detail, corners only */}
-      <div className="pointer-events-none absolute inset-0 z-[2] text-white/25" aria-hidden="true">
+      {/* Grid-intersection marks — the drawing detail, corners only.
+
+          Raised from 25% to 45%. Four marks at the extremes of a section
+          this large are what tell you the composition has edges; at 25% on
+          the lit part of the ground they were effectively not there, so the
+          hero read as a centred column floating on open colour. They are
+          still the faintest thing in the section — the point is that they
+          are now visible enough to be read as deliberate. */}
+      <div className="pointer-events-none absolute inset-0 z-[2] text-white/45" aria-hidden="true">
         <span className="crosshair left-5 top-5 sm:left-7 sm:top-7 lg:left-9 lg:top-9" />
         <span className="crosshair right-5 top-5 sm:right-7 sm:top-7 lg:right-9 lg:top-9" />
         <span className="crosshair bottom-5 left-5 sm:bottom-7 sm:left-7 lg:bottom-9 lg:left-9" />

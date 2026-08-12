@@ -18,13 +18,17 @@ export function Pillars() {
         {/* centred: no bottom rule, which would read as a left-aligned
             device under a centred heading */}
         <Reveal className="plate relative mx-auto max-w-3xl text-center">
+          {/* Not another money line. Two of these four cards are about money
+              and two are about risk and speed, so a heading promising the
+              money mis-sells half its own contents — and "pays" already
+              belongs to the hero. */}
           <Kicker index="02" centered>
             Strategic Pillars
           </Kicker>
           <h2 className="mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(27px,3.9vw,48px)] text-ig-ink">
-            <span className="block">Why Corporate Stakeholders</span>
+            <span className="block">What actually changes</span>
             <span className="serif-accent block font-normal text-ig-purple">
-              Choose Ignitho AI
+              once it is live
             </span>
           </h2>
           <span className="mt-5 block font-mono text-[11px] font-bold tracking-[0.07em] text-ig-muted">

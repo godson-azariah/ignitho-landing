@@ -23,40 +23,49 @@ export function Hero({ onSearch }) {
   return (
     <section
       id="overview"
-      /* CENTRED IN THE VIEW, NOT PADDED INTO IT.
+      /* AS TALL AS ITS CONTENTS, NOT AS TALL AS THE VIEWPORT.
 
-         Now that the section is a full viewport tall, its contents have to be
-         centred in what is left of it or the leftover height all collects at
-         the bottom — which is the gap you could see.
+         The full-viewport lock is gone, and with it every problem that came
+         out of it. A hero pinned to 100svh while holding ~570px of content
+         has ~180px of slack it has to put SOMEWHERE — above the block, and
+         the field sits too low; below it, and there is a hole over the next
+         band. Centring only split the difference. None of those were
+         spacing bugs; they were the same surplus height showing up in
+         different places.
 
-         `justify-center` on the section does that, and the top padding is
-         exactly the height of the fixed masthead (72px, 84px from md) and
-         nothing more. That is the part that makes it look right rather than
-         merely be right: the bar covers the top of the section, so centring
-         against the section's own edges would leave visibly less air above
-         the eyebrow than below the chips. Clearing the bar first means the
-         content is centred in the space you can actually see.
+         Sizing to content deletes the surplus outright. The field lands
+         where the copy above it leaves it, the last thing on the page is a
+         row of chips rather than empty ground, and the next section shows
+         its top edge — which is what tells you to keep scrolling.
 
-         The small bottom padding biases it a few pixels upward, which is what
-         the eye reads as level. And because the section only has a MINIMUM
-         height, content taller than the viewport grows it instead of
-         overflowing — so nothing can ever slide up under the bar.
+         Padding does the work now: the masthead height plus 20px of air at
+         the top, so the eyebrow clears the bar rather than sitting under it;
+         a real measure at the bottom, since nothing is stretching to fill
+         any more.
 
-         The stage is unaffected: both of `HeroStage`'s layers are absolutely
-         positioned, so they take no part in this and keep filling the
-         section edge to edge. */
-      className="aurora hero-viewport relative flex flex-col justify-center overflow-hidden pb-8 pt-[72px] md:pb-10 md:pt-[84px]"
+         The stage is unaffected — both of `HeroStage`'s layers are
+         absolutely positioned, so they still fill the section edge to
+         edge, whatever height it turns out to be. */
+      className="aurora relative overflow-hidden pb-16 pt-[88px] md:pb-24 md:pt-[104px]"
     >
       <HeroStage />
 
       <div className={SHELL}>
         <div className="relative">
+          {/* Back at the top, with `border-b` under it again.
+
+              It is its own flex child rather than part of the group below,
+              which is the whole reason it can sit here without the old
+              problem: when the eyebrow was inside the centred group,
+              centring put half the leftover height ABOVE it and opened a
+              160px hole under the masthead. Separated out, it stays put and
+              only the display block centres. */}
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-white/15 py-4">
             {/* the eyebrow — sky, per the brand's rule for dark surfaces */}
             <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-sky md:text-[11px]">
               Transforming Ignitho into an AI-First Enterprise Partner
             </span>
-            <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-lavender/45 md:text-[11px]">
+            <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-lavender/60 md:text-[11px]">
               Enterprise AI Platform
             </span>
           </div>
@@ -69,29 +78,71 @@ export function Hero({ onSearch }) {
               when the pair are of equal weight. A search field is not of
               equal weight with anything: it is the one thing on the page you
               are meant to use, and the moment it shares a row it reads as an
-              option rather than as the point. */}
-          <Reveal className="pt-7 text-center md:pt-9">
-            <h1 className="mx-auto max-w-[19ch] font-extrabold leading-[0.9] tracking-[-0.045em] text-[clamp(38px,7.3vw,106px)] text-white">
+              option rather than as the point.
+
+              No flex, no centring, no `flex-1`. All three existed to place
+              this group inside a section taller than it needed to be, and
+              the section is not taller than it needs to be any more. What is
+              left is a block that starts under the eyebrow and ends at the
+              chips, with one padding value above it. */}
+          <div className="pt-8 md:pt-12">
+          <Reveal className="text-center">
+            {/* The foil is the real win here: the paragraph directly under
+                this has always opened "Move away from unguided prompt
+                chats", so prompting was already the thing this page argues
+                against — the headline just never said so, and the paragraph
+                was left rebutting something nothing above it had raised.
+
+                Read strictly, the two infinitives do not share a subject:
+                "built to run" is the AI running, while the prompting is
+                something the reader does. In practice "not to prompt" is
+                read as a category — a thing you prompt at, versus a thing
+                that runs — and the line break between the halves keeps them
+                from being parsed as one tight parallel anyway.
+
+                No comma before "not": the line break does that work, and the
+                house rule is no trailing punctuation. */}
+            {/* TWO LINES, AND THE MEASURE HAS TO WIDEN TO HOLD THEM.
+
+                Merging "Enterprise AI" and "built to run" makes a 26-
+                character line where the longest was 13. That doubles the
+                width the same type size needs, so on the 880px measure the
+                size would have had to fall to about 68px to fit — smaller
+                than asked for, not "a bit" smaller.
+
+                Widening the headline instead keeps the size up at 94px,
+                where line one draws about 1160px in a 1296px shell. The
+                headline is now the widest thing in the section rather than
+                matching the column below it, which is the ordinary way
+                display type behaves: it breaks the text measure on purpose.
+                The flanks stay structured because it is nearly full-bleed —
+                the same edges the eyebrow rule already marks.
+
+                The break falls where the phrase already pauses, so the
+                contrast still lands on a line of its own. */}
+            <h1 className="mx-auto max-w-[1200px] font-extrabold leading-[0.88] tracking-[-0.045em] text-[clamp(34px,7vw,94px)] text-white">
               <span className="line-mask">
-                <span>Workflow-Driven</span>
-              </span>
-              <span className="line-mask">
-                <span style={{ transitionDelay: '90ms' }}>
-                  AI Solutions{' '}
+                <span>
+                  Enterprise AI{' '}
                   {/* headline stays white on dark; the serif italic and
                       the outlined word carry the accent, not colour */}
-                  <span className="serif-accent font-normal text-white">Delivering</span>
+                  <span className="serif-accent font-normal text-white">built to run</span>
                 </span>
               </span>
               <span className="line-mask">
-                <span style={{ transitionDelay: '180ms' }}>
-                  <span className="stroke-lilac">Measurable</span> Enterprise ROI
+                <span style={{ transitionDelay: '90ms' }}>
+                  not to <span className="stroke-lilac">prompt</span>
                 </span>
               </span>
             </h1>
           </Reveal>
 
-          <Reveal className="mx-auto mt-5 max-w-[62ch] text-center md:mt-6">
+          {/* Also on the 880px measure, in place of the 62ch it used to
+              carry. `ch` was pinning it to roughly 775px, which was close
+              enough to the field to look like a mistake rather than a
+              choice. On the wider measure it also falls to two lines instead
+              of three, which pays for part of the taller headline. */}
+          <Reveal className="mx-auto mt-6 max-w-[880px] text-center md:mt-8">
             {/* Full-strength lavender rather than the spec's ~75%, plus
                 medium weight. At 400 and 75% this sat too close to the
                 gradient behind it; #D6CDEE at full opacity is nearly
@@ -112,7 +163,12 @@ export function Hero({ onSearch }) {
               at slightly different widths than the fallback it replaces. A
               track sized to the measurement would drop the last chip for that
               one frame. */}
-          <Reveal delay={120} className="mx-auto mt-7 w-full max-w-[880px] md:mt-8">
+          {/* The one wide gap in the stack, at the place the reference puts
+              it: between the last line of copy and the field. Grouping on a
+              centred layout is done with distance and nothing else — no
+              columns, no rules — so this is what separates what we say from
+              what you do. Everything else stays tight. */}
+          <Reveal delay={120} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
             {/* A white field on the dark ground, so it reads as the one
                 place to act rather than as another dark panel. The submit
                 control lives inside the pill: on a rounded field an
@@ -156,7 +212,11 @@ export function Hero({ onSearch }) {
             {/* The quiet line the reference runs directly under its field —
                 it tells you the field is finished being explained, which is
                 what lets the chips below read as a separate offer. */}
-            <p className="mt-3.5 text-center font-mono text-[11px] tracking-[0.05em] text-ig-lavender/45">
+            {/* Lifted from 45% to 60%. At 11px mono on this ground, 45% is
+                below the point where the eye bothers to resolve it — the
+                line was there without being readable, which is the worst of
+                both. It is still the quietest thing in the group. */}
+            <p className="mt-3.5 text-center font-mono text-[11px] tracking-[0.05em] text-ig-lavender/60">
               Press enter, or start from one of these
             </p>
 
@@ -167,7 +227,7 @@ export function Hero({ onSearch }) {
                 `whitespace-nowrap` is the real guard — it stops a single chip
                 breaking across two lines inside its own pill, which looks
                 broken in a way that a wrapped ROW of chips does not. */}
-            <div className="mt-5 flex flex-wrap justify-center gap-2">
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
               {SEARCH_SUGGESTIONS.map(({ label, term, icon: Icon }) => (
                 <button
                   key={term}
@@ -176,7 +236,7 @@ export function Hero({ onSearch }) {
                     setQuery(term);
                     onSearch(term);
                   }}
-                  className="flex items-center gap-2 whitespace-nowrap rounded-full border border-white/20 bg-white/[0.08] px-3.5 py-2.5 text-[12.5px] font-semibold text-ig-lavender transition-colors duration-300 hover:border-ig-teal-ring/50 hover:bg-ig-teal/20 hover:text-white"
+                  className="flex items-center gap-2 whitespace-nowrap rounded-full border border-white/25 bg-white/[0.11] px-4 py-2.5 text-[12.5px] font-semibold text-white/85 backdrop-blur-sm transition-colors duration-300 hover:border-ig-teal-ring/60 hover:bg-ig-teal/25 hover:text-white"
                 >
                   <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
                   {label}
@@ -184,6 +244,7 @@ export function Hero({ onSearch }) {
               ))}
             </div>
           </Reveal>
+          </div>
 
         </div>
       </div>

@@ -61,24 +61,6 @@
   color: var(--paper);
 }
 
-/* THE HERO OWNS THE WHOLE FIRST VIEW.
-
-   Without this the section was only as tall as its contents, which landed a
-   little short — so the lavender band beneath it showed as a strip along the
-   bottom edge and the first thing the page said was "there is more, and you
-   are already past the end of this".
-
-   Two declarations, not one, and the order matters. `100vh` is the floor
-   every browser understands. `100svh` then overrides it wherever it is
-   supported, and is the one that is actually right on phones: `vh` there is
-   measured against the viewport with the URL bar RETRACTED, so a `100vh`
-   hero is taller than the screen at rest and the bottom of it can never be
-   seen without scrolling. A browser that has never heard of `svh` simply
-   drops the second line and keeps the first. */
-.hero-viewport {
-  min-height: 100vh;
-  min-height: 100svh;
-}
 /* The stage. Sits behind everything in the section; owns its own stacking
    context so the layers below never escape it. */
 .art-surface {
@@ -267,13 +249,21 @@
   }
 }
 
-/* horizontal rules only, cleared through the middle */
+/* Horizontal rules only, cleared through the middle.
+
+   Lifted from 6% to 10%. This layer is the only thing giving the hero's left
+   and right thirds any structure — the content is a single centred column,
+   so the flanks are bare ground, and at 6% the rules were not carrying far
+   enough into them to register. The mask still clears the middle entirely,
+   so nothing has moved closer to the text; the rules are simply visible
+   where there IS no text, which is the only place they were ever meant to
+   do any work. */
 .art-grid {
   position: absolute;
   inset: 0;
   background-image: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.06) 1px,
+    rgba(255, 255, 255, 0.1) 1px,
     transparent 1px
   );
   background-size: 100% 56px;

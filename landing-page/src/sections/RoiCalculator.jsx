@@ -34,13 +34,23 @@ export function RoiCalculator() {
 
         <div className="relative">
           <Reveal className="plate mx-auto max-w-3xl text-center">
+            {/* The heading tells you what to DO and what you get back, which
+                is what a heading over a control should do. "Routine work
+                already costs you this much" was a statement — true, but it
+                pointed at nothing, so the slider underneath had to explain
+                itself.
+
+                Both halves name a real part of this section: the headcount
+                is the input, the annual figure is the output. Nothing here
+                repeats the kicker above it, which already says the word
+                "calculator" once. */}
             <Kicker index="03" centered>
               Interactive Enterprise Savings Calculator
             </Kicker>
             <h2 className="mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(27px,3.9vw,48px)] text-ig-ink">
-              <span className="block">Estimate Your Annual</span>
+              <span className="block">Set your headcount</span>
               <span className="serif-accent block font-normal text-ig-purple">
-                Operating Cost Savings
+                see what you save
               </span>
             </h2>
           </Reveal>

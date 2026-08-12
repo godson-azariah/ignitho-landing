@@ -155,14 +155,21 @@ export function Dossier({ suite, goHome }) {
             <div>
               <Kicker index="05">Embedded AI Accelerators</Kicker>
               <h2 className="mt-7 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(30px,4.6vw,58px)] text-ig-ink">
-                <span className="block">Available Agents</span>
+                {/* Not "Agents you can run today" — the page says deployment
+                    takes days, so "today" contradicted it two sections
+                    later, and the button below runs a simulation rather than
+                    the agent itself. */}
+                <span className="block">Agents in this suite</span>
                 <span className="serif-accent block font-normal text-ig-purple">
                   ({suite.accelerators.length})
                 </span>
               </h2>
             </div>
+            {/* Original wording, with one factual correction kept: it said
+                "Test Live Agent", and no control on the page carries that
+                label — the button below says "Test Agent". */}
             <p className="font-mono text-[11px] tracking-[0.05em] text-ig-muted md:pb-2">
-              Click "Test Live Agent" to simulate execution
+              Click "Test Agent" to simulate execution
             </p>
           </Reveal>
 
