@@ -24,9 +24,11 @@ const matchesSearch = (suite, query) => {
   );
 };
 
-export function Catalog({ openSuite }) {
+/* The search term now arrives from the shell, because the field that sets it
+   lives in the hero. The tab and the view stay here: nothing outside this
+   section has any use for them. */
+export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
   const [activeTab, setActiveTab] = useState('ALL');
-  const [searchQuery, setSearchQuery] = useState('');
   const [view, setView] = useState('grid');
 
   // the segmented control's pill measures the active tab and glides to it
@@ -142,28 +144,32 @@ export function Catalog({ openSuite }) {
           </div>
         </Reveal>
 
-        {/* Search sits with the thing it filters, not up in the hero */}
-        <Reveal delay={120} className="mx-auto mt-5 flex max-w-2xl items-stretch rounded-full bg-white shadow-[0_18px_50px_-32px_rgba(22,6,58,0.8)] ring-1 ring-inset ring-ig-ink/8 transition-shadow duration-300 focus-within:ring-2 focus-within:ring-ig-teal">
-          <span className="grid w-[54px] shrink-0 place-items-center text-ig-purple">
-            <Search className="h-[18px] w-[18px]" strokeWidth={2.2} />
-          </span>
-          <input
-            type="text"
-            placeholder="Search capabilities (e.g. Data Cleaning, Proposals, Invoices, Clinical Trials)..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="min-w-0 flex-1 bg-transparent py-4 pr-4 text-[13.5px] tracking-[-0.01em] text-ig-text outline-none placeholder:text-ig-muted/65 md:text-[14.5px]"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              aria-label="Clear"
-              className="mr-2 grid w-10 shrink-0 place-items-center text-ig-muted transition-colors hover:text-ig-ink"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
-        </Reveal>
+        {/* The field itself is in the hero now, so what is left here is the
+            evidence that a filter is on — and the way off it. Without this,
+            arriving at a short catalogue looks like a catalogue that is
+            short, and the only way back to all nine is to scroll up hunting
+            for a control you may not remember using.
+
+            Not wrapped in `Reveal`: it mounts mid-page in response to a
+            press, and an element that starts hidden and waits to be observed
+            is the wrong behaviour for something that must appear at once. */}
+        {searchQuery && (
+          <div className="mt-5 flex justify-center">
+            <span className="inline-flex max-w-full items-center gap-3 rounded-full bg-white py-2 pl-5 pr-2 shadow-[0_18px_50px_-32px_rgba(22,6,58,0.8)]">
+              <Search className="h-3.5 w-3.5 shrink-0 text-ig-purple" strokeWidth={2.4} />
+              <span className="truncate text-[13.5px] font-semibold tracking-[-0.01em] text-ig-ink">
+                {searchQuery}
+              </span>
+              <button
+                onClick={() => setSearchQuery('')}
+                aria-label="Clear search"
+                className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-ig-muted transition-colors hover:bg-ig-ink/[0.07] hover:text-ig-ink"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </span>
+          </div>
+        )}
 
         {/* One fixed home for the view switch, so it never jumps or
             disappears when you change views */}

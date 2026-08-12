@@ -85,23 +85,48 @@ body {
   color: #f9f6fe;
 }
 
+/* SCROLLBAR — indigo thumb, nothing else.
+
+   `--indigo` rather than the purple this used to be: the bar rides over
+   every band on the page, dark hero included, and the indigo holds its
+   identity against all of them where the purple went muddy on the violet
+   ground. Teal is not a candidate at any strength — it is the action colour,
+   and a permanent teal bar down the edge of the page competes with every
+   button on it.
+
+   The track, the corner and the buttons are all explicitly cleared. Setting
+   only `-track` leaves the corner square visible where a vertical and
+   horizontal bar meet, and Chrome still reserves the little end buttons
+   unless they are given zero size. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(122, 0, 194, 0.32) transparent;
+  scrollbar-color: rgba(74, 47, 212, 0.42) transparent;
 }
 *::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
-}
-*::-webkit-scrollbar-track {
+  width: 10px;
+  height: 10px;
   background: transparent;
 }
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track-piece,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+*::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
 *::-webkit-scrollbar-thumb {
-  background: rgba(122, 0, 194, 0.3);
-  border: 3px solid transparent;
-  background-clip: content-box;
+  background: rgba(74, 47, 212, 0.42);
+  /* Padding-box clip with a transparent border is what insets the thumb from
+     the track without a wrapper — the border area stays see-through, so the
+     visible pill is 6px inside a 10px lane and the radius is not clipped. */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(122, 0, 194, 0.55);
-  background-clip: content-box;
+  background: rgba(74, 47, 212, 0.72);
+  background-clip: padding-box;
 }

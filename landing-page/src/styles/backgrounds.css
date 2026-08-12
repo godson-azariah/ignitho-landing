@@ -60,6 +60,25 @@
   background: var(--aurora-ground);
   color: var(--paper);
 }
+
+/* THE HERO OWNS THE WHOLE FIRST VIEW.
+
+   Without this the section was only as tall as its contents, which landed a
+   little short — so the lavender band beneath it showed as a strip along the
+   bottom edge and the first thing the page said was "there is more, and you
+   are already past the end of this".
+
+   Two declarations, not one, and the order matters. `100vh` is the floor
+   every browser understands. `100svh` then overrides it wherever it is
+   supported, and is the one that is actually right on phones: `vh` there is
+   measured against the viewport with the URL bar RETRACTED, so a `100vh`
+   hero is taller than the screen at rest and the bottom of it can never be
+   seen without scrolling. A browser that has never heard of `svh` simply
+   drops the second line and keeps the first. */
+.hero-viewport {
+  min-height: 100vh;
+  min-height: 100svh;
+}
 /* The stage. Sits behind everything in the section; owns its own stacking
    context so the layers below never escape it. */
 .art-surface {

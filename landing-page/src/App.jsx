@@ -25,6 +25,12 @@ export default function App() {
   const [activeSuiteId, setActiveSuiteId] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  /* The catalogue's search term. It is up here because two sections need it —
+     the hero field that sets it and the catalogue that filters on it — and
+     nowhere lower is an ancestor of both. It changes on submit only, never
+     per keystroke: the hero holds what you are typing until you commit it. */
+  const [searchQuery, setSearchQuery] = useState('');
+
   /* Set when a jump is requested from a dossier: the target does not exist yet,
      so we return to the index first and scroll once it has mounted. */
   const pendingAnchor = useRef(null);
@@ -49,6 +55,17 @@ export default function App() {
       }
     },
     [activeSuiteId]
+  );
+
+  /* Run a search from the hero: set the term, then go to the results. Routed
+     through `goTo` rather than a direct scroll so it still behaves if it is
+     ever called while a dossier is open. */
+  const searchFor = useCallback(
+    (q) => {
+      setSearchQuery(q);
+      goTo('suites-catalog');
+    },
+    [goTo]
   );
 
   const navAction = useCallback(
@@ -88,10 +105,14 @@ export default function App() {
 
       {!activeSuite ? (
         <>
-          <Hero goTo={goTo} />
+          <Hero onSearch={searchFor} />
           <Pillars />
           <RoiCalculator />
-          <Catalog openSuite={openSuite} />
+          <Catalog
+            openSuite={openSuite}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
         </>
       ) : (
         <Dossier suite={activeSuite} goHome={goHome} />
