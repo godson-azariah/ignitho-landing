@@ -16,15 +16,26 @@ export function ClosingCta() {
       <div className={SHELL}>
         <Reveal className="relative grid grid-cols-12 items-center gap-x-10 gap-y-8">
           <div className="col-span-12 lg:col-span-6">
-            {/* The 17ch cap is gone. At this size it broke a 48-character
-                sentence over three lines inside a column wide enough for
-                two, which is what made the block look ragged next to a
-                rectangular map. Left to the column, it sets as two even
-                lines. */}
+            {/* Two spans, each `block`, so the break is the sentence break
+                and not wherever the column happens to run out. Left to wrap
+                on its own it split mid-clause at some widths and after the
+                full stop at others — the two halves are a call and an
+                answer, and they only read that way when they are always on
+                separate lines.
+
+                "Pick one workflow", not "Bring us the workflow". You do not
+                bring anyone a workflow; you have one. Naming a single one
+                also makes the ask small, which is what a closing CTA wants —
+                the reader is being asked to start, not to hand over
+                everything. And "take it to production" is movement where
+                "put it in production" was placement.
+
+                No trailing stop: the interior one carries the two-beat
+                rhythm, and the heading still ends clean. */}
             <h2 className="font-extrabold leading-[1.05] tracking-[-0.04em] text-[clamp(28px,3.6vw,44px)] text-white">
-              Bring us the workflow.{' '}
-              <span className="serif-accent font-normal text-ig-sky">
-                We&rsquo;ll put it in production
+              <span className="block">Pick one workflow.</span>
+              <span className="serif-accent block font-normal text-ig-sky">
+                We&rsquo;ll take it to production
               </span>
             </h2>
 
