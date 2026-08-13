@@ -62,7 +62,22 @@ export function Faq({ openContact }) {
       </section>
 
       {/* content · FLAVOUR B */}
-      <section className="bg-b dots relative py-20 md:py-28">
+      {/* THE TOP AND BOTTOM PADDINGS ARE NO LONGER THE SAME NUMBER, because
+          what sits above and below this band is not the same kind of thing.
+
+          Above is the aurora masthead, and a band opening under one needs its
+          own clearance — 80/112px. Below is the dark closing bookend, which
+          brings 48/64px of its own padding before its first line of type. The
+          two paddings ADD: at py-28 the run from the button to "Pick one
+          workflow" was 112 + 64 = 176px of nothing, on top of which the eye
+          also reads the colour change as a break. A band boundary does not need
+          to be announced twice.
+
+          40/56 at the bottom puts that run at about 120px, which is a section
+          gap rather than a gulf — and the dark band still supplies most of it,
+          which is the right way round: the air belongs to the band that is
+          starting, not to the one that has finished. */}
+      <section className="bg-b dots relative pb-10 pt-20 md:pb-14 md:pt-28">
         <div className={SHELL}>
           <div className="mx-auto max-w-3xl">
             {FAQ_GROUPS.map((group, gi) => (
@@ -138,7 +153,30 @@ export function Faq({ openContact }) {
             ))}
 
             {/* The one thing an FAQ owes a reader it could not answer */}
-            <Reveal className="plate mt-16 flex flex-col items-center gap-5 rounded-[20px] border border-dashed border-ig-ink/25 px-6 py-10 text-center">
+            {/* NO CARD AT ALL NOW — the dashed outline has gone, and with it the
+                radius and the padding that only existed to sit inside it.
+
+                A dashed border is a placeholder convention: it says "something
+                belongs here and does not exist yet". Around a real question and
+                a real button it was drawing a box whose only content was the
+                two things already legible without it, and the box is what made
+                the space around them read as empty rather than as clear.
+
+                So: a centred line of type and the page's standard pill under
+                it, and nothing else. Sizes are untouched — 17/19px and the
+                normal button. Everything that changed is space:
+
+                  above it         mt-16 → mt-10   64px → 40px
+                  its own padding  py-10 → none    40px top and bottom → 0
+                  question→button  gap-5 → gap-4   20px → 16px
+                  the plate reach                  62px → 24px per side
+
+                The plate stays and still earns it: there is no fill here, so
+                without it the band's dot grid runs straight under the question.
+                `plate-tight` keeps the texture off the words at a quarter of
+                the reach — at full size it cleared a 60px moat that read as
+                emptiness of its own. */}
+            <Reveal className="plate plate-tight mt-10 flex flex-col items-center gap-4 text-center">
               <p className="text-[17px] font-extrabold tracking-[-0.02em] text-ig-ink md:text-[19px]">
                 Something here not covered?
               </p>
