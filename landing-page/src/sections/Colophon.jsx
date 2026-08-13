@@ -33,7 +33,18 @@ export function Colophon({ openSuite, navAction, goHome }) {
   return (
     <footer className="bg-c relative">
       <div className={`${SHELL} py-9 md:py-10`}>
-        <Reveal className="grid grid-cols-12 gap-x-8 gap-y-7">
+        {/* THE ONE OF THESE FIVE GRIDS THAT CANNOT HAVE ITS GAP ZEROED.
+
+            Eleven fixed 32px column gaps put a 352px floor under it, and a
+            320px phone's shell offers 280px — so it overflowed by 72px like
+            the rest. But "Menu" and "Compliance" are `col-span-6` at EVERY
+            width, not just from `lg`, so this grid really does have a between
+            to hold on a phone and the gap cannot go to zero.
+
+            16px instead: a 176px floor, which clears 280px with room. The
+            tracks come out at 8.7px and the two halves at 132px each, so the
+            pair still splits the row exactly. Back to 32px at `sm`. */}
+        <Reveal className="grid grid-cols-12 gap-x-4 gap-y-7 sm:gap-x-8">
           {/* Three sub-columns, not two. Nine suites over two columns ran five
               rows deep and set the height of the whole band on its own; over
               three it is three rows, and the widened span keeps the longest

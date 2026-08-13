@@ -14,8 +14,39 @@ export function ClosingCta() {
   return (
     <section className="aurora dots-inv relative py-12 md:py-16">
       <div className={SHELL}>
-        <Reveal className="relative grid grid-cols-12 items-center gap-x-10 gap-y-8">
-          <div className="col-span-12 lg:col-span-6">
+        {/* `gap-x-0` UNTIL THE COLUMNS ACTUALLY SPLIT. THIS IS THE BUG.
+
+            `grid-cols-12` is `repeat(12, minmax(0, 1fr))`. Those tracks can
+            be squeezed to zero — but a COLUMN GAP IS A FIXED LENGTH and never
+            shrinks at all. So this grid has a hard minimum width of 11 × 40px
+            = 440px, whatever the container says, and on a 412px screen the
+            shell only offers it 372px. The grid laid out to 440 anyway and
+            overflowed by 68px.
+
+            Which means every `col-span-12` child was 440px wide instead of
+            372px, and its centre sat 34px right of the container's. Centred
+            text inside it was therefore centred — on the wrong axis. And
+            because `body` carries `overflow-x: clip`, there was no scrollbar
+            to give it away; the section just looked shifted.
+
+            Zeroing it below `lg` costs nothing: a horizontal gap is the space
+            BETWEEN columns, and below `lg` both children are `col-span-12`,
+            so there is no between. The 40px returns with the second column. */}
+        <Reveal className="relative grid grid-cols-12 items-center gap-x-0 gap-y-8 lg:gap-x-10">
+          {/* CENTRED WHILE THERE IS ONE COLUMN, LEFT ONCE THERE ARE TWO.
+
+              Left alignment here was never a choice about this heading — it
+              is what a heading does when something sits beside it. Stacked,
+              nothing sits beside it, and the column ended up holding three
+              different alignments at once: a left-aligned heading, a
+              full-width button, and a map centred by `mx-auto`. That is the
+              whole of what read as "not responsive" about this section.
+
+              Centred, it also agrees with every other heading on the page —
+              the hero, the pillars, the calculator and the catalogue are all
+              centred, and this was the only left-aligned one, purely because
+              of a second column that does not exist below `lg`. */}
+          <div className="col-span-12 text-center lg:col-span-6 lg:text-left">
             {/* Two spans, each `block`, so the break is the sentence break
                 and not wherever the column happens to run out. Left to wrap
                 on its own it split mid-clause at some widths and after the
@@ -46,11 +77,30 @@ export function ClosingCta() {
               </span>
             </h2>
 
-            {/* `inline-flex` on the wrapper, not `w-full`: the button used to
-                stretch on small screens because it was the only thing in its
-                column. Under the heading it can size to its own label. */}
-            <div className="mt-7 flex">
-              <TealButton className="w-full sm:w-auto">
+            {/* NO `w-full`. THE BUTTON SIZES TO ITS OWN LABEL AT EVERY WIDTH.
+
+                `w-full sm:w-auto` was left over from when this button lived
+                alone in the right-hand column and had to fill it. Under the
+                heading it never needed to, and stretching it does three
+                things, none of them wanted:
+
+                  · At 639px it is 599px wide and at 640px it is 246px — a
+                    353px jump at one pixel of resize, right in the middle of
+                    the range a tablet sits in.
+                  · A 599px pill is a banner. The label is 246px of it; the
+                    rest is teal.
+                  · It also leans on the swap mechanism harder than it should.
+                    The track is rotated -2.5deg and its faces overhang by
+                    0.3 of the button's height, so the corner starts to show
+                    once the button is wider than about fourteen times its own
+                    height. A 47px pill has that ceiling around 650px — above
+                    a full-width pill on a phone, but not by much, and not for
+                    any gain.
+
+                `justify-center` under a centred heading, `lg:justify-start`
+                once there is a second column to align against. */}
+            <div className="mt-7 flex justify-center lg:justify-start">
+              <TealButton>
                 Schedule Executive Briefing
                 <ArrowRight className="h-3.5 w-3.5" />
               </TealButton>
@@ -76,7 +126,26 @@ export function ClosingCta() {
               column, which is right while there IS a left-hand column. On one
               column the two stack, and that rule left a centred heading with
               a hard-right map under it. Centred until the grid splits at
-              `lg`, then back to the right edge. */}
+              `lg`, then back to the right edge.
+
+              A GUTTER ON BOTH SIDES — WHICH IS WHAT THE 440px CAP ALWAYS
+              MEANT. IT JUST NEVER GOT THE CHANCE.
+
+              The full-bleed version that briefly lived here was solving the
+              wrong problem. The map looked like it ran off the right edge
+              because the GRID was 68px too wide and the map went with it: it
+              was drawn 440px inside a 372px column and cropped on the right
+              by `overflow-x: clip`, which is exactly what a bled map looks
+              like. Bleeding it deliberately just made the crop official.
+
+              With the grid fixed, `w-full` in a `col-span-12` column is 372px
+              on a 412px screen, so the cap never binds and the map fills its
+              column with the shell's own 20px gutter either side — the same
+              inset every other section on the page uses, and now the same
+              centre line as the heading and the button above it.
+
+              The cap still earns its place from `sm` up, where the column
+              keeps growing and 527px is the artwork's native size. */}
           <div className="col-span-12 lg:col-span-6">
             <img
               src="/Ignitho-Updated-Map.svg"

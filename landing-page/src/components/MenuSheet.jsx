@@ -34,7 +34,13 @@ export function MenuSheet({ open, onClose, goHome, navAction }) {
           </SwapButton>
         </div>
 
-        <div className="mx-auto grid w-full max-w-[1360px] grid-cols-12 gap-x-10 gap-y-14 px-5 pb-16 pt-10 md:px-8 md:pt-16">
+        {/* `gap-x-0` below `lg`. Eleven fixed 40px column gaps put a 440px
+            floor under this grid, and a 412px phone's 372px of content width
+            cannot meet it — so the grid overflowed by 68px and pushed the nav
+            and the certifications 34px off centre inside their own columns.
+            Both children are `col-span-12` until `lg`, so there is nothing
+            for a horizontal gap to sit between until then. */}
+        <div className="mx-auto grid w-full max-w-[1360px] grid-cols-12 gap-x-0 gap-y-14 px-5 pb-16 pt-10 md:px-8 md:pt-16 lg:gap-x-10">
           {/* primary destinations, set large */}
           <nav className="col-span-12 lg:col-span-7">
             {NAV_LINKS.map((label, i) => (

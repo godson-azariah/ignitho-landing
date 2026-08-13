@@ -61,7 +61,14 @@ export function Dossier({ suite, goHome }) {
       {/* spread · FLAVOUR B */}
       <section className="bg-b dots relative py-20 md:py-28">
         <div className={SHELL}>
-          <div className="relative grid grid-cols-12 gap-x-10 gap-y-16">
+          {/* `gap-x-0` below `lg`, where both children are `col-span-12`.
+
+              A column gap is a fixed length and cannot shrink, so eleven of
+              them at 40px give this grid a hard 440px minimum — 68px more
+              than a 412px phone's shell has to offer. The grid overflowed and
+              carried every child out with it, 34px off centre. There is no
+              space BETWEEN columns to hold while there is one column. */}
+          <div className="relative grid grid-cols-12 gap-x-0 gap-y-16 lg:gap-x-10">
             <Reveal className="col-span-12 lg:col-span-7">
               <p className="plate whitespace-pre-line text-[20px] leading-[1.4] tracking-[-0.018em] text-ig-text md:text-[27px]">
                 {suite.executiveSummary}
@@ -215,7 +222,11 @@ export function Dossier({ suite, goHome }) {
                     title going purple — the same small acknowledgement the
                     suite cards make. */}
                 <div className="group border-b border-ig-ink/15 transition-colors duration-300 hover:bg-ig-paper-2">
-                  <div className="grid grid-cols-12 items-center gap-x-8 gap-y-5 py-8">
+                  {/* Same fixed-gap floor, one size down: 11 × 32px = 352px,
+                      which is more than the 335px a 375px phone's shell has.
+                      These three children are all `col-span-12` until `md`,
+                      so the gap goes with the split. */}
+                  <div className="grid grid-cols-12 items-center gap-x-0 gap-y-5 py-8 md:gap-x-8">
                     <div className="col-span-12 flex items-start gap-5 md:col-span-4">
                       <span className="mt-1.5 font-mono text-[11px] font-bold tracking-[0.055em] text-ig-divider">
                         {String(idx + 1).padStart(2, '0')}
