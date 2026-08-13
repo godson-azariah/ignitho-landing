@@ -38,3 +38,20 @@
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
 }
+
+/* Even line lengths when a display line has to wrap — which, on this page, is
+   only ever on a phone.
+
+   Owned here rather than taken from the CDN's `text-balance`, for the same
+   reason `.clamp-2` is: the Play build is resolved at runtime from whatever
+   version is current, and a utility that silently is not there fails as a
+   heading that breaks badly rather than as an error anyone would notice.
+
+   NOT `pretty`, which is the other candidate. `pretty` optimises the LAST few
+   lines of a paragraph — it is for widows in body copy. These are two- and
+   three-line display settings where every line is the last few, so `balance`
+   is the one that applies. It is also inert above the wrap point, so nothing
+   wide enough to set on one line is affected at all. */
+.balance {
+  text-wrap: balance;
+}

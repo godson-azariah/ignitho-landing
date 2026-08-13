@@ -130,3 +130,28 @@ body {
   background: rgba(74, 47, 212, 0.72);
   background-clip: padding-box;
 }
+
+/* A strip that shows its own overflow instead of a scrollbar.
+   Used by the catalogue's filter chips at phone widths.
+
+   The bar is hidden rather than styled because the styled one above is 10px
+   in a lane under a 42px row of chips — thicker, relative to what it
+   measures, than the page's own bar is against the page. What tells you the
+   strip scrolls is the chip cut off at the screen edge, which is why the
+   strip is built to bleed there.
+
+   `overscroll-behavior-x: contain` is the part that is easy to miss and the
+   most annoying to leave out: without it, swiping past the end of the strip
+   is handed to the browser, which reads it as the back gesture. Scrolling a
+   row of filters should never be able to leave the page.
+
+   Both selectors outrank the `*` rules above on specificity alone, so
+   nothing here needs `!important`. */
+.no-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+}
+.no-bar::-webkit-scrollbar {
+  display: none;
+}

@@ -117,7 +117,14 @@ export function Dossier({ suite, goHome }) {
                     />
                   </div>
 
-                  <div className="p-7">
+                  {/* `p-5` on a phone. This card is the narrowest column on
+                      the site — 280px at its worst — and 28px of padding
+                      either side takes a fifth of it before anything is set
+                      in it. That was enough to wrap the longest sub-domain
+                      onto a second line and to clip the button below, both
+                      of which come back inside the box at 20px. Back to the
+                      original 28px at `sm`. */}
+                  <div className="p-5 sm:p-7">
                     <span className="font-mono text-[11.5px] font-bold tracking-[0.06em] text-ig-divider">
                       Sub-Domains:
                     </span>
@@ -137,7 +144,23 @@ export function Dossier({ suite, goHome }) {
                       ))}
                     </div>
 
-                    <TealButton className="mt-7 w-full">
+                    {/* A SWAP BUTTON'S LABEL CANNOT WRAP, SO ITS PADDING HAS
+                        TO GIVE INSTEAD.
+
+                        Three faces ride one track and every one of them is
+                        `white-space: nowrap` — they have to be, or the three
+                        would be different heights and the swap would show a
+                        seam. So when the label is wider than the pill it is
+                        not wrapped, it is CLIPPED, at both ends, by the
+                        `overflow: hidden` that makes the swap work at all.
+                        "Schedule Executive Briefing" is 27 characters and
+                        this is the tightest pill on the site.
+
+                        Trimming the padding is the only lever that does not
+                        touch the mechanism. `!` because `TealButton` sets
+                        `px-6` itself, and two same-specificity utilities
+                        resolve by source order rather than by intent. */}
+                    <TealButton className="mt-7 w-full !px-4 sm:!px-6">
                       Schedule Executive Briefing
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </TealButton>
@@ -211,7 +234,16 @@ export function Dossier({ suite, goHome }) {
                       {acc.desc}
                     </p>
 
-                    <div className="col-span-12 flex items-center justify-between gap-4 md:col-span-3 md:justify-end">
+                    {/* The badge is `whitespace-nowrap` and the button's
+                        label cannot wrap either, so on a 320px screen the
+                        pair is about 5px wider than the row and the button
+                        loses its right edge off the side of the page.
+                        `flex-wrap` lets the button drop under the badge
+                        there, and does nothing at any width where the two
+                        already fit. Explicitly back to `nowrap` at `md`, so
+                        the desktop row cannot break even if a longer badge
+                        ever lands in it. */}
+                    <div className="col-span-12 flex flex-wrap items-center justify-between gap-4 md:col-span-3 md:flex-nowrap md:justify-end">
                       <span className="flex items-center gap-1.5 whitespace-nowrap font-mono text-[11px] font-bold tracking-[0.035em] text-ig-teal">
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                         Governed DAG Ready

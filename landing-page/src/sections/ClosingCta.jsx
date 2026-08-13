@@ -32,7 +32,14 @@ export function ClosingCta() {
 
                 No trailing stop: the interior one carries the two-beat
                 rhythm, and the heading still ends clean. */}
-            <h2 className="font-extrabold leading-[1.05] tracking-[-0.04em] text-[clamp(28px,3.6vw,44px)] text-white">
+            {/* `balance` matters only on a phone. At the 28px floor the
+                second line measures within a few pixels of a 375px screen's
+                text column, so it wraps on some phones and not others — and
+                when it does wrap unaided it drops "production" onto a line
+                by itself. Balanced, it breaks after "take it" instead, which
+                is a phrase. Above the wrap point the property has nothing to
+                balance and the desktop setting is untouched. */}
+            <h2 className="balance font-extrabold leading-[1.05] tracking-[-0.04em] text-[clamp(28px,3.6vw,44px)] text-white">
               <span className="block">Pick one workflow.</span>
               <span className="serif-accent block font-normal text-ig-sky">
                 We&rsquo;ll take it to production
@@ -63,7 +70,13 @@ export function ClosingCta() {
               in the section, so it — not the copy — was setting the height
               of the whole band; 527 wide is its native size, and every pixel
               it is drawn above ~440 is height the text column has no use
-              for. */}
+              for.
+
+              `ml-auto` is what pinned it to the right-hand edge of its own
+              column, which is right while there IS a left-hand column. On one
+              column the two stack, and that rule left a centred heading with
+              a hard-right map under it. Centred until the grid splits at
+              `lg`, then back to the right edge. */}
           <div className="col-span-12 lg:col-span-6">
             <img
               src="/Ignitho-Updated-Map.svg"
@@ -73,7 +86,7 @@ export function ClosingCta() {
               height="259"
               loading="lazy"
               decoding="async"
-              className="ml-auto h-auto w-full max-w-[440px] select-none"
+              className="mx-auto h-auto w-full max-w-[440px] select-none lg:ml-auto lg:mr-0"
             />
           </div>
         </Reveal>

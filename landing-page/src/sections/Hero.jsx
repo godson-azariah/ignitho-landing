@@ -60,12 +60,26 @@ export function Hero({ onSearch }) {
               centring put half the leftover height ABOVE it and opened a
               160px hole under the masthead. Separated out, it stays put and
               only the display block centres. */}
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-white/15 py-4">
+          {/* A COLUMN ON A PHONE, THE SAME SPLIT ROW FROM `sm` UP.
+
+              `justify-between` needs two ends to push apart. On a 375px
+              screen the left-hand label alone is wider than the row, so the
+              two never sat on one line — they wrapped, and a wrapped
+              `justify-between` row sets its last line hard left while the
+              line above it is still stretched, which reads as a mistake
+              rather than as a wrap.
+
+              Stacked, both labels start from the same left edge, which is
+              the only alignment a narrow column can hold. The type also
+              drops a point: at 11px mono with 0.06em tracking the long
+              label measures about 400px, so it takes three lines on a phone
+              and two at 10px. */}
+          <div className="flex flex-col items-start gap-1 border-b border-white/15 py-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:py-4">
             {/* the eyebrow — sky, per the brand's rule for dark surfaces */}
-            <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-sky md:text-[11px]">
+            <span className="font-mono text-[10px] font-bold leading-[1.5] tracking-[0.06em] text-ig-sky sm:text-[11px]">
               Transforming Ignitho into an AI-First Enterprise Partner
             </span>
-            <span className="font-mono text-[11px] font-bold tracking-[0.06em] text-ig-lavender/60 md:text-[11px]">
+            <span className="font-mono text-[10px] font-bold leading-[1.5] tracking-[0.06em] text-ig-lavender/60 sm:text-[11px]">
               Enterprise AI Platform
             </span>
           </div>
@@ -120,10 +134,38 @@ export function Hero({ onSearch }) {
 
                 The break falls where the phrase already pauses, so the
                 contrast still lands on a line of its own. */}
-            <h1 className="mx-auto max-w-[1200px] font-extrabold leading-[0.88] tracking-[-0.045em] text-[clamp(34px,7vw,94px)] text-white">
+            {/* THREE LINES ON A PHONE, TWO FROM `md` UP — AND THE FLOOR OF THE
+                CLAMP IS RAISED, NOT LOWERED, TO PAY FOR IT.
+
+                Left to itself the two-line setting wraps on any phone: line
+                one is 26 characters, which needs about 420px at the old 34px
+                floor and has 335px on a 375px screen. So it broke anyway —
+                just wherever the box ran out, which was after "built" and
+                left the serif phrase split across two lines with "to run"
+                stranded under it.
+
+                Breaking it deliberately at the phrase instead gives three
+                lines of at most 13 characters, and 13 characters is a third
+                of the width the same type needed before. That is what lets
+                the floor go UP from 34px to 40px: the longest mobile line now
+                measures about 240px inside 280px on the narrowest phone
+                there is, so the headline reads bigger on a small screen than
+                it did while it was wrapping.
+
+                Nothing above 571px is touched — that is where 7vw passes
+                40px, so every viewport from a small tablet up resolves to the
+                same 7vw it always did, and the two-line setting returns at
+                `md` exactly as it was. */}
+            <h1 className="mx-auto max-w-[1200px] font-extrabold leading-[0.88] tracking-[-0.045em] text-[clamp(40px,7vw,94px)] text-white">
               <span className="line-mask">
                 <span>
-                  Enterprise AI{' '}
+                  {/* `block` below `md` is the forced break; `md:inline` puts
+                      the two halves back on one line for the desktop
+                      setting. The space between them is a leading space at
+                      the start of a line while this is a block, and CSS
+                      discards those, so it costs nothing on mobile and is
+                      still the word space on desktop. */}
+                  <span className="block md:inline">Enterprise AI</span>{' '}
                   {/* headline stays white on dark; the serif italic and
                       the outlined word carry the accent, not colour */}
                   <span className="serif-accent font-normal text-white">built to run</span>

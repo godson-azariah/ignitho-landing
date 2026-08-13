@@ -43,7 +43,13 @@ export function AgentSimulator({ accelerator, onClose }) {
           below it scrolls. */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="pop-c relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-[22px] border border-ig-ink/10 bg-white shadow-[0_44px_100px_-28px_rgba(22,6,58,0.6),0_8px_24px_-12px_rgba(22,6,58,0.3)]"
+        /* `max-h-full`, not `92vh`. The backdrop is `fixed inset-0` with 16px
+           of padding, so 100% of it is already the visible area less that
+           padding — which is the same figure on a desktop and the RIGHT
+           figure on a phone, where `vh` measures the tall viewport with the
+           URL bar retracted and would have let the panel run off the bottom
+           of the screen with the close button on it. */
+        className="pop-c relative flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-[22px] border border-ig-ink/10 bg-white shadow-[0_44px_100px_-28px_rgba(22,6,58,0.6),0_8px_24px_-12px_rgba(22,6,58,0.3)]"
       >
         <div className="flex shrink-0 items-center justify-between gap-4 border-b border-ig-ink/10 bg-ig-paper-2 px-6 py-4">
           <span className="flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.06em] text-ig-ink">
@@ -68,7 +74,15 @@ export function AgentSimulator({ accelerator, onClose }) {
           </p>
 
           {/* pipeline */}
-          <div className="mt-8 flex items-stretch">
+          {/* A COLUMN ON A PHONE.
+
+              Three nodes side by side had about 69px each inside a 320px
+              screen once the backdrop padding and the panel's own padding
+              were taken out, and 32px of that is the node's own padding — so
+              "Enterprise Outcome" was being set in roughly four characters
+              per line. A pipeline is a sequence, and a sequence reads down a
+              narrow screen just as well as it reads across a wide one. */}
+          <div className="mt-8 flex flex-col items-stretch sm:flex-row">
             {[
               { label: 'Input Ingestion', node: 'Node 1', step: 1 },
               { label: 'Agent Execution', node: 'Node 2', step: 2 },
@@ -79,11 +93,22 @@ export function AgentSimulator({ accelerator, onClose }) {
               const done = reached && !running;
               return (
                 <Fragment key={n.node}>
+                  {/* The connector turns through ninety degrees with the row:
+                      a 16px vertical hairline indented to sit under the node
+                      above it, and the horizontal rule it always was from
+                      `sm`. The fill inside it swaps axis to match — the same
+                      one-property transition either way, on `height` rather
+                      than `width`.
+
+                      (The comment sits out here rather than inside the `&&`:
+                      a JSX comment cannot be the first thing in a
+                      parenthesised expression, because `{` opens an object
+                      literal before the parser is in JSX at all.) */}
                   {i > 0 && (
-                    <div className="relative mt-8 h-px w-4 shrink-0 self-start bg-ig-divider md:w-8">
+                    <div className="relative ml-8 h-4 w-px shrink-0 self-start bg-ig-divider sm:ml-0 sm:mt-8 sm:h-px sm:w-4 md:w-8">
                       <span
-                        className={`absolute left-0 top-0 h-px bg-ig-teal transition-all duration-700 ease-out ${
-                          reached ? 'w-full' : 'w-0'
+                        className={`absolute left-0 top-0 w-px bg-ig-teal transition-all duration-700 ease-out sm:h-px ${
+                          reached ? 'h-full sm:w-full' : 'h-0 sm:w-0'
                         }`}
                       />
                     </div>

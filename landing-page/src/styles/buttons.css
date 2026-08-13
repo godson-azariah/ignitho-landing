@@ -224,3 +224,34 @@
     display: none !important;
   }
 }
+
+/* THE SWAP IS A HOVER EFFECT, AND A TOUCHSCREEN HAS NO HOVER TO LEAVE.
+
+   Tapping a button on a phone makes it match `:hover`, and — because there is
+   no pointer to move away — it goes on matching until something else is
+   tapped. So every button pressed on a phone stayed swapped: the arriving
+   face parked where the resting face belongs, the pill left at 1.045, the
+   label at its transit angle. The whole device depends on the hover ending,
+   and on touch it never does.
+
+   Each state is returned to its resting value rather than the rules being
+   rewritten, so the desktop cascade above is untouched — this block simply
+   does not apply where a real pointer exists. `:focus-visible` is left out of
+   it deliberately: keyboard focus still swaps the button, on any device. */
+@media (hover: none) {
+  .swap:hover {
+    transform: scale(1);
+  }
+  .swap:hover .swap-track {
+    transform: translate3d(0, 0, 0) rotate(-2.5deg);
+  }
+  .swap:hover .swap-face--a .swap-text {
+    transform: rotate(2.5deg);
+  }
+  .swap:hover .swap-face--b .swap-text {
+    transform: rotate(8.5deg);
+  }
+  .swap:hover .swap-ripple {
+    animation: none;
+  }
+}

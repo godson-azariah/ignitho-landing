@@ -68,7 +68,14 @@ export function RoiCalculator() {
                   <span className="font-mono text-[11px] font-bold tracking-[0.05em] text-ig-muted">
                     Employees
                   </span>
-                  <div className="flex items-center gap-4">
+                  {/* Tighter on a phone, because this row is the one place on
+                      the page whose width is fixed rather than fluid: two
+                      44px controls plus a fixed number box plus two gaps. At
+                      the desktop measurements that is 250px inside the 232px
+                      a 320px screen leaves after the shell and the card
+                      padding, so it pushed the card wider than the viewport
+                      and took the whole page with it. */}
+                  <div className="flex items-center gap-3 sm:gap-4">
                     <button
                       onClick={() => nudgeEmployees(-50)}
                       aria-label="Fewer employees"
@@ -80,7 +87,7 @@ export function RoiCalculator() {
                     {/* fixed width, so the `+` does not shift as digits are
                         gained — `tnum` steadies the glyphs, this steadies
                         the box */}
-                    <span className="tnum w-[130px] shrink-0 text-center font-extrabold leading-[0.9] tracking-[-0.04em] text-[clamp(32px,4vw,54px)] text-ig-ink md:w-[168px]">
+                    <span className="tnum w-[112px] shrink-0 text-center font-extrabold leading-[0.9] tracking-[-0.04em] text-[clamp(32px,4vw,54px)] text-ig-ink sm:w-[130px] md:w-[168px]">
                       {companyEmployees.toLocaleString()}
                     </span>
                     <button
