@@ -5,9 +5,25 @@ site (colors, type, spacing, components, motion, responsive rules). It intention
 excludes page copy/content — use it to make an AI or design tool replicate the LOOK AND
 FEEL on a different page or project, not to recreate this specific site.
 
-Tech context (for compatibility, not required): built with Tailwind CSS v4 (CSS-first
-@theme config) + React + a small amount of Framer Motion for micro-interactions. Any
-stack can replicate this system as long as it can produce the same CSS output.
+Tech context (for compatibility, not required): React + Tailwind, with hand-written CSS
+for anything Tailwind cannot express cleanly. NO animation library — every animation
+described in section 7 is plain CSS, and JavaScript only toggles a class or changes a
+`key`. Any stack can replicate this system as long as it can produce the same CSS.
+
+READ THIS BEFORE TRUSTING A SECTION: sections 4 (layout, spacing, placement, gaps) and
+7 (motion and animation) were rewritten against the current build and are accurate.
+The remaining sections describe an earlier iteration of the same brand — the colour
+family, the type rules and the punctuation law still hold; specific component recipes
+in section 6 do not all exist in this form any more.
+
+ONE CASCADE WARNING that applies everywhere: if Tailwind is loaded as a runtime CDN
+build, its utilities are injected into <head> BEFORE any bundled stylesheet, so a
+hand-written class OVERRIDES a utility at equal specificity. A hand-written class must
+therefore never declare a property a utility is also expected to set on the same
+element. Two real failures from this: a class declaring `box-shadow` silently killed
+Tailwind's `ring-1` (which compiles to box-shadow), and a class declaring
+`position: relative` beat an `absolute` utility, collapsing a background layer to zero
+height.
 
 
 1. DESIGN PHILOSOPHY (the "why" behind the choices)
@@ -30,10 +46,12 @@ stack can replicate this system as long as it can produce the same CSS output.
   line in the neutral near-black text color, the second line in the brand purple accent
   color. This is a consistent, repeatable rhythm across the whole site, not a one-off.
   Section headline copy is always followed by a purple-accent supporting paragraph.
-- "Restraint in motion." Animation is used only for small, functional interactive UI
-  (opening/closing a chat widget, a mobile menu sliding down, a card lifting on hover).
-  There is no scroll-triggered reveal choreography, no parallax, no decorative motion.
-  Every transition is fast (250–350ms) and physically plausible (spring or ease-out).
+- "Motion is a statement about attention, not decoration." Things ARRIVE (a one-shot
+  reveal as a section is scrolled to, a blur-to-solid entrance inside an illustration)
+  and things REPORT (a countdown ring, a fill that follows the pointer). Nothing loops
+  in the reader's field of view, and the controls themselves — buttons, the navbar —
+  hold perfectly still. Full detail in section 7, which is deliberately separable from
+  the layout rules in section 4.
 - "Never hide functionality behind a breakpoint." If content is important on desktop
   (navigation links, a hero visual, a key illustration), it must have an adapted mobile
   equivalent — resized, restacked, or moved into a menu — never just `display:none` with
@@ -158,56 +176,135 @@ Punctuation & polish rules:
     inside the same trailing-period-free string.
 
 
-4. LAYOUT & SPACING SYSTEM
+4. LAYOUT, SPACING, PLACEMENT & GAPS
 ----------------------------------------------------
-- Global content width: max-w-[1360px], centered (mx-auto), horizontal inset px-5 (20px)
-  on every standard section — this exact combination repeats on nearly every section in
-  the site and is what keeps all section edges visually aligned.
-- Wider "showcase" sections (e.g. a CTA with a large side illustration) use a wider
-  shared container (max-w-[1600px]) with responsive padding (px-6 → md:px-12 → lg:px-16)
-  — but critically, ALL content inside that section (text block AND any side visual)
-  shares that one container/padding, rather than the visual being positioned relative to
-  the raw viewport. This was a fixed bug: positioning a decorative visual with
-  viewport-relative offsets while text uses a container causes a growing, unbalanced gap
-  on wide screens.
-- Vertical rhythm: sections use py-16 (mobile) → md:py-20 (desktop) — 64px → 80px —
-  consistently. This is the single vertical spacing unit used almost everywhere; avoid
-  introducing new arbitrary section padding values.
-- Section heading block: centered, max-w-6xl mx-auto, margin-bottom ~40-48px (mb-10/12)
-  before the content grid begins.
-- Card grids: CSS grid, 1 column mobile → 2 columns small/tablet → 3 or 4 columns
-  desktop (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 or lg:grid-cols-4), gap-6 to gap-8.
-  Equal-height cards are enforced with `flex h-full flex-col` on the card plus
-  `justify-between` (or `mt-auto` on the bottom block) so footers/CTAs align across a
-  row regardless of body-copy length.
-- Border radius scale: small chips/badges = rounded-full or rounded-lg/xl; cards =
-  rounded-[24px] to rounded-[28px] (a distinctly large, soft radius — not the default
-  Tailwind rounded-2xl feel, always a custom arbitrary value in the 24–28px range);
-  large containers/panels = rounded-3xl.
-- Size a hero/band section by its PADDING, not a min-height. A short, high-impact band
-  (hero, closing CTA) should hug its text with a deliberate, symmetric-reading gap above
-  and below — pt-[N] / pb-[N] tuned directly on the section — rather than a large
-  min-height plus flex-centering, which tends to leave obviously "too much" empty space
-  top and bottom. When a band needs to feel shorter, shrink the padding values directly;
-  when the text itself grows (e.g. wraps to an extra line), the section should grow with
-  it automatically because height is content-driven, never fixed.
-- Balance the gap ABOVE a divider line with the gap BELOW it. A common bug: a card has a
-  heading/body block, then a horizontal divider, then more text below — and the margin
-  before the divider is visually bigger than the padding after it, making the block feel
-  top-heavy. Keep the two gaps close in size (e.g. a small margin-top like mt-2 into the
-  divider, matching a pt-4/pt-5 out of it), and re-check visually — don't assume a
-  Tailwind default spacing step (mt-5, mb-6, etc.) is automatically balanced against its
-  neighbor.
-- When a row of cards has a bottom "footer" line of variable-length text (a metric, a
-  target, a short stat) that might wrap to one line on some cards and two lines on
-  others, give that footer container a min-height sized for the WORST CASE — including
-  its own top padding, not just the text's own line-height — so the divider line above
-  it sits at the exact same y-position across every card in the row, regardless of how
-  many lines any individual card's footer text wraps to.
-- Numbered badges (e.g. a "Suite 01" chip on a card) restart at 01 for each independent
-  logical group of content rather than continuing a running count from a prior group —
-  the reset itself communicates "this is a separate set," not a continuation of the one
-  before it.
+Everything about where things sit and how far apart they are. Motion is deliberately
+NOT in this section — see section 7, which is self-contained.
+
+4.1 THE SHELL — one measure, every section
+  `relative mx-auto w-full max-w-[1360px] px-5 md:px-8`
+  One exported constant, imported by every section, page masthead, navbar and footer.
+  20px inset on a phone, 32px from 768 up. Nothing on the page defines its own measure,
+  which is what makes the hero headline's left edge land on the footer's left edge and
+  every centred heading share one axis. Avoid nested max-widths — two containers drift
+  apart on wide screens and the drift is invisible until someone screenshots it.
+
+4.2 VERTICAL RHYTHM — four band sizes, chosen by weight not by habit
+  py-12 md:py-16   48/64px   supporting bands (a pillars strip, a closing CTA card)
+  py-14 md:py-16   56/64px   a single-card band
+  py-16 md:py-24   64/96px   the standard content section (calculator, walkthrough)
+  py-20 md:py-28   80/112px  a whole page's body (FAQ, a suite dossier)
+  A band is sized by PADDING, never by min-height plus flex-centering: content-driven
+  height means an extra line of copy grows the band instead of eating its air.
+
+4.3 A FIXED NAVBAR CHANGES WHAT "BALANCED" MEANS ON THE BAND BELOW IT
+  The bar is 72px tall, 84px from `md`, and it is `fixed`, so it sits OVER the first
+  band rather than pushing it down. A page masthead therefore needs its top padding to
+  carry the bar's height plus the gap it actually wants:
+     pt-[112px] pb-10   = 72 + 40 above, 40 below   (mobile)
+     md:pt-[132px] pb-12 = 84 + 48 above, 48 below  (desktop)
+  Set the top padding to the same number as the bottom and the band reads top-heavy by
+  exactly the height of the bar. This is the single most repeated spacing bug in a fixed
+  -header layout.
+
+4.4 THE 12-COLUMN GRID, AND THE GAP FLOOR THAT BREAKS IT
+  Content rows are `grid grid-cols-12 gap-x-0 gap-y-8 lg:gap-x-10`, with children at
+  `col-span-12 lg:col-span-5` / `lg:col-span-7` and similar.
+
+  THE LAW: `repeat(12, minmax(0, 1fr))` lets every TRACK collapse to zero, but column
+  GAPS never shrink. A 12-column grid therefore has a hard minimum width of 11 × gap.
+  At `gap-x-10` that is 440px — wider than a 412px phone's 372px of shell — so the grid
+  overflows by ~68px, every `col-span-12` child is laid out 440px wide, and the whole
+  column's contents sit ~34px right of centre. `body { overflow-x: clip }` hides the
+  scrollbar and the section simply looks mis-centred, which is why this is so hard to
+  spot from a screenshot.
+
+  THE RULE: a 12-column grid carries `gap-x-0` until the width at which its columns
+  actually split, and only then takes its gap (`lg:gap-x-10`). A grid whose children
+  split at every width may keep a gap, sized so that 11 × gap fits the narrowest shell
+  — e.g. a `col-span-6` pair at `gap-x-4 sm:gap-x-8` (176px, comfortably inside 335px).
+
+4.5 CENTRING SOMETHING BETWEEN TWO UNEQUAL FLANKS
+  Applies to the navbar and to any row with a mark on one side and controls on the other.
+  Three approaches, only one of which is correct:
+    absolute left-1/2 -translate-x-1/2 — truly page-centred, but cannot be squeezed; when
+      the flanks grow it paints the centre group straight over them.
+    flex-1 on the middle — never overlaps, but centres the group in the space that is
+      FREE, and free space is not symmetrical when one flank is 3× the other. The group
+      lands visibly off the page's centre line.
+    grid-cols-[1fr_auto_1fr] — CORRECT. The flanks are equal by construction whatever is
+      inside them, the middle track is its own content, and it lands on the page's centre
+      line. It participates in layout, so it holds content rather than overlapping.
+  Flank items take `justify-self-start` / `justify-end`, since each track is now wider
+  than its contents. Below the breakpoint the middle item is `display: none`, its track
+  collapses to 0, and equal flanks reproduce `justify-between` exactly.
+
+4.6 GROUPING BY GAP — the cluster rule
+  Related controls are grouped by SPACING, not by rules and dividers. A row of three
+  destinations that belong together sits at one small equal gap (10px, `gap-2.5`); a
+  divider plus two 16px gaps between them reads as 33px of separation in the middle of
+  the group, which makes one cluster look like two that drifted together.
+  Corollary: a button in a dense bar is not the same object as a button at the end of a
+  section. Bar pills run tighter (px-5 py-3 / px-4 py-3 at 13px) than page pills
+  (px-6 py-3.5). Keep the VERTICAL padding identical across pills in one row so they
+  stand at the same height; vary the horizontal by label length so a short label does not
+  look padded beside a long one.
+
+4.7 TWO COLUMNS THAT MUST START AND END TOGETHER
+  Grid's default `items-stretch` gives the row's height to both columns; then
+  `h-full` + `justify-between` on the list and `lg:h-full` on the panel makes the first
+  item's top edge and the last item's bottom edge land on the panel's edges.
+  `lg:h-full` has to be on the GRID ITEM (a wrapper counts), or an inner `h-full` is
+  100% of a wrapper that already shrank to its content.
+  Never solve this with `items-center`: two columns of unequal content sharing one centre
+  line is not a structure, it is an average, and nothing lines up with anything.
+
+4.8 HEADING BLOCKS
+  - Centred over the section, `max-w-4xl` (the larger scale needs the room: a 27-char
+    heading at 64px measures ~820px and a 3xl measure would wrap it).
+  - Two scales only: clamp(30px, 4.8vw, 64px) for a section that opens a chapter, and
+    clamp(27px, 3.9vw, 48px) for a supporting one. Scrolling out of a 64px heading into a
+    48px one is what reads as a mismatch — copy leading and tracking across too, or the
+    sizes will match while the line spacing does not.
+  - mt-10 md:mt-12 from the heading block into the content row.
+  - `text-wrap: balance` on every heading, plus a non-breaking space before the last word
+    of a heading or tagline so a line can never end as a single orphan word.
+
+4.9 PADDING & RADIUS SCALE (both move together — a small radius wants small padding)
+  999px   pills, marks, chips
+  6–10px  micro UI inside an illustrated window (buttons, fields, avatars)
+  14px    an illustrated window itself
+  16px    a list/step card                     px-4 py-4 sm:px-5 sm:py-6
+  18–22px cards and panels                     px-6 py-10 md:px-12 md:py-11
+  24–26px large containers and stage panels
+  A radius above ~26px on a small element reads as a lozenge, and below ~14px on a large
+  panel reads as a box: the two scales are not interchangeable.
+
+4.10 GAPS INSIDE A COMPONENT
+  gap-1 / gap-1.5   glyph to its own label (a badge, an inline icon)
+  gap-2 / gap-2.5   controls in a cluster
+  gap-3 / gap-4     a mark and the text block beside it
+  gap-5 / gap-6     items in a list that are separate thoughts
+  gap-x-10          two columns of a content row
+  gap-y-8 / gap-y-16 stacked rows, larger when the rows are whole subjects
+
+4.11 TEXTURE NEVER SITS BEHIND TEXT
+  Every light band carries a dot grid. Any run of copy on top of one wears `.plate`: a
+  `::before` at `inset: -28px -36px -22px -36px`, radius 48px, filled with the band's own
+  base colour and pushed to `z-index: -1`. The result is a soft untextured field behind
+  the words with no visible edge. Asymmetric insets on purpose — optical padding around a
+  block of type is wider at the sides than above and below.
+
+4.12 SMALL PLACEMENT RULES THAT KEEP EARNING THEIR PLACE
+  - Balance the gap ABOVE a divider with the gap BELOW it. Don't assume two Tailwind
+    steps (mt-5 into it, pt-4 out of it) are balanced — check the rendered pair.
+  - Give a variable-length card footer a min-height sized for the WORST case, including
+    its own top padding, so the divider above it lands at the same y across a row.
+  - Numbered badges restart at 01 for each independent group; the reset is what says
+    "separate set" rather than "continuation".
+  - Elements read as one unit (icon + heading, label + value) stay on one row at every
+    breakpoint.
+  - Verify zero horizontal overflow at 320–414px after ANY layout change.
 
 
 5. BACKGROUND TEXTURE SYSTEM (reusable utility classes)
@@ -316,28 +413,161 @@ h) BADGES / PILLS / CHIPS:
    without using a solid fill.
 
 
-7. MOTION & INTERACTION PRINCIPLES
+7. MOTION & ANIMATION SYSTEM
 ----------------------------------------------------
-- Hover on any card: lift (translate-y -2px to -6px) + shadow deepens (larger blur/
-  spread, same hue, slightly higher opacity) + duration-300 ease-out. This exact
-  three-part formula (lift + shadow + duration-300) is the single hover language used
-  across every card type on the site — don't invent a different hover effect per
-  component.
-- Icon badges inside cards often add a secondary hover flourish on top of the card
-  lift: scale up slightly (1.05–1.1) and/or rotate a few degrees — signals
-  "interactive/alive" without being distracting.
-- Floating UI (chat widget, dropdown menus) uses spring-physics transitions (via
-  Framer Motion: type "spring", stiffness ~320-340, damping ~24-28) for open/close,
-  scaling from the anchor corner (transformOrigin set to the corner it's pinned to,
-  e.g. "bottom right") rather than the element's center — prevents any lateral drift
-  during the animation.
-- Slide-down menus/panels animate height (0 → auto) + opacity together,
-  duration ~0.25s, ease "easeInOut" — used for mobile nav dropdowns.
-- No scroll-triggered animations, no parallax, no auto-playing carousels of content
-  (the one exception is a slow, pausable marquee/logo-scroll style animation used only
-  for passive, non-critical strip content — 25s linear loop, pauses on hover).
-- Buttons/links: color/background transitions only (transition-colors), no movement,
-  keeping primary actions feeling stable and "clickable" rather than playful.
+Self-contained on purpose: everything that MOVES lives in this section, and nothing in
+section 4 depends on any of it. All of it is CSS — there is no animation library in the
+build. JavaScript only ever toggles a class or sets a `key`; the browser owns the curve.
+
+7.1 THE FOUR EASING TOKENS — every animation on the site uses one of these
+  --ease-out        cubic-bezier(0.22, 1, 0.36, 1)    expo-out. Covers most of the
+                    distance immediately, then settles. The default for reveals,
+                    hovers and anything that should feel quick but not abrupt.
+  --ease-mg         cubic-bezier(0.32, 0.72, 0, 1)    the Apple settle: a long, flat
+                    tail with NO overshoot. Used where nothing may wobble — exits,
+                    wipes, anything carrying type.
+  --ease-mg-bounce  cubic-bezier(0.34, 1.28, 0.44, 1) the same curve with a small
+                    overshoot past 1. 1.28 rather than the ~1.5 a tiny control could
+                    take: a window full of text cannot wobble or the type doubles for
+                    a frame. The smallest overshoot that is still felt.
+  sheet curve       cubic-bezier(0.76, 0, 0.24, 1)    a symmetric in-out for a full
+                    panel travelling a long distance (the mobile menu).
+  Durations cluster in three bands: 0.2–0.36s for a state change, 0.6–0.9s for an
+  entrance, 15–29s for ambient background loops. Nothing sits between 1s and 15s.
+
+7.2 ENTRANCE — the reveal
+  `.reveal` = opacity 0 + translate3d(0, 16px, 0) → none, 0.6s --ease-out on both.
+  Driven by ONE shared IntersectionObserver (threshold 0, rootMargin 0 0 140px 0), so
+  an element begins its entrance ~140px before it reaches the viewport and is already
+  settled when it arrives. Fires ONCE — an entrance that replays on every scroll-past
+  is a distraction and a permanent observer cost.
+  Stagger with `transitionDelay` on the wrapper, index × 60–70ms, CAPPED at 200–240ms:
+  uncapped, the ninth card in a grid waits 600ms and the reader has already read it.
+  `.line-mask` is the heading variant: a clipping block whose inner span travels from
+  110% to 0 over 0.9s, so a line rises out of nothing rather than fading.
+
+7.3 THE MOTION-GRAPHICS FAMILY — blur-to-solid, used only inside the illustrated stage
+  The signature: an element arrives slightly small, slightly low and BLURRED, then
+  resolves. It reads as focus being pulled rather than as a slide.
+  .mg        0.76s --ease-mg-bounce, `both`. Blur is animated to 0 by 45% of the
+             timeline, deliberately BEFORE the overshoot — a blur still animating
+             through an overshoot would be driven to a negative radius and clamp,
+             which shows as a hitch.
+  .mg-wipe   0.86s --ease-mg. The same arrival for something that reveals along an
+             axis instead of scaling.
+  .mg-out    0.36s --ease-mg. The exit, and it is the entrance played backwards
+             (solid → blurred → gone) rather than a plain fade, so a panel leaves the
+             way it came. The JS constant that keeps the outgoing panel mounted
+             (EXIT_MS = 360) MUST equal this duration; if they drift, the panel either
+             unmounts mid-animation or lingers.
+  .stage-swap  0.78s bounce, scale 1.04 → 1 with a 5px blur clearing at 40%. The
+             CONTENTS changing.
+  .stage-pulse 0.66s bounce, scale 0.985 → 1, i.e. inward. The CONTAINER acknowledging
+             that its contents changed. Two different jobs, so two animations.
+  Stagger inside the stage runs ~120–160ms between sibling elements, which is what makes
+  a panel read as one wave rolling through rather than five separate arrivals.
+  TRICK WORTH KEEPING: to bounce a container that also holds cross-fading children,
+  put the animation on a separate absolutely-positioned skin layer with a `key` tied to
+  the current item. Changing the key remounts the skin and restarts its animation
+  without touching the children's own transitions.
+
+7.4 STATE METERS — animation as information, not decoration
+  `.dwell-ring` is an SVG circle whose `stroke-dashoffset` runs from full to zero over
+  `var(--dwell)` (5600ms), LINEAR — a countdown must not ease, or it lies about how much
+  time is left. `stroke-dasharray` is 2πr computed for the exact radius (116.24 at
+  r=18.5); a guessed value silently under- or over-fills.
+  `.dwell-hold` pauses it with `animation-play-state: paused`, which holds the exact
+  frame — which is why the JS timer behind it must BANK its remaining time rather than
+  restart, or the drawn countdown and the real one diverge and the ring visibly lies.
+  Restart-on-reselect is done with `key={turn}`, a counter bumped on every commit
+  INCLUDING one that lands on the item already showing; a class toggle cannot restart a
+  CSS animation, a remount can.
+  The meter must not run while its section is off screen: gate it on the same
+  IntersectionObserver flag as the timer, or a reader arriving a minute in finds a
+  countdown that finished 55 seconds ago.
+
+7.5 CONTROLS, DISCLOSURES AND OVERLAYS
+  .disclose   grid-template-rows 0fr → 1fr, 0.34s --ease-out, with opacity at 0.24s.
+              The one technique that opens to the content's OWN height — no max-height
+              guess that clips a long answer or leaves a short one hanging.
+  .row-fill   scaleY 0 → 1, 0.45s cubic-bezier(0, 0, 0.2, 1), transform-origin set from
+              the edge the pointer crossed, so a fill grows from where you came in and
+              retracts toward where you leave. BOTH states must be hand-written CSS:
+              pairing Tailwind's `scale-y-0` (a six-function transform list) with a
+              plain `transform: scaleY(1)` gives two states that cannot interpolate
+              component-wise, and the fill snaps instead of growing.
+              Drive it from a pointer-derived class, NOT `:hover` — the browser does not
+              re-evaluate :hover while the page scrolls under a stationary cursor, so a
+              hover-driven fill sticks on whichever row you were over before the scroll.
+  .peek       0.5s scale+rotate entrance for a hover preview card; .peek-reel moves ONE
+              transform (0.62s expo, cubic-bezier(0.16, 1, 0.3, 1)) across a pre-rendered
+              tall reel, so changing rows mounts nothing and reloads no image.
+  menu sheet  transform 0.66s cubic-bezier(0.76, 0, 0.24, 1), with `visibility` switched
+              on `step-end` so the panel is not focusable during its exit.
+  small pops  0.26–0.32s --ease-out `both` for chat bubbles and badges; the typing dots
+              are a 1.1s loop staggered 0.14s apart.
+
+7.6 AMBIENT BACKGROUND MOTION — the only thing that loops forever
+  The dark aurora bands carry 5–6 overlapping gradient layers on 15s–29s
+  `ease-in-out infinite alternate` loops (glow-breathe 16s, fold-a 15s, fold-b 19s,
+  fold-c 25s, billow 29s, sheen 23s). Deliberately mutually prime-ish durations so the
+  composite never visibly repeats. Nothing here moves fast enough to be noticed
+  directly — it should read as light shifting, never as an animation.
+
+7.7 WHAT DOES NOT MOVE — and this list is as load-bearing as the rest
+  - BUTTONS. No slide, no scale, no ripple. A pill holds its position and shifts TONE
+    on hover (0.2s ease) and dims to 0.82 opacity on press (0.12s). A hover state exists
+    to confirm the control is under the pointer; moving it makes the eye track something
+    that is not going anywhere. Both tones are one hue at two weights — a hover that
+    arrives at a DIFFERENT brand colour reads as the button changing what it will do.
+  - The navbar. It does not retract on scroll. A bar that comes and goes makes the reader
+    check whether the navigation is there before reaching for it. The only thing that
+    answers the scroll is its shadow: hairline at rest, soft shadow once the page has
+    moved under it.
+  - Type, at any point, for any reason other than an entrance. Transform-scaling rendered
+    text softens glyph edges; where a "bigger when active" effect is wanted, prefer
+    scaling the OTHER items down (0.975) so the one being read renders at 1:1.
+
+7.8 INTERACTION RULES THAT PROTECT THE MOTION
+  - Anything that auto-advances needs a real pause. Hover and focus are pointer and
+    keyboard gestures; a touchscreen has neither, so an explicit pause/resume control is
+    required (WCAG 2.2.2), and it must sit OUTSIDE any `aria-hidden` decoration.
+  - Hold the clock on the ACTIVE item only. Hovering an inactive one should not stop it.
+  - `:focus-visible`, never `:focus`, for a focus-driven hold: clicking a button focuses
+    it and focus stays put, so a plain `onFocus` hold stops the timer permanently the
+    first time anyone clicks. Browsers do not apply :focus-visible to pointer focus.
+  - Clear hover state in the IntersectionObserver too: `pointerleave` does not reliably
+    fire when the ELEMENT moves off a stationary pointer (i.e. on scroll), so a hold can
+    survive the section leaving the screen with no event coming to release it.
+  - Check `e.pointerType === 'mouse'` on pointerenter. It fires for touch as well, and a
+    touch has no matching leave — that is the sticky-hover bug.
+  - Wrap any :hover rule in `@media (hover: hover)`. A tap leaves a touchscreen element
+    matching :hover until something else is tapped; guarding up front is one line, where
+    undoing it afterwards is one rule per animated property.
+
+7.9 PERFORMANCE — this system has to run on a cheap phone
+  - `filter: blur()` costs a convolution over the painted area EVERY frame. Blur the
+    smallest element that contains the content, never a wrapper — moving two blurs from
+    a centring wrapper onto the inner block cut the blurred area by ~32% for an
+    identical result.
+  - No `will-change` on anything that repeats. It held a compositor layer permanently for
+    ~25 buttons. The browser promotes a transform transition on its own, for its duration.
+  - Gate scroll reads to one per animation frame, and gate every autoplay, entrance and
+    meter on an IntersectionObserver — nothing animates while off screen.
+  - `animation-fill-mode: both` plus `filter: none` in the final keyframe: leaving a
+    non-none filter behind keeps a compositing layer alive after the animation ends.
+  - Write `filter: none`, never `filter: blur(0px)` — minifiers rewrite the latter to
+    `blur()`, which is invalid and drops the whole declaration.
+
+7.10 REDUCED MOTION
+  One stylesheet, imported LAST so it can override everything above it. Entrances are
+  CANCELLED rather than shortened: shortening still fires a blur and a scale, which is
+  exactly the class of movement the preference is about. Because the entrance animations
+  use `fill-mode: both`, cancelling one strands the element at its `from` keyframe —
+  blurred, offset and invisible — so the resting state must be restored explicitly
+  (`opacity: 1; filter: none; transform: none`).
+  Autoplay does not start at all under the preference, and the pause control is hidden
+  with it: a button for something that is not happening is worse than no button.
 
 
 8. RESPONSIVE DESIGN RULES (hard-won — corrected during development)
@@ -391,7 +621,14 @@ sitting inside a tight badge, so they don't look too thin at small sizes.
 [ ] Build one dark-gradient-card component with the icon-badge-hover-rotate detail.
 [ ] Build the two-tone comparison-card pattern for any "before/after" or "us vs them"
     content instead of a table.
-[ ] Apply the single hover formula (lift + shadow + 300ms ease-out) to every card type.
+[ ] Apply the single hover formula (lift + shadow + 300ms ease-out) to every card type,
+    and keep BUTTONS out of it — they change tone only, and never move (7.7).
+[ ] Set up the four easing tokens (7.1) before writing a single animation, so nothing
+    invents its own curve.
+[ ] Give every 12-column grid `gap-x-0` until its columns actually split (4.4), and
+    centre anything between unequal flanks with `1fr auto 1fr` rather than flex-1 (4.5).
+[ ] Pad the first band under a fixed header by the header's height PLUS the gap it
+    wants, or it reads top-heavy by exactly that height (4.3).
 [ ] Audit every section at 320-414px width: nothing is `hidden` without a replacement,
     no horizontal scroll, icon+label pairs stay inline, paddings match across sections.
 [ ] Strip every trailing full stop from copy (headings, cards, ROI/metric values,
