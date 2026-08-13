@@ -7,13 +7,22 @@ import { SHELL } from '../lib/layout.js';
 
 const MIN_EMPLOYEES = 50;
 const MAX_EMPLOYEES = 10000;
-const SAVINGS_PER_EMPLOYEE = 320;
+
+/* Exported because the "how it works" section illustrates this calculator's
+   output, and a second copy of these two numbers would be a copy that drifts.
+   It also keeps the FORMATTING honest: the figure below is built with
+   `toLocaleString()`, which follows the reader's locale — an Indian visitor
+   sees "1,60,000" where a British one sees "160,000". A hardcoded string in
+   the illustration would have disagreed with the live control right next to
+   it, on exactly the locale Ignitho's Bengaluru and Chennai offices sit in. */
+export const SAVINGS_PER_EMPLOYEE = 320;
+export const DEFAULT_EMPLOYEES = 500;
 
 /* Self-contained: the employee count is of no interest to anything else on the
    page, so nothing else holds it. That also means dragging the slider
    re-renders this section alone rather than the whole site. */
 export function RoiCalculator() {
-  const [companyEmployees, setCompanyEmployees] = useState(500);
+  const [companyEmployees, setCompanyEmployees] = useState(DEFAULT_EMPLOYEES);
 
   const estimatedSavings = useMemo(
     () => (companyEmployees * SAVINGS_PER_EMPLOYEE).toLocaleString(),
@@ -33,7 +42,10 @@ export function RoiCalculator() {
         <Cross className="-top-7 right-1 md:right-3" />
 
         <div className="relative">
-          <Reveal className="plate mx-auto max-w-3xl text-center">
+          {/* `max-w-4xl`, up from 3xl — at the 48px ceiling the sentence
+              measures 803px, so a 768px column was the only thing breaking it
+              in two. Same change as the pillars heading above. */}
+          <Reveal className="plate mx-auto max-w-4xl text-center">
             {/* The heading tells you what to DO and what you get back, which
                 is what a heading over a control should do. "Routine work
                 already costs you this much" was a statement — true, but it
@@ -47,11 +59,12 @@ export function RoiCalculator() {
             <Kicker index="03" centered>
               Interactive Enterprise Savings Calculator
             </Kicker>
-            <h2 className="mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(27px,3.9vw,48px)] text-ig-ink">
-              <span className="block">Set your headcount</span>
-              <span className="serif-accent block font-normal text-ig-purple">
-                see what you save
-              </span>
+            {/* One line, the two halves inline. `balance` handles the phone,
+                where 36 characters cannot fit one line at any size a section
+                heading can be set in. */}
+            <h2 className="balance mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(27px,3.9vw,48px)] text-ig-ink">
+              Set your headcount{' '}
+              <span className="serif-accent font-normal text-ig-purple">see what you save</span>
             </h2>
           </Reveal>
 

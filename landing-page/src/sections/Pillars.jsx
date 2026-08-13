@@ -17,7 +17,9 @@ export function Pillars() {
 
         {/* centred: no bottom rule, which would read as a left-aligned
             device under a centred heading */}
-        <Reveal className="plate relative mx-auto max-w-3xl text-center">
+        {/* `max-w-4xl`, up from 3xl. At the 48px ceiling the sentence measures
+            828px, so a 768px column was the only reason it broke in two. */}
+        <Reveal className="plate relative mx-auto max-w-4xl text-center">
           {/* Not another money line. Two of these four cards are about money
               and two are about risk and speed, so a heading promising the
               money mis-sells half its own contents — and "pays" already
@@ -25,15 +27,19 @@ export function Pillars() {
           <Kicker index="02" centered>
             Strategic Pillars
           </Kicker>
-          <h2 className="mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(27px,3.9vw,48px)] text-ig-ink">
-            <span className="block">What actually changes</span>
-            <span className="serif-accent block font-normal text-ig-purple">
-              once it is live
-            </span>
+          {/* ONE LINE: the two halves are inline now rather than forced blocks.
+              `balance` still earns its place at the narrow end — 37 characters
+              cannot fit one line on a phone at any size a section heading can be
+              set in, so below about 600px it wraps, and balance is what makes
+              that break fall evenly instead of stranding the last word.
+
+              The "04 / 04" that sat under this has gone. It counted the pillars
+              below, which the reader can see are four of four without being
+              told, and it was the only counter of its kind on the page. */}
+          <h2 className="balance mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(27px,3.9vw,48px)] text-ig-ink">
+            What actually changes{' '}
+            <span className="serif-accent font-normal text-ig-purple">once it is live</span>
           </h2>
-          <span className="mt-5 block font-mono text-[11px] font-bold tracking-[0.07em] text-ig-muted">
-            04 / 04
-          </span>
         </Reveal>
 
         <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">

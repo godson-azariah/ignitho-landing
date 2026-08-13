@@ -1,20 +1,22 @@
-import { Menu } from 'lucide-react';
-import { NAV_LINKS } from '../data/navigation.js';
+import { ArrowUpRight, MessageCircle, Menu } from 'lucide-react';
+import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
 import { useScrollChrome } from '../lib/useScrollChrome.js';
 import { SwapButton, TealButton } from './SwapButton.jsx';
 
 /* Owns its own scroll state — nothing else on the page needs to know whether
-   the bar is retracted, so nothing else has to hold it. */
-export function Masthead({ menuOpen, onOpenMenu, goHome, navAction }) {
-  const { hidden, scrolled } = useScrollChrome();
+   the page has moved under the bar, so nothing else has to hold it. */
+export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact, activeNav }) {
+  const { scrolled } = useScrollChrome();
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-out ${
-        hidden && !menuOpen ? '-translate-y-full' : 'translate-y-0'
-      }`}
-    >
+    /* ALWAYS THERE. The bar used to retract on a downward scroll and return on
+       an upward one; it no longer moves at all, so there is no transform on it
+       and no transition to run one.
+
+       The only thing that still answers the scroll is the shadow below, which
+       is a change in the bar rather than a change to whether the bar exists. */
+    <header className="fixed inset-x-0 top-0 z-50">
       {/* A plain white bar, balanced in three: wordmark left, destinations
           optically centred, one action right. It carries a hairline at rest
           and lifts onto a soft shadow once the page has moved under it. */}
@@ -23,12 +25,37 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction }) {
           scrolled ? 'shadow-[0_16px_36px_-30px_rgba(22,6,58,0.95)]' : 'shadow-none'
         }`}
       >
+        {/* A THREE-COLUMN GRID WITH EQUAL FLANKS — which is what "centred on the
+            page" actually requires, and neither of the two previous layouts
+            could give.
+
+            `absolute left-1/2` centred the destinations on the page but could
+            not be squeezed, so at 1024 it painted them straight over the
+            buttons. `flex-1` fixed the overlap by centring them in the space
+            that was FREE — and free space is not symmetrical here: the actions
+            on the right are roughly three times the width of the wordmark on
+            the left, so the group sat about 90px right of where the eye expects
+            the middle of a page to be.
+
+            `1fr auto 1fr` gives the two flanks the same width by construction,
+            whatever is inside them. The middle track is the destinations at
+            their natural size, and equal tracks either side put it on the page's
+            centre line — the same line the section headings below it centre on.
+
+            Unlike absolute positioning this participates in layout: the flanks
+            are `minmax(auto, 1fr)`, so they hold their content and the row
+            cannot silently overlap. At 1024 — the width this appears at — the
+            three tracks come to about 930px inside a 960px shell.
+
+            Below `lg` the middle item is `display: none`, its track collapses to
+            zero, and equal flanks put the wordmark hard left and the menu button
+            hard right: exactly what `justify-between` was doing. */}
         <div
-          className={`${SHELL} flex h-[72px] items-center justify-between gap-6 md:h-[84px]`}
+          className={`${SHELL} grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[84px]`}
         >
           <button
             onClick={goHome}
-            className="flex shrink-0 items-baseline gap-1.5"
+            className="flex items-baseline gap-1.5 justify-self-start"
             aria-label="Ignitho AI"
           >
             <span className="text-[21px] font-black tracking-[-0.03em] text-ig-ink md:text-[24px]">
@@ -39,32 +66,157 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction }) {
             </span>
           </button>
 
-          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-9 lg:flex">
-            {NAV_LINKS.map((label) => (
-              <button
-                key={label}
-                onClick={navAction(label)}
-                className="group relative py-2 text-[15px] font-medium tracking-[-0.01em] text-ig-muted transition-colors duration-300 hover:text-ig-ink"
-              >
-                {label}
-                {/* wipes in from the left, out to the right */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 -bottom-0.5 h-px origin-right scale-x-0 bg-ig-purple transition-transform duration-500 ease-out group-hover:origin-left group-hover:scale-x-100"
-                />
-              </button>
-            ))}
+          {/* THE MIDDLE TRACK — sized to its own content, centred by the two
+              equal tracks either side of it.
+
+              The gap steps rather than sitting at one value: 20px where the row
+              is tightest and back to the original 36px from `xl`, where there
+              are 250-odd pixels spare and the destinations should breathe. The
+              type stays at 15px at every width — shrinking a nav label to buy
+              layout is the kind of saving a reader pays for. */}
+          <div className="hidden items-center justify-center gap-5 lg:flex xl:gap-9">
+            {/* FAQ IS FILTERED OUT HERE AND RENDERED BESIDE THE ACTIONS.
+
+                It is the odd one among the four: the other three scroll to a
+                section of the page you are already on, and this one leaves for
+                a page of its own. Sitting it with them implied it was another
+                stop on the same journey. Beside "Contact Sales" — the other
+                thing you go to rather than scroll to — it reads as what it is. */}
+            {NAV_LINKS.filter((l) => l !== FAQ_LABEL).map((label) => {
+              const on = label === activeNav;
+              return (
+                <button
+                  key={label}
+                  onClick={navAction(label)}
+                  /* `aria-current="page"` on the FAQ link and on whichever
+                      section is under the reader. It is the attribute that says
+                      "you are here" to anything not looking at the colour, and
+                      without it the state is purple type and nothing else. */
+                  aria-current={on ? 'page' : undefined}
+                  /* NO WEIGHT CHANGE IN THE ACTIVE STATE, deliberately. Medium
+                      to semibold widens the label by a few pixels, and in a row
+                      that is centred between two fixed ends every neighbour
+                      shifts sideways as you scroll past a section boundary.
+                      Colour and the rule carry it instead; neither moves
+                      anything. */
+                  className={`group relative whitespace-nowrap py-2 text-[15px] font-medium tracking-[-0.01em] transition-colors duration-300 ${
+                    on ? 'text-ig-purple' : 'text-ig-muted hover:text-ig-ink'
+                  }`}
+                >
+                  {label}
+                  {/* The same rule serves both states: it wipes in from the left
+                      on hover, and sits drawn while the section is current. One
+                      element, so moving between the two is a transition rather
+                      than a swap. */}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 -bottom-0.5 h-px bg-ig-purple transition-transform duration-500 ease-out ${
+                      on
+                        ? 'origin-left scale-x-100'
+                        : 'origin-right scale-x-0 group-hover:origin-left group-hover:scale-x-100'
+                    }`}
+                  />
+                </button>
+              );
+            })}
           </div>
 
-          <div className="flex shrink-0 items-center gap-4">
-            <span aria-hidden="true" className="hidden h-5 w-px bg-ig-ink/12 lg:block" />
+          {/* ONE GAP FOR ALL THREE, AND IT IS A SMALL ONE.
 
-            {/* below lg the action lives in the menu sheet, so the bar keeps
+              These are the three things you LEAVE for rather than scroll to,
+              and they now read as one cluster: 10px between each, nothing
+              between them but that. Before, the FAQ link was separated from the
+              pills by 16px, a hairline rule and another 16px — 33px of
+              separation in the middle of a group of three, which made the
+              cluster look like two groups that had drifted together.
+
+              `justify-end` because this is a grid track wider than its contents
+              now — the flank is as wide as the opposite one, so without it the
+              buttons would sit at the track's left edge instead of the page's
+              right. */}
+          <div className="flex items-center justify-end gap-2.5">
+            {/* THE ONE ICON IN THE BAR, AND IT IS TEAL.
+
+                Colour with a job rather than colour for its own sake: the bar is
+                otherwise a wordmark, four labels and two pills, and this single
+                green mark is what stops the right-hand group reading as a wall
+                of type. Teal is the page's accent, so it is the colour already
+                licensed to appear once and mean "here".
+
+                Still a link rather than a button — same type, same size, same
+                hover rule and the same active treatment as the three in the
+                centre. It moved position, not rank. */}
+            {(() => {
+              const on = activeNav === FAQ_LABEL;
+              return (
+                <button
+                  onClick={navAction(FAQ_LABEL)}
+                  aria-current={on ? 'page' : undefined}
+                  className={`group relative hidden items-center gap-2 whitespace-nowrap py-2 text-[15px] font-medium tracking-[-0.01em] transition-colors duration-300 lg:flex ${
+                    on ? 'text-ig-purple' : 'text-ig-muted hover:text-ig-ink'
+                  }`}
+                >
+                  <MessageCircle
+                    className="h-4 w-4 shrink-0 text-ig-teal"
+                    strokeWidth={2.2}
+                    aria-hidden="true"
+                  />
+                  {FAQ_LABEL}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 -bottom-0.5 h-px bg-ig-purple transition-transform duration-500 ease-out ${
+                      on
+                        ? 'origin-left scale-x-100'
+                        : 'origin-right scale-x-0 group-hover:origin-left group-hover:scale-x-100'
+                    }`}
+                  />
+                </button>
+              );
+            })()}
+
+            {/* below lg both actions live in the menu sheet, so the bar keeps
                 to a wordmark and one control */}
+            {/* TIGHTER THAN THE PAGE'S OTHER PRIMARY BUTTONS, on purpose. A
+                button in a 72px bar is not the same object as one at the end of
+                a section: it shares its row with a wordmark, three destinations
+                and a second action, and 24px of padding either side of a
+                13.5px label was reading as a wide pill in a crowded row rather
+                than as a compact control. 20/12 and 13px sit it beside "Sign
+                in" as a pair. */}
             <div className="hidden lg:block">
-              <TealButton className="!px-6 !py-3.5 !text-[13.5px]">
-                <span className="whitespace-nowrap">Schedule Executive Briefing</span>
+              <TealButton onClick={openContact} className="!px-5 !py-3 !text-[13px]">
+                <span className="whitespace-nowrap">Contact Sales</span>
               </TealButton>
+            </div>
+
+            {/* AN ANCHOR, NOT A BUTTON WITH A CLICK HANDLER. This leaves the
+                site for the application on another host, and a thing that
+                navigates has to be a link — for middle-click, copy-link, the
+                status-bar preview, and the role a screen reader announces.
+                `SwapButton`'s `as` prop is what makes that possible without
+                giving up the shared button styling.
+
+                No `target="_blank"`: signing in is continuing, not branching
+                off, and a new tab would leave the reader with a marketing page
+                behind the app they just opened.
+
+                Violet rather than teal. Teal is the action colour and it
+                belongs to the one primary action in this bar; a second teal pill
+                beside the first would make neither of them the primary. */}
+            <div className="hidden lg:block">
+              {/* One step tighter again — "Sign in" is half the label, so equal
+                  padding either side of the two would have made this pill look
+                  padded rather than compact. Same 12px vertical, so the two
+                  stand at exactly the same height. */}
+              <SwapButton
+                as="a"
+                href={SIGN_IN_URL}
+                variant="violet"
+                className="!px-4 !py-3 !text-[13px]"
+              >
+                <span className="whitespace-nowrap">Sign in</span>
+                <ArrowUpRight className="h-3 w-3" strokeWidth={2.6} />
+              </SwapButton>
             </div>
 
             <div className="lg:hidden">

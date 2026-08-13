@@ -26,8 +26,15 @@
 
   --teal: #00a274;
   --teal-ring: #00bc6a;
+  /* The darker green a teal button rests at under the pointer. It has been in
+     the Tailwind config as `ig.teal-hover` since the start; it is mirrored here
+     because the button now reads its colours from custom properties rather than
+     from utility classes. Both must say #0C8C74. */
+  --teal-hover: #0c8c74;
 
   --paper: #fbf9ff;
+  /* likewise `ig.paper-2` — the lavender the light button lifts to */
+  --paper-2: #f0e9ff;
   --text: #030303;
   --muted: #54595f;
   --divider: #b9bbc2;

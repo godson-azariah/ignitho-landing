@@ -1,62 +1,52 @@
 import { useCallback, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Play } from 'lucide-react';
+import { ArrowRight, Check, Play } from 'lucide-react';
 import { AgentSimulator } from '../components/AgentSimulator.jsx';
 import { HeroStage } from '../components/HeroStage.jsx';
 import { Kicker } from '../components/Kicker.jsx';
 import { Reveal } from '../components/Reveal.jsx';
 import { SwapButton, TealButton } from '../components/SwapButton.jsx';
 import { SHELL } from '../lib/layout.js';
+import { noOrphan } from '../lib/noOrphan.js';
 
 /* One suite, in full. Holds which accelerator is being simulated — the
    simulator itself owns the run. */
-export function Dossier({ suite, goHome }) {
+export function Dossier({ suite, openContact }) {
   const [simAccelerator, setSimAccelerator] = useState(null);
   const closeSimulator = useCallback(() => setSimAccelerator(null), []);
 
   return (
     <main>
-      {/* masthead · FLAVOUR A */}
-      <section
-        className="aurora relative overflow-hidden pb-16 pt-[104px] md:pb-20 md:pt-[136px]"
-      >
+      {/* masthead · FLAVOUR A
+
+          NO "BACK TO ALL SUITES", for the same reason the FAQ page lost its back
+          button: every suite has its own URL now, so the browser's back is the
+          way out — and it is the better one, because a drawn button always
+          returns to the catalogue while back returns to wherever the reader
+          actually came from, which might be the footer directory or a search
+          result or another suite.
+
+          Losing it also loses the divider row it sat in, and that row plus its
+          clearance was around 100px of masthead spent on one control. Padding
+          comes down with it, and the display size from 78px to 60px.
+
+          Centred, because nothing is left to align to a left edge. */}
+      <section className="aurora relative overflow-hidden pb-10 pt-[112px] text-center md:pb-12 md:pt-[132px]">
         <HeroStage />
 
         <div className={SHELL}>
-          <div className="relative">
-            {/* The one way back, so it is a button rather than a line of small
-                type — the same light pill the hero uses for its secondary
-                action, which is what makes it read as pressable at a glance.
-                The teal badge that used to sit opposite it has gone: it
-                classified the suite for a reader who has just chosen it, and
-                it was the loudest thing on the masthead. */}
-            <div className="flex flex-wrap items-center gap-4 border-b border-white/15 py-4">
-              <SwapButton
-                onClick={goHome}
-                variant="light"
-                className="px-5 py-3 text-[12.5px] font-semibold"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" />
-                Back to All Suites
-              </SwapButton>
-            </div>
-
-            {/* The 150px outlined suite number that used to sit in a column on
-                the right has gone. It was a wireframe device — the only one
-                left anywhere on the site — and it was competing with the
-                headline for the same glance while saying nothing the badge
-                above and the URL do not already say. Losing it also gives the
-                title the full measure, which is what a name this long wants. */}
-            <div className="pt-12 md:pt-20">
-              <h1 className="max-w-[18ch] font-extrabold leading-[0.93] tracking-[-0.042em] text-[clamp(32px,5.6vw,78px)] text-white">
-                {suite.name}
-              </h1>
-              <p className="serif-accent mt-7 max-w-2xl text-[22px] leading-[1.2] text-ig-lavender/85 md:text-[32px]">
-                {suite.tagline}
-              </p>
-            </div>
+          <div className="relative mx-auto max-w-3xl">
+            {/* `noOrphan` on both. Suite names run to 46 characters — "Banking,
+                Financial Services & Accounting Suite" — so they wrap whatever
+                the size, and without this the last line is regularly the single
+                word "Suite" sitting under everything else. */}
+            <h1 className="font-extrabold leading-[0.98] tracking-[-0.042em] text-[clamp(30px,4.6vw,60px)] text-white">
+              {noOrphan(suite.name)}
+            </h1>
+            <p className="serif-accent mx-auto mt-5 max-w-2xl text-[20px] leading-[1.25] text-ig-lavender/85 md:text-[26px]">
+              {noOrphan(suite.tagline)}
+            </p>
           </div>
         </div>
-
       </section>
       {/* spread · FLAVOUR B */}
       <section className="bg-b dots relative py-20 md:py-28">
@@ -151,24 +141,21 @@ export function Dossier({ suite, goHome }) {
                       ))}
                     </div>
 
-                    {/* A SWAP BUTTON'S LABEL CANNOT WRAP, SO ITS PADDING HAS
-                        TO GIVE INSTEAD.
+                    {/* THE BUTTON'S LABEL CANNOT WRAP, SO ITS PADDING HAS TO
+                        GIVE INSTEAD.
 
-                        Three faces ride one track and every one of them is
-                        `white-space: nowrap` — they have to be, or the three
-                        would be different heights and the swap would show a
-                        seam. So when the label is wider than the pill it is
-                        not wrapped, it is CLIPPED, at both ends, by the
-                        `overflow: hidden` that makes the swap work at all.
-                        "Schedule Executive Briefing" is 27 characters and
-                        this is the tightest pill on the site.
+                        `.btn` is `white-space: nowrap`, so a label wider than
+                        its pill does not fold onto a second line — it runs
+                        past the pill's own edges. This is the tightest button
+                        on the site: it is `w-full` inside the narrowest column
+                        the page has, and it once held a 27-character label.
 
-                        Trimming the padding is the only lever that does not
-                        touch the mechanism. `!` because `TealButton` sets
-                        `px-6` itself, and two same-specificity utilities
-                        resolve by source order rather than by intent. */}
-                    <TealButton className="mt-7 w-full !px-4 sm:!px-6">
-                      Schedule Executive Briefing
+                        Trimming the padding is what buys the room back. `!`
+                        because `TealButton` sets `px-6` itself, and two
+                        same-specificity utilities resolve by source order
+                        rather than by intent. */}
+                    <TealButton onClick={openContact} className="mt-7 w-full !px-4 sm:!px-6">
+                      Contact Sales
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </TealButton>
                   </div>

@@ -1,64 +1,50 @@
-/* The page's one button.
+/* The page's one button — a plain solid pill.
 
-   Three solid bands ride a single tilted track: the resting face, a middle
-   band in a fully saturated brand colour, then the arriving face. Hover shifts
-   the track by exactly one button height so the faces swap with no seam, a
-   ripple blooms from the centre, and the labels counter-rotate so they read
-   level at rest and at the end, tilting only in transit. `TealButton` is the
-   primary action — the same machine with the variant fixed. */
-/* Rest colour · the band that sweeps between · arrival colour.
-   Every middle band is a fully saturated brand colour — never a tint or a
-   shade of its neighbours, which is what made it look washed out. */
-const SWAP = {
-  teal: {
-    faceA: 'bg-ig-teal text-white',
-    faceM: 'bg-ig-violet-500',
-    faceB: 'bg-ig-violet text-white',
-    rip: 'bg-white/30'
-  },
-  violet: {
-    faceA: 'bg-ig-violet text-white',
-    faceM: 'bg-ig-purple',
-    faceB: 'bg-white text-ig-ink',
-    rip: 'bg-white/25'
-  },
-  light: {
-    faceA: 'bg-white text-ig-ink',
-    faceM: 'bg-ig-teal-ring',
-    faceB: 'bg-ig-teal text-white',
-    rip: 'bg-ig-ink/12'
-  },
-  ink: {
-    faceA: 'bg-ig-ink text-white',
-    faceM: 'bg-ig-violet-500',
-    faceB: 'bg-ig-teal text-white',
-    rip: 'bg-white/25'
-  }
+   It used to be a swap: three bands on a tilted track, the resting face sliding
+   up and out as a second brand colour arrived behind it, a ripple, a scale, and
+   two counter-rotating labels. All of that has gone. A hover state exists to
+   confirm that a control is under the pointer, and moving the control to say so
+   makes the eye follow something that is not going anywhere. So the pill now
+   holds perfectly still and only its tone shifts, which is how Apple's buttons
+   behave and why they feel like surfaces rather than animations.
+
+   The shape is untouched: same full-round radius, same paddings, same type.
+
+   The mechanism moved out of here entirely. There is no track to build, so
+   there are no face elements, no middle band, no ripple layer and no invisible
+   ghost copy sizing the pill — the children are simply the button's contents.
+   The variant now picks a class rather than a set of colour utilities, and
+   `buttons.css` maps that class to a resting tone and a hover tone.
+
+   The exported names are kept as they are. Every call site on the page imports
+   `SwapButton` or `TealButton`, and renaming a component across ten files is a
+   large diff in service of nothing a reader of those files would notice. */
+
+/* Resting tone · hover tone, both defined in `buttons.css`. Each pair is one
+   hue at two weights — never two different brand colours, which is what the
+   old arriving face was and what made a hover read as a change of intent. */
+const VARIANT = {
+  teal: 'btn--teal',
+  violet: 'btn--violet',
+  light: 'btn--light',
+  ink: 'btn--ink'
 };
 
-/* Every button on the site is a swap button: three solid bands ride one
-   tilted track on a springy curve, a ripple blooms from the centre, and the
-   whole pill scales up a touch. Labels counter-rotate so they read level. */
-export function SwapButton({ children, className = '', variant = 'violet', ...rest }) {
-  const { faceA, faceM, faceB, rip } = SWAP[variant] || SWAP.violet;
+/* `as` lets this render an anchor instead of a button, which the sign-in control
+   needs: it navigates to another origin, and a thing that navigates has to be a
+   link — for the middle-click, the copy-link, the status-bar preview and the
+   "link" role a screen reader announces. Styling it as a button and handling the
+   click in JS would take all of that away. `.btn` is `inline-flex`, so it works
+   identically on either element. */
+export function SwapButton({ as: Tag = 'button', children, className = '', variant = 'violet', ...rest }) {
   return (
-    <button {...rest} className={`swap group ${faceA} ${className}`}>
-      <span className="swap-ghost">{children}</span>
-      <span aria-hidden="true" className="swap-track">
-        <span className={`swap-face swap-face--a ${faceA}`}>
-          <span className="swap-text">{children}</span>
-        </span>
-        <span className={`swap-mid ${faceM}`} />
-        <span className={`swap-face swap-face--b ${faceB}`}>
-          <span className="swap-text">{children}</span>
-        </span>
-      </span>
-      <span aria-hidden="true" className={`swap-ripple ${rip}`} />
-    </button>
+    <Tag {...rest} className={`btn ${VARIANT[variant] || VARIANT.violet} ${className}`}>
+      {children}
+    </Tag>
   );
 }
 
-/* Teal rests, deep violet arrives — the primary action everywhere */
+/* Teal — the primary action everywhere */
 export function TealButton({ children, className = '', ...rest }) {
   return (
     <SwapButton
@@ -70,7 +56,3 @@ export function TealButton({ children, className = '', ...rest }) {
     </SwapButton>
   );
 }
-
-/* =========================================================================
-   APP
-   ========================================================================= */

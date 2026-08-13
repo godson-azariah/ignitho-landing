@@ -1,12 +1,12 @@
 import { ArrowRight, ArrowUpRight, X } from 'lucide-react';
-import { CERTS, NAV_LINKS } from '../data/navigation.js';
+import { CERTS, NAV_LINKS, SIGN_IN_URL } from '../data/navigation.js';
 import { useOverlay } from '../lib/useOverlay.js';
 import { SwapButton, TealButton } from './SwapButton.jsx';
 
 /* A full sheet over the page rather than a dropdown. It opens by sliding down
    and closes by sliding back up the same way — the CSS holds `visibility`
    through the whole exit so the close is never cut short. */
-export function MenuSheet({ open, onClose, goHome, navAction }) {
+export function MenuSheet({ open, onClose, goHome, navAction, openContact, activeNav }) {
   useOverlay(open, onClose);
 
   return (
@@ -43,41 +43,83 @@ export function MenuSheet({ open, onClose, goHome, navAction }) {
         <div className="mx-auto grid w-full max-w-[1360px] grid-cols-12 gap-x-0 gap-y-14 px-5 pb-16 pt-10 md:px-8 md:pt-16 lg:gap-x-10">
           {/* primary destinations, set large */}
           <nav className="col-span-12 lg:col-span-7">
-            {NAV_LINKS.map((label, i) => (
-              <button
-                key={label}
-                onClick={() => {
-                  onClose();
-                  navAction(label)();
-                }}
-                style={{ animationDelay: `${180 + i * 70}ms` }}
-                className="sheet-item group flex w-full items-center justify-between gap-6 border-b border-white/15 py-6 text-left first:border-t md:py-8"
-              >
-                <span className="flex items-baseline gap-5">
-                  <span className="font-mono text-[11px] font-bold tracking-[0.055em] text-white/35 transition-colors duration-300 group-hover:text-ig-teal-ring">
-                    0{i + 1}
+            {NAV_LINKS.map((label, i) => {
+              const on = label === activeNav;
+              return (
+                <button
+                  key={label}
+                  onClick={() => {
+                    onClose();
+                    navAction(label)();
+                  }}
+                  aria-current={on ? 'page' : undefined}
+                  style={{ animationDelay: `${180 + i * 70}ms` }}
+                  className="sheet-item group flex w-full items-center justify-between gap-6 border-b border-white/15 py-6 text-left first:border-t md:py-8"
+                >
+                  <span className="flex items-baseline gap-5">
+                    {/* SKY ON THIS GROUND, NOT THE PURPLE THE MASTHEAD USES.
+                        Same meaning, different surface — the brand gives dark
+                        grounds `--sky` for exactly this, which is why the hero's
+                        eyebrow is sky and not violet. Purple on violet would be
+                        barely a change at all. */}
+                    <span
+                      className={`font-mono text-[11px] font-bold tracking-[0.055em] transition-colors duration-300 ${
+                        on ? 'text-ig-sky' : 'text-white/35 group-hover:text-ig-teal-ring'
+                      }`}
+                    >
+                      0{i + 1}
+                    </span>
+                    <span
+                      className={`font-extrabold leading-[0.98] tracking-[-0.035em] text-[clamp(30px,4.4vw,56px)] transition-[transform,color] duration-500 ease-out group-hover:translate-x-2 ${
+                        on ? 'text-ig-sky' : ''
+                      }`}
+                    >
+                      {label}
+                    </span>
                   </span>
-                  <span className="font-extrabold leading-[0.98] tracking-[-0.035em] text-[clamp(30px,4.4vw,56px)] transition-transform duration-500 ease-out group-hover:translate-x-2">
-                    {label}
-                  </span>
-                </span>
-                <ArrowUpRight
-                  className="h-6 w-6 shrink-0 text-white/30 transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-ig-teal-ring md:h-8 md:w-8"
-                  strokeWidth={1.8}
-                />
-              </button>
-            ))}
+                  <ArrowUpRight
+                    className={`h-6 w-6 shrink-0 transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-ig-teal-ring md:h-8 md:w-8 ${
+                      on ? 'text-ig-sky' : 'text-white/30'
+                    }`}
+                    strokeWidth={1.8}
+                  />
+                </button>
+              );
+            })}
           </nav>
 
           <div className="col-span-12 lg:col-span-4 lg:col-start-9">
+            {/* BOTH ACTIONS ARE HERE, because below `lg` the bar carries
+                neither — it keeps to a wordmark and the menu control, so this
+                sheet is the only place a reader on a phone can reach either the
+                briefing or the application.
+
+                Sign in is `variant="light"` on this violet ground rather than
+                the masthead's violet: a violet pill on violet has no edge. Same
+                order as the bar — primary first, then the way in. */}
             <div
               style={{ animationDelay: '720ms' }}
-              className="sheet-item flex flex-wrap items-center gap-x-5 gap-y-3"
+              className="sheet-item flex flex-wrap items-center gap-x-4 gap-y-3"
             >
-              <TealButton onClick={onClose}>
-                Schedule Executive Briefing
+              {/* the sheet closes first, or the dialog would open behind it */}
+              <TealButton
+                onClick={() => {
+                  onClose();
+                  openContact();
+                }}
+              >
+                Contact Sales
                 <ArrowRight className="h-3.5 w-3.5" />
               </TealButton>
+              <SwapButton
+                as="a"
+                href={SIGN_IN_URL}
+                variant="light"
+                className="px-6 py-3.5 text-[13px] font-semibold"
+              >
+                Sign in
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </SwapButton>
             </div>
 
             <div

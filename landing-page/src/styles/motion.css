@@ -79,3 +79,236 @@
    the whole point of that section is comparison, and a deck that showed one
    card at a time was working against it. Gone with its last user, along with
    the half-card-height offset that had to be kept in step by hand. */
+
+/* =========================================================================
+   MOTION-GRAPHICS ENTRANCE — the "how it works" stage
+
+   One primitive, driven entirely by custom properties, so a panel composes a
+   sequence by setting `--mg-d` per element instead of needing a class per
+   step. Four knobs: `--mg-d` delay, `--mg-y`/`--mg-x` the offset it travels
+   from, `--mg-s` the scale it grows from, `--mg-b` how far out of focus it
+   starts.
+
+   THE CURVE IS THE WHOLE THING. `cubic-bezier(0.32, 0.72, 0, 1)` is the
+   settle Apple uses for sheets and for the Dynamic Island: it leaves fast,
+   covers most of the distance early, and then eases into place over a long
+   tail with a zero-slope landing. That last part is what reads as expensive.
+   An `ease-out` arrives and stops; this one arrives and SETTLES.
+
+   BLUR RESOLVES BEFORE THE TRANSFORM DOES, on purpose — the 55% stop. The
+   element comes into focus while it is still moving, so it is legible before
+   it lands rather than snapping into clarity at the end. That is the order
+   the Dynamic Island does it in, and reversing it makes the whole thing feel
+   like a cheap fade.
+
+   ON THE BLUR AND THE HERO'S BAN ON IT: `backgrounds.css` refuses `filter:
+   blur()` outright, and that still stands there — five full-bleed layers,
+   re-rasterised every frame, forever. This is the opposite case: five small
+   boxes, once, for 720ms, on an element the user is looking at. The cost is
+   bounded and it buys the one effect that cannot be faked.
+   ========================================================================= */
+:root {
+  /* The settle: fast out, most of the distance early, long zero-slope
+     landing. Used where nothing should overshoot. */
+  --ease-mg: cubic-bezier(0.32, 0.72, 0, 1);
+  /* THE SAME CURVE WITH A LITTLE OVERSHOOT PAST 1, which is what turns the
+     entrance from a settle into a bounce. The second control point sits at
+     1.28 rather than 1, so the element carries a few percent past its resting
+     size and eases back — the ripple then reads as one wave rolling through
+     the panel rather than five separate arrivals.
+
+     1.28 rather than the 1.56 a spring on a small control can take. A window
+     full of text cannot wobble or the type doubles for a frame. This is the
+     smallest overshoot that is still felt. (The buttons used to run at 1.56;
+     they no longer move at all.) */
+  --ease-mg-bounce: cubic-bezier(0.34, 1.28, 0.44, 1);
+}
+
+.mg {
+  animation: mg-in 0.76s var(--ease-mg-bounce) both;
+  animation-delay: var(--mg-d, 0ms);
+}
+/* THE BLUR IS FINISHED BY 45%, AND THAT IS ABOUT THE BOUNCE, NOT THE LOOK.
+
+   An overshooting curve drives the eased value past 1 in the tail. Every
+   property interpolating over that stretch overshoots with it — which is
+   harmless for a transform, is clamped for opacity, and would take `blur()`
+   NEGATIVE, which is invalid. Landing the blur on zero at 45% and holding it
+   there means the springy part of the curve only ever moves the transform.
+
+   It also happens to be the right order to look at: the element comes into
+   focus while it is still travelling, so it is legible before it lands. That
+   is how the Dynamic Island does it, and reversing the two makes the whole
+   thing read as a cheap fade.
+
+   `filter: none` RATHER THAN `filter: blur(0px)`, AND THAT IS NOT A STYLE
+   CHOICE. Lightning CSS minifies `blur(0px)` by dropping the argument
+   entirely, and ships `filter: blur()`. The spec does allow an omitted
+   argument, so it is legal — but a filter function with no parameter is a
+   thin edge of the spec to hang a visible effect on, and there is no reason
+   to. `none` interpolates against a filter list by substituting each
+   function's initial value, and `blur`'s initial value is 0, so this is
+   defined to animate identically. It is also the form nothing can minify into
+   something else. */
+@keyframes mg-in {
+  0% {
+    opacity: 0;
+    filter: blur(var(--mg-b, 9px));
+    transform: translate3d(var(--mg-x, 0px), var(--mg-y, 14px), 0) scale(var(--mg-s, 0.965));
+  }
+  45% {
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+/* THE EXIT, WHICH IS THE ENTRANCE RUN BACKWARDS.
+
+   A panel that arrives out of focus and leaves by vanishing is only half an
+   effect — the blur reads as production value on the way in and as a missing
+   frame on the way out. This is `mg-in` reversed: sharp to blurred, full size
+   to a hair under, opaque to gone.
+
+   ON THE SETTLE CURVE, NOT THE BOUNCE. Something leaving has nowhere to settle
+   into, so an overshoot would push it back toward the viewer for a moment
+   before it went — which reads as a stumble. Bounce belongs to arrivals.
+
+   360ms against the entrance's 760. The outgoing panel has to be gone before
+   the incoming one is legible or the two blur into a double image, and it is
+   also just true that leaving should be quicker than arriving. The JS timeout
+   that unmounts it is set from the same figure; the two have to agree. */
+.mg-out {
+  animation: mg-out 0.36s var(--ease-mg) both;
+}
+@keyframes mg-out {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.972);
+  }
+}
+
+/* THE GROUP RIPPLE. The windows arrive one at a time, but the block they belong
+   to has to arrive as one thing too, or four staggered elements read as four
+   events rather than as one panel changing.
+
+   So the whole group gets the same treatment its contents get — oversized, out
+   of focus, settling back on the bouncing curve — and the stagger inside it
+   then reads as a ripple THROUGH something rather than as a queue.
+
+   TWO PROPERTIES, NOT THREE: scale and blur, no opacity. The children already
+   fade, and a second fade over the top of theirs would double the ramp and make
+   the panel look like it is arriving through gauze. Scale and blur are the two
+   that compound usefully — a soft, slightly-too-large block resolving into a
+   sharp one is a focus pull, which is exactly the effect, where two stacked
+   opacity ramps are just a slow fade.
+
+   5px against the children's 9px, and it clears by 40% — about 310ms. The block
+   has to be sharp before the later windows land at 1.2s, or their own blur is
+   being rendered through another one and nothing looks crisp at any point. */
+.stage-swap {
+  animation: stage-swap 0.78s var(--ease-mg-bounce) both;
+}
+@keyframes stage-swap {
+  0% {
+    transform: scale(1.04);
+    filter: blur(5px);
+  }
+  40% {
+    filter: none;
+  }
+  100% {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* THE PANEL'S OWN BOUNCE — the bordered block, not its contents.
+
+   `stage-swap` above moves the windows INSIDE the panel. This moves the panel.
+   Both fire on the same change, so the block dips and springs back while its
+   contents ripple through it, and the whole thing reads as one object reacting
+   rather than as a slideshow swapping frames.
+
+   1.5% INWARD, WHICH IS SMALL ON PURPOSE. This element is 700px wide on a
+   desktop, so 1.5% is a 10px dip — plenty to feel, and the bouncing curve
+   carries it a shade past its resting size on the way back, which is where the
+   spring comes from. Any more and a panel with a visible border starts to look
+   like it is being squeezed.
+
+   It scales INWARD rather than out because it is the bordered edge that moves:
+   growing past its own bounds would push the border under the clip and square
+   its corners off for a few frames. Shrinking keeps the whole edge on screen the
+   entire time. */
+.stage-pulse {
+  animation: stage-pulse 0.66s var(--ease-mg-bounce) both;
+}
+@keyframes stage-pulse {
+  0% {
+    transform: scale(0.985);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+/* A fill that wipes in from an edge instead of arriving as a box. Used for the
+   bars and meters inside the panels: scaling a rounded bar squashes its end
+   caps, and animating `width` is a layout pass per frame, so the fill rides a
+   transform inside a clipped parent and neither happens. Direction comes from
+   `--mg-x` / `--mg-y`, so one rule covers horizontal and vertical. */
+.mg-wipe {
+  animation: mg-wipe 0.86s var(--ease-mg) both;
+  animation-delay: var(--mg-d, 0ms);
+}
+@keyframes mg-wipe {
+  from {
+    transform: translate3d(var(--mg-x, -101%), var(--mg-y, 0), 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* THE DWELL METER, DRAWN AROUND THE STEP'S ICON RATHER THAN DOWN THE CARD.
+
+   It was a 3px column pinned to the card's left edge, and the card has a 16px
+   radius — so the clip turned the top and bottom of the meter into two curved
+   slivers that tapered away to nothing. The bar was fighting the corner, and
+   the corner was always going to win.
+
+   A ring has no such argument to have. It sits around the icon that is already
+   there, it is a shape a countdown is expected to take, and it needs no
+   `overflow-hidden` to stay inside anything.
+
+   The dash length is the circle's own circumference — 2πr at r=18.5 is 116.24
+   — so offsetting by that much hides the stroke completely and winding it to
+   zero draws it once, exactly. Any other number would leave a gap or double
+   back. `-rotate-90` on the svg starts the sweep at twelve o'clock. */
+.dwell-ring {
+  stroke-dasharray: 116.24;
+  stroke-dashoffset: 116.24;
+  animation: dwell-ring var(--dwell, 5600ms) linear both;
+}
+/* Held, not reset. `animation-play-state: paused` freezes the ring on the exact
+   frame it had reached and carries on from there when the class comes off —
+   which is the behaviour the JS timer was rewritten to match. A ring that
+   restarted while the clock resumed, or the reverse, would be a countdown that
+   contradicts itself in front of the reader. */
+.dwell-hold {
+  animation-play-state: paused;
+}
+@keyframes dwell-ring {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

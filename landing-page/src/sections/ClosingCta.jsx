@@ -10,7 +10,7 @@ import { SHELL } from '../lib/layout.js';
    heading, which put the one action in the section as far from the sentence
    asking for it as the grid allowed. Underneath the words is where a call to
    action belongs — you reach it by finishing the sentence. */
-export function ClosingCta() {
+export function ClosingCta({ openContact }) {
   return (
     <section className="aurora dots-inv relative py-12 md:py-16">
       <div className={SHELL}>
@@ -89,19 +89,16 @@ export function ClosingCta() {
                     the range a tablet sits in.
                   · A 599px pill is a banner. The label is 246px of it; the
                     rest is teal.
-                  · It also leans on the swap mechanism harder than it should.
-                    The track is rotated -2.5deg and its faces overhang by
-                    0.3 of the button's height, so the corner starts to show
-                    once the button is wider than about fourteen times its own
-                    height. A 47px pill has that ceiling around 650px — above
-                    a full-width pill on a phone, but not by much, and not for
-                    any gain.
+                  · A pill that wide has nothing in the middle of it. The
+                    label is centred, so both ends are 175px of flat colour
+                    with a fully-round radius on them, which reads as a
+                    banner someone forgot to fill.
 
                 `justify-center` under a centred heading, `lg:justify-start`
                 once there is a second column to align against. */}
             <div className="mt-7 flex justify-center lg:justify-start">
-              <TealButton>
-                Schedule Executive Briefing
+              <TealButton onClick={openContact}>
+                Contact Sales
                 <ArrowRight className="h-3.5 w-3.5" />
               </TealButton>
             </div>

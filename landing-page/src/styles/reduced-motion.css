@@ -11,17 +11,16 @@
     .dot-1,
   .dot-2,
   .dot-3,
-  .swap-ripple,
   .curtain,
   .glow,
   .billow,
   .sheen {
     animation: none !important;
   }
-  .swap:hover,
-  .swap:focus-visible {
-    transform: none !important;
-  }
+  /* The two button entries that were here — the ripple's animation and the
+     hover scale — have no targets any more. The button neither moves nor
+     animates in any state; a 0.2s colour fade is the whole of it, and a colour
+     fade is not the kind of movement this preference is about. */
   .peek {
     display: none !important;
   }
@@ -29,6 +28,40 @@
   .pop-c,
   .msg-in {
     animation-duration: 0.01ms !important;
+  }
+  /* The motion-graphics entrance is cancelled outright rather than shortened.
+     Shortening it would still fire a blur and a scale on every element, which
+     is exactly the class of movement the preference is asking about — and
+     because `.mg` sets `both`, a cancelled animation would leave the element
+     stuck at its `from` keyframe: blurred, offset and invisible. So the
+     resting state has to be restored explicitly. */
+  .mg,
+  .mg-wipe,
+  .stage-swap,
+  .stage-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+  /* The exit is removed rather than neutralised. Everything else here restores
+     a resting state, but `mg-out` HAS no resting state — its whole job is to
+     end at invisible. Left running it would be motion; cancelled with the rest
+     it would leave the outgoing panel sitting fully opaque on top of the
+     incoming one until the unmount timer fired. Hidden, the swap is instant,
+     which is what the preference is asking for. */
+  .mg-out {
+    animation: none !important;
+    display: none !important;
+  }
+  /* The dwell ring goes with the auto-advance, which `HowItWorks` disables
+     under the same preference: a countdown to an event that never comes is
+     worse than no countdown. Hidden rather than merely stopped, because a
+     stopped ring is a permanently empty circle drawn round every active icon,
+     which reads as a control that failed to load. */
+  .dwell-ring {
+    animation: none !important;
+    display: none !important;
   }
   *,
   *::before,

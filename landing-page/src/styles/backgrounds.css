@@ -441,6 +441,297 @@
   pointer-events: none;
 }
 
+/* -------------------------------------------------------------------------
+   THE STAGE FIELD — the ground the "how it works" windows stand on.
+
+   A flat lavender panel is what a flat lavender panel looks like, and next to
+   four white cards it read as a hole rather than a surface. This gives it
+   something to be, with two devices and no gradient anywhere:
+
+   1. THE PAGE'S OWN FIELD AT HALF PITCH. 14px dots under 28px rules, against
+      the 28/56 the bands use. Half is the point rather than an arbitrary
+      smaller number: the panel sits INSIDE a band already wearing the 28/56
+      field, and two grids at the same pitch a few pixels apart moiré against
+      each other. At exactly half, every second dot lines up with the one
+      behind it and the two read as one system at two scales — which is the
+      whole idea of a texture that belongs to a page.
+
+      Horizontal rules only, no verticals. That is not a shortcut; it is the
+      decision `.dots` already made for the bands, and the reason still holds
+      — a square grid reads as graph paper.
+
+   2. POOLED EDGE LIGHT, VIA INSET BOX-SHADOW. This is the Apple move on a
+      product panel: the surface is not tinted, it is LIT, brightest a little
+      inside its own border, falling off toward the middle. Done with two
+      inset shadows rather than a radial gradient — a 90px-blurred inset
+      shadow IS a vignette, costs one rasterisation, and keeps the house rule
+      that flat surfaces carry no colour gradient. Both are the near-white the
+      band above it is painted in, so nothing new enters the palette.
+
+      The 1px top highlight is the other half of it, and it is the detail that
+      does the most for the least: a single hairline of white along the upper
+      edge is what makes a panel read as catching light from above rather than
+      as a rectangle of colour.
+   ------------------------------------------------------------------------- */
+/* WHY THIS IS DEEPER THAN THE BAND AROUND IT, AND WHY THAT IS THE WHOLE FIX.
+
+   It was #F0E9FF — the same lavender the windows' own title bars are painted
+   in — so a white window on it had nothing to be white AGAINST. Its top edge
+   dissolved into the panel and the thing read as a diagram printed on a tinted
+   rectangle rather than as a window standing in front of something.
+
+   A window needs a ground that is darker than it is. #DED3F5 is that: still
+   unmistakably a light surface inside a light band, but far enough below white
+   that the window's edge, its title bar and its shadow all have somewhere to
+   land. Every white card in this panel got its contrast for free the moment
+   the ground stepped down.
+
+   THE BLOOMS ARE GRADIENTS, AND THAT IS DELIBERATE. The house rule is that
+   flat surfaces carry no colour gradient, with the aurora as the exception —
+   and this is the same category as the aurora, not the same category as a
+   card: it is a depicted atmosphere, a thing being looked INTO. Three wide,
+   soft ellipses, indigo and sky and violet, all from the palette, none of them
+   near the centre where the windows sit.
+
+   NOT ONE `filter: blur()` AMONG THEM, following the rule the hero set: the
+   softness is baked into the stops, which rasterises once and then costs
+   nothing. A 60%-wide ellipse fading to transparent at 62% IS a blurred blob;
+   running an actual blur over it would change nothing anyone can see and add a
+   convolution per frame. */
+/* #F0E9FF — `ig-paper-2`, THE SAME FILL THE ACTIVE STEP CARD CARRIES.
+
+   Not a value picked to solve a contrast problem, which is what the previous
+   three were: #DED3F5, then #EEE9FA, then #F5F0FD, each one a guess at how dark
+   the ground had to be for a white window to show against it. That was the
+   wrong question. The panel and the active step card are the two focused
+   objects in this section, they sit side by side, and they should be the same
+   surface — so the fill is taken from the card rather than tuned by eye, and
+   the border is the card's `ring-ig-purple/25` for the same reason.
+
+   The contrast that worried those three values is now handled where it belongs:
+   the windows are all #FFFFFF and carry their own chrome, hairline and
+   three-layer shadow. That was the real fix. The console was the one genuine
+   offender — it used to be `paper-2` itself and so was literally the same
+   colour as this panel — and it is white now like the rest, keeping its
+   identity by being the only window set entirely in mono.
+
+   NOTE THE SCOPE: elements INSIDE the windows still carry their tints, and
+   several of them are `paper-2` too. That is fine and it is a different
+   question — a search field on a white window is not a window on a panel. */
+/* THIS CLASS DECLARES PAINT ONLY. NO `position`, DELIBERATELY, AND THE REASON
+   GENERALISES TO EVERY HAND-WRITTEN CLASS IN THIS PROJECT.
+
+   Tailwind here is the Play CDN, which injects its utilities into a style
+   element EARLY in the head — before the bundled stylesheet this file ends up
+   in. So at equal specificity, one class against one class, THESE RULES WIN AND
+   THE UTILITIES LOSE. Nothing warns about it and it is silent in both
+   directions.
+
+   It has already cost twice on this element. `position: relative` here beat the
+   `absolute` utility on the skin layer, which left it a zero-height div in
+   normal flow with nothing to paint — the background simply was not there. And
+   `box-shadow` here beat `ring-1 ring-inset`, which is why the border was
+   missing before that.
+
+   The rule that avoids both: a hand-written class must not declare any property
+   a utility is also expected to set on the same element. Layout belongs to the
+   markup; this class owns fill, texture and border, and nothing else. The
+   pseudo-element layers need a positioned ancestor, and they get one from the
+   `absolute` on the element in JSX. */
+/* #F7F2FF — solid, opaque, no overlays. The specified value, not a derived one.
+
+   WHY EVERY ATTEMPT TO DERIVE IT MISSED. `bg-ig-paper-2` is #F0E9FF, and I kept
+   reaching for that token because it is what the active step card is written
+   with. But the card that reads as this colour on screen is not painting
+   #F0E9FF — it is `bg-ig-paper-2/40` over the band's #FBF9FF, and 40% of
+   (240,233,255) over (251,249,255) composites to (247,243,255). That is this
+   colour. The token was never the answer; the COMPOSITED RESULT was, and a
+   sampled value states it exactly where a token could only approximate it.
+
+   So it is written as a literal. A panel this size wants one flat, predictable
+   fill rather than an alpha whose result depends on whatever ends up behind it.
+
+   Nothing is layered over it: no blooms, no dot field, no grain. "Solid colour
+   with full visibility" rules all three out, and the section's own `dots`
+   texture is already doing that job in the band around it.
+
+   The border stays, and it is still the active card's exactly —
+   `inset 0 0 0 1px rgba(122, 0, 194, 0.25)` is what
+   `ring-1 ring-inset ring-ig-purple/25` compiles to. It lives here rather than
+   as a utility because Tailwind's `ring` IS a box-shadow, and a hand-written
+   class in this bundle overrides a Play-CDN utility at equal specificity, so a
+   `ring-*` on this element gets silently discarded.
+
+   NO `position`, and nothing else a utility might also set: that separation is
+   what stopped the two silent overrides that cost the border and then the
+   background. */
+/* The rules live on the element itself now, not in the dot layer below, because
+   the dots are about to be softened and the rules are not — a hairline that has
+   been blurred is just a smudge. Separating them lets each be what it should be:
+   crisp 28px rules, soft dots. */
+/* NO `background-color` HERE — the fill comes from a utility at the call site.
+
+   ONE USER TODAY, the walkthrough's window panel, and the name stays general
+   rather than going back to `stage-field`. The closing prompt's card briefly
+   wore this too and it was wrong there: a dot field and 28px rules behind a
+   PARAGRAPH is texture interfering with the thing it sits behind, where behind
+   a set of interface windows it is exactly right. The distinction is what the
+   class is for — it belongs on panels holding diagrams, not on cards holding
+   sentences — so keeping it general is keeping the note.
+
+   `background-image` and `background-color` are separate properties, so the
+   rules declared here and a `bg-*` utility at the call site do not collide —
+   which is the standing rule in this file, and the reason it exists. */
+.panel-field {
+  background-image: linear-gradient(to bottom, rgba(122, 0, 194, 0.045) 1px, transparent 1px);
+  background-size: 100% 28px;
+  box-shadow: inset 0 0 0 1px rgba(122, 0, 194, 0.25);
+}
+
+/* TEXTURE, AND THE BRIEF FOR IT IS "OCCUPIED, NOT PLAIN" — so it is the page's
+   own field rather than anything new, and it is quiet enough that the panel
+   still reads as the flat #F7F2FF it is specified to be.
+
+   NO `z-index` ON EITHER LAYER, unlike the version of this that existed before.
+   A pseudo-element with `position: absolute` already paints above its own
+   element's background and below anything that follows in the DOM — and the
+   windows are LATER SIBLINGS of this skin, not children of it. So the stacking
+   works out on its own: fill, then texture, then windows. `z-index: -1` was
+   solving a problem that only existed while this class was the container. */
+.panel-field::before,
+.panel-field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* SOFT DOTS, AND THE SOFTNESS IS IN THE GRADIENT RATHER THAN IN A FILTER.
+
+   `filter: blur()` would do it, and this file opens by refusing that outright —
+   for animated layers, which have to be re-convolved every frame. This layer is
+   static, so a blur here would in fact rasterise once and cost nothing after.
+   The stops are still the better answer, for two reasons that survive that:
+
+     · A GAUSSIAN BLUR OF A DISC IS A RADIAL FALLOFF. That is not an
+       approximation, it is what the operation produces — so a radial gradient
+       with a ramp is not imitating a blurred dot, it IS one, computed in closed
+       form instead of by sampling.
+     · A filter blurs the whole LAYER, including where it meets the panel's
+       edge, so the texture would fade off in a ring 2px inside the border. The
+       stops leave every dot identical wherever it falls.
+
+   The 2.6px radius is chosen against the 14px cell: the falloff reaches zero at
+   about a fifth of the way to the next dot, so nothing clips at the tile seam
+   and no two blobs run together into a wash.
+
+   HALVED, NOT DOUBLED — I read "reduce the transparency to 50%" the wrong way
+   round and took the stops UP to 0.28 / 0.14 / 0.03, which is what made the
+   panel look rough. They are half of where they started instead: 0.07 / 0.035 /
+   0.0075, a quarter of what was there a moment ago.
+
+   The ratios between the three are kept exactly, which matters more than the
+   values. The ramp is what makes these read as blurred rather than as
+   fuzzy-edged discs, so all three scale by one factor and the falloff keeps its
+   shape at any strength.
+
+   At this weight the dots average about 0.2% violet across the panel, so
+   #F7F2FF composites back to #F7F2FF — the specified fill, unshifted. */
+.panel-field::before {
+  background-image: radial-gradient(
+    circle 2.6px at 50% 50%,
+    rgba(122, 0, 194, 0.07) 0%,
+    rgba(122, 0, 194, 0.035) 45%,
+    rgba(122, 0, 194, 0.0075) 75%,
+    transparent 100%
+  );
+  background-size: 14px 14px;
+}
+
+/* The matte layer, and the one that does most of the "occupied" work: a real
+   surface scatters light, and scattered light is noise. Generated by
+   `feTurbulence` in a data URI rather than shipped as an image, so it is
+   self-contained and resolution-free.
+
+   Two parameters are load-bearing. `stitchTiles='stitch'` makes the 140px tile
+   seamless — without it every repeat shows its seams as a faint grid of squares,
+   which is worse than no texture at all. And `feColorMatrix saturate 0` is
+   required because fractal noise is RGBA by default: untreated it is coloured
+   confetti, and desaturating it is what turns it into grain.
+
+   0.14, well under the 0.24 this ran at before. At that strength it was a
+   finish; here it is a suggestion, which is what "subtle" asked for. */
+.panel-field::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  opacity: 0.14;
+}
+
+/* -------------------------------------------------------------------------
+   THE FIELD, MASKED TO THE FLANKS — texture where there is no text.
+
+   The full field behind a card of centred copy is interference: every line
+   crosses two rules on its way across and the eye keeps stopping on them. But
+   the card is wider than its own widest line, and the strips either side of that
+   line are doing nothing at all. This puts the field only there.
+
+   THE MASK IS THE WHOLE MECHANISM, and the numbers in it are measured, not
+   picked. On a 1040px card the widest thing is the heading at about 780px of
+   ink, so the clear strip either side is roughly 130px — 12.5% of the width. The
+   mask runs from opaque at the very edge to nothing by 11%, which is 114px, so
+   the field has faded out before the longest line begins. Nothing is ever behind
+   type, at any width, because both figures scale with the card.
+
+   The same trick the hero already uses on `.art-grid`, where a radial mask
+   clears the middle so the rules only register out in the flanks. Different
+   shape, same idea: texture is for the parts of a surface nobody is reading.
+
+   Alphas match the walkthrough panel's exactly, so the two textured surfaces on
+   the page are the same material seen through different windows. */
+/* OFF BELOW 640px, AND NOT AS A PERFORMANCE CHOICE — THE FLANKS STOP EXISTING.
+
+   The mask clears at 11% of the card, which is a measured figure: it has to fade
+   out before the widest line begins, and on a desktop card the heading is 798px
+   of ink in 1040px, so the clear margin is 121px against a 114px fade. Narrow the
+   card and the copy stops getting narrower with it — it wraps and fills the
+   column instead. At 375px the heading occupies 287px of a 335px card, so the
+   margin is 24px and the field is still fading at 37px: thirteen pixels of it
+   land behind type.
+
+   No mask percentage fixes that, because there is nothing to fix. A phone-width
+   card has no flanks. It is clear from 640 up and hidden below.
+
+   Nothing else changes at any width — the fill, the shadow, the brand rule and
+   the copy are identical either side of this. */
+@media (min-width: 640px) {
+  .flank-field::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        circle 2.6px at 50% 50%,
+        rgba(122, 0, 194, 0.07) 0%,
+        rgba(122, 0, 194, 0.035) 45%,
+        rgba(122, 0, 194, 0.0075) 75%,
+        transparent 100%
+      ),
+      linear-gradient(to bottom, rgba(122, 0, 194, 0.04) 1px, transparent 1px);
+    background-size:
+      14px 14px,
+      100% 28px;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      #000 0%,
+      transparent 11%,
+      transparent 89%,
+      #000 100%
+    );
+    mask-image: linear-gradient(to right, #000 0%, transparent 11%, transparent 89%, #000 100%);
+  }
+}
+
 /* The same two-layer field inverted, for dark surfaces — dot grid plus rule
    grid, at the same 28px / 56px pitch as the light bands, so the whole page
    carries one texture whichever ground it is on. */

@@ -1,135 +1,116 @@
 /* =========================================================================
-   4b. THE SWAP BUTTON
-   Two full faces stacked vertically inside a clipped pill. On hover both
-   translate up by exactly one height, so the resting face leaves as the
-   incoming one arrives — no seam, no background flash. The label inside each
-   face carries its own small counter-rotation so the text feels hand-set
-   rather than mechanically slid. An invisible ghost copy sets the size.
+   4b. THE BUTTON
+   One solid pill, one colour, one quiet tone change on hover.
+
+   WHAT WAS HERE BEFORE: three bands riding a tilted track, translating up by
+   exactly one button height so the resting face left as an arriving face in a
+   different brand colour took its place, with a ripple blooming from the
+   centre, the pill scaling to 1.045, and both labels counter-rotating so they
+   read level at either end and tilted in transit. Every button on the site did
+   it. It has all gone.
+
+   IT WAS THE MOVEMENT THAT WAS WRONG, NOT THE CRAFT. A button that changes
+   colour BY MOVING makes the reader's eye track a thing that is going
+   somewhere, and a button is not going anywhere — it is waiting to be pressed.
+   Apple's buttons do not travel on hover: the surface stays exactly where it
+   is and only its tone shifts, so the pointer's own position stays the thing
+   you are looking at. A hover state should confirm that a control is under the
+   cursor. That is the entire job, and one colour does it.
+
+   Nothing about the shape changes. Same full-round radius, same paddings, same
+   type, same icons — every one of those is passed in by the call sites and
+   untouched by this.
    ========================================================================= */
 
-/* THREE bands ride a single track: the resting face, a short middle band in a
-   colour half-way between the two, then the arriving face. The whole track is
-   held at -2.5deg and over-hangs the pill by 12% on each side, so every colour
-   edge sweeps through on a diagonal and no corner is ever exposed. The labels
-   counter-rotate back to level at rest and at the end, tilting only in transit.
+/* THE COLOUR PAIRS. Each variant sets two custom properties, and the rules
+   below are written once against those rather than four times against literal
+   colours.
 
-   Track geometry (all % of the button's height):
-     face A   -30 → 130      mid  130 → 170      face B  170 → 330
-   Hover shifts the track by -200%, landing face B exactly where face A was. */
+   Both tones are the SAME HUE at a different weight. The old middle band was a
+   fully saturated second brand colour — teal arriving at violet, ink arriving
+   at teal — which is a statement, and a hover is not the place for one. A
+   button that turns a different colour when the pointer crosses it reads as
+   having changed what it will do. */
+.btn--teal {
+  --btn-bg: var(--teal);
+  --btn-bg-over: var(--teal-hover);
+  --btn-fg: #ffffff;
+}
+/* `violet` and `ink` were always the same resting colour — #16063A under two
+   names, kept apart only because they used to ARRIVE at different places. With
+   no arrival left they are genuinely identical, and they are written out twice
+   rather than aliased so a later change to one cannot silently move the
+   other. */
+.btn--violet {
+  --btn-bg: var(--ink);
+  --btn-bg-over: var(--violet-800);
+  --btn-fg: #ffffff;
+}
+.btn--ink {
+  --btn-bg: var(--ink);
+  --btn-bg-over: var(--violet-800);
+  --btn-fg: #ffffff;
+}
+/* The one light variant, on dark ground: white lifting to the lavender tint.
+   Ink stays ink, so the label never has to survive a colour change under it —
+   #030303 on #F0E9FF is 17.3:1. */
+.btn--light {
+  --btn-bg: #ffffff;
+  --btn-bg-over: var(--paper-2);
+  --btn-fg: var(--ink);
+}
 
-.swap {
-  position: relative;
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* the gap the old invisible ghost copy used to own — it is what sits between
+     a label and the icon beside it */
+  gap: 0.5rem;
+  white-space: nowrap;
   border-radius: 999px;
-  isolation: isolate;
   -webkit-tap-highlight-color: transparent;
-  transform: scale(1);
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.swap:hover,
-.swap:focus-visible {
-  transform: scale(1.045);
-}
-.swap:active {
-  transform: scale(0.985);
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  /* 0.2s and the browser's own `ease`. Long enough not to snap, short enough
+     that the pill is already in its hover tone by the time the eye arrives —
+     a hover state that takes half a second to appear has confirmed nothing.
+     `opacity` is here for the press, `color` for the variants that change it
+     (none today, but a variant that did would otherwise jump). */
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.12s ease;
 }
 
-/* Ripple — a soft disc blooming out of the centre on every hover */
-.swap-ripple {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 150%;
-  margin-left: -75%;
-  aspect-ratio: 1 / 1;
-  border-radius: 999px;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(-50%) scale(0);
-}
-.swap:hover .swap-ripple,
-.swap:focus-visible .swap-ripple {
-  animation: swap-ripple 0.78s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes swap-ripple {
-  0% {
-    transform: translateY(-50%) scale(0);
-    opacity: 0.42;
-  }
-  100% {
-    transform: translateY(-50%) scale(1);
-    opacity: 0;
+/* GUARDED ON `hover: hover`, WHICH IS THE FIX FOR A BUG THIS FILE USED TO
+   CARRY 30 LINES OF OVERRIDES FOR.
+
+   A tap makes a button match `:hover` on a touchscreen, and with no pointer to
+   move away it goes on matching until something else is tapped. The old block
+   at the foot of this file undid the swap, the scale, the rotations and the
+   ripple one at a time to deal with that. Asking for a real hovering pointer up
+   front means none of it is ever applied in the first place. */
+@media (hover: hover) {
+  .btn:hover {
+    background-color: var(--btn-bg-over);
   }
 }
-.swap-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
+
+/* The press, and it is a dim rather than a squash. iOS pills do exactly this:
+   the surface holds its size and drops in opacity while your finger is on it.
+   A `scale` here would be the same mistake the swap was making — motion where
+   a state change will do. */
+.btn:active {
+  opacity: 0.82;
 }
-.swap-track {
-  position: absolute;
-  left: -12%;
-  right: -12%;
-  top: 0;
-  height: 100%;
-  transform: translate3d(0, 0, 0) rotate(-2.5deg);
-  transition: transform 0.62s cubic-bezier(0.34, 1.4, 0.5, 1);
-  /* deliberately no `will-change`: there are ~25 of these on the page and it
-     was holding a compositor layer for every one of them, permanently. The
-     browser promotes a transform transition on its own for its duration. */
-}
-.swap:hover .swap-track,
-.swap:focus-visible .swap-track {
-  transform: translate3d(0, -200%, 0) rotate(-2.5deg);
-}
-.swap-face {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 160%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.swap-face--a {
-  top: -30%;
-}
-.swap-mid {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 130%;
-  height: 40%;
-}
-.swap-face--b {
-  top: 170%;
-}
-.swap-text {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-  transform: rotate(2.5deg);
-  transition: transform 0.62s cubic-bezier(0.34, 1.4, 0.5, 1);
-}
-.swap-face--b .swap-text {
-  transform: rotate(8.5deg);
-}
-.swap:hover .swap-face--a .swap-text,
-.swap:focus-visible .swap-face--a .swap-text {
-  transform: rotate(-3.5deg);
-}
-.swap:hover .swap-face--b .swap-text,
-.swap:focus-visible .swap-face--b .swap-text {
-  transform: rotate(2.5deg);
+
+/* The sending state on the contact form. Colour is held, not dropped: a
+   disabled button that turns grey looks broken, where the same button at 55%
+   looks busy. */
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* Hover-peek card. The wrapper is positioned by rAF; this layer only owns
@@ -225,33 +206,8 @@
   }
 }
 
-/* THE SWAP IS A HOVER EFFECT, AND A TOUCHSCREEN HAS NO HOVER TO LEAVE.
-
-   Tapping a button on a phone makes it match `:hover`, and — because there is
-   no pointer to move away — it goes on matching until something else is
-   tapped. So every button pressed on a phone stayed swapped: the arriving
-   face parked where the resting face belongs, the pill left at 1.045, the
-   label at its transit angle. The whole device depends on the hover ending,
-   and on touch it never does.
-
-   Each state is returned to its resting value rather than the rules being
-   rewritten, so the desktop cascade above is untouched — this block simply
-   does not apply where a real pointer exists. `:focus-visible` is left out of
-   it deliberately: keyboard focus still swaps the button, on any device. */
-@media (hover: none) {
-  .swap:hover {
-    transform: scale(1);
-  }
-  .swap:hover .swap-track {
-    transform: translate3d(0, 0, 0) rotate(-2.5deg);
-  }
-  .swap:hover .swap-face--a .swap-text {
-    transform: rotate(2.5deg);
-  }
-  .swap:hover .swap-face--b .swap-text {
-    transform: rotate(8.5deg);
-  }
-  .swap:hover .swap-ripple {
-    animation: none;
-  }
-}
+/* The block that used to sit here undid the swap, the scale, the two label
+   rotations and the ripple under `@media (hover: none)`, because a tap leaves
+   a touchscreen button matching `:hover` for good. The single hover rule the
+   button has now is written inside `@media (hover: hover)` instead, so there
+   is nothing left to undo. */
