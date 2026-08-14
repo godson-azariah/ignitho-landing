@@ -7,6 +7,10 @@
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+    /* `filter` matters here as much as the other two: `.reveal-soft` sets a
+       resting blur, and cancelling only the transition would leave the element
+       permanently soft rather than simply un-animated. */
+    filter: none !important;
   }
     .dot-1,
   .dot-2,

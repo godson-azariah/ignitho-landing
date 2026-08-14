@@ -141,7 +141,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
   return (
     <section id="suites-catalog" className="bg-b dots relative pb-24 pt-12 md:pb-32 md:pt-16">
       <div className={SHELL}>
-        <Reveal className="plate mx-auto max-w-4xl text-center">
+        <Reveal className="reveal-soft plate mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center rounded-full bg-white px-6 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-purple shadow-[0_10px_30px_-18px_rgba(22,6,58,0.6)]">
             Enterprise Catalog
           </span>

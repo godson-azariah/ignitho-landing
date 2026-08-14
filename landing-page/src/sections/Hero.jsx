@@ -74,7 +74,11 @@ export function Hero({ onSearch }) {
               drops a point: at 11px mono with 0.06em tracking the long
               label measures about 400px, so it takes three lines on a phone
               and two at 10px. */}
-          <div className="flex flex-col items-start gap-1 border-b border-white/15 py-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:py-4">
+          {/* THE FIRST THING TO RESOLVE, and it used to be the one block here
+              that did not animate at all — it was simply present. In a hero
+              where everything below it arrives, that read as the page having
+              started without it. It leads the sequence now. */}
+          <Reveal className="reveal-soft flex flex-col items-start gap-1 border-b border-white/15 py-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:py-4">
             {/* the eyebrow — sky, per the brand's rule for dark surfaces */}
             <span className="font-mono text-[10px] font-bold leading-[1.5] tracking-[0.06em] text-ig-sky sm:text-[11px]">
               Transforming Ignitho into an AI-First Enterprise Partner
@@ -82,7 +86,7 @@ export function Hero({ onSearch }) {
             <span className="font-mono text-[10px] font-bold leading-[1.5] tracking-[0.06em] text-ig-lavender/60 sm:text-[11px]">
               Enterprise AI Platform
             </span>
-          </div>
+          </Reveal>
 
           {/* CENTRE-STACKED, after the reference.
 
@@ -100,7 +104,17 @@ export function Hero({ onSearch }) {
               left is a block that starts under the eyebrow and ends at the
               chips, with one padding value above it. */}
           <div className="pt-8 md:pt-12">
-          <Reveal className="text-center">
+          {/* THE INTRO IS ONE SEQUENCE OF FOUR NOW: eyebrow, headline, the line
+              under it, then the field. 90ms between each — far enough apart to
+              be read as an order, close enough that the whole thing is done in
+              under a second. The headline's second line keeps its own extra
+              90ms, so the two halves of the display type still resolve one
+              after the other inside the block's own arrival.
+
+              `soft-lg` is here and nowhere else: this is the only display type
+              on the site, and it is the one place the blur has to be large
+              enough to be felt against 94px glyphs. */}
+          <Reveal delay={90} className="reveal-soft soft-lg text-center">
             {/* The foil is the real win here: the paragraph directly under
                 this has always opened "Move away from unguided prompt
                 chats", so prompting was already the thing this page argues
@@ -184,7 +198,7 @@ export function Hero({ onSearch }) {
               enough to the field to look like a mistake rather than a
               choice. On the wider measure it also falls to two lines instead
               of three, which pays for part of the taller headline. */}
-          <Reveal className="mx-auto mt-6 max-w-[880px] text-center md:mt-8">
+          <Reveal delay={180} className="reveal-soft mx-auto mt-6 max-w-[880px] text-center md:mt-8">
             {/* Full-strength lavender rather than the spec's ~75%, plus
                 medium weight. At 400 and 75% this sat too close to the
                 gradient behind it; #D6CDEE at full opacity is nearly
@@ -210,7 +224,15 @@ export function Hero({ onSearch }) {
               centred layout is done with distance and nothing else — no
               columns, no rules — so this is what separates what we say from
               what you do. Everything else stays tight. */}
-          <Reveal delay={120} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
+          {/* THE FIELD GROUP IS THE ONE BLOCK HERE THAT DOES NOT GET THE BLUR,
+              and it is the exception that keeps the rest cheap. Inside it are a
+              white pill with a 70px-spread shadow, an input, three buttons and
+              six chips carrying `backdrop-blur-sm` — a filter on the wrapper
+              would blur that whole composited subtree, including a backdrop
+              filter nested inside a blur, which is the single most expensive
+              thing this page could ask for on a weak GPU. It keeps the lift and
+              the fade, which is all it needs: it arrives last either way. */}
+          <Reveal delay={270} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
             {/* A white field on the dark ground, so it reads as the one
                 place to act rather than as another dark panel. The submit
                 control lives inside the pill: on a rounded field an

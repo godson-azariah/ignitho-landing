@@ -19,7 +19,7 @@ export function Pillars() {
             device under a centred heading */}
         {/* `max-w-4xl`, up from 3xl. At the 48px ceiling the sentence measures
             828px, so a 768px column was the only reason it broke in two. */}
-        <Reveal className="plate relative mx-auto max-w-4xl text-center">
+        <Reveal className="reveal-soft plate relative mx-auto max-w-4xl text-center">
           {/* Not another money line. Two of these four cards are about money
               and two are about risk and speed, so a heading promising the
               money mis-sells half its own contents — and "pays" already

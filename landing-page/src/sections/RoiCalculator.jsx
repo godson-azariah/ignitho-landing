@@ -45,7 +45,7 @@ export function RoiCalculator() {
           {/* `max-w-4xl`, up from 3xl — at the 48px ceiling the sentence
               measures 803px, so a 768px column was the only thing breaking it
               in two. Same change as the pillars heading above. */}
-          <Reveal className="plate mx-auto max-w-4xl text-center">
+          <Reveal className="reveal-soft plate mx-auto max-w-4xl text-center">
             {/* The heading tells you what to DO and what you get back, which
                 is what a heading over a control should do. "Routine work
                 already costs you this much" was a statement — true, but it

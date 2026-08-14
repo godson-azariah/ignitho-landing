@@ -14,6 +14,48 @@
   transform: none;
 }
 
+/* THE FOCUS PULL — the stage's blur-to-solid entrance, brought out to the page
+   at a fraction of its strength.
+
+   OPT-IN, AND IT HAS TO BE. `filter` is the one property here that costs real
+   GPU work: a blur is a convolution over the element's painted area, every
+   frame it is running. Putting this on `.reveal` itself would have put it on
+   every revealing element on the page — cards, images, whole grids — which is
+   how a nice entrance turns into a stuttering one on a cheap phone. So it is a
+   second class, added by hand, and only to blocks of TYPE: a heading, a
+   paragraph, a field. Never a card, never anything holding an image.
+
+   THE BLUR CLEARS IN 0.34s WHILE THE LIFT TAKES 0.6s, which is the whole trick
+   and is lifted straight from `.mg` below. Resolving first and settling second
+   reads as a lens finding focus; the two running together reads as a smudge
+   sliding into place. It is also what keeps the cost down — the expensive part
+   is over in a third of a second and the element spends the rest of its
+   entrance as ordinary text.
+
+   `linear` on the filter, deliberately. An eased blur spends most of its time
+   near one end or the other, and a focus pull that hangs at 6px and then snaps
+   clear is exactly what a cheap camera does.
+
+   Ends at `filter: none`, not `blur(0)`: a zero-radius filter is still a
+   filter, and it keeps a compositing layer alive on the element for as long as
+   the page is open. `none` releases it. */
+.reveal-soft {
+  filter: blur(var(--soft, 6px));
+  transition:
+    opacity 0.6s var(--ease-out),
+    transform 0.6s var(--ease-out),
+    filter 0.34s linear;
+}
+.reveal-soft.is-in {
+  filter: none;
+}
+/* For display type only. 6px on a 94px headline is not visible — the radius has
+   to be read against the size of the glyphs it is softening, not as an absolute.
+   The one element on the page that gets it is the hero's own headline. */
+.soft-lg {
+  --soft: 10px;
+}
+
 .line-mask {
   display: block;
   overflow: hidden;

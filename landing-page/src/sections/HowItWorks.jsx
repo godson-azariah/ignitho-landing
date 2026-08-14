@@ -184,7 +184,7 @@ export function HowItWorks() {
         {/* `max-w-4xl`, up from 3xl, so the one line has somewhere to be. At
             the 64px ceiling the full sentence measures about 821px; a 768px
             measure would have wrapped it and undone the whole point. */}
-        <Reveal className="plate mx-auto max-w-4xl text-center">
+        <Reveal className="reveal-soft plate mx-auto max-w-4xl text-center">
           <Kicker index="04" centered>
             How It Works
           </Kicker>
