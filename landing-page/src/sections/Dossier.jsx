@@ -177,9 +177,6 @@ export function Dossier({ suite, openContact }) {
                     later, and the button below runs a simulation rather than
                     the agent itself. */}
                 <span className="block">Agents in this suite</span>
-                <span className="serif-accent block font-normal text-ig-purple">
-                  ({suite.accelerators.length})
-                </span>
               </h2>
             </div>
             {/* Original wording, with one factual correction kept: it said
