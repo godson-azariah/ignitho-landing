@@ -47,15 +47,27 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
             cannot silently overlap. At 1024 — the width this appears at — the
             three tracks come to about 930px inside a 960px shell.
 
-            Below `lg` the middle item is `display: none`, its track collapses to
-            zero, and equal flanks put the wordmark hard left and the menu button
-            hard right: exactly what `justify-between` was doing. */}
+            EVERY ITEM IS PLACED EXPLICITLY, and that is a bug fix rather than
+            tidiness. A `display: none` element is not a grid item at all — it is
+            removed from layout, it does not hold a cell, and auto-placement
+            simply moves the next item up into the track it would have used. So
+            below `lg`, where the middle group is hidden, the ACTIONS were being
+            auto-placed into the middle `auto` track and the third `1fr` track
+            sat empty behind them: the menu button ended up near the centre of
+            the bar instead of at its right edge.
+
+            `col-start-1 / 2 / 3` pins each item to its own track whatever else
+            is rendered. On desktop this is exactly where auto-placement was
+            already putting all three, so nothing there moves by a pixel; on a
+            phone the empty middle track now collapses to zero and the equal
+            flanks put the wordmark hard left and the menu button hard right,
+            which is what `justify-between` used to do. */}
         <div
           className={`${SHELL} grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[84px]`}
         >
           <button
             onClick={goHome}
-            className="flex items-baseline gap-1.5 justify-self-start"
+            className="col-start-1 flex items-baseline gap-1.5 justify-self-start"
             aria-label="Ignitho AI"
           >
             <span className="text-[21px] font-black tracking-[-0.03em] text-ig-ink md:text-[24px]">
@@ -74,7 +86,7 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
               are 250-odd pixels spare and the destinations should breathe. The
               type stays at 15px at every width — shrinking a nav label to buy
               layout is the kind of saving a reader pays for. */}
-          <div className="hidden items-center justify-center gap-5 lg:flex xl:gap-9">
+          <div className="col-start-2 hidden items-center justify-center gap-5 lg:flex xl:gap-9">
             {/* FAQ IS FILTERED OUT HERE AND RENDERED BESIDE THE ACTIONS.
 
                 It is the odd one among the four: the other three scroll to a
@@ -134,7 +146,7 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
               now — the flank is as wide as the opposite one, so without it the
               buttons would sit at the track's left edge instead of the page's
               right. */}
-          <div className="flex items-center justify-end gap-2.5">
+          <div className="col-start-3 flex items-center justify-end gap-2.5">
             {/* THE ONE ICON IN THE BAR, AND IT IS TEAL.
 
                 Colour with a job rather than colour for its own sake: the bar is

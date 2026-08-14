@@ -496,14 +496,24 @@ export function HowItWorks() {
                         >
                           {step.title}
                         </span>
-                        {/* The body only shows on the active step below `lg`.
+                        {/* THE BODY IS A DESKTOP-ONLY CHILD OF THE CARD NOW.
 
-                            Four bodies stacked is 4 × ~64px of copy a phone
-                            has to scroll past to reach the illustration, and
-                            three of them describe a step nothing on screen is
-                            showing. From `lg` there is a column to spare and
-                            all four read at once, which is what makes the list
-                            comparable. */}
+                            It used to show here on the ACTIVE step below `lg`,
+                            which is what made one card roughly twice the height
+                            of the other three on a phone — a row of steps where
+                            one is double-height reads as a layout accident
+                            rather than as a selection.
+
+                            Below `lg` the copy has not been dropped, it has
+                            moved: one line of it sits under the whole list,
+                            showing whichever step is current. Four uniform
+                            cards, and the copy still there for the step you are
+                            on.
+
+                            At `lg` and up nothing changes at all — every card
+                            showed every body before, and every card shows every
+                            body now. The condition that varied by state is
+                            simply gone. */}
                         {/* NOT DIMMED ON THE INACTIVE CARDS, EITHER, AND THAT IS
                             A CONTRAST FLOOR RATHER THAN A PREFERENCE.
 
@@ -516,11 +526,7 @@ export function HowItWorks() {
                             as faded and stays legible, so the recession is done
                             entirely with the fill and the scale — neither of
                             which touches a contrast ratio. */}
-                        <span
-                          className={`mt-2 text-[13.5px] leading-[1.5] text-ig-muted sm:text-[14.5px] ${
-                            on ? 'block' : 'hidden lg:block'
-                          }`}
-                        >
+                        <span className="mt-2 hidden text-[13.5px] leading-[1.5] text-ig-muted sm:text-[14.5px] lg:block">
                           {step.body}
                         </span>
                       </span>
@@ -528,6 +534,28 @@ export function HowItWorks() {
                   </Reveal>
                 );
               })}
+
+              {/* THE CURRENT STEP'S COPY, BELOW THE WHOLE LIST — phones only.
+
+                  This is where the body text that used to swell one card went.
+                  Under the list it costs the same one block of copy the active
+                  card was already spending, but it is spent OUTSIDE the four
+                  cards, so they stay identical to each other and the section
+                  does not get any longer than it already was. It reads as a
+                  caption for the selection, which is what it is.
+
+                  `min-h` sized to the longest of the four at the narrowest
+                  width — three lines at 13.5px/1.5 — so changing step cannot
+                  shift the illustration below it up and down. The house rule
+                  for variable-length text: reserve the worst case, not the
+                  current one.
+
+                  `lg:hidden`, and above `lg` the four bodies are back inside
+                  their own cards exactly as they always were. Nothing on the
+                  desktop layout is aware this element exists. */}
+              <p className="mt-5 min-h-[62px] text-[13.5px] leading-[1.5] text-ig-muted lg:hidden">
+                {active.body}
+              </p>
             </div>
           </div>
 
