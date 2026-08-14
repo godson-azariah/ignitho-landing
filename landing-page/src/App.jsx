@@ -113,10 +113,17 @@ export default function App() {
   /* Run a search from the hero: set the term, then go to the results. Routed
      through `goTo` rather than a direct scroll so it still behaves if it is
      ever called while a dossier is open. */
+  /* THE SCROLL IS CONDITIONAL ON THERE BEING SOMETHING TO SCROLL TO.
+
+     Clearing the hero's field now commits an empty search — that is how one
+     clear can undo both ends of it — and an empty search must not then drag the
+     reader down to the catalogue. Nothing has been asked for, so there is
+     nothing to go and look at. A non-empty search still scrolls, which is the
+     behaviour the field was built for. */
   const searchFor = useCallback(
     (q) => {
       setSearchQuery(q);
-      goTo('suites-catalog');
+      if (q) goTo('suites-catalog');
     },
     [goTo]
   );
@@ -210,7 +217,11 @@ export default function App() {
         <Faq openContact={openContact} />
       ) : !activeSuite ? (
         <>
-          <Hero onSearch={searchFor} />
+          {/* `committed` is the search the CATALOGUE is currently filtered by.
+              The hero owns what is being typed; this is what has actually been
+              asked for, and the field follows it so the two can never disagree
+              about whether a search is in effect. */}
+          <Hero onSearch={searchFor} committed={searchQuery} />
           <Pillars />
           <RoiCalculator />
           <Catalog
@@ -224,7 +235,11 @@ export default function App() {
           <HowItWorks />
           {/* The soft prompt between the walkthrough and the dark bookend. B,
               which keeps the alternation running C → B → A into the close. */}
-          <ReadyCta />
+          {/* The card's quiet second destination. `navAction` already knows the
+              FAQ is a page rather than a scroll target, so this is the same
+              handler the masthead and the menu sheet use — one route change,
+              defined once. */}
+          <ReadyCta openFaq={navAction('FAQ')} />
         </>
       ) : (
         <Dossier suite={activeSuite} openContact={openContact} />

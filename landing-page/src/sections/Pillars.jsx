@@ -1,7 +1,7 @@
 import { Cross } from '../components/Cross.jsx';
 import { Kicker } from '../components/Kicker.jsx';
 import { Reveal } from '../components/Reveal.jsx';
-import { PILLARS } from '../data/pillars.js';
+import { PILLARS, PILLAR_BG } from '../data/pillars.js';
 import { SHELL } from '../lib/layout.js';
 import { splitHeading } from '../lib/splitHeading.js';
 
@@ -51,8 +51,18 @@ export function Pillars() {
                 {/* h-full + flex-1 on the body: every card matches the
                     tallest in the row and every target line sits on the
                     same baseline, with no min-height guess */}
+                {/* One fill for the row, from `pillars.js`, rather than a
+                    per-card colour. Four different depths made these read as
+                    four categories; they are four outcomes of one thing.
+
+                    `lift` is the hover, and it is deliberately the smallest one
+                    the page has: 3px and a shadow, pointer devices only. These
+                    cards do nothing when clicked, so the hover is not promising
+                    an action — it is only acknowledging that the pointer is on
+                    this one rather than its neighbour. Anything larger would be
+                    an invitation the card cannot honour. */}
                 <article
-                  className={`relative flex h-full flex-col overflow-hidden rounded-[20px] p-6 text-white md:p-7 ${pillar.bg}`}
+                  className={`lift relative flex h-full flex-col overflow-hidden rounded-[20px] p-6 text-white md:p-7 ${PILLAR_BG}`}
                 >
                   <span
                     aria-hidden="true"

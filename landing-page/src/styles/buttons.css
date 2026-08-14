@@ -113,6 +113,39 @@
   cursor: not-allowed;
 }
 
+/* THE QUIET CARD HOVER — 3px and a shadow, and nothing else.
+
+   Written here rather than as `hover:` utilities for one reason: a tap makes a
+   touchscreen element match `:hover` until something else is tapped, and these
+   cards are not buttons, so nothing else ever is. A card left floating 3px
+   above its neighbours after a stray tap is exactly the sort of thing that
+   reads as a rendering fault. `@media (hover: hover)` means it never applies
+   where there is no pointer to leave with.
+
+   3px, because these cards have no border and sit on a flat band: the shadow is
+   what carries the lift and the movement only has to be enough to say the
+   shadow appeared for a reason. 6px on a saturated violet card reads as the
+   card coming loose.
+
+   The shadow is the card's own family — violet-black at low alpha with a wide
+   negative spread, so it reads as the card rising off the paper rather than as
+   a grey halo drawn around it.
+
+   The element this is used on must not carry `transform` or `box-shadow`
+   utilities of its own: this file loads after the CDN's, so it would win, and
+   the utility would silently do nothing. */
+@media (hover: hover) {
+  .lift {
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -24px rgba(22, 6, 58, 0.75);
+  }
+}
+
 /* Hover-peek card. The wrapper is positioned by rAF; this layer only owns
    the entrance, so the two never fight over `transform`. */
 .peek {

@@ -25,35 +25,68 @@
    second class, added by hand, and only to blocks of TYPE: a heading, a
    paragraph, a field. Never a card, never anything holding an image.
 
-   THE BLUR CLEARS IN 0.34s WHILE THE LIFT TAKES 0.6s, which is the whole trick
-   and is lifted straight from `.mg` below. Resolving first and settling second
-   reads as a lens finding focus; the two running together reads as a smudge
-   sliding into place. It is also what keeps the cost down — the expensive part
-   is over in a third of a second and the element spends the rest of its
-   entrance as ordinary text.
+   SLOWED, AND THE NUMBERS ARE NOT ARBITRARY. The published recipe for this
+   effect — Cruip's blur-reveal, the one most of the current crop of landing
+   pages is built from — is a 1s duration, a 10px blur and a ~20px rise, with
+   staggers spaced 200–300ms apart to walk the eye down the page. That is
+   roughly double what this was doing at 0.6s/0.34s, and the difference is
+   exactly the one being asked about: at 0.6s the effect registers as "things
+   appeared", at 1.05s it registers as a camera settling. Slow is most of what
+   reads as expensive.
+
+   1.05s for the lift, 0.72s for the blur. THE RATIO IS THE POINT, not either
+   number on its own: the blur must finish comfortably before the movement does,
+   so the element is already sharp while it is still travelling the last few
+   pixels. Resolving first and settling second reads as a lens finding focus;
+   the two running together reads as a smudge sliding into place.
+
+   `--ease-mg` on the lift rather than `--ease-out`. Expo-out puts nearly all of
+   its distance in the first third, which at 0.6s reads as decisive and at 1.05s
+   reads as arriving and then coasting for half a second. The Apple settle is
+   flatter through the middle and has a long, quiet tail — it is the curve that
+   can carry a duration this long without feeling like it stalled.
 
    `linear` on the filter, deliberately. An eased blur spends most of its time
-   near one end or the other, and a focus pull that hangs at 6px and then snaps
+   near one end or the other, and a focus pull that hangs at 8px and then snaps
    clear is exactly what a cheap camera does.
+
+   22px of travel, up from 16px. Over a longer duration a short throw looks
+   like a stutter; the published recipes all sit at 20–24px for this reason.
 
    Ends at `filter: none`, not `blur(0)`: a zero-radius filter is still a
    filter, and it keeps a compositing layer alive on the element for as long as
    the page is open. `none` releases it. */
 .reveal-soft {
-  filter: blur(var(--soft, 6px));
+  filter: blur(var(--soft, 8px));
+  transform: translate3d(0, 22px, 0);
   transition:
-    opacity 0.6s var(--ease-out),
-    transform 0.6s var(--ease-out),
-    filter 0.34s linear;
+    opacity 1.05s var(--ease-mg),
+    transform 1.05s var(--ease-mg),
+    filter 0.72s linear;
 }
 .reveal-soft.is-in {
   filter: none;
 }
-/* For display type only. 6px on a 94px headline is not visible — the radius has
+/* For display type only. 8px on a 94px headline is barely visible — a radius has
    to be read against the size of the glyphs it is softening, not as an absolute.
-   The one element on the page that gets it is the hero's own headline. */
+   The one element on the page that gets it is the hero's own headline. 14px is
+   still well inside the 20px ceiling above which a blur stops being a focus pull
+   and starts being an expensive frosted pane. */
 .soft-lg {
-  --soft: 10px;
+  --soft: 14px;
+}
+/* SMALLER RADII ON SMALL SCREENS, which is the one piece of advice every source
+   on this effect agrees on. Two reasons and they point the same way: a phone's
+   type is roughly half the size, so the same radius is twice as strong against
+   it, and a phone's GPU is the one that cannot afford the convolution. Written
+   last so it wins over `.soft-lg` on the same element. */
+@media (max-width: 639px) {
+  .reveal-soft {
+    --soft: 5px;
+  }
+  .reveal-soft.soft-lg {
+    --soft: 9px;
+  }
 }
 
 .line-mask {

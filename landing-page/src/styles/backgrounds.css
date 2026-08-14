@@ -715,6 +715,33 @@
 
    Nothing else changes at any width — the fill, the shadow, the brand rule and
    the copy are identical either side of this. */
+/* STRENGTHENED, AND THE STRENGTH GOES WHERE THE MASK IS SOLID RATHER THAN
+   EVERYWHERE.
+
+   The field was there and barely readable — 0.07 on a white card is close to
+   the limit of what a screen resolves, and the mask started fading from the
+   very first pixel, so even that 0.07 was only ever reached in a hairline at
+   the extreme edge. The visible result was a suggestion of texture rather than
+   texture.
+
+   Two changes, and the second is what does the work:
+
+     · Alphas up by about half — 0.07 → 0.105 on the dot core and 0.04 → 0.058
+       on the rules. Still well under the 0.18 the open bands carry, because
+       this sits on white where the bands sit on lavender.
+     · THE MASK NOW HAS A PLATEAU. `#000 0%, #000 5%` holds the field at full
+       strength across the outer 5% before it begins to fade, so there is a real
+       band of texture rather than a single opaque column of pixels. The fade
+       then runs out to 15%, longer than the old 11%, so the falloff is gentler
+       over a wider distance — which is what stops "more visible" turning into
+       "rough". A sharper, stronger edge would read as a border.
+
+   The 5% plateau is not a free number: the card's horizontal padding is 5.4% at
+   `lg`, so full-strength texture is confined to the padding and no glyph in the
+   card ever sits on it. Past 5% the field is already fading, and by the time it
+   reaches the first character of the evidence strip it is under a third of its
+   own alpha. That is the same rule as before — texture is for the parts of a
+   surface nobody is reading — held to a wider band. */
 @media (min-width: 640px) {
   .flank-field::before {
     content: '';
@@ -724,23 +751,33 @@
     background-image:
       radial-gradient(
         circle 2.6px at 50% 50%,
-        rgba(122, 0, 194, 0.07) 0%,
-        rgba(122, 0, 194, 0.035) 45%,
-        rgba(122, 0, 194, 0.0075) 75%,
+        rgba(122, 0, 194, 0.105) 0%,
+        rgba(122, 0, 194, 0.055) 45%,
+        rgba(122, 0, 194, 0.012) 75%,
         transparent 100%
       ),
-      linear-gradient(to bottom, rgba(122, 0, 194, 0.04) 1px, transparent 1px);
+      linear-gradient(to bottom, rgba(122, 0, 194, 0.058) 1px, transparent 1px);
     background-size:
       14px 14px,
       100% 28px;
     -webkit-mask-image: linear-gradient(
       to right,
       #000 0%,
-      transparent 11%,
-      transparent 89%,
+      #000 5%,
+      transparent 15%,
+      transparent 85%,
+      #000 95%,
       #000 100%
     );
-    mask-image: linear-gradient(to right, #000 0%, transparent 11%, transparent 89%, #000 100%);
+    mask-image: linear-gradient(
+      to right,
+      #000 0%,
+      #000 5%,
+      transparent 15%,
+      transparent 85%,
+      #000 95%,
+      #000 100%
+    );
   }
 }
 

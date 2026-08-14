@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Pause, Play } from 'lucide-react';
 import { Cross } from '../components/Cross.jsx';
 import { HowItWorksStage } from '../components/HowItWorksStage.jsx';
 import { Kicker } from '../components/Kicker.jsx';
@@ -569,40 +568,43 @@ export function HowItWorks() {
                 neither does any work while the section is off screen. */}
             <HowItWorksStage activeId={active.id} live={live} />
 
-            {/* THE EXPLICIT CONTROL, AND IT IS THE ONLY ONE OF THE THREE HOLDS
-                THAT COUNTS AS A MECHANISM.
+            {/* THE PAUSE CONTROL IS STILL HERE — IT IS JUST NOT DRAWN.
 
-                Hover is a mouse gesture and focus is a keyboard one. On a
-                touchscreen there is neither, so without this button a reader on
-                a phone has no way to stop content that moves on its own every
-                5.6 seconds — which is what WCAG 2.2.2 asks for, and it asks
-                regardless of input device.
+                The pill in the panel's bottom-right corner has gone. What
+                replaced it is the same button, `sr-only`: present in the
+                document, announced by a screen reader, reachable by Tab, and
+                invisible to everyone who is not using one of those. Nothing on
+                the stage moves or reflows — `sr-only` is a 1px clip, so it
+                occupies no space at any width.
 
-                It sits over the stage rather than in the step column because the
-                column is `h-full` with its cards spread by `justify-between`:
-                anything added there would either push the first card off the
-                stage's top edge or pull the last off its bottom, and that
-                alignment took several passes to get right. Absolutely positioned
-                in the panel's empty bottom-right corner, it costs no layout at
-                all. It is deliberately a SIBLING of the stage rather than a
-                child — the stage carries `aria-hidden`, and a control inside it
-                would be unreachable by everything that needed it.
+                WHY NOT DELETE IT OUTRIGHT. Hover is a mouse gesture and focus is
+                a keyboard one, so on a touchscreen neither of the two remaining
+                holds can be reached — and this section moves on its own every
+                5.6 seconds. WCAG 2.2.2 asks for a mechanism to pause moving
+                content regardless of input device, and a control that exists
+                only in the assistive tree still satisfies it for the readers
+                most affected by movement they cannot stop. Removing the button
+                from the design is a look; removing the mechanism would be a
+                regression.
 
-                Hidden entirely under `prefers-reduced-motion`: the autoplay
-                never starts there, so a pause button would be a control for
-                something that is not happening. */}
+                It becomes visible on FOCUS, which is not optional either: a
+                keyboard user landing on a control they cannot see is its own
+                failure (2.4.7). `focus:not-sr-only` puts the old pill back,
+                exactly where it used to sit, for exactly as long as it holds
+                focus.
+
+                Still a SIBLING of the stage rather than a child — the stage
+                carries `aria-hidden`, and a control inside it would be
+                unreachable by everything that needs this one. And still absent
+                under `prefers-reduced-motion`, where the autoplay never starts
+                and there is nothing to pause. */}
             {!calm && (
               <button
                 type="button"
                 onClick={() => setPaused((p) => !p)}
-                className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 font-mono text-[9.5px] font-bold tracking-[0.05em] text-ig-muted ring-1 ring-inset ring-ig-purple/20 transition-colors duration-300 hover:text-ig-ink sm:bottom-4 sm:right-4"
+                className="sr-only focus:not-sr-only focus:absolute focus:bottom-3 focus:right-3 focus:z-20 focus:flex focus:items-center focus:rounded-full focus:bg-white focus:px-2.5 focus:py-1.5 focus:font-mono focus:text-[9.5px] focus:font-bold focus:tracking-[0.05em] focus:text-ig-ink focus:ring-1 focus:ring-inset focus:ring-ig-purple/20 sm:focus:bottom-4 sm:focus:right-4"
               >
-                {paused ? (
-                  <Play className="h-2.5 w-2.5 fill-current text-ig-teal" strokeWidth={0} />
-                ) : (
-                  <Pause className="h-2.5 w-2.5 fill-current text-ig-purple" strokeWidth={0} />
-                )}
-                {paused ? 'Resume' : 'Pause'}
+                {paused ? 'Resume the walkthrough' : 'Pause the walkthrough'}
               </button>
             )}
           </Reveal>

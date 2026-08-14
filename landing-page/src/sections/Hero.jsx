@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, Search, X } from 'lucide-react';
 import { HeroStage } from '../components/HeroStage.jsx';
 import { Reveal } from '../components/Reveal.jsx';
@@ -12,13 +12,39 @@ import { SHELL } from '../lib/layout.js';
    submit. Lifting the value to the shell instead would have meant every
    keystroke re-rendering the pillars, the calculator and nine suite cards —
    the exact whole-page churn the shell was restructured to stop. Typing is
-   local; committing is shared. */
-export function Hero({ onSearch }) {
+   local; committing is shared.
+
+   `committed` IS THE OTHER HALF OF THAT, and without it the two ends of the
+   search disagreed. The catalogue's chip clears the shared query, so the cards
+   all came back — but this field still held the text, so scrolling back up
+   showed a search that was no longer in effect, and clearing it again was the
+   only way to make the page agree with itself. One search, two controls, and
+   either one has to be able to end it. */
+export function Hero({ onSearch, committed = '' }) {
   const [query, setQuery] = useState('');
+
+  /* THE ONE DIRECTION THAT HAS TO BE SYNCED, and only when the committed value
+     actually changes. It does not run per keystroke — `committed` only moves
+     when something is submitted or cleared — so the local-typing property above
+     is untouched. Typing still diverges from the committed search on purpose;
+     what it can no longer do is survive that search being cancelled. */
+  useEffect(() => {
+    setQuery(committed);
+  }, [committed]);
 
   const submit = (e) => {
     e.preventDefault();
     onSearch(query.trim());
+  };
+
+  /* Clearing the field clears the SEARCH, not just the text in the box. That is
+     the whole point of the fix: the button reads as "cancel this search"
+     wherever it is pressed, and pressing it here no longer leaves the catalogue
+     filtered by something the reader has just visibly deleted. `searchFor`
+     skips its scroll for an empty query, so this stays put. */
+  const clear = () => {
+    setQuery('');
+    if (committed) onSearch('');
   };
   return (
     <section
@@ -104,17 +130,24 @@ export function Hero({ onSearch }) {
               left is a block that starts under the eyebrow and ends at the
               chips, with one padding value above it. */}
           <div className="pt-8 md:pt-12">
-          {/* THE INTRO IS ONE SEQUENCE OF FOUR NOW: eyebrow, headline, the line
-              under it, then the field. 90ms between each — far enough apart to
-              be read as an order, close enough that the whole thing is done in
-              under a second. The headline's second line keeps its own extra
-              90ms, so the two halves of the display type still resolve one
-              after the other inside the block's own arrival.
+          {/* THE INTRO IS ONE SEQUENCE OF FOUR: eyebrow, headline, the line
+              under it, then the field. 170ms between each, widened from 90 to
+              go with the slower curve — a stagger has to be read against the
+              length of the thing it is staggering, and at 90ms against a 1.05s
+              entrance all four were effectively arriving together. The
+              published recipes for this effect put the spacing at 200–300ms;
+              170 is the low end of that, which walks the eye down the block
+              without making anyone wait for the field. Last element starts at
+              510ms and the sequence is finished inside 1.6s.
+
+              The headline's second line keeps its own extra 90ms, so the two
+              halves of the display type still resolve one after the other
+              inside the block's own arrival.
 
               `soft-lg` is here and nowhere else: this is the only display type
               on the site, and it is the one place the blur has to be large
               enough to be felt against 94px glyphs. */}
-          <Reveal delay={90} className="reveal-soft soft-lg text-center">
+          <Reveal delay={170} className="reveal-soft soft-lg text-center">
             {/* The foil is the real win here: the paragraph directly under
                 this has always opened "Move away from unguided prompt
                 chats", so prompting was already the thing this page argues
@@ -198,7 +231,7 @@ export function Hero({ onSearch }) {
               enough to the field to look like a mistake rather than a
               choice. On the wider measure it also falls to two lines instead
               of three, which pays for part of the taller headline. */}
-          <Reveal delay={180} className="reveal-soft mx-auto mt-6 max-w-[880px] text-center md:mt-8">
+          <Reveal delay={340} className="reveal-soft mx-auto mt-6 max-w-[880px] text-center md:mt-8">
             {/* Full-strength lavender rather than the spec's ~75%, plus
                 medium weight. At 400 and 75% this sat too close to the
                 gradient behind it; #D6CDEE at full opacity is nearly
@@ -232,7 +265,7 @@ export function Hero({ onSearch }) {
               filter nested inside a blur, which is the single most expensive
               thing this page could ask for on a weak GPU. It keeps the lift and
               the fade, which is all it needs: it arrives last either way. */}
-          <Reveal delay={270} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
+          <Reveal delay={510} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
             {/* A white field on the dark ground, so it reads as the one
                 place to act rather than as another dark panel. The submit
                 control lives inside the pill: on a rounded field an
@@ -253,7 +286,7 @@ export function Hero({ onSearch }) {
                 {query && (
                   <button
                     type="button"
-                    onClick={() => setQuery('')}
+                    onClick={clear}
                     aria-label="Clear"
                     className="mr-1 grid w-9 shrink-0 place-items-center rounded-full text-ig-muted transition-colors hover:bg-ig-ink/[0.07] hover:text-ig-ink"
                   >
