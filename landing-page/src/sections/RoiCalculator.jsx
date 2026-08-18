@@ -1,8 +1,25 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE SAVINGS CALCULATOR — "Set your headcount see what you save"
+
+   WHERE YOU SEE THIS
+     The third section of the home page, on the near-white band.
+
+   WHAT IS IN HERE
+     · The slider you drag to set how many people you employ.
+     · The figures that recalculate as you drag: hours returned, cost
+       avoided, and the payback line.
+     · The small print explaining what the numbers assume.
+
+   WORTH KNOWING
+     Every figure is worked out live from the slider position. Nothing
+     here is a stored number.
+   ========================================================================== */
+
 import { useMemo, useState } from 'react';
 import { Minus, MoveHorizontal, Plus } from 'lucide-react';
-import { Cross } from '../components/Cross.jsx';
-import { Kicker } from '../components/Kicker.jsx';
-import { Reveal } from '../components/Reveal.jsx';
+import { Cross } from '../components/ui/Cross.jsx';
+import { Kicker } from '../components/ui/Kicker.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
 import { SHELL } from '../lib/layout.js';
 
 const MIN_EMPLOYEES = 50;

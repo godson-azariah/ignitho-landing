@@ -1,3 +1,22 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE MOVING PURPLE GLOW BEHIND THE DARK BANDS
+
+   WHERE YOU SEE THIS
+     Behind the hero, and behind the dark heading band on the suite and
+     questions pages.
+
+   WHAT IS IN HERE
+     · Six overlapping layers of colour that drift very slowly — a
+       bloom, three sets of folds at different depths, a travelling
+       sheen, and a faint grid on top.
+     · Each layer takes between 15 and 29 seconds, and they never line
+       up, so the light never appears to repeat.
+
+   WORTH KNOWING
+     It stops completely when scrolled off screen, so it costs nothing
+     while you are further down the page.
+   ========================================================================== */
+
 import { useEffect, useRef, useState } from 'react';
 
 /* The hero stage: a bloom, three layers of folds hung at different depths —

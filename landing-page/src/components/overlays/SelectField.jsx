@@ -1,6 +1,23 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE COUNTRY AND INDUSTRY DROPDOWNS IN THE CONTACT FORM
+
+   WHERE YOU SEE THIS
+     The two dropdown fields in the Contact Sales form.
+
+   WHAT IS IN HERE
+     · A field that opens its list DOWNWARDS, always.
+     · For long lists — the countries — you can type to narrow it down,
+       and matches that start with what you typed are shown first.
+
+   WORTH KNOWING
+     This is hand-built rather than the browser own dropdown, because
+     the browser decides for itself whether its list opens up or down,
+     and it kept choosing up.
+   ========================================================================== */
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, ChevronDown, Search } from 'lucide-react';
-import { FORM_FIELD } from '../lib/layout.js';
+import { FORM_FIELD } from '../../lib/layout.js';
 
 /* A select that opens DOWNWARD, which a native one cannot be made to do.
 

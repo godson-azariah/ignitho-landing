@@ -1,6 +1,22 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE ASK IGNITHO AI CHAT BUBBLE
+
+   WHERE YOU SEE THIS
+     Bottom-right corner of every page.
+
+   WHAT IS IN HERE
+     · The closed bubble, and the chat panel it opens into: a greeting,
+       the message list, a typing indicator, and a text box.
+
+   WORTH KNOWING
+     The answers are WRITTEN IN ADVANCE and matched on keywords — this
+     is not connected to a live assistant. If nothing matches, it falls
+     back to a general reply.
+   ========================================================================== */
+
 import { useEffect, useRef, useState } from 'react';
 import { Bot, Minimize2, Send } from 'lucide-react';
-import { scrollEase } from '../lib/scrollEase.js';
+import { scrollEase } from '../../lib/scrollEase.js';
 
 const GREETING = {
   sender: 'bot',

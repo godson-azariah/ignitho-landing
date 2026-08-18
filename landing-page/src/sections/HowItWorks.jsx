@@ -1,8 +1,32 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE WALKTHROUGH — "Four steps, days not months"
+
+   WHERE YOU SEE THIS
+     The fifth section of the home page, on the near-white band.
+
+   WHAT IS IN HERE
+     · The four steps down the left: Choose the suite, Test the agent,
+       Deploy in days, Measure the return.
+     · The current step is a lavender card; the other three are a pale
+       green wash.
+     · A green circle beside each step. The current one has a dark ring
+       winding around it like a countdown — 5.6 seconds, then it moves
+       on by itself.
+     · You can click any step to jump to it, and hovering the CURRENT
+       step pauses the countdown so you can read it.
+     · The illustrated product windows on the right, which change with
+       the step.
+
+   WORTH KNOWING
+     The step wording lives in data/howItWorks.js. The windows are
+     components/WalkthroughStage.jsx.
+   ========================================================================== */
+
 import { useEffect, useRef, useState } from 'react';
-import { Cross } from '../components/Cross.jsx';
-import { HowItWorksStage } from '../components/HowItWorksStage.jsx';
-import { Kicker } from '../components/Kicker.jsx';
-import { Reveal } from '../components/Reveal.jsx';
+import { Cross } from '../components/ui/Cross.jsx';
+import { WalkthroughStage } from '../components/stage/WalkthroughStage.jsx';
+import { Kicker } from '../components/ui/Kicker.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
 import { DWELL_MS, HOW_IT_WORKS } from '../data/howItWorks.js';
 import { SHELL } from '../lib/layout.js';
 
@@ -566,7 +590,7 @@ export function HowItWorks() {
             {/* `live` is the same IntersectionObserver flag the autoplay uses,
                 so the panel's entrance and its clock start together — and
                 neither does any work while the section is off screen. */}
-            <HowItWorksStage activeId={active.id} live={live} />
+            <WalkthroughStage activeId={active.id} live={live} />
 
             {/* THE PAUSE CONTROL IS STILL HERE — IT IS JUST NOT DRAWN.
 

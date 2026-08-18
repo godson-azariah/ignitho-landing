@@ -1,3 +1,17 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE COUNTRY LIST
+
+   WHERE YOU SEE THIS
+     The Country dropdown in the Contact Sales form.
+
+   WHAT IS IN HERE
+     · Every country, in alphabetical order. Nothing else.
+
+   WORTH KNOWING
+     It has its own file only because it is long enough to bury anything
+     sharing with it.
+   ========================================================================== */
+
 /* Every country, in its own file because it is 190-odd lines of pure data and it
    would have buried everything else in `navigation.js`.
 

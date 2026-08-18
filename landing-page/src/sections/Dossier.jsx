@@ -1,10 +1,31 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  AN INDIVIDUAL SUITE PAGE
+
+   WHERE YOU SEE THIS
+     Its own page, reached by clicking any of the nine suites. The
+     address becomes /suites/something, so the back button returns you
+     to where you were.
+
+   WHAT IS IN HERE
+     · The dark heading band with the suite name and tagline.
+     · The executive summary and the figures that suite claims.
+     · "Agents in this suite" — the accelerator rows, each with a
+       "Governed DAG Ready" badge and a Test Agent button that opens a
+       simulator.
+     · A Contact Sales card at the side, and related suites at the foot.
+
+   WORTH KNOWING
+     ONE file draws all nine suite pages. The layout is the same every
+     time; only the content passed into it changes.
+   ========================================================================== */
+
 import { useCallback, useState } from 'react';
 import { ArrowRight, Check, Play } from 'lucide-react';
-import { AgentSimulator } from '../components/AgentSimulator.jsx';
-import { HeroStage } from '../components/HeroStage.jsx';
-import { Kicker } from '../components/Kicker.jsx';
-import { Reveal } from '../components/Reveal.jsx';
-import { SwapButton, TealButton } from '../components/SwapButton.jsx';
+import { AgentSimulator } from '../components/overlays/AgentSimulator.jsx';
+import { HeroStage } from '../components/stage/HeroStage.jsx';
+import { Kicker } from '../components/ui/Kicker.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
+import { Button, PrimaryButton } from '../components/ui/Button.jsx';
 import { SHELL } from '../lib/layout.js';
 import { noOrphan } from '../lib/noOrphan.js';
 
@@ -151,13 +172,13 @@ export function Dossier({ suite, openContact }) {
                         the page has, and it once held a 27-character label.
 
                         Trimming the padding is what buys the room back. `!`
-                        because `TealButton` sets `px-6` itself, and two
+                        because `PrimaryButton` sets `px-6` itself, and two
                         same-specificity utilities resolve by source order
                         rather than by intent. */}
-                    <TealButton onClick={openContact} className="mt-7 w-full !px-4 sm:!px-6">
+                    <PrimaryButton onClick={openContact} className="mt-7 w-full !px-4 sm:!px-6">
                       Contact Sales
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </TealButton>
+                    </PrimaryButton>
                   </div>
                 </div>
               </div>
@@ -243,14 +264,14 @@ export function Dossier({ suite, openContact }) {
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                         Governed DAG Ready
                       </span>
-                      <SwapButton
+                      <Button
                         onClick={() => setSimAccelerator(acc)}
                         variant="ink"
                         className="shrink-0 px-5 py-3 text-[12.5px] font-semibold"
                       >
                         <Play className="h-3 w-3 fill-current" />
                         Test Agent
-                      </SwapButton>
+                      </Button>
                     </div>
                   </div>
                 </div>

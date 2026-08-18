@@ -1,3 +1,18 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE GRID-OR-LIST SWITCH
+
+   WHERE YOU SEE THIS
+     To the right of the search box in the nine-suites section.
+
+   WHAT IS IN HERE
+     · Two small icons in a white pill. The active one is filled in.
+     · Grid shows the nine suites as cards; list shows them as rows.
+
+   WORTH KNOWING
+     It keeps one fixed position so it never moves when you switch
+     views.
+   ========================================================================== */
+
 import { LayoutGrid, List } from 'lucide-react';
 
 /* Grid or list. One fixed home under the search field, so it never moves

@@ -1,9 +1,27 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE QUESTIONS PAGE — "Questions people ask first"
+
+   WHERE YOU SEE THIS
+     Its own page, reached from the FAQ link in the nav bar. The address
+     becomes /faq.
+
+   WHAT IS IN HERE
+     · The dark heading band at the top.
+     · The questions, in groups. Clicking one opens its answer and
+       closes whichever was open before, so the page stays scannable.
+     · At the bottom, "Something here not covered?" with a Contact Sales
+       button.
+
+   WORTH KNOWING
+     The questions and answers themselves live in data/faq.js.
+   ========================================================================== */
+
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { HeroStage } from '../components/HeroStage.jsx';
-import { Kicker } from '../components/Kicker.jsx';
-import { Reveal } from '../components/Reveal.jsx';
-import { TealButton } from '../components/SwapButton.jsx';
+import { HeroStage } from '../components/stage/HeroStage.jsx';
+import { Kicker } from '../components/ui/Kicker.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
+import { PrimaryButton } from '../components/ui/Button.jsx';
 import { FAQ_GROUPS } from '../data/faq.js';
 import { SHELL } from '../lib/layout.js';
 import { noOrphan } from '../lib/noOrphan.js';
@@ -180,7 +198,7 @@ export function Faq({ openContact }) {
               <p className="text-[17px] font-extrabold tracking-[-0.02em] text-ig-ink md:text-[19px]">
                 Something here not covered?
               </p>
-              <TealButton onClick={openContact}>Contact Sales</TealButton>
+              <PrimaryButton onClick={openContact}>Contact Sales</PrimaryButton>
             </Reveal>
           </div>
         </div>

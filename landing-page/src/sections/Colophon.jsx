@@ -1,6 +1,23 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE FOOTER
+
+   WHERE YOU SEE THIS
+     The bottom of every page.
+
+   WHAT IS IN HERE
+     · The Ignitho AI wordmark and the line under it.
+     · The Menu column, which repeats the nav bar destinations.
+     · The Suites column, which links to the nine suite pages.
+     · The certifications, the copyright line, and the closing rule.
+
+   WORTH KNOWING
+     The links come from the same list the nav bar uses, so the two
+     cannot drift apart.
+   ========================================================================== */
+
 import { useMemo } from 'react';
 import { Check } from 'lucide-react';
-import { Reveal } from '../components/Reveal.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
 import { CERTS, NAV_LINKS } from '../data/navigation.js';
 import { SUITES } from '../data/suites.js';
 import { SHELL } from '../lib/layout.js';

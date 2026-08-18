@@ -1,3 +1,25 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  EVERY ANIMATION ON THE SITE
+
+   WHERE YOU SEE THIS
+     Everything that moves, fades or blurs.
+
+   WHAT IS IN HERE
+     · The fade-and-lift as blocks scroll into view, and the
+       blur-into-focus version used on the hero and the section
+       headings.
+     · The rising lines of the hero headline.
+     · The blur-to-solid arrival of the walkthrough windows, and the way
+       the outgoing ones blur away again.
+     · The countdown ring around the active step.
+     · The small pops and the typing dots in the chat bubble.
+
+   WORTH KNOWING
+     Four movement speeds are defined at the top and everything uses one
+     of them, which is why the whole site feels like it moves the same
+     way.
+   ========================================================================== */
+
 /* =========================================================================
    3. MOTION
    ========================================================================= */

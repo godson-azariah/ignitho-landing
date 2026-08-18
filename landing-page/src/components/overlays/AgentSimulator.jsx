@@ -1,7 +1,25 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE TEST AGENT POPUP
+
+   WHERE YOU SEE THIS
+     Opens over a suite page when you press "Test Agent" on any
+     accelerator row.
+
+   WHAT IS IN HERE
+     · A dark console-style window that plays through the stages of a
+       run, ticking each one off, then shows the finished result.
+     · A Close Tester button. The Escape key also closes it.
+
+   WORTH KNOWING
+     It is a demonstration on a timer, not a real agent — nothing is
+     sent anywhere. Opening the same one twice always starts from the
+     first step.
+   ========================================================================== */
+
 import { Fragment, useEffect, useState } from 'react';
 import { Activity, Check, Cpu, Terminal, X } from 'lucide-react';
-import { TealButton } from './SwapButton.jsx';
-import { useOverlay } from '../lib/useOverlay.js';
+import { PrimaryButton } from '../ui/Button.jsx';
+import { useOverlay } from '../../hooks/useOverlay.js';
 
 /* Owns its own run. The dossier says which accelerator to show; the staging is
    this component's business, so opening one twice always starts from step one.
@@ -176,7 +194,7 @@ export function AgentSimulator({ accelerator, onClose }) {
           </div>
 
           <div className="mt-7 flex justify-end">
-            <TealButton onClick={onClose}>Close Tester</TealButton>
+            <PrimaryButton onClick={onClose}>Close Tester</PrimaryButton>
           </div>
         </div>
       </div>

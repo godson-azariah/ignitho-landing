@@ -1,8 +1,31 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE NAV BAR ALONG THE TOP
+
+   WHERE YOU SEE THIS
+     Fixed to the top of every page. It does not slide away when you
+     scroll.
+
+   WHAT IS IN HERE
+     · The Ignitho AI wordmark on the left, which returns you to the
+       home page.
+     · In the middle: ROI Calculator, 9 Core Suites, How It Works. Each
+       scrolls to that section, and whichever you are currently looking
+       at turns violet with a line under it.
+     · On the right: FAQ with a green speech-bubble icon, the green
+       Contact Sales button, and the violet Sign in button.
+     · On a phone all of that collapses to the round menu button on the
+       right.
+
+   WORTH KNOWING
+     The bar gains a soft shadow once the page has scrolled, which is
+     the only thing about it that changes.
+   ========================================================================== */
+
 import { ArrowUpRight, MessageCircle, Menu } from 'lucide-react';
-import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../data/navigation.js';
-import { SHELL } from '../lib/layout.js';
-import { useScrollChrome } from '../lib/useScrollChrome.js';
-import { SwapButton, TealButton } from './SwapButton.jsx';
+import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
+import { SHELL } from '../../lib/layout.js';
+import { useScrollChrome } from '../../hooks/useScrollChrome.js';
+import { Button, PrimaryButton } from '../ui/Button.jsx';
 
 /* Owns its own scroll state — nothing else on the page needs to know whether
    the page has moved under the bar, so nothing else has to hold it. */
@@ -196,16 +219,16 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
                 than as a compact control. 20/12 and 13px sit it beside "Sign
                 in" as a pair. */}
             <div className="hidden lg:block">
-              <TealButton onClick={openContact} className="!px-5 !py-3 !text-[13px]">
+              <PrimaryButton onClick={openContact} className="!px-5 !py-3 !text-[13px]">
                 <span className="whitespace-nowrap">Contact Sales</span>
-              </TealButton>
+              </PrimaryButton>
             </div>
 
             {/* AN ANCHOR, NOT A BUTTON WITH A CLICK HANDLER. This leaves the
                 site for the application on another host, and a thing that
                 navigates has to be a link — for middle-click, copy-link, the
                 status-bar preview, and the role a screen reader announces.
-                `SwapButton`'s `as` prop is what makes that possible without
+                `Button`'s `as` prop is what makes that possible without
                 giving up the shared button styling.
 
                 No `target="_blank"`: signing in is continuing, not branching
@@ -220,7 +243,7 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
                   padding either side of the two would have made this pill look
                   padded rather than compact. Same 12px vertical, so the two
                   stand at exactly the same height. */}
-              <SwapButton
+              <Button
                 as="a"
                 href={SIGN_IN_URL}
                 variant="violet"
@@ -228,11 +251,11 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
               >
                 <span className="whitespace-nowrap">Sign in</span>
                 <ArrowUpRight className="h-3 w-3" strokeWidth={2.6} />
-              </SwapButton>
+              </Button>
             </div>
 
             <div className="lg:hidden">
-              <SwapButton
+              <Button
                 onClick={onOpenMenu}
                 aria-expanded={menuOpen}
                 aria-label="Menu"
@@ -240,7 +263,7 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
                 className="h-11 w-11"
               >
                 <Menu className="h-4 w-4" strokeWidth={2.4} />
-              </SwapButton>
+              </Button>
             </div>
           </div>
         </div>

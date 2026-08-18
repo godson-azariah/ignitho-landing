@@ -1,3 +1,21 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE PAGE WIDTH, USED BY EVERY SECTION
+
+   WHERE YOU SEE THIS
+     Everywhere, invisibly — it is why every section left and right
+     edges line up.
+
+   WHAT IS IN HERE
+     · One measurement: how wide the content may be, and how far it sits
+       from the screen edges.
+     · The list of card header colours, and the shared styling for form
+       fields.
+
+   WORTH KNOWING
+     Change the width here and the whole page moves together, which is
+     why it is one setting instead of fifty.
+   ========================================================================== */
+
 /* Shared layout and palette constants.
 
    `SHELL` is the page's one content measure — every section uses it, so the

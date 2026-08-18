@@ -1,3 +1,20 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE SMALL LABEL ABOVE EVERY SECTION HEADING
+
+   WHERE YOU SEE THIS
+     Just above each section title — for example "[04] How It Works"
+     over "Four steps, days not months".
+
+   WHAT IS IN HERE
+     · A number in brackets, the section name in small type, and a short
+       dash rule.
+     · Centred headings get a matching dash on both sides.
+
+   WORTH KNOWING
+     It comes in two shades: dark for the pale bands, light for the dark
+     bands.
+   ========================================================================== */
+
 /* The small monospace label above a section heading. `centered` draws a rule
    on both sides — a single trailing rule reads as left-aligned however the box
    itself is positioned. */

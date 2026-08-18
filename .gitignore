@@ -1,0 +1,8 @@
+
+# ── working files, not part of the site ────────────────────────────────────
+# Scratch output from the verification harness used during refactors: it
+# renders every page to HTML before and after a change and diffs the bytes.
+# Useful while working, meaningless in history.
+.snapbuild/
+.smoke/
+*.snapshot.html

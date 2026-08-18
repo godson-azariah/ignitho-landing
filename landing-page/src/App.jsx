@@ -1,9 +1,31 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE TABLE OF CONTENTS FOR THE WHOLE SITE
+
+   WHERE YOU SEE THIS
+     Everything. This file says which sections exist and in what order.
+
+   WHAT IS IN HERE
+     · The running order of the home page: hero, the four outcome cards,
+       the savings calculator, the nine suites, the four steps, the
+       ready-when-you-are card, the dark closing section with the map,
+       then the footer.
+     · Which PAGE you are looking at — the home page, one suite page, or
+       the questions page — and the web address, so the browser back
+       button works.
+     · The nav bar, the phone menu, the chat bubble and the Contact
+       Sales form, which are on every page because they live here.
+
+   WORTH KNOWING
+     To move a section up or down the home page, or to remove one, this
+     is the only file you need.
+   ========================================================================== */
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { ChatWidget } from './components/ChatWidget.jsx';
-import { ContactDialog } from './components/ContactDialog.jsx';
-import { Masthead } from './components/Masthead.jsx';
-import { MenuSheet } from './components/MenuSheet.jsx';
+import { ChatWidget } from './components/overlays/ChatWidget.jsx';
+import { ContactDialog } from './components/overlays/ContactDialog.jsx';
+import { Masthead } from './components/chrome/Masthead.jsx';
+import { MenuSheet } from './components/chrome/MenuSheet.jsx';
 import { Catalog } from './sections/Catalog.jsx';
 import { ClosingCta } from './sections/ClosingCta.jsx';
 import { Colophon } from './sections/Colophon.jsx';
@@ -16,8 +38,8 @@ import { ReadyCta } from './sections/ReadyCta.jsx';
 import { RoiCalculator } from './sections/RoiCalculator.jsx';
 import { SUITES } from './data/suites.js';
 import { scrollEase } from './lib/scrollEase.js';
-import { useRoute } from './lib/useRoute.js';
-import { useScrollSpy } from './lib/useScrollSpy.js';
+import { useRoute } from './hooks/useRoute.js';
+import { useScrollSpy } from './hooks/useScrollSpy.js';
 
 /* Which section each destination scrolls to. Every id here is the `id` on a
    real section element; "Overview" is deliberately absent because it means

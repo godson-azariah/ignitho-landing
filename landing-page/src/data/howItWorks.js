@@ -1,3 +1,20 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE WORDS FOR THE FOUR STEPS, AND HOW LONG EACH ONE HOLDS
+
+   WHERE YOU SEE THIS
+     The four steps in "Four steps, days not months".
+
+   WHAT IS IN HERE
+     · For each step: its icon, its title and its description.
+     · The dwell time — 5.6 seconds — which is how long a step stays
+       before the next one takes over. The countdown ring drawn on the
+       step reads the same number, so changing it here changes both.
+
+   WORTH KNOWING
+     Nothing in these four steps is a new claim; each one repeats
+     something the page says elsewhere.
+   ========================================================================== */
+
 import { FlaskConical, LineChart, MousePointerClick, Rocket } from 'lucide-react';
 
 /* The four steps, and every one of them is something the page already claims

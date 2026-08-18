@@ -1,3 +1,18 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  WHICH NAV LINK IS HIGHLIGHTED AS YOU SCROLL
+
+   WHERE YOU SEE THIS
+     The three middle links in the nav bar.
+
+   WHAT IS IN HERE
+     · It watches a thin band across the upper part of the screen and
+       reports which section is crossing it, so that link turns violet.
+
+   WORTH KNOWING
+     On the questions page the FAQ link is highlighted directly instead,
+     because that is a page rather than a section.
+   ========================================================================== */
+
 import { useEffect, useState } from 'react';
 
 /* Which section the reader is currently in, for the navbar to mark.

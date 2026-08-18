@@ -1,3 +1,26 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  MENU LABELS, THE SIGN-IN LINK, AND THE CONTACT FORM OPTION LISTS
+
+   WHERE YOU SEE THIS
+     The nav bar, the phone menu, the footer, the suite filter buttons,
+     the hero suggestion chips, and the Contact Sales form.
+
+   WHAT IS IN HERE
+     · The four destinations: ROI Calculator, 9 Core Suites, How It
+       Works, FAQ.
+     · The Sign in web address.
+     · The three filter button labels, and the six search suggestions
+       under the hero field.
+     · The industry list for the contact form, and the certifications.
+     · WHERE THE CONTACT FORM SENDS — currently nowhere, deliberately.
+       Put a real address in and the form starts working with no other
+       change.
+
+   WORTH KNOWING
+     Three different parts of the site read the same destination list
+     from here, so a menu item is added once and appears everywhere.
+   ========================================================================== */
+
 /* Everything that names a destination or a filter. Kept apart from the suite
    catalogue because it changes for different reasons and at a different pace. */
 

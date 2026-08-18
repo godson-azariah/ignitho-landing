@@ -1,3 +1,20 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE NAV BAR SHADOW
+
+   WHERE YOU SEE THIS
+     The top nav bar.
+
+   WHAT IS IN HERE
+     · One thing: whether the page has been scrolled at all. If it has,
+       the bar lifts onto a soft shadow; at the very top it carries only
+       a hairline.
+
+   WORTH KNOWING
+     The bar used to hide itself when you scrolled down. It no longer
+     does — navigation that comes and goes makes you check whether it is
+     there.
+   ========================================================================== */
+
 import { useEffect, useState } from 'react';
 
 /* The masthead's one piece of scroll state: whether the page has moved under it

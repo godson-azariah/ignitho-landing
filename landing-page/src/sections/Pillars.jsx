@@ -1,6 +1,25 @@
-import { Cross } from '../components/Cross.jsx';
-import { Kicker } from '../components/Kicker.jsx';
-import { Reveal } from '../components/Reveal.jsx';
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE FOUR OUTCOME CARDS — "What actually changes once it is live"
+
+   WHERE YOU SEE THIS
+     The second section of the home page, on the pale lavender band.
+
+   WHAT IS IN HERE
+     · The heading, and the four violet cards under it: Revenue
+       Acceleration, Cost Reduction, Corporate Governance, Rapid
+       Deployment.
+     · Each card has a big faded number in the corner, an icon, a title,
+       a sentence, and a green target line at the bottom.
+     · The cards rise very slightly when your mouse is over them.
+
+   WORTH KNOWING
+     The WORDS on the cards are not here — they live in data/pillars.js,
+     which is also where the one shared card colour is set.
+   ========================================================================== */
+
+import { Cross } from '../components/ui/Cross.jsx';
+import { Kicker } from '../components/ui/Kicker.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
 import { PILLARS, PILLAR_BG } from '../data/pillars.js';
 import { SHELL } from '../lib/layout.js';
 import { splitHeading } from '../lib/splitHeading.js';

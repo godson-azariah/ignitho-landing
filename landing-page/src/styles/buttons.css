@@ -1,3 +1,22 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE BUTTON, THE CARD HOVER, AND THE LIST-ROW FILL
+
+   WHERE YOU SEE THIS
+     Every button, the four outcome cards, and the suite list rows.
+
+   WHAT IS IN HERE
+     · The rounded pill in its four colours, and the tone change on
+       hover.
+     · The 3px lift on the outcome cards when your mouse is over them.
+     · The colour that wipes across a suite list row, growing from the
+       side your pointer came in from.
+     · The preview card entrance in list view.
+
+   WORTH KNOWING
+     Every hover effect here is switched off on touch screens, because a
+     tap leaves an element looking hovered until you tap something else.
+   ========================================================================== */
+
 /* =========================================================================
    4b. THE BUTTON
    One solid pill, one colour, one quiet tone change on hover.

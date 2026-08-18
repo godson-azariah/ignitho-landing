@@ -1,3 +1,22 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  EVERY BUTTON ON THE SITE
+
+   WHERE YOU SEE THIS
+     All of them: Contact Sales, Sign in, Close, Clear, Test Agent, the
+     phone menu button.
+
+   WHAT IS IN HERE
+     · One rounded pill in one of four colours — green for the main
+       action, deep violet, white, or near-black.
+     · On hover the colour deepens slightly. Nothing moves.
+     · When pressed it dims a little.
+
+   WORTH KNOWING
+     These buttons used to slide their label upwards and change to a
+     second colour on hover. That was removed: a button is waiting to be
+     pressed, so it should not look like it is going somewhere.
+   ========================================================================== */
+
 /* The page's one button — a plain solid pill.
 
    It used to be a swap: three bands on a tilted track, the resting face sliding
@@ -17,7 +36,7 @@
    `buttons.css` maps that class to a resting tone and a hover tone.
 
    The exported names are kept as they are. Every call site on the page imports
-   `SwapButton` or `TealButton`, and renaming a component across ten files is a
+   `Button` or `PrimaryButton`, and renaming a component across ten files is a
    large diff in service of nothing a reader of those files would notice. */
 
 /* Resting tone · hover tone, both defined in `buttons.css`. Each pair is one
@@ -36,7 +55,7 @@ const VARIANT = {
    "link" role a screen reader announces. Styling it as a button and handling the
    click in JS would take all of that away. `.btn` is `inline-flex`, so it works
    identically on either element. */
-export function SwapButton({ as: Tag = 'button', children, className = '', variant = 'violet', ...rest }) {
+export function Button({ as: Tag = 'button', children, className = '', variant = 'violet', ...rest }) {
   return (
     <Tag {...rest} className={`btn ${VARIANT[variant] || VARIANT.violet} ${className}`}>
       {children}
@@ -45,14 +64,14 @@ export function SwapButton({ as: Tag = 'button', children, className = '', varia
 }
 
 /* Teal — the primary action everywhere */
-export function TealButton({ children, className = '', ...rest }) {
+export function PrimaryButton({ children, className = '', ...rest }) {
   return (
-    <SwapButton
+    <Button
       {...rest}
       variant="teal"
       className={`px-6 py-3.5 text-[13px] font-semibold ${className}`}
     >
       {children}
-    </SwapButton>
+    </Button>
   );
 }

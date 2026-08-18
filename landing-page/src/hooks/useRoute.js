@@ -1,3 +1,21 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE WEB ADDRESS AND THE BACK BUTTON
+
+   WHERE YOU SEE THIS
+     The address bar. It is why /faq and /suites/... are real addresses
+     you can bookmark or share, and why the back button works.
+
+   WHAT IS IN HERE
+     · It reads the address to decide which page to show, and updates
+       the address when you navigate.
+     · Going back restores where you were on the page you came from.
+
+   WORTH KNOWING
+     This is why the on-page "back to home" buttons could be removed —
+     the browser own back button does the job better, because it returns
+     you to wherever you actually came from.
+   ========================================================================== */
+
 import { useCallback, useEffect, useState } from 'react';
 
 /* Real URLs and real history, without a router.

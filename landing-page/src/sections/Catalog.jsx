@@ -1,14 +1,36 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE NINE SUITES — "Three foundations, six verticals"
+
+   WHERE YOU SEE THIS
+     The fourth section of the home page, on the pale lavender band.
+
+   WHAT IS IN HERE
+     · The three filter buttons: All 9 Suites, 3 Universal Foundations,
+       6 Industry Verticals. On a phone these become a strip you swipe
+       sideways.
+     · The search box, tied to the one in the hero — searching or
+       clearing in either place affects both.
+     · The grid-or-list switch to the right of the search box.
+     · The nine suite cards, or the same nine as a list of rows with a
+       preview card that follows your pointer.
+     · Clicking any suite opens that suite own page.
+
+   WORTH KNOWING
+     The suite names and descriptions are not here — they live in
+     data/suites.js.
+   ========================================================================== */
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, Search, X } from 'lucide-react';
-import { Reveal } from '../components/Reveal.jsx';
-import { SuiteCard } from '../components/SuiteCard.jsx';
-import { SwapButton } from '../components/SwapButton.jsx';
-import { ViewToggle } from '../components/ViewToggle.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
+import { SuiteCard } from '../components/ui/SuiteCard.jsx';
+import { Button } from '../components/ui/Button.jsx';
+import { ViewToggle } from '../components/ui/ViewToggle.jsx';
 import { SUITES } from '../data/suites.js';
 import { TABS } from '../data/navigation.js';
 import { ROW_FILL, SHELL } from '../lib/layout.js';
 import { scrollEase } from '../lib/scrollEase.js';
-import { PEEK_H, useSuitePeek } from '../lib/useSuitePeek.js';
+import { PEEK_H, useSuitePeek } from '../hooks/useSuitePeek.js';
 
 const matchesTab = (suite, tab) =>
   tab === 'ALL' ||
@@ -282,13 +304,13 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
             <p className="font-mono text-[11px] tracking-[0.055em] text-ig-muted">
               0 results for “{searchQuery}”
             </p>
-            <SwapButton
+            <Button
               onClick={() => setSearchQuery('')}
               variant="ink"
               className="px-6 py-3 text-[12.5px] font-semibold"
             >
               Clear
-            </SwapButton>
+            </Button>
           </div>
         </div>
       ) : view === 'grid' ? (

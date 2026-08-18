@@ -1,6 +1,30 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE WHITE PROMPT CARD — "Ready when you are"
+
+   WHERE YOU SEE THIS
+     Between the four steps and the dark closing section, on the
+     lavender band.
+
+   WHAT IS IN HERE
+     · A white card with a thin three-colour stripe across its very top
+       edge.
+     · The green-dotted "Ready when you are" badge, and the heading
+       "Name the outcome. We will engineer it".
+     · One sentence, then the green Sign in button and the quieter
+       "Questions people ask first" link, which opens the questions
+       page.
+     · Along the bottom, three ticked facts: three foundations six
+       verticals, accelerators ship as governed DAGs, live in days
+       rather than months.
+
+   WORTH KNOWING
+     An earlier version of this card is kept at
+     reference/backups/ReadyCta.card-v1.jsx.
+   ========================================================================== */
+
 import { ArrowUpRight, Check } from 'lucide-react';
-import { Reveal } from '../components/Reveal.jsx';
-import { TealButton } from '../components/SwapButton.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
+import { PrimaryButton } from '../components/ui/Button.jsx';
 import { SIGN_IN_URL } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
 
@@ -181,10 +205,10 @@ export function ReadyCta({ openFaq }) {
               one weight, which is what lets a text link sit beside a solid
               button without looking like it was left over. */}
           <div className="mt-6 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
-              <TealButton as="a" href={SIGN_IN_URL} className="!px-6 !py-3.5 !text-[13.5px]">
+              <PrimaryButton as="a" href={SIGN_IN_URL} className="!px-6 !py-3.5 !text-[13.5px]">
                 Sign in
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </TealButton>
+              </PrimaryButton>
 
               <button
                 type="button"

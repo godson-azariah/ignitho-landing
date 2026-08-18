@@ -1,3 +1,21 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE LIST OF STYLE FILES, IN THE ORDER THEY LOAD
+
+   WHERE YOU SEE THIS
+     Everywhere, indirectly. This file draws nothing itself.
+
+   WHAT IS IN HERE
+     · A table of contents for the eight style files in the styles
+       folder.
+     · The ORDER matters: each file can overrule the ones above it,
+       which is why reduced-motion comes last — it has to be able to
+       switch off animations every earlier file turned on.
+
+   WORTH KNOWING
+     Adding a new style file means adding a line here or it will never
+     load.
+   ========================================================================== */
+
 /* =========================================================================
    IGNITHO AI — STYLESHEET INDEX
 

@@ -1,3 +1,17 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE QUESTIONS AND ANSWERS
+
+   WHERE YOU SEE THIS
+     The questions page, reached from FAQ in the nav bar.
+
+   WHAT IS IN HERE
+     · The questions, grouped by subject, each with its answer.
+
+   WORTH KNOWING
+     EDIT THE FAQ HERE. Adding a question is one entry in a list; the
+     page picks it up with no other change.
+   ========================================================================== */
+
 /* Placeholder answers, and every one is assembled from something the site
    already says out loud — the catalogue's split, the badge on the accelerator
    rows, `pillars.js`, the calculator's constants and basis line, the

@@ -1,15 +1,35 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE CONTACT SALES FORM
+
+   WHERE YOU SEE THIS
+     Opens over whatever page you are on, from any Contact Sales button.
+
+   WHAT IS IN HERE
+     · A dark violet panel down the left with the invitation on it, and
+       the form on the right: name, work email, company, job title,
+       country, industry, and a message box.
+     · A privacy note under the Submit button.
+     · The Escape key closes it, as does clicking outside it.
+
+   WORTH KNOWING
+     IT IS NOT CONNECTED YET. The form checks what you typed and then
+     says plainly that it cannot send, offering info@ignitho.com instead
+     — rather than thanking you for a message that went nowhere.
+     Connecting it is one line in data/navigation.js.
+   ========================================================================== */
+
 import { useState } from 'react';
 import { ArrowRight, Check, Mail, X } from 'lucide-react';
 import { SelectField } from './SelectField.jsx';
-import { TealButton } from './SwapButton.jsx';
-import { FORM_FIELD } from '../lib/layout.js';
-import { useOverlay } from '../lib/useOverlay.js';
+import { PrimaryButton } from '../ui/Button.jsx';
+import { FORM_FIELD } from '../../lib/layout.js';
+import { useOverlay } from '../../hooks/useOverlay.js';
 import {
   CONTACT_COUNTRIES,
   CONTACT_EMAIL,
   CONTACT_ENDPOINT,
   CONTACT_INDUSTRIES
-} from '../data/navigation.js';
+} from '../../data/navigation.js';
 
 /* The contact form, as a dialog over the page.
 
@@ -200,7 +220,7 @@ export function ContactDialog({ open, onClose }) {
                 Someone who has deployed the suite you asked about will pick this up
               </p>
               <div className="mt-6">
-                <TealButton onClick={close}>Close</TealButton>
+                <PrimaryButton onClick={close}>Close</PrimaryButton>
               </div>
             </div>
           ) : (
@@ -347,10 +367,10 @@ export function ContactDialog({ open, onClose }) {
                 >
                   Back
                 </button>
-                <TealButton type="submit" disabled={phase === 'sending'}>
+                <PrimaryButton type="submit" disabled={phase === 'sending'}>
                   {phase === 'sending' ? 'Sending' : 'Submit'}
                   <ArrowRight className="h-3.5 w-3.5" />
-                </TealButton>
+                </PrimaryButton>
               </div>
             </form>
           )}

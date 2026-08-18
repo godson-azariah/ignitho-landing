@@ -1,6 +1,9 @@
+/* ARCHIVED — not built. A restorable copy of an earlier design for the
+   "Ready when you are" section. Paths were updated when the tree moved, but
+   nothing here is compiled: to use it, copy over src/sections/ReadyCta.jsx. */
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Reveal } from '../components/Reveal.jsx';
-import { TealButton } from '../components/SwapButton.jsx';
+import { PrimaryButton } from '../../src/components/ui/Button.jsx';
 import { SIGN_IN_URL } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
 
@@ -181,10 +184,10 @@ export function ReadyCta({ openFaq }) {
               one weight, which is what lets a text link sit beside a solid
               button without looking like it was left over. */}
           <div className="mt-6 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
-              <TealButton as="a" href={SIGN_IN_URL} className="!px-6 !py-3.5 !text-[13.5px]">
+              <PrimaryButton as="a" href={SIGN_IN_URL} className="!px-6 !py-3.5 !text-[13.5px]">
                 Sign in
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </TealButton>
+              </PrimaryButton>
 
               <button
                 type="button"

@@ -1,7 +1,31 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE TOP OF THE HOME PAGE — the big dark purple opening
+
+   WHERE YOU SEE THIS
+     The very first thing you see: the dark violet band at the top of
+     the home page.
+
+   WHAT IS IN HERE
+     · The small line "Transforming Ignitho into an AI-First Enterprise
+       Partner" and "Enterprise AI Platform" on either end, above a thin
+       rule.
+     · The huge headline "Enterprise AI built to run not to prompt".
+     · The sentence under it about moving away from prompt chats.
+     · The white search box, and the six suggestion buttons under it —
+       Governance, Compliance, Supply chain, Healthcare, Automation,
+       Logistics.
+     · Typing and pressing enter jumps you down to the nine suites and
+       filters them.
+
+   WORTH KNOWING
+     The moving purple glow behind all of this is a separate file,
+     components/stage/HeroStage.jsx.
+   ========================================================================== */
+
 import { useEffect, useState } from 'react';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { HeroStage } from '../components/HeroStage.jsx';
-import { Reveal } from '../components/Reveal.jsx';
+import { HeroStage } from '../components/stage/HeroStage.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
 import { SEARCH_SUGGESTIONS } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
 

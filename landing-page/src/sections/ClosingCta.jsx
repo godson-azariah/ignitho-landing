@@ -1,6 +1,26 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE DARK CLOSING SECTION — "Pick one workflow"
+
+   WHERE YOU SEE THIS
+     The last full section before the footer, on the dark violet-to-blue
+     band.
+
+   WHAT IS IN HERE
+     · The closing headline "Pick one workflow. We will take it to
+       production" and the green Contact Sales button, which opens the
+       contact form.
+     · The dotted world map with the office markers: Chicago, New York,
+       Richmond, Tampa (HQ), San Jose, London, Brighton, Stockholm,
+       Bengaluru, Chennai.
+
+   WORTH KNOWING
+     The map is decoration, not a real map — every marker is placed by
+     hand, so moving an office means moving a dot here.
+   ========================================================================== */
+
 import { ArrowRight } from 'lucide-react';
-import { Reveal } from '../components/Reveal.jsx';
-import { TealButton } from '../components/SwapButton.jsx';
+import { Reveal } from '../components/ui/Reveal.jsx';
+import { PrimaryButton } from '../components/ui/Button.jsx';
 import { SHELL } from '../lib/layout.js';
 
 /* The bottom bookend, on the same ground as the hero.
@@ -97,10 +117,10 @@ export function ClosingCta({ openContact }) {
                 `justify-center` under a centred heading, `lg:justify-start`
                 once there is a second column to align against. */}
             <div className="mt-7 flex justify-center lg:justify-start">
-              <TealButton onClick={openContact}>
+              <PrimaryButton onClick={openContact}>
                 Contact Sales
                 <ArrowRight className="h-3.5 w-3.5" />
-              </TealButton>
+              </PrimaryButton>
             </div>
           </div>
 

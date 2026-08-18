@@ -1,7 +1,26 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE PHONE MENU — the panel that slides down from the top
+
+   WHERE YOU SEE THIS
+     On phones and small tablets, after tapping the round menu button.
+
+   WHAT IS IN HERE
+     · The same destinations the nav bar shows on a computer, stacked.
+     · The nine suites, so they are reachable without scrolling to the
+       catalogue.
+     · The Contact Sales and Sign in buttons.
+     · A Close button. Tapping the dark area behind the panel also
+       closes it.
+
+   WORTH KNOWING
+     While it is open the page behind cannot scroll, and the Escape key
+     closes it.
+   ========================================================================== */
+
 import { ArrowRight, ArrowUpRight, X } from 'lucide-react';
-import { CERTS, NAV_LINKS, SIGN_IN_URL } from '../data/navigation.js';
-import { useOverlay } from '../lib/useOverlay.js';
-import { SwapButton, TealButton } from './SwapButton.jsx';
+import { CERTS, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
+import { useOverlay } from '../../hooks/useOverlay.js';
+import { Button, PrimaryButton } from '../ui/Button.jsx';
 
 /* A full sheet over the page rather than a dropdown. It opens by sliding down
    and closes by sliding back up the same way — the CSS holds `visibility`
@@ -24,14 +43,14 @@ export function MenuSheet({ open, onClose, goHome, navAction, openContact, activ
             </span>
             <span className="serif-accent text-[23px] md:text-[27px]">AI</span>
           </button>
-          <SwapButton
+          <Button
             onClick={onClose}
             variant="light"
             className="px-7 py-4 text-[14px] font-semibold"
           >
             <X className="h-4 w-4" strokeWidth={2.4} />
             Close
-          </SwapButton>
+          </Button>
         </div>
 
         {/* `gap-x-0` below `lg`. Eleven fixed 40px column gaps put a 440px
@@ -102,7 +121,7 @@ export function MenuSheet({ open, onClose, goHome, navAction, openContact, activ
               className="sheet-item flex flex-wrap items-center gap-x-4 gap-y-3"
             >
               {/* the sheet closes first, or the dialog would open behind it */}
-              <TealButton
+              <PrimaryButton
                 onClick={() => {
                   onClose();
                   openContact();
@@ -110,8 +129,8 @@ export function MenuSheet({ open, onClose, goHome, navAction, openContact, activ
               >
                 Contact Sales
                 <ArrowRight className="h-3.5 w-3.5" />
-              </TealButton>
-              <SwapButton
+              </PrimaryButton>
+              <Button
                 as="a"
                 href={SIGN_IN_URL}
                 variant="light"
@@ -119,7 +138,7 @@ export function MenuSheet({ open, onClose, goHome, navAction, openContact, activ
               >
                 Sign in
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </SwapButton>
+              </Button>
             </div>
 
             <div

@@ -1,3 +1,21 @@
+/* ==========================================================================
+   PLAIN-ENGLISH GUIDE  ·  THE WORDS FOR ALL NINE SUITES
+
+   WHERE YOU SEE THIS
+     The nine cards in the catalogue and every one of the nine suite
+     pages. This is the biggest single piece of writing on the site.
+
+   WHAT IS IN HERE
+     · For each suite: its name, its tagline, whether it is a foundation
+       or an industry vertical, its executive summary, its figures, its
+       photograph, and every accelerator listed on its page.
+
+   WORTH KNOWING
+     EDIT SUITE WORDING HERE. There is no layout in this file, so
+     changing the text cannot break anything visually — though much
+     longer text will wrap differently on the cards.
+   ========================================================================== */
+
 import {
   Database,
   BarChart3,
