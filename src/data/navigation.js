@@ -2,7 +2,7 @@
    PLAIN-ENGLISH GUIDE  ·  MENU LABELS, THE SIGN-IN LINK, AND THE CONTACT FORM OPTION LISTS
 
    WHERE YOU SEE THIS
-     The nav bar, the phone menu, the footer, the suite filter buttons,
+     The menu bar, the phone menu, the footer, the suite filter buttons,
      the hero suggestion chips, and the Contact Sales form.
 
    WHAT IS IN HERE
@@ -28,7 +28,7 @@ import { BadgeCheck, Boxes, HeartPulse, ShieldCheck, Truck, Workflow } from 'luc
 
 /* In page order, which is the only order a set of scroll destinations can
    sensibly be in: the calculator, the catalogue, then the walkthrough that sits
-   between the catalogue and the closing bookend.
+   between the catalogue and the closing band at the very top or very bottom.
 
    "OVERVIEW" HAS GONE, AND IT WAS DOING NOTHING. It mapped to `goHome`, which
    sets the open suite to null — so from a suite page it worked, and from the
@@ -36,14 +36,14 @@ import { BadgeCheck, Boxes, HeartPulse, ShieldCheck, Truck, Workflow } from 'luc
    nothing, and the effect that scrolls to the top never ran. A destination that
    silently does nothing four times out of five is worse than no destination.
 
-   Nothing is lost by removing it: the wordmark beside it already calls the same
+   Nothing is lost by removing it: the Ignitho AI name beside it already calls the same
    `goHome`, and that is the conventional place to look for "back to the start"
    anyway. Every label that remains has a real section id behind it.
 
-   One list, three consumers — the masthead, the menu sheet and the footer's
+   One list, three consumers — the top bar, the menu sheet and the footer's
    "Menu" column all map over this, so a destination is added once. */
 /* Named, because two components have to agree on it and a bare string in both
-   is a rename waiting to go half-finished: the masthead lifts this one label out
+   is a rename waiting to go half-finished: the top bar lifts this one label out
    of the centred group and renders it beside the actions, so it has to be able
    to identify it. The menu sheet and the footer take the list whole. */
 export const FAQ_LABEL = 'FAQ';
@@ -52,7 +52,7 @@ export const NAV_LINKS = ['ROI Calculator', '9 Core Suites', 'How It Works', FAQ
 
 /* The product itself, which is a separate application on its own host. Kept
    here beside the destinations rather than inline in the two components that
-   link to it, so the masthead and the menu sheet cannot drift apart. */
+   link to it, so the top bar and the menu sheet cannot drift apart. */
 export const SIGN_IN_URL = 'https://ignitho-login.vercel.app/';
 
 /* THE CONTACT FORM'S INDUSTRY OPTIONS — the supplied list, verbatim and in its

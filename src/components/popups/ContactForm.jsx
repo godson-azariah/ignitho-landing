@@ -20,7 +20,7 @@
 
 import { useState } from 'react';
 import { ArrowRight, Check, Mail, X } from 'lucide-react';
-import { SelectField } from './SelectField.jsx';
+import { Dropdown } from './Dropdown.jsx';
 import { PrimaryButton } from '../ui/Button.jsx';
 import { FORM_FIELD } from '../../lib/layout.js';
 import { useOverlay } from '../../hooks/useOverlay.js';
@@ -35,20 +35,20 @@ import {
 
    TWO PANELS, WHICH IS THE SHAPE THE REFERENCE USES AND THE RIGHT ONE: the left
    says why you are here and the right is the work. On our palette that becomes
-   the page's own dark bookend ground on the left — the same `aurora` the hero and
+   the page's own dark band at the very top or very bottom ground on the left — the same `aurora` the hero and
    the closing section stand on — against a white form. It is the only place on
    the page where those two grounds meet inside one box, and that is what makes
    the panel read as a moment rather than as another section.
 
    The left panel is hidden below `lg`. On a phone a form is the whole screen and
-   a decorative half would push every field below the fold.
+   a decorative half would push every field below the bottom of the first screen.
 
    FIELDS AND VALIDATION MATCH THE REFERENCE EXACTLY: name, surname, business
    e-mail, company, industry, country, message with a 2000-character counter, and
    the five that carry an asterisk are the five that are required. What is ours is
    the copy and the options — the industries are the catalogue's six verticals,
    the countries are the markets the offices on our map sit in. */
-/* The one field surface, shared with `SelectField`'s trigger via `layout.js` so
+/* The one field surface, shared with `Dropdown`'s trigger via `layout.js` so
    the selects and the inputs cannot drift apart. Only the placeholder colour is
    added here, since a button has no placeholder to colour. */
 const FIELD = `${FORM_FIELD} placeholder:text-ig-muted/55`;
@@ -86,7 +86,7 @@ function Req() {
   return <span className="text-ig-purple">*</span>;
 }
 
-export function ContactDialog({ open, onClose }) {
+export function ContactForm({ open, onClose }) {
   const [values, setValues] = useState(BLANK);
   const [errors, setErrors] = useState({});
   /* 'editing' | 'sending' | 'sent' | 'blocked' — `blocked` is the honest state
@@ -170,7 +170,7 @@ export function ContactDialog({ open, onClose }) {
             348px panel at this size it just reads as a different font, so both
             lines are Urbanist now and the accent is carried by colour alone.
 
-            The block centres on both axes with the wordmark pinned to the foot,
+            The block centres on both axes with the Ignitho AI name pinned to the foot,
             rather than sitting at the top of a column with 300px of empty ground
             under it — centred text in a top-aligned box is the one arrangement
             that looks unfinished from every angle. */}
@@ -294,9 +294,9 @@ export function ContactDialog({ open, onClose }) {
                     native popup's DIRECTION is the platform's decision: with 199
                     countries it is 400-500px tall, so a field in the lower half
                     of a centred dialog gets it flipped upward and no CSS reaches
-                    that. See `SelectField` — it also gets these two into our
+                    that. See `Dropdown` — it also gets these two into our
                     palette and gives the country list a filter. */}
-                <SelectField
+                <Dropdown
                   id="c-industry"
                   label="Industry"
                   required
@@ -307,7 +307,7 @@ export function ContactDialog({ open, onClose }) {
                   error={errors.industry}
                 />
 
-                <SelectField
+                <Dropdown
                   id="c-country"
                   label="Country"
                   required

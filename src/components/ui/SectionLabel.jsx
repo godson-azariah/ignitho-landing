@@ -18,7 +18,7 @@
 /* The small monospace label above a section heading. `centered` draws a rule
    on both sides — a single trailing rule reads as left-aligned however the box
    itself is positioned. */
-export function Kicker({ index, children, tone = 'ink', centered = false }) {
+export function SectionLabel({ index, children, tone = 'ink', centered = false }) {
   const dark = tone !== 'ink';
   const rule = `h-px w-6 sm:w-10 ${dark ? 'bg-white/25' : 'bg-ig-divider'}`;
   return (

@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 
 /* The nine suites. Content only — nothing here knows how it is rendered, which
-   is what lets the catalog, the dossier and the footer directory all read from
+   is what lets the catalog, the suite page and the footer directory all read from
    one source. `icon` holds the component itself rather than a name, so a typo
    is a build error instead of a blank space. */
 export const SUITES = [

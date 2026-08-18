@@ -5,7 +5,7 @@
      On phones and small tablets, after tapping the round menu button.
 
    WHAT IS IN HERE
-     · The same destinations the nav bar shows on a computer, stacked.
+     · The same destinations the menu bar shows on a computer, stacked.
      · The nine suites, so they are reachable without scrolling to the
        catalogue.
      · The Contact Sales and Sign in buttons.
@@ -25,7 +25,7 @@ import { Button, PrimaryButton } from '../ui/Button.jsx';
 /* A full sheet over the page rather than a dropdown. It opens by sliding down
    and closes by sliding back up the same way — the CSS holds `visibility`
    through the whole exit so the close is never cut short. */
-export function MenuSheet({ open, onClose, goHome, navAction, openContact, activeNav }) {
+export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activeNav }) {
   useOverlay(open, onClose);
 
   return (
@@ -76,7 +76,7 @@ export function MenuSheet({ open, onClose, goHome, navAction, openContact, activ
                   className="sheet-item group flex w-full items-center justify-between gap-6 border-b border-white/15 py-6 text-left first:border-t md:py-8"
                 >
                   <span className="flex items-baseline gap-5">
-                    {/* SKY ON THIS GROUND, NOT THE PURPLE THE MASTHEAD USES.
+                    {/* SKY ON THIS GROUND, NOT THE PURPLE THE TOP BAR USES.
                         Same meaning, different surface — the brand gives dark
                         grounds `--sky` for exactly this, which is why the hero's
                         eyebrow is sky and not violet. Purple on violet would be
@@ -109,12 +109,12 @@ export function MenuSheet({ open, onClose, goHome, navAction, openContact, activ
 
           <div className="col-span-12 lg:col-span-4 lg:col-start-9">
             {/* BOTH ACTIONS ARE HERE, because below `lg` the bar carries
-                neither — it keeps to a wordmark and the menu control, so this
+                neither — it keeps to a Ignitho AI name and the menu control, so this
                 sheet is the only place a reader on a phone can reach either the
                 briefing or the application.
 
                 Sign in is `variant="light"` on this violet ground rather than
-                the masthead's violet: a violet pill on violet has no edge. Same
+                the top bar's violet: a violet pill on violet has no edge. Same
                 order as the bar — primary first, then the way in. */}
             <div
               style={{ animationDelay: '720ms' }}

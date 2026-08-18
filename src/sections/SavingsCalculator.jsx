@@ -17,9 +17,9 @@
 
 import { useMemo, useState } from 'react';
 import { Minus, MoveHorizontal, Plus } from 'lucide-react';
-import { Cross } from '../components/ui/Cross.jsx';
-import { Kicker } from '../components/ui/Kicker.jsx';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { CornerMark } from '../components/ui/CornerMark.jsx';
+import { SectionLabel } from '../components/ui/SectionLabel.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { SHELL } from '../lib/layout.js';
 
 const MIN_EMPLOYEES = 50;
@@ -38,7 +38,7 @@ export const DEFAULT_EMPLOYEES = 500;
 /* Self-contained: the employee count is of no interest to anything else on the
    page, so nothing else holds it. That also means dragging the slider
    re-renders this section alone rather than the whole site. */
-export function RoiCalculator() {
+export function SavingsCalculator() {
   const [companyEmployees, setCompanyEmployees] = useState(DEFAULT_EMPLOYEES);
 
   const estimatedSavings = useMemo(
@@ -55,14 +55,14 @@ export function RoiCalculator() {
   return (
     <section id="roi-calculator" className="bg-c dots relative py-16 md:py-24">
       <div className={SHELL}>
-        <Cross className="-top-7 left-1 md:left-3" />
-        <Cross className="-top-7 right-1 md:right-3" />
+        <CornerMark className="-top-7 left-1 md:left-3" />
+        <CornerMark className="-top-7 right-1 md:right-3" />
 
         <div className="relative">
           {/* `max-w-4xl`, up from 3xl — at the 48px ceiling the sentence
               measures 803px, so a 768px column was the only thing breaking it
               in two. Same change as the pillars heading above. */}
-          <Reveal className="reveal-soft plate mx-auto max-w-4xl text-center">
+          <FadeIn className="reveal-soft plate mx-auto max-w-4xl text-center">
             {/* The heading tells you what to DO and what you get back, which
                 is what a heading over a control should do. "Routine work
                 already costs you this much" was a statement — true, but it
@@ -71,11 +71,11 @@ export function RoiCalculator() {
 
                 Both halves name a real part of this section: the headcount
                 is the input, the annual figure is the output. Nothing here
-                repeats the kicker above it, which already says the word
+                repeats the section label above it, which already says the word
                 "calculator" once. */}
-            <Kicker index="03" centered>
+            <SectionLabel index="03" centered>
               Interactive Enterprise Savings Calculator
-            </Kicker>
+            </SectionLabel>
             {/* One line, the two halves inline. `balance` handles the phone,
                 where 36 characters cannot fit one line at any size a section
                 heading can be set in. */}
@@ -83,13 +83,13 @@ export function RoiCalculator() {
               Set your headcount{' '}
               <span className="serif-accent font-normal text-ig-purple">see what you save</span>
             </h2>
-          </Reveal>
+          </FadeIn>
 
           {/* Input and result share one row — the two figures sit on the
               same horizontal axis, split by a rule, at the same type size
               so their baselines land together. The slider still owns the
               row beneath, full width, with nothing beside it. */}
-          <Reveal className="mt-8 md:mt-10">
+          <FadeIn className="mt-8 md:mt-10">
             <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_20px_56px_-30px_rgba(22,6,58,0.5)] ring-1 ring-inset ring-ig-ink/8">
               {/* 1 — the two numbers, side by side */}
               <div className="grid grid-cols-1 divide-y divide-ig-ink/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
@@ -102,8 +102,8 @@ export function RoiCalculator() {
                       the page whose width is fixed rather than fluid: two
                       44px controls plus a fixed number box plus two gaps. At
                       the desktop measurements that is 250px inside the 232px
-                      a 320px screen leaves after the shell and the card
-                      padding, so it pushed the card wider than the viewport
+                      a 320px screen leaves after the page container and the card
+                      padding, so it pushed the card wider than the visible part of the screen
                       and took the whole page with it. */}
                   <div className="flex items-center gap-3 sm:gap-4">
                     <button
@@ -115,7 +115,7 @@ export function RoiCalculator() {
                       <Minus className="h-4 w-4" strokeWidth={2.6} />
                     </button>
                     {/* fixed width, so the `+` does not shift as digits are
-                        gained — `tnum` steadies the glyphs, this steadies
+                        gained — `tnum` steadies the letter shapes, this steadies
                         the box */}
                     <span className="tnum w-[112px] shrink-0 text-center font-extrabold leading-[0.9] tracking-[-0.04em] text-[clamp(32px,4vw,54px)] text-ig-ink sm:w-[130px] md:w-[168px]">
                       {companyEmployees.toLocaleString()}
@@ -199,7 +199,7 @@ export function RoiCalculator() {
                 </p>
               </div>
             </div>
-          </Reveal>
+          </FadeIn>
         </div>
       </div>
     </section>

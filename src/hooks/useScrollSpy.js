@@ -2,7 +2,7 @@
    PLAIN-ENGLISH GUIDE  ·  WHICH NAV LINK IS HIGHLIGHTED AS YOU SCROLL
 
    WHERE YOU SEE THIS
-     The three middle links in the nav bar.
+     The three middle links in the menu bar.
 
    WHAT IS IN HERE
      · It watches a thin band across the upper part of the screen and
@@ -15,7 +15,7 @@
 
 import { useEffect, useState } from 'react';
 
-/* Which section the reader is currently in, for the navbar to mark.
+/* Which section the reader is currently in, for the menu bar to mark.
 
    AN OBSERVER, NOT A SCROLL HANDLER. The obvious version measures every
    section's `getBoundingClientRect` on every scroll event, which is a forced
@@ -24,16 +24,16 @@ import { useEffect, useState } from 'react';
    back when an answer actually changes.
 
    THE `rootMargin` IS THE WHOLE ALGORITHM. It shrinks the root to a thin band
-   near the top of the viewport — from 100px down, which clears the fixed
-   masthead, to 25% of the height. A section is "current" when it crosses that
+   near the top of the visible part of the screen — from 100px down, which clears the fixed
+   top bar, to 25% of the height. A section is "current" when it crosses that
    band, which is roughly where a reader's eye sits. Without the band every
-   section from the fold down would be intersecting at once and the answer would
+   section from the bottom of the first screen down would be intersecting at once and the answer would
    always be the first one.
 
    LAST INTERSECTING WINS, not first. Sections here are contiguous, so the only
    time two intersect is when a boundary is inside the band — and at that moment
    the one further down is the one being entered. Taking the first would keep the
-   outgoing section marked until it had left entirely, which reads as the navbar
+   outgoing section marked until it had left entirely, which reads as the menu bar
    lagging behind the page.
 
    `ids` must be a stable array. It is a dependency, so a literal rebuilt on each

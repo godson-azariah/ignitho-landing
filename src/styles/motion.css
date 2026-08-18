@@ -36,7 +36,7 @@
   transform: none;
 }
 
-/* THE FOCUS PULL — the stage's blur-to-solid entrance, brought out to the page
+/* THE FOCUS PULL — the illustration's blur-to-solid entrance, brought out to the page
    at a fraction of its strength.
 
    OPT-IN, AND IT HAS TO BE. `filter` is the one property here that costs real
@@ -76,7 +76,7 @@
    like a stutter; the published recipes all sit at 20–24px for this reason.
 
    Ends at `filter: none`, not `blur(0)`: a zero-radius filter is still a
-   filter, and it keeps a compositing layer alive on the element for as long as
+   filter, and it keeps a separate layer the graphics card holds alive on the element for as long as
    the page is open. `none` releases it. */
 .reveal-soft {
   filter: blur(var(--soft, 8px));
@@ -89,8 +89,8 @@
 .reveal-soft.is-in {
   filter: none;
 }
-/* For display type only. 8px on a 94px headline is barely visible — a radius has
-   to be read against the size of the glyphs it is softening, not as an absolute.
+/* For the biggest headline type only. 8px on a 94px headline is barely visible — a radius has
+   to be read against the size of the letter shapes it is softening, not as an absolute.
    The one element on the page that gets it is the hero's own headline. 14px is
    still well inside the 20px ceiling above which a blur stops being a focus pull
    and starts being an expensive frosted pane. */
@@ -200,7 +200,7 @@
 
    ON THE BLUR AND THE HERO'S BAN ON IT: `backgrounds.css` refuses `filter:
    blur()` outright, and that still stands there — five full-bleed layers,
-   re-rasterised every frame, forever. This is the opposite case: five small
+   re-drawn to pixels every frame, forever. This is the opposite case: five small
    boxes, once, for 720ms, on an element the user is looking at. The cost is
    bounded and it buys the one effect that cannot be faked.
    ========================================================================= */

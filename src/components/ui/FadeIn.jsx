@@ -23,7 +23,7 @@ import { observeReveal } from '../../lib/revealObserver.js';
 /* Fades and lifts its children in as they arrive. `as` lets it stand in for
    whatever element the layout needs, so wrapping something in a reveal never
    costs an extra div. */
-export function Reveal({ as: Tag = 'div', delay = 0, className = '', children, ...rest }) {
+export function FadeIn({ as: Tag = 'div', delay = 0, className = '', children, ...rest }) {
   const ref = useRef(null);
   const [seen, setSeen] = useState(false);
 

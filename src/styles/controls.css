@@ -100,7 +100,7 @@
   box-shadow: none;
 }
 
-/* Mobile nav disclosure. Named `disclose` — Tailwind owns `.collapse`. */
+/* Mobile nav open-and-close panel. Named `disclose` — Tailwind owns `.collapse`. */
 .disclose {
   display: grid;
   grid-template-rows: 0fr;

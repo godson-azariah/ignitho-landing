@@ -40,11 +40,11 @@ export function observeReveal(el, onEnter) {
           fn?.();
         }
       },
-      /* Fires BEFORE the element reaches the viewport, not after. A negative
+      /* Fires BEFORE the element reaches the visible part of the screen, not after. A negative
          bottom margin would shrink the root, so an element would have to clear
-         the fold before anything happened — by which point you are already
+         the bottom of the first screen before anything happened — by which point you are already
          looking at it and the animation reads as a lag. A positive margin
-         extends the root past the fold instead. */
+         extends the root past the bottom of the first screen instead. */
       { threshold: 0, rootMargin: '0px 0px 140px 0px' }
     );
   }

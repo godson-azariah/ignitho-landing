@@ -12,10 +12,10 @@
      The point it makes visually is the one the step text makes in words: days, not months.
    ========================================================================== */
 import { Calendar, Check, ChevronDown } from 'lucide-react';
-import { Bar, Tool, Foot } from './chrome.jsx';
-import { WIN, RULE, MICRO, LABEL, VALUE, TOP, BOT, at } from './tokens.js';
+import { Bar, Tool, Foot } from './WindowParts.jsx';
+import { WIN, RULE, MICRO, LABEL, VALUE, TOP, BOT, at } from './sharedStyles.js';
 
-export function DeployPanel() {
+export function Step3Deploy() {
   /* NO FIGURE ON THE LONG BAR, DELIBERATELY. The page's claim is "days rather
      than custom multi-month projects", and "multi-month" is not a number.
      "~6 months" would have invented one and handed it to the reader as a

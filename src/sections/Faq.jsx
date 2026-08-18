@@ -2,7 +2,7 @@
    PLAIN-ENGLISH GUIDE  ·  THE QUESTIONS PAGE — "Questions people ask first"
 
    WHERE YOU SEE THIS
-     Its own page, reached from the FAQ link in the nav bar. The address
+     Its own page, reached from the FAQ link in the menu bar. The address
      becomes /faq.
 
    WHAT IS IN HERE
@@ -18,24 +18,24 @@
 
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { HeroStage } from '../components/stage/HeroStage.jsx';
-import { Kicker } from '../components/ui/Kicker.jsx';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { HeroGlow } from '../components/artwork/HeroGlow.jsx';
+import { SectionLabel } from '../components/ui/SectionLabel.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { PrimaryButton } from '../components/ui/Button.jsx';
 import { FAQ_GROUPS } from '../data/faq.js';
 import { SHELL } from '../lib/layout.js';
 import { noOrphan } from '../lib/noOrphan.js';
 
 /* The FAQ, as a page rather than a section — same two-part shape a suite page
-   uses, so arriving here from the masthead feels like the same site: the dark
-   aurora masthead with a way back, then a light band with the content.
+   uses, so arriving here from the top bar feels like the same site: the dark
+   aurora top bar with a way back, then a light band with the content.
 
-   ONE OPEN AT A TIME, tracked by a single id rather than a set. An accordion
+   ONE OPEN AT A TIME, tracked by a single id rather than a set. An open-and-close list
    that lets everything open at once is a list of paragraphs with extra clicks in
    front of it; the point of the control is that the page stays scannable, and it
    only does that if opening the ninth question closes whichever was open before.
 
-   The disclosure uses `.disclose` from `controls.css`, which animates
+   The open-and-close panel uses `.disclose` from `controls.css`, which animates
    `grid-template-rows` from `0fr` to `1fr`. That is the one technique that opens
    to the content's OWN height without anyone measuring it — no `max-height`
    guess that clips a long answer or leaves a short one hanging. */
@@ -44,22 +44,22 @@ export function Faq({ openContact }) {
 
   return (
     <main>
-      {/* masthead · FLAVOUR A
+      {/* top bar · BACKGROUND A (DARK PURPLE)
 
           NO BACK BUTTON, AND NOTHING REPLACES IT. This page has its own URL now,
           so the browser's back is the way out — and a second one drawn on the
-          page is both redundant and worse, because it always goes to the index
+          page is both redundant and worse, because it always goes to the home page
           where back goes wherever you actually came from.
 
           Removing it took the divider row with it, which is most of why this is
           shorter: the row, its rule and the 48px of clearance under it were 100px
-          of masthead in service of one control. The rest comes off the padding —
+          of top bar in service of one control. The rest comes off the padding —
           136/80 down to 116/56 — and off the display size, 78px down to 60px,
           which is where the heading fits one line rather than two.
 
           Centred, because there is nothing left to align to a left edge. */}
       <section className="aurora relative overflow-hidden pb-10 pt-[112px] text-center md:pb-12 md:pt-[132px]">
-        <HeroStage />
+        <HeroGlow />
 
         <div className={SHELL}>
           <div className="relative mx-auto max-w-3xl">
@@ -79,12 +79,12 @@ export function Faq({ openContact }) {
         </div>
       </section>
 
-      {/* content · FLAVOUR B */}
+      {/* content · BACKGROUND B (PALE LAVENDER) */}
       {/* THE TOP AND BOTTOM PADDINGS ARE NO LONGER THE SAME NUMBER, because
           what sits above and below this band is not the same kind of thing.
 
-          Above is the aurora masthead, and a band opening under one needs its
-          own clearance — 80/112px. Below is the dark closing bookend, which
+          Above is the dark purple background top bar, and a band opening under one needs its
+          own clearance — 80/112px. Below is the dark closing band at the very top or very bottom, which
           brings 48/64px of its own padding before its first line of type. The
           two paddings ADD: at py-28 the run from the button to "Pick one
           workflow" was 112 + 64 = 176px of nothing, on top of which the eye
@@ -100,16 +100,16 @@ export function Faq({ openContact }) {
           <div className="mx-auto max-w-3xl">
             {FAQ_GROUPS.map((group, gi) => (
               <div key={group.id} className={gi ? 'mt-14 md:mt-16' : ''}>
-                <Reveal className="plate">
-                  <Kicker index={String(gi + 1).padStart(2, '0')}>{group.title}</Kicker>
-                </Reveal>
+                <FadeIn className="plate">
+                  <SectionLabel index={String(gi + 1).padStart(2, '0')}>{group.title}</SectionLabel>
+                </FadeIn>
 
                 <div className="plate mt-6">
                   {group.items.map((item, i) => {
                     const id = `${group.id}-${i}`;
                     const on = open === id;
                     return (
-                      <Reveal key={item.q} delay={Math.min(i * 60, 200)}>
+                      <FadeIn key={item.q} delay={Math.min(i * 60, 200)}>
                         <div className="border-b border-ig-ink/15 first:border-t">
                           <button
                             type="button"
@@ -129,7 +129,7 @@ export function Faq({ openContact }) {
                             >
                               {item.q}
                             </span>
-                            {/* One glyph doing both states: a plus that turns
+                            {/* One letter shape doing both states: a plus that turns
                                 into a minus. Two icons swapped on a condition
                                 would cross-fade through a frame where neither
                                 is quite either. */}
@@ -146,7 +146,7 @@ export function Faq({ openContact }) {
 
                           <div id={`faq-${id}`} className={`disclose ${on ? 'open' : ''}`}>
                             <div>
-                              {/* Up from 14.5/15.5, and the measure comes down
+                              {/* Up from 14.5/15.5, and the text width comes down
                                   from 62ch to 58ch to go with it — a longer line
                                   at a bigger size is harder to read, not easier,
                                   so the two have to move in opposite
@@ -154,7 +154,7 @@ export function Faq({ openContact }) {
                               {/* `pr-10` keeps the answer clear of the plus
                                   button's column on a wide row. On a phone that
                                   column is 40px out of about 240, so the same
-                                  rule costs a sixth of the measure to dodge a
+                                  rule costs a sixth of the text width to dodge a
                                   control that is not beside the answer at all —
                                   it is beside the question, a line above. */}
                               <p className="max-w-[58ch] pb-6 pr-1 text-[15.5px] leading-[1.65] text-ig-muted md:pr-10 md:text-[17px]">
@@ -163,7 +163,7 @@ export function Faq({ openContact }) {
                             </div>
                           </div>
                         </div>
-                      </Reveal>
+                      </FadeIn>
                     );
                   })}
                 </div>
@@ -194,12 +194,12 @@ export function Faq({ openContact }) {
                 `plate-tight` keeps the texture off the words at a quarter of
                 the reach — at full size it cleared a 60px moat that read as
                 emptiness of its own. */}
-            <Reveal className="plate plate-tight mt-10 flex flex-col items-center gap-4 text-center">
+            <FadeIn className="plate plate-tight mt-10 flex flex-col items-center gap-4 text-center">
               <p className="text-[17px] font-extrabold tracking-[-0.02em] text-ig-ink md:text-[19px]">
                 Something here not covered?
               </p>
               <PrimaryButton onClick={openContact}>Contact Sales</PrimaryButton>
-            </Reveal>
+            </FadeIn>
           </div>
         </div>
       </section>

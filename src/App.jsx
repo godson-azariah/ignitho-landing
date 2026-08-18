@@ -12,7 +12,7 @@
      · Which PAGE you are looking at — the home page, one suite page, or
        the questions page — and the web address, so the browser back
        button works.
-     · The nav bar, the phone menu, the chat bubble and the Contact
+     · The menu bar, the phone menu, the chat bubble and the Contact
        Sales form, which are on every page because they live here.
 
    WORTH KNOWING
@@ -22,20 +22,20 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { ChatWidget } from './components/overlays/ChatWidget.jsx';
-import { ContactDialog } from './components/overlays/ContactDialog.jsx';
-import { Masthead } from './components/chrome/Masthead.jsx';
-import { MenuSheet } from './components/chrome/MenuSheet.jsx';
+import { ChatBubble } from './components/popups/ChatBubble.jsx';
+import { ContactForm } from './components/popups/ContactForm.jsx';
+import { TopBar } from './components/navigation/TopBar.jsx';
+import { PhoneMenu } from './components/navigation/PhoneMenu.jsx';
 import { Catalog } from './sections/Catalog.jsx';
-import { ClosingCta } from './sections/ClosingCta.jsx';
-import { Colophon } from './sections/Colophon.jsx';
-import { Dossier } from './sections/Dossier.jsx';
+import { ClosingSection } from './sections/ClosingSection.jsx';
+import { Footer } from './sections/Footer.jsx';
+import { SuitePage } from './sections/SuitePage.jsx';
 import { Faq } from './sections/Faq.jsx';
 import { Hero } from './sections/Hero.jsx';
 import { HowItWorks } from './sections/HowItWorks.jsx';
-import { Pillars } from './sections/Pillars.jsx';
-import { ReadyCta } from './sections/ReadyCta.jsx';
-import { RoiCalculator } from './sections/RoiCalculator.jsx';
+import { OutcomeCards } from './sections/OutcomeCards.jsx';
+import { ReadyPrompt } from './sections/ReadyPrompt.jsx';
+import { SavingsCalculator } from './sections/SavingsCalculator.jsx';
 import { SUITES } from './data/suites.js';
 import { scrollEase } from './lib/scrollEase.js';
 import { useRoute } from './hooks/useRoute.js';
@@ -43,7 +43,7 @@ import { useScrollSpy } from './hooks/useScrollSpy.js';
 
 /* Which section each destination scrolls to. Every id here is the `id` on a
    real section element; "Overview" is deliberately absent because it means
-   "back to the index", not "scroll somewhere". */
+   "back to the home page", not "scroll somewhere". */
 const NAV_TARGETS = {
   'ROI Calculator': 'roi-calculator',
   '9 Core Suites': 'suites-catalog',
@@ -60,7 +60,7 @@ const NAV_BY_ID = Object.fromEntries(Object.entries(NAV_TARGETS).map(([k, v]) =>
 /* The shell.
 
    Everything left here is genuinely shared: which suite is open (the page is
-   either the index or one dossier), whether the menu is showing, and the three
+   either the home page or one suite page), whether the menu is showing, and the three
    ways of moving between them. Every other piece of state lives in the section
    that uses it — the employee count in the calculator, the filters in the
    catalog, the conversation in the chat widget — which is why dragging a
@@ -70,7 +70,7 @@ export default function App() {
 
      They were `activeSuiteId` and `faqOpen`, which the browser knew nothing
      about — so back left the site entirely from a suite page, a suite could not
-     be linked to or reloaded, and every one of them shared the index's title.
+     be linked to or reloaded, and every one of them shared the home page's title.
      `useRoute` puts them in `history` where they belong, and the back button
      becomes the way out, which is why the on-page ones could be removed. */
   const [route, rawNavigate] = useRoute();
@@ -100,7 +100,7 @@ export default function App() {
     [rawNavigate]
   );
 
-  /* An unknown slug resolves to nothing and the shell falls through to the
+  /* An unknown slug resolves to nothing and the page container falls through to the
      index — a typed URL cannot produce a blank page. */
   const activeSuite = useMemo(
     () => (route.name === 'suite' ? SUITES.find((s) => s.id === route.id) || null : null),
@@ -109,7 +109,7 @@ export default function App() {
   const onIndex = route.name === 'index' || (route.name === 'suite' && !activeSuite);
 
   /* The contact dialog is the one thing here that is still NOT a page: it covers
-     the index rather than replacing it, so it has no URL and the back button
+     the home page rather than replacing it, so it has no URL and the back button
      should not close it. */
   const [contactOpen, setContactOpen] = useState(false);
   const openContact = useCallback(() => setContactOpen(true), []);
@@ -121,9 +121,9 @@ export default function App() {
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const openMenu = useCallback(() => setMenuOpen(true), []);
 
-  /* From the index a destination is a scroll; from anywhere else it is a
+  /* From the home page a destination is a scroll; from anywhere else it is a
      navigation that carries the destination with it, because the target section
-     is not mounted until the index is back. */
+     is not mounted until the home page is back. */
   const goTo = useCallback(
     (id) => {
       if (onIndex) document.getElementById(id)?.scrollIntoView({ behavior: scrollEase() });
@@ -134,7 +134,7 @@ export default function App() {
 
   /* Run a search from the hero: set the term, then go to the results. Routed
      through `goTo` rather than a direct scroll so it still behaves if it is
-     ever called while a dossier is open. */
+     ever called while a suite page is open. */
   /* THE SCROLL IS CONDITIONAL ON THERE BEING SOMETHING TO SCROLL TO.
 
      Clearing the hero's field now commits an empty search — that is how one
@@ -175,12 +175,12 @@ export default function App() {
      places because the destinations are two different kinds of thing.
 
      "FAQ" is a page, so it is answered by the URL — flatly true or false, no
-     measuring involved. The other three are sections of the index, so they are
+     measuring involved. The other three are sections of the home page, so they are
      answered by where the reader has scrolled to. One label out, whichever way
      it was arrived at.
 
-     The spy is off everywhere but the index, and not as an optimisation: those
-     three sections are not in the DOM on the other pages, so left running it
+     The spy is off everywhere but the home page, and not as an optimisation: those
+     three sections are not in the page structure on the other pages, so left running it
      would observe nothing and report a stale answer from before the navigation. */
   const spySection = useScrollSpy(SPY_IDS, onIndex);
   const activeNav = route.name === 'faq' ? 'FAQ' : (NAV_BY_ID[spySection] ?? null);
@@ -200,7 +200,7 @@ export default function App() {
   }, [route]);
 
   /* A page with its own URL needs its own title, or every one of them is filed
-     under the index's name in history, in bookmarks and in a tab strip. */
+     under the home page's name in history, in bookmarks and in a tab strip. */
   useEffect(() => {
     const base = 'Ignitho AI | Ignitho Technologies';
     document.title =
@@ -213,7 +213,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-ig-paper font-sans text-ig-text">
-      <Masthead
+      <TopBar
         menuOpen={menuOpen}
         onOpenMenu={openMenu}
         goHome={goHome}
@@ -222,7 +222,7 @@ export default function App() {
         activeNav={activeNav}
       />
 
-      <MenuSheet
+      <PhoneMenu
         open={menuOpen}
         onClose={closeMenu}
         goHome={goHome}
@@ -244,37 +244,37 @@ export default function App() {
               asked for, and the field follows it so the two can never disagree
               about whether a search is in effect. */}
           <Hero onSearch={searchFor} committed={searchQuery} />
-          <Pillars />
-          <RoiCalculator />
+          <OutcomeCards />
+          <SavingsCalculator />
           <Catalog
             openSuite={openSuite}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
-          {/* After the catalogue and before the closing bookend, which is also
+          {/* After the catalogue and before the closing band at the very top or very bottom, which is also
               where the background alternation wants it: the calculator is C,
-              the catalogue is B, so this is C and the dark CTA follows. */}
+              the catalogue is B, so this is C and the dark closing section follows. */}
           <HowItWorks />
-          {/* The soft prompt between the walkthrough and the dark bookend. B,
+          {/* The soft prompt between the walkthrough and the dark band at the very top or very bottom. B,
               which keeps the alternation running C → B → A into the close. */}
           {/* The card's quiet second destination. `navAction` already knows the
               FAQ is a page rather than a scroll target, so this is the same
-              handler the masthead and the menu sheet use — one route change,
+              handler the top bar and the menu sheet use — one route change,
               defined once. */}
-          <ReadyCta openFaq={navAction('FAQ')} />
+          <ReadyPrompt openFaq={navAction('FAQ')} />
         </>
       ) : (
-        <Dossier suite={activeSuite} openContact={openContact} />
+        <SuitePage suite={activeSuite} openContact={openContact} />
       )}
 
       {/* z-[65], above the chat widget at 55 and below the menu sheet at 70 —
           the sheet has to be able to cover it, because the sheet is what opened
           it on a phone. */}
-      <ContactDialog open={contactOpen} onClose={closeContact} />
+      <ContactForm open={contactOpen} onClose={closeContact} />
 
-      <ChatWidget />
-      <ClosingCta openContact={openContact} />
-      <Colophon openSuite={openSuite} navAction={navAction} goHome={goHome} />
+      <ChatBubble />
+      <ClosingSection openContact={openContact} />
+      <Footer openSuite={openSuite} navAction={navAction} goHome={goHome} />
     </div>
   );
 }

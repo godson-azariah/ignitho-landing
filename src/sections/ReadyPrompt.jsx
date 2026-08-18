@@ -19,11 +19,11 @@
 
    WORTH KNOWING
      An earlier version of this card is kept at
-     reference/backups/ReadyCta.card-v1.jsx.
+     reference/backups/ReadyPrompt.card-v1.jsx.
    ========================================================================== */
 
 import { ArrowUpRight, Check } from 'lucide-react';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { PrimaryButton } from '../components/ui/Button.jsx';
 import { SIGN_IN_URL } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
@@ -51,9 +51,9 @@ const PROOF = [
   'Live in days rather than months'
 ];
 
-/* The soft prompt between the walkthrough and the closing bookend.
+/* The soft prompt between the walkthrough and the closing band at the very top or very bottom.
 
-   REDESIGNED AGAINST THE PATTERN EVERY CTA LIBRARY CONVERGES ON: copy and the
+   REDESIGNED AGAINST THE PATTERN EVERY closing section LIBRARY CONVERGES ON: copy and the
    action on one side, a small panel answering "yes but" on the other. The
    advice underneath it is consistent across sources — neutralise the reasons a
    qualified reader hesitates BEFORE the last ask, and keep one primary action
@@ -80,20 +80,20 @@ const PROOF = [
        two pills side by side is what splits intent.
 
    NOT DARK, DELIBERATELY, and this is the one place the pattern libraries had
-   to be overruled. Nearly every "final CTA" example is a dark or gradient
+   to be overruled. Nearly every "final closing section" example is a dark or gradient
    full-bleed band, and this page already HAS one directly below: the closing
-   bookend with the map. Two dark bands in a row would flatten the rhythm the
+   band at the very top or very bottom with the map. Two dark bands in a row would flatten the rhythm the
    whole page is built on (A → B → C → B → C → A) and put two equally loud asks
-   next to each other. White on flavour B keeps this an aside — "when you are
+   next to each other. White on background B (pale lavender) keeps this an aside — "when you are
    ready" — and leaves the dark one after it as the end of the argument. */
-export function ReadyCta({ openFaq }) {
+export function ReadyPrompt({ openFaq }) {
   return (
     <section className="bg-b dots relative py-10 md:py-12">
       <div className={SHELL}>
-        {/* `flank-field` is the field masked to the outer 11% at each side, so
+        {/* `side-field` is the field masked to the outer 11% at each side, so
             the card has texture where the copy is not and nothing at all behind
             the copy. */}
-        <Reveal className="flank-field relative mx-auto max-w-[1040px] overflow-hidden rounded-[24px] bg-white px-5 py-7 shadow-[0_1px_2px_rgba(22,6,58,0.05),0_24px_56px_-32px_rgba(22,6,58,0.4)] md:px-10 md:py-8 lg:px-14">
+        <FadeIn className="flank-field relative mx-auto max-w-[1040px] overflow-hidden rounded-[24px] bg-white px-5 py-7 shadow-[0_1px_2px_rgba(22,6,58,0.05),0_24px_56px_-32px_rgba(22,6,58,0.4)] md:px-10 md:py-8 lg:px-14">
           {/* The page's single sanctioned gradient, the same three-stop bar
               every suite card wears across its top edge. It gives the card an
               identity in 3px. */}
@@ -117,7 +117,7 @@ export function ReadyCta({ openFaq }) {
               paragraph and a button group are genuinely of a size to sit
               opposite each other.
 
-              Then the evidence, three across under a hairline. It came out of
+              Then the evidence, three across under a thin line. It came out of
               a 340px side panel for the same reason: a third of the width
               carrying three short lines next to a 44px headline reads as a
               small thing parked beside a big one, however it is spaced. Three
@@ -135,7 +135,7 @@ export function ReadyCta({ openFaq }) {
           <div className="relative text-center">
               {/* The dot is doing a real job: the badge says "ready when you
                   are", and a live teal dot is how a surface says READY rather
-                  than only claiming it. The page already owns the idiom — the
+                  than only claiming it. The page already owns the pattern — the
                   chat widget wears the same dot for the same reason. */}
               <span className="inline-flex items-center gap-2 rounded-full bg-ig-paper-2 px-4 py-1.5 text-[10.5px] font-bold tracking-[0.055em] text-ig-purple">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-ig-teal" />
@@ -149,7 +149,7 @@ export function ReadyCta({ openFaq }) {
                   card, so a quarter of the top band was blank — and no
                   rearranging closes that, because the space is simply the
                   measure the type failed to reach. Display type is supposed to
-                  break its measure, not sit inside it looking short.
+                  break its text width, not sit inside it looking short.
 
                   4.6vw with a 52px ceiling puts it at 88–92% of the available
                   width at every size the card has: ~574px of 624 at 768,
@@ -192,7 +192,7 @@ export function ReadyCta({ openFaq }) {
               set of gaps down a card is the difference between "structured" and
               "assembled" — the eye reads spacing as grouping whether or not
               anyone meant it to. */}
-          {/* An anchor, like the masthead's: it leaves for the application on
+          {/* An anchor, like the top bar's: it leaves for the application on
               another host, and a thing that navigates has to be a link. Teal
               because it is the one action on this card.
 
@@ -223,7 +223,7 @@ export function ReadyCta({ openFaq }) {
               </button>
           </div>
 
-          {/* THE EVIDENCE STRIP — full width, three across, over a hairline.
+          {/* THE EVIDENCE STRIP — full width, three across, over a thin line.
 
               No tint and no box. On a white card a tinted panel is a second
               surface, and a second surface has to earn its edges; across the
@@ -234,10 +234,10 @@ export function ReadyCta({ openFaq }) {
 
               One column on a phone, two at `sm`, three from `lg`.
 
-              A HAIRLINE BETWEEN THE COLUMNS, AND ONLY WHERE THERE ARE THREE OF
+              A THIN LINE BETWEEN THE COLUMNS, AND ONLY WHERE THERE ARE THREE OF
               THEM. It is what turns three items that happen to be beside each
               other into three columns of one strip — the same device the
-              masthead uses between its two groups. It is a left border on the
+              top bar uses between its two groups. It is a left border on the
               second and third rather than `divide-x`, because a divide utility
               on a wrapping grid also draws a line down the left of whatever
               lands first on the second row: correct at three columns, wrong at
@@ -268,7 +268,7 @@ export function ReadyCta({ openFaq }) {
               </li>
             ))}
           </ul>
-        </Reveal>
+        </FadeIn>
       </div>
     </section>
   );

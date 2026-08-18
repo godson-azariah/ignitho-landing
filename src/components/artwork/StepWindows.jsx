@@ -20,10 +20,10 @@
    ========================================================================== */
 import { useEffect, useState } from 'react';
 
-import { PickPanel } from './walkthrough/PickPanel.jsx';
-import { TestPanel } from './walkthrough/TestPanel.jsx';
-import { DeployPanel } from './walkthrough/DeployPanel.jsx';
-import { MeasurePanel } from './walkthrough/MeasurePanel.jsx';
+import { Step1Choose } from './steps/Step1Choose.jsx';
+import { Step2Test } from './steps/Step2Test.jsx';
+import { Step3Deploy } from './steps/Step3Deploy.jsx';
+import { Step4Measure } from './steps/Step4Measure.jsx';
 
 /* The illustration beside the four steps: two windows per step, each one built
    to read as a working screen rather than as a picture of one.
@@ -33,12 +33,12 @@ import { MeasurePanel } from './walkthrough/MeasurePanel.jsx';
      · CHROME THAT DOES SOMETHING. A title bar with dots and a name, plus a
        right-hand slot carrying live state — a count, an elapsed time, a unit.
      · A TOOLBAR UNDER THE CHROME. Real apps put controls in a strip of their
-       own, separated by a hairline: a field, icon buttons, a segmented view
+       own, separated by a thin line: a field, icon buttons, a segmented view
        switch. A screen with no controls is a diagram.
      · COLUMN HEADERS OVER ROWS. Two words of tiny mono over a list is the
        single cheapest signal that the list is DATA.
      · A STATUS BAR AT THE FOOT. Count on the left, context on the right, above
-       a hairline. Every real window has one and no illustration ever does.
+       a thin line. Every real window has one and no illustration ever does.
      · EDGES BETWEEN THE DAG NODES. They were three adjacent boxes with gaps,
        which is a row of cards; a pipeline needs the connections drawn, and the
        reached ones fill teal behind the node that follows.
@@ -50,7 +50,7 @@ import { MeasurePanel } from './walkthrough/MeasurePanel.jsx';
        of decoration.
 
    THE PALETTE IS UNTOUCHED. White windows, `paper-2` for recessed controls,
-   violet tints for selection, ink for type, `divider` hairlines, and teal on
+   violet tints for selection, ink for type, `divider` thin lines, and teal on
    the accent alone — one confirmed state and one measured outcome per window.
    Nothing here goes dark and nothing new enters the palette.
 
@@ -61,7 +61,7 @@ import { MeasurePanel } from './walkthrough/MeasurePanel.jsx';
    overlap that reads as two depths rather than one thing covering another. The
    22px lands inside the upper window's own bottom padding, so it never covers
    content, and every offset is measured from the windows' own edges so the
-   diagonal survives the stage being three different heights.
+   diagonal survives the illustration being three different heights.
 
    ONE WINDOW ON A PHONE. Two overlapping windows in a 290px box is a pile.
 
@@ -70,15 +70,15 @@ import { MeasurePanel } from './walkthrough/MeasurePanel.jsx';
 
 
 const PANELS = {
-  pick: PickPanel,
-  test: TestPanel,
-  deploy: DeployPanel,
-  measure: MeasurePanel
+  pick: Step1Choose,
+  test: Step2Test,
+  deploy: Step3Deploy,
+  measure: Step4Measure
 };
 
 /* Must match `mg-out`'s duration in `motion.css`. If this is shorter the
    outgoing panel is torn out mid-fade; if it is longer an invisible panel sits
-   in the stage doing nothing until the timer catches up. */
+   in the illustration doing nothing until the timer catches up. */
 const EXIT_MS = 360;
 
 const CENTRE = 'absolute inset-0 grid place-items-center p-5 sm:p-8';
@@ -87,9 +87,9 @@ const CENTRE = 'absolute inset-0 grid place-items-center p-5 sm:p-8';
 
    `key={activeId}` alone gives a free entrance — a freshly mounted element runs
    its CSS animations from the top — but it also means the old panel is gone from
-   the DOM in the same commit, and something that is not there cannot animate.
+   the page structure in the same commit, and something that is not there cannot animate.
 
-   So the stage keeps two ids. `shown` is what is playing and is what the `key`
+   So the illustration keeps two ids. `shown` is what is playing and is what the `key`
    hangs off, so entrances work exactly as before. `leaving` is the one that just
    stopped being shown, held for `EXIT_MS` then dropped. Both render into the
    same absolutely-positioned centre box, so they occupy identical space and
@@ -98,20 +98,20 @@ const CENTRE = 'absolute inset-0 grid place-items-center p-5 sm:p-8';
    The guard is `activeId === shown` rather than a ref or a previous-value trick:
    if the parent re-renders for any other reason, this effect compares the two
    ids, sees they agree, and does nothing. */
-export function WalkthroughStage({ activeId, live }) {
+export function StepWindows({ activeId, live }) {
   const [shown, setShown] = useState(activeId);
   const [leaving, setLeaving] = useState(null);
 
   /* NOTHING IN HERE RENDERS UNTIL THE SECTION HAS BEEN REACHED ONCE.
 
-     The panel is in the DOM from first paint, so its entrance — eight to
+     The panel is in the page structure from first paint, so its entrance — eight to
      thirteen elements each animating a blur — used to run during page load,
      against everything else competing for the main thread at exactly that
      moment, and finish long before anyone had scrolled far enough to see it.
      All of that work went nowhere.
 
      `awake` latches on and never off. Unmounting when the section leaves the
-     viewport would save a little more and cost far more than it saved: the
+     visible part of the screen would save a little more and cost far more than it saved: the
      entrance would replay every time the reader scrolled past, which is both a
      surprise and the same expensive work over again.
 
@@ -130,7 +130,7 @@ export function WalkthroughStage({ activeId, live }) {
     return () => clearTimeout(t);
   }, [activeId, shown]);
 
-  const Panel = PANELS[shown] ?? PickPanel;
+  const Panel = PANELS[shown] ?? Step1Choose;
   const Leaving = leaving ? PANELS[leaving] : null;
 
   return (
@@ -162,11 +162,11 @@ export function WalkthroughStage({ activeId, live }) {
       className="relative h-[380px] sm:h-[520px] lg:h-full lg:min-h-[530px]"
     >
       {/* The fill is the specified #F7F2FF and the border is the active step
-          card's 1px violet hairline. Both live in `.panel-field` — the fill
+          card's 1px violet thin line. Both live in `.panel-field` — the fill
           because a literal beats an alpha whose result shifts with what is
           behind it, the border because Tailwind's `ring` IS a box-shadow and a
           hand-written class in this bundle overrides a Play-CDN utility at equal
-          specificity, so a `ring-*` here gets silently discarded. */}
+          which style rule wins, so a `ring-*` here gets silently discarded. */}
       <div
         key={`skin-${shown}`}
         className="panel-field stage-pulse absolute inset-0 overflow-hidden rounded-[26px] bg-[#f7f2ff]"

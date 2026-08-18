@@ -46,7 +46,7 @@ import { FORM_FIELD } from '../../lib/layout.js';
 
    Keyboard is complete: arrows move, Enter picks, Escape closes the LIST rather
    than the dialog, Home/End jump, Tab leaves. */
-export function SelectField({
+export function Dropdown({
   id,
   label,
   value,

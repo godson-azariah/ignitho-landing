@@ -20,7 +20,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 /* Real URLs and real history, without a router.
 
-   `/`                    the index
+   `/`                    the home page
    `/faq`                 the questions page
    `/suites/<id>`         one suite
 

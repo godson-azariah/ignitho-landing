@@ -33,9 +33,9 @@ import { TrendingUp, DollarSign, ShieldCheck, Clock } from 'lucide-react';
    of the range the four used to span: dark enough to hold white type at 11.4:1,
    light enough that four of them in a row do not read as a wall. Teal still
    appears on the target line alone — the "positive outcome" signal. */
-export const PILLAR_BG = 'bg-ig-violet-600';
+export const OUTCOME_CARD_COLOUR = 'bg-ig-violet-600';
 
-export const PILLARS = [
+export const OUTCOMES = [
   {
     n: '01',
     icon: TrendingUp,

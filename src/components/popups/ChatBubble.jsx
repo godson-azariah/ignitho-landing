@@ -49,7 +49,7 @@ const answerFor = (query) => {
 };
 
 /* Entirely self-contained — the rest of the page does not know it exists. */
-export function ChatWidget() {
+export function ChatBubble() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([GREETING]);
   const [inputMessage, setInputMessage] = useState('');

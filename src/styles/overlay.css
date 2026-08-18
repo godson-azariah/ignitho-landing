@@ -28,7 +28,7 @@
   visibility: visible;
   transition: visibility 0s;
 }
-/* same reasoning — a full-viewport layer held for a panel that is shut
+/* same reasoning — a full-visible part of the screen layer held for a panel that is shut
    almost all of the time */
 .sheet-panel {
   transform: translate3d(0, -100%, 0);

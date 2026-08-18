@@ -21,10 +21,10 @@
    ========================================================================== */
 
 /* =========================================================================
-   1. THE THREE BACKGROUND FLAVOURS
+   1. THE THREE BACKGROUND STYLES
    ========================================================================= */
 
-/* A — the dark bookends. Both of them (hero and closing CTA) now sit on the
+/* A — the dark bands at the very top and very bottom. Both of them (hero and closing section) now sit on the
    brand's `--aurora-ground` gradient defined below, so the old flat variant
    that used to live here has gone with its last user. */
 
@@ -39,7 +39,7 @@
 /* AURORA — near-black ground with a curtain of violet light standing up from
    the bottom edge, as on the sign-in screen. Two layers of soft columns drift
    and breathe against each other on long, offset cycles, so the movement
-   never loops visibly. Everything is transform/opacity, so it composites on
+   never loops visibly. Everything is transform/opacity, so it blends on
    the GPU and costs nothing to scroll past. */
 /* The brand's wide-hero ground, verbatim from the spec (§5A). Held in a
    variable because the veil further down has to repaint the identical
@@ -63,16 +63,16 @@
 
   /* ONE KNOB FOR THE HERO'S COLOUR.
 
-     The hero and the closing CTA stand on the identical gradient above, but
+     The hero and the closing section stand on the identical gradient above, but
      they did not read as the same colour, because the hero has five lit
-     layers painting violet on top of it and the CTA has none. So the folds
+     layers painting violet on top of it and the closing section has none. So the folds
      no longer supply colour of their own — every one of them is scaled by
      this multiplier down to where it modulates the ground rather than
-     replacing it. The two bookends now match, and the curtains are still
+     replacing it. The two bands at the very top and very bottom now match, and the curtains are still
      there, still moving, just as texture rather than as paint.
 
      Raise it toward 1 to bring the old violet field back; drop it to 0 and
-     the hero becomes the CTA's flat ground exactly. */
+     the hero becomes the closing section's flat ground exactly. */
   --curtain-strength: 1;
 }
 
@@ -83,7 +83,7 @@
   color: var(--paper);
 }
 
-/* The stage. Sits behind everything in the section; owns its own stacking
+/* The illustration. Sits behind everything in the section; owns its own stacking
    context so the layers below never escape it. */
 .art-surface {
   position: absolute;
@@ -95,11 +95,11 @@
 
 /* NOT ONE `filter: blur()` IN HERE, DELIBERATELY.
    A blur is a separable convolution the GPU re-runs every single frame, and a
-   layer that also animates `scale` has to be re-rasterised before the blur
+   layer that also animates `scale` has to be re-drawn to pixels before the blur
    even starts. Five full-bleed blurred layers is what made this hero drag.
 
    Every softness below is baked into the gradient's own colour stops instead.
-   A gradient rasterises once and is then pure compositing — translate, scale
+   A gradient drawn to pixels once and is then pure compositing — translate, scale
    and opacity are free from that point on, however long the animation runs.
    At these periods the two are visually indistinguishable: blurring a stop
    ramp that is already 30–90px wide barely moves it. */
@@ -226,7 +226,7 @@
 
    Masking the *field* is what was expensive — that wrapper holds four animated
    children, so every frame had to be rendered into an offscreen surface,
-   masked, and composited. This layer is static: it rasterises once, mask and
+   masked, and composited. This layer is static: it drawn to pixels once, mask and
    all, and is a plain cached texture from then on. Same technique, applied
    where it costs nothing. */
 .curtain-veil {
@@ -275,7 +275,7 @@
 
    Lifted from 6% to 10%. This layer is the only thing giving the hero's left
    and right thirds any structure — the content is a single centred column,
-   so the flanks are bare ground, and at 6% the rules were not carrying far
+   so the sides are bare ground, and at 6% the rules were not carrying far
    enough into them to register. The mask still clears the middle entirely,
    so nothing has moved closer to the text; the rules are simply visible
    where there IS no text, which is the only place they were ever meant to
@@ -410,7 +410,7 @@
    guesswork about where the copy might land — instead every block of text
    wears a `.plate`, which clears the texture directly beneath it.
 
-   Tone comes from the flavour class, so one pair of rules serves both.
+   Tone comes from the background style class, so one pair of rules serves both.
    ------------------------------------------------------------------------- */
 .dots::before,
 .dots::after {
@@ -503,7 +503,7 @@
       band above it is painted in, so nothing new enters the palette.
 
       The 1px top highlight is the other half of it, and it is the detail that
-      does the most for the least: a single hairline of white along the upper
+      does the most for the least: a single thin line of white along the upper
       edge is what makes a panel read as catching light from above rather than
       as a rectangle of colour.
    ------------------------------------------------------------------------- */
@@ -521,14 +521,14 @@
    the ground stepped down.
 
    THE BLOOMS ARE GRADIENTS, AND THAT IS DELIBERATE. The house rule is that
-   flat surfaces carry no colour gradient, with the aurora as the exception —
-   and this is the same category as the aurora, not the same category as a
+   flat surfaces carry no colour gradient, with the dark purple background as the exception —
+   and this is the same category as the dark purple background, not the same category as a
    card: it is a depicted atmosphere, a thing being looked INTO. Three wide,
    soft ellipses, indigo and sky and violet, all from the palette, none of them
    near the centre where the windows sit.
 
    NOT ONE `filter: blur()` AMONG THEM, following the rule the hero set: the
-   softness is baked into the stops, which rasterises once and then costs
+   softness is baked into the stops, which drawn to pixels once and then costs
    nothing. A 60%-wide ellipse fading to transparent at 62% IS a blurred blob;
    running an actual blur over it would change nothing anyone can see and add a
    convolution per frame. */
@@ -543,7 +543,7 @@
    the border is the card's `ring-ig-purple/25` for the same reason.
 
    The contrast that worried those three values is now handled where it belongs:
-   the windows are all #FFFFFF and carry their own chrome, hairline and
+   the windows are all #FFFFFF and carry their own chrome, thin line and
    three-layer shadow. That was the real fix. The console was the one genuine
    offender — it used to be `paper-2` itself and so was literally the same
    colour as this panel — and it is white now like the rest, keeping its
@@ -557,7 +557,7 @@
 
    Tailwind here is the Play CDN, which injects its utilities into a style
    element EARLY in the head — before the bundled stylesheet this file ends up
-   in. So at equal specificity, one class against one class, THESE RULES WIN AND
+   in. So at equal which style rule wins, one class against one class, THESE RULES WIN AND
    THE UTILITIES LOSE. Nothing warns about it and it is silent in both
    directions.
 
@@ -578,7 +578,7 @@
    reaching for that token because it is what the active step card is written
    with. But the card that reads as this colour on screen is not painting
    #F0E9FF — it is `bg-ig-paper-2/40` over the band's #FBF9FF, and 40% of
-   (240,233,255) over (251,249,255) composites to (247,243,255). That is this
+   (240,233,255) over (251,249,255) blends to (247,243,255). That is this
    colour. The token was never the answer; the COMPOSITED RESULT was, and a
    sampled value states it exactly where a token could only approximate it.
 
@@ -593,14 +593,14 @@
    `inset 0 0 0 1px rgba(122, 0, 194, 0.25)` is what
    `ring-1 ring-inset ring-ig-purple/25` compiles to. It lives here rather than
    as a utility because Tailwind's `ring` IS a box-shadow, and a hand-written
-   class in this bundle overrides a Play-CDN utility at equal specificity, so a
+   class in this bundle overrides a Play-CDN utility at equal which style rule wins, so a
    `ring-*` on this element gets silently discarded.
 
    NO `position`, and nothing else a utility might also set: that separation is
    what stopped the two silent overrides that cost the border and then the
    background. */
 /* The rules live on the element itself now, not in the dot layer below, because
-   the dots are about to be softened and the rules are not — a hairline that has
+   the dots are about to be softened and the rules are not — a thin line that has
    been blurred is just a smudge. Separating them lets each be what it should be:
    crisp 28px rules, soft dots. */
 /* NO `background-color` HERE — the fill comes from a utility at the call site.
@@ -628,7 +628,7 @@
 
    NO `z-index` ON EITHER LAYER, unlike the version of this that existed before.
    A pseudo-element with `position: absolute` already paints above its own
-   element's background and below anything that follows in the DOM — and the
+   element's background and below anything that follows in the page structure — and the
    windows are LATER SIBLINGS of this skin, not children of it. So the stacking
    works out on its own: fill, then texture, then windows. `z-index: -1` was
    solving a problem that only existed while this class was the container. */
@@ -644,7 +644,7 @@
 
    `filter: blur()` would do it, and this file opens by refusing that outright —
    for animated layers, which have to be re-convolved every frame. This layer is
-   static, so a blur here would in fact rasterise once and cost nothing after.
+   static, so a blur here would in fact drawn to pixels once and cost nothing after.
    The stops are still the better answer, for two reasons that survive that:
 
      · A GAUSSIAN BLUR OF A DISC IS A RADIAL FALLOFF. That is not an
@@ -670,7 +670,7 @@
    shape at any strength.
 
    At this weight the dots average about 0.2% violet across the panel, so
-   #F7F2FF composites back to #F7F2FF — the specified fill, unshifted. */
+   #F7F2FF blends back to #F7F2FF — the specified fill, unshifted. */
 .panel-field::before {
   background-image: radial-gradient(
     circle 2.6px at 50% 50%,
@@ -717,7 +717,7 @@
    type, at any width, because both figures scale with the card.
 
    The same trick the hero already uses on `.art-grid`, where a radial mask
-   clears the middle so the rules only register out in the flanks. Different
+   clears the middle so the rules only register out in the sides. Different
    shape, same idea: texture is for the parts of a surface nobody is reading.
 
    Alphas match the walkthrough panel's exactly, so the two textured surfaces on
@@ -733,7 +733,7 @@
    land behind type.
 
    No mask percentage fixes that, because there is nothing to fix. A phone-width
-   card has no flanks. It is clear from 640 up and hidden below.
+   card has no sides. It is clear from 640 up and hidden below.
 
    Nothing else changes at any width — the fill, the shadow, the brand rule and
    the copy are identical either side of this. */
@@ -742,7 +742,7 @@
 
    The field was there and barely readable — 0.07 on a white card is close to
    the limit of what a screen resolves, and the mask started fading from the
-   very first pixel, so even that 0.07 was only ever reached in a hairline at
+   very first pixel, so even that 0.07 was only ever reached in a thin line at
    the extreme edge. The visible result was a suggestion of texture rather than
    texture.
 
@@ -759,7 +759,7 @@
        "rough". A sharper, stronger edge would read as a border.
 
    The 5% plateau is not a free number: the card's horizontal padding is 5.4% at
-   `lg`, so full-strength texture is confined to the padding and no glyph in the
+   `lg`, so full-strength texture is confined to the padding and no letter shape in the
    card ever sits on it. Past 5% the field is already fading, and by the time it
    reaches the first character of the evidence strip it is under a third of its
    own alpha. That is the same rule as before — texture is for the parts of a

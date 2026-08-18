@@ -5,7 +5,7 @@
      Inside the product windows beside "Four steps, days not months".
 
    WHAT IS IN HERE
-     · The white window itself: its rounded corners, hairline and three-layer shadow.
+     · The white window itself: its rounded corners, thin line and three-layer shadow.
      · The title bar with its three grey dots, the toolbar strip, the small square buttons, and the status bar along the bottom.
      · The type sizes used for labels, values and micro-captions, so all four panels speak with one voice.
 
@@ -13,7 +13,7 @@
      Nothing here is a real control. It is a drawing of an interface, and every part of it is shared so the four panels cannot drift apart.
    ========================================================================== */
 
-import {  } from './tokens.js';
+import {  } from './sharedStyles.js';
 
 /* Window chrome. Three dots in neutral ink rather than red/amber/green —
    traffic lights would import a palette this page does not own, and the shape
@@ -33,7 +33,7 @@ export function Bar({ title, right }) {
   );
 }
 
-/* The control strip. Its own row, its own hairline — which is exactly what
+/* The control strip. Its own row, its own thin line — which is exactly what
    makes it read as a toolbar rather than as the first line of content. */
 export function Tool({ children }) {
   return (
@@ -54,7 +54,7 @@ export function Btn({ icon: Icon, on = false }) {
   );
 }
 
-/* The status bar. Count left, context right, over a hairline. */
+/* The status bar. Count left, context right, over a thin line. */
 export function Foot({ left, right, delay }) {
   return (
     <span

@@ -12,10 +12,10 @@
      The rows are read from the real suite list, so this drawing cannot show a suite the site does not have.
    ========================================================================== */
 import { Check, ChevronRight, LayoutGrid, List, ListFilter, Search } from 'lucide-react';
-import { Bar, Tool, Btn, Foot } from './chrome.jsx';
-import { WIN, RULE, MICRO, LABEL, VALUE, PICKED, TOP, BOT, at, FOUNDATIONS, FOUNDATION_TAB, CHOSEN } from './tokens.js';
+import { Bar, Tool, Btn, Foot } from './WindowParts.jsx';
+import { WIN, RULE, MICRO, LABEL, VALUE, PICKED, TOP, BOT, at, FOUNDATIONS, FOUNDATION_TAB, CHOSEN } from './sharedStyles.js';
 
-export function PickPanel() {
+export function Step1Choose() {
   return (
     <>
       <div className={`${TOP} ${WIN} mr-auto`}>

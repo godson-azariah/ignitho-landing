@@ -21,11 +21,11 @@ import { Activity, Check, Cpu, Terminal, X } from 'lucide-react';
 import { PrimaryButton } from '../ui/Button.jsx';
 import { useOverlay } from '../../hooks/useOverlay.js';
 
-/* Owns its own run. The dossier says which accelerator to show; the staging is
+/* Owns its own run. The suite page says which accelerator to show; the staging is
    this component's business, so opening one twice always starts from step one.
    The timers are cleaned up on unmount, which the previous version — bare
    setTimeouts fired from a click handler — did not do. */
-export function AgentSimulator({ accelerator, onClose }) {
+export function AgentDemo({ accelerator, onClose }) {
   const [step, setStep] = useState(0);
   useOverlay(Boolean(accelerator), onClose);
 
@@ -48,14 +48,14 @@ export function AgentSimulator({ accelerator, onClose }) {
        floated in a void with nothing to cast a shadow onto. Letting the page
        show through, softened, is what gives the window something to sit in
        FRONT of. The blur is affordable here because `useOverlay` locks body
-       scroll while this is open, so it rasterises once. */
+       scroll while this is open, so it drawn to pixels once. */
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center bg-ig-ink/55 p-4 backdrop-blur-[5px]"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
-      {/* A window, not a slab: hairline edge instead of the 2px near-black
+      {/* A window, not a slab: thin line edge instead of the 2px near-black
           rule, a long soft shadow in the page's own violet, and a title bar
           that stays put because the panel is a flex column and only the body
           below it scrolls. */}
@@ -64,7 +64,7 @@ export function AgentSimulator({ accelerator, onClose }) {
         /* `max-h-full`, not `92vh`. The backdrop is `fixed inset-0` with 16px
            of padding, so 100% of it is already the visible area less that
            padding — which is the same figure on a desktop and the RIGHT
-           figure on a phone, where `vh` measures the tall viewport with the
+           figure on a phone, where `vh` measures the tall visible part of the screen with the
            URL bar retracted and would have let the panel run off the bottom
            of the screen with the close button on it. */
         className="pop-c relative flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-[22px] border border-ig-ink/10 bg-white shadow-[0_44px_100px_-28px_rgba(22,6,58,0.6),0_8px_24px_-12px_rgba(22,6,58,0.3)]"
@@ -112,7 +112,7 @@ export function AgentSimulator({ accelerator, onClose }) {
               return (
                 <Fragment key={n.node}>
                   {/* The connector turns through ninety degrees with the row:
-                      a 16px vertical hairline indented to sit under the node
+                      a 16px vertical thin line indented to sit under the node
                       above it, and the horizontal rule it always was from
                       `sm`. The fill inside it swaps axis to match — the same
                       one-property transition either way, on `height` rather

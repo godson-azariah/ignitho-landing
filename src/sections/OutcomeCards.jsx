@@ -17,35 +17,35 @@
      which is also where the one shared card colour is set.
    ========================================================================== */
 
-import { Cross } from '../components/ui/Cross.jsx';
-import { Kicker } from '../components/ui/Kicker.jsx';
-import { Reveal } from '../components/ui/Reveal.jsx';
-import { PILLARS, PILLAR_BG } from '../data/pillars.js';
+import { CornerMark } from '../components/ui/CornerMark.jsx';
+import { SectionLabel } from '../components/ui/SectionLabel.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
+import { OUTCOMES, OUTCOME_CARD_COLOUR } from '../data/outcomes.js';
 import { SHELL } from '../lib/layout.js';
 import { splitHeading } from '../lib/splitHeading.js';
 
 /* All four at once, in a single row on desktop, rather than a sticky deck you
    had to scroll ~1500px to reach the end of. Nothing about the stack showed
    more than one card at a time, which is the opposite of a comparison. */
-export function Pillars() {
+export function OutcomeCards() {
   return (
     <section id="pillars" className="bg-b dots relative py-12 md:py-16">
       <div className={SHELL}>
-        <Cross className="-top-7 left-1 md:left-3" />
-        <Cross className="-top-7 right-1 md:right-3" />
+        <CornerMark className="-top-7 left-1 md:left-3" />
+        <CornerMark className="-top-7 right-1 md:right-3" />
 
         {/* centred: no bottom rule, which would read as a left-aligned
             device under a centred heading */}
         {/* `max-w-4xl`, up from 3xl. At the 48px ceiling the sentence measures
             828px, so a 768px column was the only reason it broke in two. */}
-        <Reveal className="reveal-soft plate relative mx-auto max-w-4xl text-center">
+        <FadeIn className="reveal-soft plate relative mx-auto max-w-4xl text-center">
           {/* Not another money line. Two of these four cards are about money
               and two are about risk and speed, so a heading promising the
               money mis-sells half its own contents — and "pays" already
               belongs to the hero. */}
-          <Kicker index="02" centered>
+          <SectionLabel index="02" centered>
             Strategic Pillars
-          </Kicker>
+          </SectionLabel>
           {/* ONE LINE: the two halves are inline now rather than forced blocks.
               `balance` still earns its place at the narrow end — 37 characters
               cannot fit one line on a phone at any size a section heading can be
@@ -59,14 +59,14 @@ export function Pillars() {
             What actually changes{' '}
             <span className="serif-accent font-normal text-ig-purple">once it is live</span>
           </h2>
-        </Reveal>
+        </FadeIn>
 
         <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-          {PILLARS.map((pillar, i) => {
+          {OUTCOMES.map((pillar, i) => {
             const Icon = pillar.icon;
             const heading = splitHeading(pillar.title);
             return (
-              <Reveal key={pillar.title} delay={Math.min(i * 70, 240)} className="h-full">
+              <FadeIn key={pillar.title} delay={Math.min(i * 70, 240)} className="h-full">
                 {/* h-full + flex-1 on the body: every card matches the
                     tallest in the row and every target line sits on the
                     same baseline, with no min-height guess */}
@@ -81,7 +81,7 @@ export function Pillars() {
                     this one rather than its neighbour. Anything larger would be
                     an invitation the card cannot honour. */}
                 <article
-                  className={`lift relative flex h-full flex-col overflow-hidden rounded-[20px] p-6 text-white md:p-7 ${PILLAR_BG}`}
+                  className={`lift relative flex h-full flex-col overflow-hidden rounded-[20px] p-6 text-white md:p-7 ${OUTCOME_CARD_COLOUR}`}
                 >
                   <span
                     aria-hidden="true"
@@ -127,7 +127,7 @@ export function Pillars() {
                     {pillar.target}
                   </span>
                 </article>
-              </Reveal>
+              </FadeIn>
             );
           })}
         </div>

@@ -34,7 +34,7 @@ export const PEEK_H = 292;
 
    1. The card is positioned inside the list, so scrolling carries it away from
       a stationary pointer. Anything stored relative to the list is stale the
-      instant the page scrolls; viewport coordinates are the only frame of
+      instant the page scrolls; visible part of the screen coordinates are the only frame of
       reference that survives it.
    2. The browser does not re-run `:hover` while the page scrolls beneath a
       still cursor — Firefox not at all, Chrome with a delay. So which row is
@@ -44,7 +44,7 @@ export const PEEK_H = 292;
    Everything below is therefore derived from one pointer position plus a fresh
    measurement, by a single function that both the move and the scroll handler
    call — so the two can never disagree. */
-export function useSuitePeek(suites) {
+export function useSuitePreview(suites) {
   const listRef = useRef(null);
   const previewRef = useRef(null);
   const activeRow = useRef(null);

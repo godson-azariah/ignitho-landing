@@ -15,7 +15,7 @@
 
 /* Swiss registration mark — a printer's alignment cross, used to pin the
    corners of a section's measure. */
-export function Cross({ className = '', tone = 'ink' }) {
+export function CornerMark({ className = '', tone = 'ink' }) {
   return (
     <span
       aria-hidden="true"

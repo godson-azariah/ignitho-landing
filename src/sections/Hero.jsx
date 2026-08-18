@@ -19,13 +19,13 @@
 
    WORTH KNOWING
      The moving purple glow behind all of this is a separate file,
-     components/stage/HeroStage.jsx.
+     components/stage/HeroGlow.jsx.
    ========================================================================== */
 
 import { useEffect, useState } from 'react';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { HeroStage } from '../components/stage/HeroStage.jsx';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { HeroGlow } from '../components/artwork/HeroGlow.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { SEARCH_SUGGESTIONS } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
 
@@ -33,9 +33,9 @@ import { SHELL } from '../lib/layout.js';
    the catalogue and scrolls there.
 
    THE FIELD KEEPS ITS OWN VALUE WHILE YOU TYPE, and only hands it up when you
-   submit. Lifting the value to the shell instead would have meant every
+   submit. Lifting the value to the page container instead would have meant every
    keystroke re-rendering the pillars, the calculator and nine suite cards —
-   the exact whole-page churn the shell was restructured to stop. Typing is
+   the exact whole-page churn the page container was restructured to stop. Typing is
    local; committing is shared.
 
    `committed` IS THE OTHER HALF OF THAT, and without it the two ends of the
@@ -73,9 +73,9 @@ export function Hero({ onSearch, committed = '' }) {
   return (
     <section
       id="overview"
-      /* AS TALL AS ITS CONTENTS, NOT AS TALL AS THE VIEWPORT.
+      /* AS TALL AS ITS CONTENTS, NOT AS TALL AS THE VISIBLE PART OF THE SCREEN.
 
-         The full-viewport lock is gone, and with it every problem that came
+         The full-visible part of the screen lock is gone, and with it every problem that came
          out of it. A hero pinned to 100svh while holding ~570px of content
          has ~180px of slack it has to put SOMEWHERE — above the block, and
          the field sits too low; below it, and there is a hole over the next
@@ -88,17 +88,17 @@ export function Hero({ onSearch, committed = '' }) {
          row of chips rather than empty ground, and the next section shows
          its top edge — which is what tells you to keep scrolling.
 
-         Padding does the work now: the masthead height plus 20px of air at
+         Padding does the work now: the top bar height plus 20px of air at
          the top, so the eyebrow clears the bar rather than sitting under it;
          a real measure at the bottom, since nothing is stretching to fill
          any more.
 
-         The stage is unaffected — both of `HeroStage`'s layers are
+         The illustration is unaffected — both of `HeroGlow`'s layers are
          absolutely positioned, so they still fill the section edge to
          edge, whatever height it turns out to be. */
       className="aurora relative overflow-hidden pb-16 pt-[88px] md:pb-24 md:pt-[104px]"
     >
-      <HeroStage />
+      <HeroGlow />
 
       <div className={SHELL}>
         <div className="relative">
@@ -108,7 +108,7 @@ export function Hero({ onSearch, committed = '' }) {
               which is the whole reason it can sit here without the old
               problem: when the eyebrow was inside the centred group,
               centring put half the leftover height ABOVE it and opened a
-              160px hole under the masthead. Separated out, it stays put and
+              160px hole under the top bar. Separated out, it stays put and
               only the display block centres. */}
           {/* A COLUMN ON A PHONE, THE SAME SPLIT ROW FROM `sm` UP.
 
@@ -128,7 +128,7 @@ export function Hero({ onSearch, committed = '' }) {
               that did not animate at all — it was simply present. In a hero
               where everything below it arrives, that read as the page having
               started without it. It leads the sequence now. */}
-          <Reveal className="reveal-soft flex flex-col items-start gap-1 border-b border-white/15 py-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:py-4">
+          <FadeIn className="reveal-soft flex flex-col items-start gap-1 border-b border-white/15 py-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:py-4">
             {/* the eyebrow — sky, per the brand's rule for dark surfaces */}
             <span className="font-mono text-[10px] font-bold leading-[1.5] tracking-[0.06em] text-ig-sky sm:text-[11px]">
               Transforming Ignitho into an AI-First Enterprise Partner
@@ -136,7 +136,7 @@ export function Hero({ onSearch, committed = '' }) {
             <span className="font-mono text-[10px] font-bold leading-[1.5] tracking-[0.06em] text-ig-lavender/60 sm:text-[11px]">
               Enterprise AI Platform
             </span>
-          </Reveal>
+          </FadeIn>
 
           {/* CENTRE-STACKED, after the reference.
 
@@ -165,13 +165,13 @@ export function Hero({ onSearch, committed = '' }) {
               510ms and the sequence is finished inside 1.6s.
 
               The headline's second line keeps its own extra 90ms, so the two
-              halves of the display type still resolve one after the other
+              halves of the the biggest headline type still resolve one after the other
               inside the block's own arrival.
 
-              `soft-lg` is here and nowhere else: this is the only display type
+              `soft-lg` is here and nowhere else: this is the only the biggest headline type
               on the site, and it is the one place the blur has to be large
-              enough to be felt against 94px glyphs. */}
-          <Reveal delay={170} className="reveal-soft soft-lg text-center">
+              enough to be felt against 94px letter shapes. */}
+          <FadeIn delay={170} className="reveal-soft soft-lg text-center">
             {/* The foil is the real win here: the paragraph directly under
                 this has always opened "Move away from unguided prompt
                 chats", so prompting was already the thing this page argues
@@ -199,8 +199,8 @@ export function Hero({ onSearch, committed = '' }) {
                 where line one draws about 1160px in a 1296px shell. The
                 headline is now the widest thing in the section rather than
                 matching the column below it, which is the ordinary way
-                display type behaves: it breaks the text measure on purpose.
-                The flanks stay structured because it is nearly full-bleed —
+                the biggest headline type behaves: it breaks the text measure on purpose.
+                The sides stay structured because it is nearly full-bleed —
                 the same edges the eyebrow rule already marks.
 
                 The break falls where the phrase already pauses, so the
@@ -224,7 +224,7 @@ export function Hero({ onSearch, committed = '' }) {
                 it did while it was wrapping.
 
                 Nothing above 571px is touched — that is where 7vw passes
-                40px, so every viewport from a small tablet up resolves to the
+                40px, so every visible part of the screen from a small tablet up resolves to the
                 same 7vw it always did, and the two-line setting returns at
                 `md` exactly as it was. */}
             <h1 className="mx-auto max-w-[1200px] font-extrabold leading-[0.88] tracking-[-0.045em] text-[clamp(40px,7vw,94px)] text-white">
@@ -248,14 +248,14 @@ export function Hero({ onSearch, committed = '' }) {
                 </span>
               </span>
             </h1>
-          </Reveal>
+          </FadeIn>
 
           {/* Also on the 880px measure, in place of the 62ch it used to
               carry. `ch` was pinning it to roughly 775px, which was close
               enough to the field to look like a mistake rather than a
               choice. On the wider measure it also falls to two lines instead
               of three, which pays for part of the taller headline. */}
-          <Reveal delay={340} className="reveal-soft mx-auto mt-6 max-w-[880px] text-center md:mt-8">
+          <FadeIn delay={340} className="reveal-soft mx-auto mt-6 max-w-[880px] text-center md:mt-8">
             {/* Full-strength lavender rather than the spec's ~75%, plus
                 medium weight. At 400 and 75% this sat too close to the
                 gradient behind it; #D6CDEE at full opacity is nearly
@@ -267,7 +267,7 @@ export function Hero({ onSearch, committed = '' }) {
               pre-built, domain-specific AI accelerators that automate complex business
               operations safely and repeatably
             </p>
-          </Reveal>
+          </FadeIn>
 
           {/* Widened from 680px so the six starting points sit on one row.
               They measure a shade over 770px laid out end to end, so the
@@ -289,7 +289,7 @@ export function Hero({ onSearch, committed = '' }) {
               filter nested inside a blur, which is the single most expensive
               thing this page could ask for on a weak GPU. It keeps the lift and
               the fade, which is all it needs: it arrives last either way. */}
-          <Reveal delay={510} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
+          <FadeIn delay={510} className="mx-auto mt-8 w-full max-w-[880px] md:mt-10">
             {/* A white field on the dark ground, so it reads as the one
                 place to act rather than as another dark panel. The submit
                 control lives inside the pill: on a rounded field an
@@ -364,7 +364,7 @@ export function Hero({ onSearch, committed = '' }) {
                 </button>
               ))}
             </div>
-          </Reveal>
+          </FadeIn>
           </div>
 
         </div>

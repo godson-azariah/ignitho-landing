@@ -43,8 +43,8 @@ export function SuiteCard({ suite, index = 0, accent, onOpen }) {
   /* Every run of text in the card goes through `noOrphan`, so no line
      anywhere on it can end up carrying a single stranded word. Applied at
      the point of use rather than to the data, because it is a typesetting
-     decision about THIS layout — the same suite name in the dossier
-     masthead has a whole column to itself and needs no help. */
+     decision about THIS layout — the same suite name in the suite page
+     top bar has a whole column to itself and needs no help. */
   const heading = splitHeading(suite.name).map(noOrphan);
 
   return (

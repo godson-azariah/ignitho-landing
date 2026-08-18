@@ -19,22 +19,22 @@
 
    WORTH KNOWING
      The step wording lives in data/howItWorks.js. The windows are
-     components/WalkthroughStage.jsx.
+     components/StepWindows.jsx.
    ========================================================================== */
 
 import { useEffect, useRef, useState } from 'react';
-import { Cross } from '../components/ui/Cross.jsx';
-import { WalkthroughStage } from '../components/stage/WalkthroughStage.jsx';
-import { Kicker } from '../components/ui/Kicker.jsx';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { CornerMark } from '../components/ui/CornerMark.jsx';
+import { StepWindows } from '../components/artwork/StepWindows.jsx';
+import { SectionLabel } from '../components/ui/SectionLabel.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { DWELL_MS, HOW_IT_WORKS } from '../data/howItWorks.js';
 import { SHELL } from '../lib/layout.js';
 
 /* Four steps on the left, the matching piece of interface on the right.
 
-   Flavour C, which is what the alternation asks for here: the calculator above
+   Background C (near-white), which is what the alternation asks for here: the calculator above
    is C, the catalogue between them is B, so this band is C again and the dark
-   closing bookend follows. The heading block wears a `plate`, like every other
+   closing band at the very top or very bottom follows. The heading block wears a `plate`, like every other
    run of copy that sits directly on the dotted ground. */
 export function HowItWorks() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -52,7 +52,7 @@ export function HowItWorks() {
   /* WHICH step is under the pointer, not merely whether one is.
 
      The hold is meant to be "the reader is looking at the step that is about to
-     change", and that is only true of the ACTIVE step. Storing the index and
+     change", and that is only true of the ACTIVE step. Storing the home page and
      comparing it to `activeIndex` gets that right in both directions: hovering
      an inactive step does not hold, and if a step becomes active while the
      pointer is already resting on it, the hold starts without needing another
@@ -72,7 +72,7 @@ export function HowItWorks() {
      DERIVING IT ONCE.
 
      The ring used to be held on `held` alone, which left out `live` — and `live`
-     is false until the section is scrolled to. But the section is in the DOM from
+     is false until the section is scrolled to. But the section is in the page structure from
      first paint, so the CSS animation started at page load and finished 5.6
      seconds later whether anyone was looking or not. Arrive at the section a
      minute in and the ring had been sitting at full for fifty-odd seconds, while
@@ -188,14 +188,14 @@ export function HowItWorks() {
       className="bg-c dots relative py-16 md:py-24"
     >
       <div className={SHELL}>
-        <Cross className="-top-7 left-1 md:left-3" />
-        <Cross className="-top-7 right-1 md:right-3" />
+        <CornerMark className="-top-7 left-1 md:left-3" />
+        <CornerMark className="-top-7 right-1 md:right-3" />
 
         {/* THE HEADING IS ITS OWN ROW NOW, AND THAT IS THE WHOLE FIX.
 
             Inside the left column, the heading meant the two columns could
             never start at the same height: the steps began 130px below the
-            top of their column and the stage was vertically centred against
+            top of their column and the illustration was vertically centred against
             all of it, so nothing on either side lined up with anything on the
             other. Two columns of unequal content and one shared centre line
             is not a structure, it is an average.
@@ -207,10 +207,10 @@ export function HowItWorks() {
         {/* `max-w-4xl`, up from 3xl, so the one line has somewhere to be. At
             the 64px ceiling the full sentence measures about 821px; a 768px
             measure would have wrapped it and undone the whole point. */}
-        <Reveal className="reveal-soft plate mx-auto max-w-4xl text-center">
-          <Kicker index="04" centered>
+        <FadeIn className="reveal-soft plate mx-auto max-w-4xl text-center">
+          <SectionLabel index="04" centered>
             How It Works
-          </Kicker>
+          </SectionLabel>
           {/* Shares no content word with any other heading on the page, and
               the second half is the one claim this section exists to make.
               "days not months" is `pillars.js` verbatim in substance —
@@ -218,7 +218,7 @@ export function HowItWorks() {
               heading is not writing a new promise. */}
           {/* SIZED TO THE CATALOGUE'S HEADING, NOT THE CALCULATOR'S.
 
-              This was already byte-identical to Pillars and the calculator —
+              This was already byte-identical to OutcomeCards and the calculator —
               clamp(27px, 3.9vw, 48px), same leading, same tracking. The page
               has TWO heading scales, and the one directly above this section
               is the larger: "Three foundations, six verticals" runs at
@@ -240,12 +240,12 @@ export function HowItWorks() {
           <h2 className="balance mt-5 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(30px,4.8vw,64px)] text-ig-ink">
             Four steps, days not months
           </h2>
-        </Reveal>
+        </FadeIn>
 
         {/* `items-stretch` — the grid default, restored by dropping
             `items-center`. It is what makes the two columns the same height:
             the row takes the height of the taller one and hands it to both, so
-            the stage can fill it with `lg:h-full` rather than floating in the
+            the illustration can fill it with `lg:h-full` rather than floating in the
             middle of it.
 
             `gap-x-0` until the columns split — a fixed column gap is a hard
@@ -253,12 +253,12 @@ export function HowItWorks() {
             shell. Same lesson as the other five grids on the page. */}
         <div className="relative mt-10 grid grid-cols-12 gap-x-0 gap-y-8 md:mt-12 lg:gap-x-10">
           {/* THE HOLDS ARE SCOPED TO THE STEP LIST, NOT THE WHOLE ROW, and the
-              reason is the pause control sitting over the stage opposite. If
+              reason is the pause control sitting over the illustration opposite. If
               hovering anywhere in the row held the clock, pressing "Resume"
               would clear `paused` and still leave the countdown frozen, because
               the pointer would be over the row to press it. A button whose label
               says resume and which visibly resumes nothing is worse than no
-              button. So: the steps are the hover region, the stage is where the
+              button. So: the steps are the hover region, the illustration is where the
               control lives, and the two never fight.
 
               POINTER TYPE IS CHECKED, and it has to be. `pointerenter` fires for
@@ -308,13 +308,13 @@ export function HowItWorks() {
             }}
           >
             {/* Buttons rather than a tab list, on purpose. A `tablist` promises
-                a panel worth reading, and the stage beside this is decoration
+                a panel worth reading, and the illustration beside this is decoration
                 — every word of it is already in the step copy below. So the
-                steps are pressable text with `aria-pressed`, the stage is
+                steps are pressable text with `aria-pressed`, the illustration is
                 `aria-hidden`, and nothing claims to be what it is not. */}
             {/* `h-full` plus `justify-between`: the four cards divide whatever
                 height the row settles on, so the first one's top edge and the
-                last one's bottom edge land on the stage's, instead of the
+                last one's bottom edge land on the illustration's, instead of the
                 column ending wherever the copy happened to. */}
             {/* BACK TO FOUR CARDS, AND THE RAIL HAS GONE WITH THEM.
 
@@ -325,25 +325,25 @@ export function HowItWorks() {
                 there, and this is the pair being chosen.
 
                 What comes back is the treatment exactly as it stood before:
-                lavender at full strength on the current step with a hairline
+                lavender at full strength on the current step with a thin line
                 and a lift, and the same lavender at 40% on the other three.
                 The card is what says "this one", so nothing else has to.
 
                 The marks are the one thing that does NOT revert — solid teal
-                with a white glyph on all four, as they are now. */}
+                with a white letter shape on all four, as they are now. */}
             <div className="flex h-full flex-col justify-between">
               {HOW_IT_WORKS.map((step, i) => {
                 const on = i === activeIndex;
                 const Icon = step.icon;
                 return (
-                  <Reveal key={step.id} delay={Math.min(i * 70, 240)}>
+                  <FadeIn key={step.id} delay={Math.min(i * 70, 240)}>
                     <button
                       type="button"
                       onClick={() => go(i)}
                       aria-pressed={on}
                       /* Per-step, so only the ACTIVE one holds the clock. The
                           leave handler does NOT check whether this step is
-                          active — it clears the index whenever the pointer
+                          active — it clears the home page whenever the pointer
                           leaves this card, whatever state the card is in. Gating
                           the leave the way the enter is gated is how a hold gets
                           stranded: the step stops being active, the guard stops
@@ -356,8 +356,8 @@ export function HowItWorks() {
                          ONE.
 
                          The current step keeps the violet lavender with its
-                         hairline and shadow; the other three take the teal at
-                         6%, which composites to #ECF4F7 over this band. That is
+                         thin line and shadow; the other three take the teal at
+                         6%, which blends to #ECF4F7 over this band. That is
                          a wash, not a fill — and the distinction matters, both
                          to the eye and to the house rule that teal is an accent
                          and never fills a card.
@@ -373,7 +373,7 @@ export function HowItWorks() {
                          be checked, because teal is the more saturated of the
                          two and could easily have out-shouted the selection. It
                          does not, because the current card is carrying three
-                         things no wash can answer: an inset hairline, a shadow
+                         things no wash can answer: an inset thin line, a shadow
                          that lifts it off the band, and 2.5% of scale.
 
                          SCALE IS RELATIVE, NOT ADDITIVE: the current step stays
@@ -388,21 +388,21 @@ export function HowItWorks() {
                           : 'scale-[0.975] bg-ig-teal/[0.06] hover:scale-[0.99] hover:bg-ig-teal/[0.11]'
                       }`}
                     >
-                      {/* SOLID TEAL WITH A WHITE GLYPH — the green filled rather
+                      {/* SOLID TEAL WITH A WHITE LETTER SHAPE — the green filled rather
                           than outlined.
 
-                          THE FILL IS THE CIRCLE, NOT THE GLYPH, and that is
+                          THE FILL IS THE CIRCLE, NOT THE LETTER SHAPE, and that is
                           forced by the icon set. Lucide draws in strokes, so
                           `fill="currentColor"` turns each one into its own
                           silhouette: a solid rocket and a solid flask survive
                           that, and `LineChart` becomes a filled block with no
-                          chart left in it. Putting the fill behind the glyph
+                          chart left in it. Putting the fill behind the letter shape
                           gives every one of the four the same treatment and
                           keeps all four readable.
 
                           It is also the version that passes: white on #00A274 is
                           3.29:1, over the 3:1 WCAG asks of a meaningful graphic.
-                          A teal glyph on a teal tint — the other way to "fill
+                          A teal letter shape on a teal tint — the other way to "fill
                           with green" — measures 2.75:1 and fails.
 
                           IDENTICAL ON ALL FOUR, and that is the point of it
@@ -419,7 +419,7 @@ export function HowItWorks() {
                           lifted out of. The circle's own edge measures 2.94:1
                           against that wash — below the 3:1 a graphic carrying
                           MEANING would need, and it does not need it, because
-                          the thing being read is the white glyph inside it and
+                          the thing being read is the white letter shape inside it and
                           that clears the bar against the teal.
 
                           NO `ring-4` ANY MORE. That ring was the section's own
@@ -503,7 +503,7 @@ export function HowItWorks() {
 
                             The dimming does not have to carry the focus on its
                             own: the card behind it is a different hue from its
-                            three neighbours, wears a hairline and a shadow, and
+                            three neighbours, wears a thin line and a shadow, and
                             stands 2.5% larger than they do. Against all of that
                             a nudge in tone is the right size of signal — and it
                             is the only one of the four that costs contrast, so
@@ -554,7 +554,7 @@ export function HowItWorks() {
                         </span>
                       </span>
                     </button>
-                  </Reveal>
+                  </FadeIn>
                 );
               })}
 
@@ -582,15 +582,15 @@ export function HowItWorks() {
             </div>
           </div>
 
-          {/* `lg:h-full` on the reveal AS WELL as on the stage inside it. The
+          {/* `lg:h-full` on the reveal AS WELL as on the illustration inside it. The
               reveal is the grid item, so it is the thing `items-stretch` hands
-              the row height to; without it the stage's own `h-full` would be
+              the row height to; without it the illustration's own `h-full` would be
               100% of a wrapper that had already shrunk to its content. */}
-          <Reveal delay={120} className="relative col-span-12 lg:col-span-7 lg:h-full">
+          <FadeIn delay={120} className="relative col-span-12 lg:col-span-7 lg:h-full">
             {/* `live` is the same IntersectionObserver flag the autoplay uses,
                 so the panel's entrance and its clock start together — and
                 neither does any work while the section is off screen. */}
-            <WalkthroughStage activeId={active.id} live={live} />
+            <StepWindows activeId={active.id} live={live} />
 
             {/* THE PAUSE CONTROL IS STILL HERE — IT IS JUST NOT DRAWN.
 
@@ -598,7 +598,7 @@ export function HowItWorks() {
                 replaced it is the same button, `sr-only`: present in the
                 document, announced by a screen reader, reachable by Tab, and
                 invisible to everyone who is not using one of those. Nothing on
-                the stage moves or reflows — `sr-only` is a 1px clip, so it
+                the illustration moves or reflows — `sr-only` is a 1px clip, so it
                 occupies no space at any width.
 
                 WHY NOT DELETE IT OUTRIGHT. Hover is a mouse gesture and focus is
@@ -617,7 +617,7 @@ export function HowItWorks() {
                 exactly where it used to sit, for exactly as long as it holds
                 focus.
 
-                Still a SIBLING of the stage rather than a child — the stage
+                Still a SIBLING of the illustration rather than a child — the illustration
                 carries `aria-hidden`, and a control inside it would be
                 unreachable by everything that needs this one. And still absent
                 under `prefers-reduced-motion`, where the autoplay never starts
@@ -631,7 +631,7 @@ export function HowItWorks() {
                 {paused ? 'Resume the walkthrough' : 'Pause the walkthrough'}
               </button>
             )}
-          </Reveal>
+          </FadeIn>
         </div>
       </div>
     </section>

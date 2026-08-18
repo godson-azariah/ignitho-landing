@@ -21,23 +21,23 @@
 
 import { useCallback, useState } from 'react';
 import { ArrowRight, Check, Play } from 'lucide-react';
-import { AgentSimulator } from '../components/overlays/AgentSimulator.jsx';
-import { HeroStage } from '../components/stage/HeroStage.jsx';
-import { Kicker } from '../components/ui/Kicker.jsx';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { AgentDemo } from '../components/popups/AgentDemo.jsx';
+import { HeroGlow } from '../components/artwork/HeroGlow.jsx';
+import { SectionLabel } from '../components/ui/SectionLabel.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { Button, PrimaryButton } from '../components/ui/Button.jsx';
 import { SHELL } from '../lib/layout.js';
 import { noOrphan } from '../lib/noOrphan.js';
 
 /* One suite, in full. Holds which accelerator is being simulated — the
    simulator itself owns the run. */
-export function Dossier({ suite, openContact }) {
-  const [simAccelerator, setSimAccelerator] = useState(null);
-  const closeSimulator = useCallback(() => setSimAccelerator(null), []);
+export function SuitePage({ suite, openContact }) {
+  const [demoAccelerator, setDemoAccelerator] = useState(null);
+  const closeDemo = useCallback(() => setDemoAccelerator(null), []);
 
   return (
     <main>
-      {/* masthead · FLAVOUR A
+      {/* top bar · BACKGROUND A (DARK PURPLE)
 
           NO "BACK TO ALL SUITES", for the same reason the FAQ page lost its back
           button: every suite has its own URL now, so the browser's back is the
@@ -47,12 +47,12 @@ export function Dossier({ suite, openContact }) {
           result or another suite.
 
           Losing it also loses the divider row it sat in, and that row plus its
-          clearance was around 100px of masthead spent on one control. Padding
+          clearance was around 100px of top bar spent on one control. Padding
           comes down with it, and the display size from 78px to 60px.
 
           Centred, because nothing is left to align to a left edge. */}
       <section className="aurora relative overflow-hidden pb-10 pt-[112px] text-center md:pb-12 md:pt-[132px]">
-        <HeroStage />
+        <HeroGlow />
 
         <div className={SHELL}>
           <div className="relative mx-auto max-w-3xl">
@@ -69,7 +69,7 @@ export function Dossier({ suite, openContact }) {
           </div>
         </div>
       </section>
-      {/* spread · FLAVOUR B */}
+      {/* spread · BACKGROUND B (PALE LAVENDER) */}
       <section className="bg-b dots relative py-20 md:py-28">
         <div className={SHELL}>
           {/* `gap-x-0` below `lg`, where both children are `col-span-12`.
@@ -80,7 +80,7 @@ export function Dossier({ suite, openContact }) {
               carried every child out with it, 34px off centre. There is no
               space BETWEEN columns to hold while there is one column. */}
           <div className="relative grid grid-cols-12 gap-x-0 gap-y-16 lg:gap-x-10">
-            <Reveal className="col-span-12 lg:col-span-7">
+            <FadeIn className="col-span-12 lg:col-span-7">
               <p className="plate whitespace-pre-line text-[20px] leading-[1.4] tracking-[-0.018em] text-ig-text md:text-[27px]">
                 {suite.executiveSummary}
               </p>
@@ -110,9 +110,9 @@ export function Dossier({ suite, openContact }) {
                   </li>
                 ))}
               </ul>
-            </Reveal>
+            </FadeIn>
 
-            <Reveal delay={120} className="col-span-12 lg:col-span-4 lg:col-start-9">
+            <FadeIn delay={120} className="col-span-12 lg:col-span-4 lg:col-start-9">
               <div className="lg:sticky lg:top-28">
                 {/* `overflow-hidden` is what makes the rounding real here:
                     the three-segment rule and the image both run to the card's
@@ -173,7 +173,7 @@ export function Dossier({ suite, openContact }) {
 
                         Trimming the padding is what buys the room back. `!`
                         because `PrimaryButton` sets `px-6` itself, and two
-                        same-specificity utilities resolve by source order
+                        same-which style rule wins utilities resolve by source order
                         rather than by intent. */}
                     <PrimaryButton onClick={openContact} className="mt-7 w-full !px-4 sm:!px-6">
                       Contact Sales
@@ -182,16 +182,16 @@ export function Dossier({ suite, openContact }) {
                   </div>
                 </div>
               </div>
-            </Reveal>
+            </FadeIn>
           </div>
         </div>
       </section>
-      {/* accelerators · FLAVOUR C */}
+      {/* accelerators · BACKGROUND C (NEAR-WHITE) */}
       <section className="bg-c dots relative py-20 md:py-28">
         <div className={SHELL}>
-          <Reveal className="plate relative flex flex-col gap-6 border-b border-ig-ink/15 pb-9 md:flex-row md:items-end md:justify-between">
+          <FadeIn className="plate relative flex flex-col gap-6 border-b border-ig-ink/15 pb-9 md:flex-row md:items-end md:justify-between">
             <div>
-              <Kicker index="05">Embedded AI Accelerators</Kicker>
+              <SectionLabel index="05">Embedded AI Accelerators</SectionLabel>
               <h2 className="mt-7 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(30px,4.6vw,58px)] text-ig-ink">
                 {/* Not "Agents you can run today" — the page says deployment
                     takes days, so "today" contradicted it two sections
@@ -206,11 +206,11 @@ export function Dossier({ suite, openContact }) {
             <p className="font-mono text-[11px] tracking-[0.05em] text-ig-muted md:pb-2">
               Click "Test Agent" to simulate execution
             </p>
-          </Reveal>
+          </FadeIn>
 
           <div className="plate relative">
             {suite.accelerators.map((acc, idx) => (
-              <Reveal key={acc.name} delay={Math.min(idx * 55, 260)}>
+              <FadeIn key={acc.name} delay={Math.min(idx * 55, 260)}>
                 {/* A PLAIN TINT, NOT THE WIPE THE SUITE LIST USES.
 
                     The catalog's rows are the page's main navigation — nine
@@ -265,7 +265,7 @@ export function Dossier({ suite, openContact }) {
                         Governed DAG Ready
                       </span>
                       <Button
-                        onClick={() => setSimAccelerator(acc)}
+                        onClick={() => setDemoAccelerator(acc)}
                         variant="ink"
                         className="shrink-0 px-5 py-3 text-[12.5px] font-semibold"
                       >
@@ -275,12 +275,12 @@ export function Dossier({ suite, openContact }) {
                     </div>
                   </div>
                 </div>
-              </Reveal>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
-      <AgentSimulator accelerator={simAccelerator} onClose={closeSimulator} />
+      <AgentDemo accelerator={demoAccelerator} onClose={closeDemo} />
     </main>
   );
 }

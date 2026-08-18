@@ -19,18 +19,18 @@
    ========================================================================== */
 
 import { ArrowRight } from 'lucide-react';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { PrimaryButton } from '../components/ui/Button.jsx';
 import { SHELL } from '../lib/layout.js';
 
-/* The bottom bookend, on the same ground as the hero.
+/* The bottom band at the very top or very bottom, on the same ground as the hero.
 
    Two columns now: everything you read on the left, the office map on the
    right. The button used to sit in the right-hand column opposite the
    heading, which put the one action in the section as far from the sentence
    asking for it as the grid allowed. Underneath the words is where a call to
    action belongs — you reach it by finishing the sentence. */
-export function ClosingCta({ openContact }) {
+export function ClosingSection({ openContact }) {
   return (
     <section className="aurora dots-inv relative py-12 md:py-16">
       <div className={SHELL}>
@@ -52,7 +52,7 @@ export function ClosingCta({ openContact }) {
             Zeroing it below `lg` costs nothing: a horizontal gap is the space
             BETWEEN columns, and below `lg` both children are `col-span-12`,
             so there is no between. The 40px returns with the second column. */}
-        <Reveal className="relative grid grid-cols-12 items-center gap-x-0 gap-y-8 lg:gap-x-10">
+        <FadeIn className="relative grid grid-cols-12 items-center gap-x-0 gap-y-8 lg:gap-x-10">
           {/* CENTRED WHILE THERE IS ONE COLUMN, LEFT ONCE THERE ARE TWO.
 
               Left alignment here was never a choice about this heading — it
@@ -76,7 +76,7 @@ export function ClosingCta({ openContact }) {
 
                 "Pick one workflow", not "Bring us the workflow". You do not
                 bring anyone a workflow; you have one. Naming a single one
-                also makes the ask small, which is what a closing CTA wants —
+                also makes the ask small, which is what a closing section wants —
                 the reader is being asked to start, not to hand over
                 everything. And "take it to production" is movement where
                 "put it in production" was placement.
@@ -157,7 +157,7 @@ export function ClosingCta({ openContact }) {
 
               With the grid fixed, `w-full` in a `col-span-12` column is 372px
               on a 412px screen, so the cap never binds and the map fills its
-              column with the shell's own 20px gutter either side — the same
+              column with the page container's own 20px gutter either side — the same
               inset every other section on the page uses, and now the same
               centre line as the heading and the button above it.
 
@@ -175,7 +175,7 @@ export function ClosingCta({ openContact }) {
               className="mx-auto h-auto w-full max-w-[440px] select-none lg:ml-auto lg:mr-0"
             />
           </div>
-        </Reveal>
+        </FadeIn>
       </div>
     </section>
   );

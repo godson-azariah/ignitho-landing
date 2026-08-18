@@ -12,11 +12,11 @@
      The numbers are taken from the same assumptions the savings calculator higher up the page uses.
    ========================================================================== */
 import { Check, Minus, MoveHorizontal, Plus, TrendingUp } from 'lucide-react';
-import { Bar, Tool, Btn, Foot } from './chrome.jsx';
-import { WIN, MICRO, LABEL, TOP, BOT, at, UP } from './tokens.js';
-import { DEFAULT_EMPLOYEES, SAVINGS_PER_EMPLOYEE } from '../../../sections/RoiCalculator.jsx';
+import { Bar, Tool, Btn, Foot } from './WindowParts.jsx';
+import { WIN, MICRO, LABEL, TOP, BOT, at, UP } from './sharedStyles.js';
+import { DEFAULT_EMPLOYEES, SAVINGS_PER_EMPLOYEE } from '../../../sections/SavingsCalculator.jsx';
 
-export function MeasurePanel() {
+export function Step4Measure() {
   const BARS = ['34%', '52%', '71%', '100%'];
   const roi = (DEFAULT_EMPLOYEES * SAVINGS_PER_EMPLOYEE).toLocaleString();
   /* 500 of a 50–10,000 range is 4.5% along, so the fill and the handle sit at

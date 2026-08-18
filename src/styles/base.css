@@ -17,6 +17,32 @@
      card.
    ========================================================================== */
 
+/* ==========================================================================
+   WORD LIST — the short names used in the style files, in plain English
+
+   These are names the browser has to match, so they cannot be spelled out
+   every time. This is what each one means.
+
+     .aurora        the dark purple background, used at the very top and the
+                    very bottom of the page and nowhere else
+     .bg-b          the pale lavender background
+     .bg-c          the near-white background
+     .dots          the faint dot pattern on the two pale backgrounds
+     .plate         a soft patch of the background colour placed behind a
+                    block of text, so the dot pattern never sits under words
+     .flank-field   the same dot pattern, showing only down the two outer
+                    edges of a white card and cleared in the middle
+     .reveal        fade in and rise slightly, once, as you scroll to it
+     .reveal-soft   the same, but also sharpening from blurred to clear
+     .mg            the blur-into-focus arrival used inside the illustrated
+                    product windows ("motion graphics")
+     .dwell-ring    the countdown drawn around the current step
+     .swap / .btn   the one button style
+     .disclose      an answer opening to exactly the height of its own text
+     --ease-…       the four movement speeds everything on the site uses
+   ========================================================================== */
+
+
 /* =========================================================================
    IGNITHO iSUITE — FOUNDATION
 
@@ -26,7 +52,7 @@
      · TEAL is an accent only — primary buttons, links, checkmarks, "the fix".
        It never fills a section or a card.
      · Backgrounds alternate A → B → C → B → C …
-         A  dark violet→blue gradient   (hero + closing CTA bookends only)
+         A  dark violet→blue gradient   (hero + closing section bands at the very top and very bottom only)
          B  lavender tint + dot grid
          C  near-white + dot grid
    ========================================================================= */
@@ -58,7 +84,7 @@
   --muted: #54595f;
   --divider: #b9bbc2;
 
-  /* hairlines — violet-tinted on light, white on dark */
+  /* thin lines — violet-tinted on light, white on dark */
   --rule: rgba(122, 0, 194, 0.2);
   --rule-soft: rgba(122, 0, 194, 0.08);
   --rule-inv: rgba(255, 255, 255, 0.2);
@@ -171,7 +197,7 @@ body {
    is handed to the browser, which reads it as the back gesture. Scrolling a
    row of filters should never be able to leave the page.
 
-   Both selectors outrank the `*` rules above on specificity alone, so
+   Both selectors outrank the `*` rules above on which style rule wins alone, so
    nothing here needs `!important`. */
 .no-bar {
   scrollbar-width: none;

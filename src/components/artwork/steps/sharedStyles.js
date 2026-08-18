@@ -5,7 +5,7 @@
      Inside the product windows beside "Four steps, days not months".
 
    WHAT IS IN HERE
-     · The white window: its rounded corners, hairline and three-layer
+     · The white window: its rounded corners, thin line and three-layer
        shadow, written once so all four panels match.
      · The three type sizes used inside the windows — a label, a value,
        and a micro-caption.

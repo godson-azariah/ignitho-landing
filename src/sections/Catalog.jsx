@@ -22,7 +22,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, Search, X } from 'lucide-react';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { SuiteCard } from '../components/ui/SuiteCard.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { ViewToggle } from '../components/ui/ViewToggle.jsx';
@@ -30,7 +30,7 @@ import { SUITES } from '../data/suites.js';
 import { TABS } from '../data/navigation.js';
 import { ROW_FILL, SHELL } from '../lib/layout.js';
 import { scrollEase } from '../lib/scrollEase.js';
-import { PEEK_H, useSuitePeek } from '../hooks/useSuitePeek.js';
+import { PEEK_H, useSuitePreview } from '../hooks/useSuitePreview.js';
 
 const matchesTab = (suite, tab) =>
   tab === 'ALL' ||
@@ -47,7 +47,7 @@ const matchesSearch = (suite, query) => {
   );
 };
 
-/* The search term now arrives from the shell, because the field that sets it
+/* The search term now arrives from the page container, because the field that sets it
    lives in the hero. The tab and the view stay here: nothing outside this
    section has any use for them. */
 export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
@@ -65,7 +65,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
   );
 
   const { listRef, previewRef, previewSuite, previewOn, hoverId, setPreviewOn } =
-    useSuitePeek(filteredSuites);
+    useSuitePreview(filteredSuites);
 
   useEffect(() => {
     const measure = () => {
@@ -92,7 +92,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
      Measured with `getBoundingClientRect` rather than `offsetLeft`: the
      button's offset parent is the inner group, which itself sits inside the
      scroller behind 20px of padding, so `offsetLeft` would be short by
-     however much that chain contributes. Viewport rectangles have no such
+     however much that chain contributes. Visible-screen rectangles have no such
      chain — the delta between the two is the exact distance to travel.
 
      The guard is what makes this desktop-safe: from `sm` the container is
@@ -163,7 +163,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
   return (
     <section id="suites-catalog" className="bg-b dots relative pb-24 pt-12 md:pb-32 md:pt-16">
       <div className={SHELL}>
-        <Reveal className="reveal-soft plate mx-auto max-w-4xl text-center">
+        <FadeIn className="reveal-soft plate mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center rounded-full bg-white px-6 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-purple shadow-[0_10px_30px_-18px_rgba(22,6,58,0.6)]">
             Enterprise Catalog
           </span>
@@ -181,7 +181,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
               six verticals
             </span>
           </h2>
-        </Reveal>
+        </FadeIn>
 
         {/* Segmented control — the indicator measures each tab and glides */}
         {/* ON A PHONE THIS IS A SCROLLING CHIP STRIP, NOT A SEGMENTED CONTROL.
@@ -200,9 +200,9 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
             naming the three things that make that pattern work, because
             leaving any of them out is what makes a scroll strip feel broken:
 
-              · IT BLEEDS TO THE SCREEN EDGE. `-mx-5 px-5` cancels the shell's
+              · IT BLEEDS TO THE SCREEN EDGE. `-mx-5 px-5` cancels the page container's
                 gutter and puts it back inside the scroll box, so the last
-                chip is cut off by the VIEWPORT rather than stopping short of
+                chip is cut off by the VISIBLE PART OF THE SCREEN rather than stopping short of
                 it. A strip that ends inside a margin looks finished, and a
                 strip that looks finished never gets scrolled.
               · NO SCROLLBAR. `.no-bar` — a 10px violet lane under a 42px row
@@ -212,11 +212,11 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
                 selection you cannot see.
 
             The chips also stop being segments and become chips: each one
-            carries its own white fill and hairline on the lavender ground,
+            carries its own white fill and thin line on the lavender ground,
             which is the same pill the hero uses for its starting points. The
             white card and the gliding indicator return at `sm`, where there
             is width for the real control. */}
-        <Reveal delay={80} className="mt-7">
+        <FadeIn delay={80} className="mt-7">
           <div
             ref={stripRef}
             /* `py-1.5` is for the focus ring, not for looks. Setting
@@ -261,7 +261,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
               })}
             </div>
           </div>
-        </Reveal>
+        </FadeIn>
 
         {/* The field itself is in the hero now, so what is left here is the
             evidence that a filter is on — and the way off it. Without this,
@@ -269,7 +269,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
             short, and the only way back to all nine is to scroll up hunting
             for a control you may not remember using.
 
-            Not wrapped in `Reveal`: it mounts mid-page in response to a
+            Not wrapped in `FadeIn`: it mounts mid-page in response to a
             press, and an element that starts hidden and waits to be observed
             is the wrong behaviour for something that must appear at once. */}
         {searchQuery && (
@@ -292,9 +292,9 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
 
         {/* One fixed home for the view switch, so it never jumps or
             disappears when you change views */}
-        <Reveal delay={160} className="mt-8 flex justify-end">
+        <FadeIn delay={160} className="mt-8 flex justify-end">
           <ViewToggle view={view} setView={setView} />
-        </Reveal>
+        </FadeIn>
       </div>
 
       {filteredSuites.length === 0 ? (
@@ -324,7 +324,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
              page, which is one click away, and at nine cards abreast they
              were the whole reason the old card ran past 700px tall. ---- */
         <div className={`${SHELL} mt-10`}>
-          {/* Held in from the shell's full 1360px. Three columns of nine
+          {/* Held in from the page container's full 1360px. Three columns of nine
               is the right count, so narrowing the track is what narrows
               the card — 360px rather than 440px, which lets the type come
               up a size without the heading needing a third line. */}
@@ -338,9 +338,9 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
               lifts at `sm`, where the second column takes over. */}
           <div className="mx-auto grid max-w-[400px] grid-cols-1 gap-x-5 gap-y-8 sm:max-w-[1120px] sm:grid-cols-2 lg:grid-cols-3">
             {filteredSuites.map((suite, i) => (
-              <Reveal key={suite.id} delay={Math.min(i * 45, 260)}>
+              <FadeIn key={suite.id} delay={Math.min(i * 45, 260)}>
                 <SuiteCard suite={suite} index={i} onOpen={openSuite} />
-              </Reveal>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -363,7 +363,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
               row inside it. */}
           <div ref={listRef} className="plate relative">
             {filteredSuites.map((suite, i) => (
-              <Reveal key={suite.id} delay={Math.min(i * 45, 260)}>
+              <FadeIn key={suite.id} delay={Math.min(i * 45, 260)}>
                 {/* `data-suite-id` is the handle syncPeek hit-tests for.
                     `row-on` is the lit state — a class rather than
                     :hover, so scrolling a row under the cursor lights it
@@ -399,7 +399,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
                           TRUNCATES.
 
                           A row leaves the name about 180px on a 375px screen
-                          once the index, the gap and the 44px arrow are
+                          once the home page, the gap and the 44px arrow are
                           taken out — room for roughly twenty characters,
                           where the names run to forty-six. So every row read
                           "Banking, Financial S…", which is not a list of
@@ -422,7 +422,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
                     </span>
                   </span>
                 </button>
-              </Reveal>
+              </FadeIn>
             ))}
 
             {previewSuite && (

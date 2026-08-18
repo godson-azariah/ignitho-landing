@@ -2,7 +2,7 @@
    PLAIN-ENGLISH GUIDE  ·  THE QUESTIONS AND ANSWERS
 
    WHERE YOU SEE THIS
-     The questions page, reached from FAQ in the nav bar.
+     The questions page, reached from FAQ in the menu bar.
 
    WHAT IS IN HERE
      · The questions, grouped by subject, each with its answer.

@@ -12,10 +12,10 @@
      It illustrates the same idea as the Test Agent button on a suite page, but nothing here runs.
    ========================================================================== */
 import { Activity, Check, Clock, Play, Terminal } from 'lucide-react';
-import { Bar, Tool } from './chrome.jsx';
-import { WIN, RULE, MICRO, LABEL, VALUE, TOP, BOT, at } from './tokens.js';
+import { Bar, Tool } from './WindowParts.jsx';
+import { WIN, RULE, MICRO, LABEL, VALUE, TOP, BOT, at } from './sharedStyles.js';
 
-export function TestPanel() {
+export function Step2Test() {
   const NODES = [
     { label: 'Input ingestion', ms: '0.10s', state: 'done' },
     { label: 'Agent execution', ms: '1.20s', state: 'run' },

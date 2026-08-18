@@ -1,13 +1,13 @@
 /* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE NAV BAR SHADOW
+   PLAIN-ENGLISH GUIDE  ·  THE MENU BAR SHADOW
 
    WHERE YOU SEE THIS
-     The top nav bar.
+     The top menu bar.
 
    WHAT IS IN HERE
      · One thing: whether the page has been scrolled at all. If it has,
        the bar lifts onto a soft shadow; at the very top it carries only
-       a hairline.
+       a thin line.
 
    WORTH KNOWING
      The bar used to hide itself when you scrolled down. It no longer
@@ -17,12 +17,12 @@
 
 import { useEffect, useState } from 'react';
 
-/* The masthead's one piece of scroll state: whether the page has moved under it
-   at all, which is what decides between a hairline and a soft shadow.
+/* The top bar's one piece of scroll state: whether the page has moved under it
+   at all, which is what decides between a thin line and a soft shadow.
 
    IT USED TO RETURN A SECOND FLAG, `hidden`, AND THE BAR RETRACTED ON THAT.
    Scrolling down past 80px hid it, scrolling up brought it back, with a 6px
-   deadband so trackpad jitter could not flicker it. The whole mechanism has
+   small amount of movement that is ignored so trackpad jitter could not flicker it. The whole mechanism has
    gone: a fixed bar that comes and goes makes the reader check whether the
    navigation is there before reaching for it, and the four destinations in it
    are the page's only way between sections. It stays put.
@@ -31,7 +31,7 @@ import { useEffect, useState } from 'react';
    decide about, this is now a single threshold read. The read is still gated to
    one per animation frame, because scroll fires far faster than anything can be
    painted in response to it, and `scrollTop` is a layout-flushing property. */
-export function useScrollChrome() {
+export function useTopBarShadow() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

@@ -1,12 +1,12 @@
 /* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE NAV BAR ALONG THE TOP
+   PLAIN-ENGLISH GUIDE  ·  THE MENU BAR ALONG THE TOP
 
    WHERE YOU SEE THIS
      Fixed to the top of every page. It does not slide away when you
      scroll.
 
    WHAT IS IN HERE
-     · The Ignitho AI wordmark on the left, which returns you to the
+     · The Ignitho AI Ignitho AI name on the left, which returns you to the
        home page.
      · In the middle: ROI Calculator, 9 Core Suites, How It Works. Each
        scrolls to that section, and whichever you are currently looking
@@ -24,13 +24,13 @@
 import { ArrowUpRight, MessageCircle, Menu } from 'lucide-react';
 import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
 import { SHELL } from '../../lib/layout.js';
-import { useScrollChrome } from '../../hooks/useScrollChrome.js';
+import { useTopBarShadow } from '../../hooks/useTopBarShadow.js';
 import { Button, PrimaryButton } from '../ui/Button.jsx';
 
 /* Owns its own scroll state — nothing else on the page needs to know whether
    the page has moved under the bar, so nothing else has to hold it. */
-export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact, activeNav }) {
-  const { scrolled } = useScrollChrome();
+export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, activeNav }) {
+  const { scrolled } = useTopBarShadow();
 
   return (
     /* ALWAYS THERE. The bar used to retract on a downward scroll and return on
@@ -40,8 +40,8 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
        The only thing that still answers the scroll is the shadow below, which
        is a change in the bar rather than a change to whether the bar exists. */
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* A plain white bar, balanced in three: wordmark left, destinations
-          optically centred, one action right. It carries a hairline at rest
+      {/* A plain white bar, balanced in three: Ignitho AI name left, destinations
+          optically centred, one action right. It carries a thin line at rest
           and lifts onto a soft shadow once the page has moved under it. */}
       <nav
         className={`relative border-b border-ig-ink/10 bg-white transition-shadow duration-500 ease-out ${
@@ -56,16 +56,16 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
             not be squeezed, so at 1024 it painted them straight over the
             buttons. `flex-1` fixed the overlap by centring them in the space
             that was FREE — and free space is not symmetrical here: the actions
-            on the right are roughly three times the width of the wordmark on
+            on the right are roughly three times the width of the Ignitho AI name on
             the left, so the group sat about 90px right of where the eye expects
             the middle of a page to be.
 
-            `1fr auto 1fr` gives the two flanks the same width by construction,
+            `1fr auto 1fr` gives the two sides the same width by construction,
             whatever is inside them. The middle track is the destinations at
             their natural size, and equal tracks either side put it on the page's
             centre line — the same line the section headings below it centre on.
 
-            Unlike absolute positioning this participates in layout: the flanks
+            Unlike absolute positioning this participates in layout: the sides
             are `minmax(auto, 1fr)`, so they hold their content and the row
             cannot silently overlap. At 1024 — the width this appears at — the
             three tracks come to about 930px inside a 960px shell.
@@ -83,7 +83,7 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
             is rendered. On desktop this is exactly where auto-placement was
             already putting all three, so nothing there moves by a pixel; on a
             phone the empty middle track now collapses to zero and the equal
-            flanks put the wordmark hard left and the menu button hard right,
+            sides put the Ignitho AI name hard left and the menu button hard right,
             which is what `justify-between` used to do. */}
         <div
           className={`${SHELL} grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[84px]`}
@@ -161,19 +161,19 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
               These are the three things you LEAVE for rather than scroll to,
               and they now read as one cluster: 10px between each, nothing
               between them but that. Before, the FAQ link was separated from the
-              pills by 16px, a hairline rule and another 16px — 33px of
+              pills by 16px, a thin line rule and another 16px — 33px of
               separation in the middle of a group of three, which made the
               cluster look like two groups that had drifted together.
 
               `justify-end` because this is a grid track wider than its contents
-              now — the flank is as wide as the opposite one, so without it the
+              now — the side is as wide as the opposite one, so without it the
               buttons would sit at the track's left edge instead of the page's
               right. */}
           <div className="col-start-3 flex items-center justify-end gap-2.5">
             {/* THE ONE ICON IN THE BAR, AND IT IS TEAL.
 
                 Colour with a job rather than colour for its own sake: the bar is
-                otherwise a wordmark, four labels and two pills, and this single
+                otherwise a Ignitho AI name, four labels and two pills, and this single
                 green mark is what stops the right-hand group reading as a wall
                 of type. Teal is the page's accent, so it is the colour already
                 licensed to appear once and mean "here".
@@ -210,10 +210,10 @@ export function Masthead({ menuOpen, onOpenMenu, goHome, navAction, openContact,
             })()}
 
             {/* below lg both actions live in the menu sheet, so the bar keeps
-                to a wordmark and one control */}
+                to a Ignitho AI name and one control */}
             {/* TIGHTER THAN THE PAGE'S OTHER PRIMARY BUTTONS, on purpose. A
                 button in a 72px bar is not the same object as one at the end of
-                a section: it shares its row with a wordmark, three destinations
+                a section: it shares its row with a Ignitho AI name, three destinations
                 and a second action, and 24px of padding either side of a
                 13.5px label was reading as a wide pill in a crowded row rather
                 than as a compact control. 20/12 and 13px sit it beside "Sign

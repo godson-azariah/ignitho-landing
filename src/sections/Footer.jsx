@@ -5,19 +5,19 @@
      The bottom of every page.
 
    WHAT IS IN HERE
-     · The Ignitho AI wordmark and the line under it.
-     · The Menu column, which repeats the nav bar destinations.
+     · The Ignitho AI Ignitho AI name and the line under it.
+     · The Menu column, which repeats the menu bar destinations.
      · The Suites column, which links to the nine suite pages.
      · The certifications, the copyright line, and the closing rule.
 
    WORTH KNOWING
-     The links come from the same list the nav bar uses, so the two
+     The links come from the same list the menu bar uses, so the two
      cannot drift apart.
    ========================================================================== */
 
 import { useMemo } from 'react';
 import { Check } from 'lucide-react';
-import { Reveal } from '../components/ui/Reveal.jsx';
+import { FadeIn } from '../components/ui/FadeIn.jsx';
 import { CERTS, NAV_LINKS } from '../data/navigation.js';
 import { SUITES } from '../data/suites.js';
 import { SHELL } from '../lib/layout.js';
@@ -25,7 +25,7 @@ import { SHELL } from '../lib/layout.js';
 /* Reference matter: the whole catalogue, the destinations and the
    certifications. No texture — it should sit quietly under the closing
    statement rather than compete with it. */
-export function Colophon({ openSuite, navAction, goHome }) {
+export function Footer({ openSuite, navAction, goHome }) {
   /* Nine links over data that never changes — built once for the life of the
      page rather than on every render of the section. */
   const footerDirectory = useMemo(
@@ -61,7 +61,7 @@ export function Colophon({ openSuite, navAction, goHome }) {
             16px instead: a 176px floor, which clears 280px with room. The
             tracks come out at 8.7px and the two halves at 132px each, so the
             pair still splits the row exactly. Back to 32px at `sm`. */}
-        <Reveal className="grid grid-cols-12 gap-x-4 gap-y-7 sm:gap-x-8">
+        <FadeIn className="grid grid-cols-12 gap-x-4 gap-y-7 sm:gap-x-8">
           {/* Three sub-columns, not two. Nine suites over two columns ran five
               rows deep and set the height of the whole band on its own; over
               three it is three rows, and the widened span keeps the longest
@@ -109,9 +109,9 @@ export function Colophon({ openSuite, navAction, goHome }) {
               ))}
             </div>
           </div>
-        </Reveal>
+        </FadeIn>
 
-        {/* the wordmark at its real size, alongside the notice */}
+        {/* the Ignitho AI name at its real size, alongside the notice */}
         <div className="mt-7 flex flex-col items-center justify-between gap-3 border-t border-ig-ink/12 pt-5 sm:flex-row">
           <button onClick={goHome} className="flex items-baseline gap-1.5" aria-label="Ignitho AI">
             <span className="text-[19px] font-black tracking-[-0.03em] text-ig-ink">Ignitho</span>

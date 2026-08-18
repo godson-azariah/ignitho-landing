@@ -23,7 +23,7 @@ import { useEffect, useRef, useState } from 'react';
    the mid one inside a billowing frame — a travelling sheen, and the rule
    grid on top. Purely ambient: no pointer handlers, no per-frame JavaScript,
    every moving layer animates transform only. */
-export function HeroStage() {
+export function HeroGlow() {
   const surfaceRef = useRef(null);
   const [live, setLive] = useState(true);
 
