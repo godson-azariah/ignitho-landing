@@ -20,6 +20,7 @@ Start wherever you need to:
     npm run dev      opens the site on your machine, updates as you save
     npm run build    makes the version that gets published, into dist/
     npm run lint     checks the code for mistakes
+    npm run check    draws every page and popup once, and fails if any throws
 
 You need Node. That's it — no database, no server, no accounts.
 

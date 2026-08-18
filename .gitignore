@@ -35,3 +35,6 @@ dist-ssr
 # Working notes and archived design copies. They exist for us to look at while
 # building; they are not part of the site and nothing imports them.
 reference/
+
+# output of npm run check
+.check/

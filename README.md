@@ -7,6 +7,7 @@ suite, and a questions page.
     npm run dev      run it locally
     npm run build    produce the publishable version in dist/
     npm run lint     check the code
+    npm run check    draw every page and popup once, to catch a broken one
 
 Built with React and Vite. No database, no server, no accounts — the site is a
 set of files a browser reads.
