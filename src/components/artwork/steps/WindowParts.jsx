@@ -1,10 +1,11 @@
+import { RULE, LABEL, at } from './sharedStyles.js';
+
 /* The pieces every step picture is drawn from: the title bar with its three
    dots, the toolbar strip, the small square buttons, the status bar.
 
    None of it is a real control. It is a drawing of an interface, shared so
    that the four pictures cannot drift apart. */
 
-import {  } from './sharedStyles.js';
 
 /* Window chrome. Three dots in neutral ink rather than red/amber/green —
    traffic lights would import a palette this page does not own, and the shape
