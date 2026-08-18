@@ -1,3 +1,27 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # ── working files, not part of the site ────────────────────────────────────
 # Scratch output from the verification harness used during refactors: it
@@ -6,3 +30,8 @@
 .snapbuild/
 .smoke/
 *.snapshot.html
+
+# ── local-only, never pushed ───────────────────────────────────────────────
+# Working notes and archived design copies. They exist for us to look at while
+# building; they are not part of the site and nothing imports them.
+reference/
