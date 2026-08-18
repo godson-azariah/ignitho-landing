@@ -1,26 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE TOP OF THE HOME PAGE — the big dark purple opening
+/* The dark band at the very top: the small line above the rule, the big
+   headline, one sentence, the white search box and six suggestion buttons.
 
-   WHERE YOU SEE THIS
-     The very first thing you see: the dark violet band at the top of
-     the home page.
-
-   WHAT IS IN HERE
-     · The small line "Transforming Ignitho into an AI-First Enterprise
-       Partner" and "Enterprise AI Platform" on either end, above a thin
-       rule.
-     · The huge headline "Enterprise AI built to run not to prompt".
-     · The sentence under it about moving away from prompt chats.
-     · The white search box, and the six suggestion buttons under it —
-       Governance, Compliance, Supply chain, Healthcare, Automation,
-       Logistics.
-     · Typing and pressing enter jumps you down to the nine suites and
-       filters them.
-
-   WORTH KNOWING
-     The moving purple glow behind all of this is a separate file,
-     components/stage/HeroGlow.jsx.
-   ========================================================================== */
+   Search here and the page scrolls down to the nine suites with the results
+   already filtered. The purple glow behind all this is HeroGlow.jsx. */
 
 import { useEffect, useState } from 'react';
 import { ArrowRight, Search, X } from 'lucide-react';
@@ -32,13 +14,13 @@ import { SHELL } from '../lib/layout.js';
 /* `onSearch(query)` is the hero's only outward action: it puts the query on
    the catalogue and scrolls there.
 
-   THE FIELD KEEPS ITS OWN VALUE WHILE YOU TYPE, and only hands it up when you
+   THE field keeps its own value while you type, and only hands it up when you
    submit. Lifting the value to the page container instead would have meant every
    keystroke re-rendering the pillars, the calculator and nine suite cards —
    the exact whole-page churn the page container was restructured to stop. Typing is
    local; committing is shared.
 
-   `committed` IS THE OTHER HALF OF THAT, and without it the two ends of the
+   `committed` IS THE other half of that, and without it the two ends of the
    search disagreed. The catalogue's chip clears the shared query, so the cards
    all came back — but this field still held the text, so scrolling back up
    showed a search that was no longer in effect, and clearing it again was the
@@ -47,7 +29,7 @@ import { SHELL } from '../lib/layout.js';
 export function Hero({ onSearch, committed = '' }) {
   const [query, setQuery] = useState('');
 
-  /* THE ONE DIRECTION THAT HAS TO BE SYNCED, and only when the committed value
+  /* THE one direction that has to be synced, and only when the committed value
      actually changes. It does not run per keystroke — `committed` only moves
      when something is submitted or cleared — so the local-typing property above
      is untouched. Typing still diverges from the committed search on purpose;
@@ -73,7 +55,7 @@ export function Hero({ onSearch, committed = '' }) {
   return (
     <section
       id="overview"
-      /* AS TALL AS ITS CONTENTS, NOT AS TALL AS THE VISIBLE PART OF THE SCREEN.
+      /* As tall as its contents, NOT as tall as THE visible part of THE screen.
 
          The full-visible part of the screen lock is gone, and with it every problem that came
          out of it. A hero pinned to 100svh while holding ~570px of content
@@ -110,7 +92,7 @@ export function Hero({ onSearch, committed = '' }) {
               centring put half the leftover height ABOVE it and opened a
               160px hole under the top bar. Separated out, it stays put and
               only the display block centres. */}
-          {/* A COLUMN ON A PHONE, THE SAME SPLIT ROW FROM `sm` UP.
+          {/* A COLUMN ON A Phone, THE same split row from `sm` UP.
 
               `justify-between` needs two ends to push apart. On a 375px
               screen the left-hand label alone is wider than the row, so the
@@ -124,7 +106,7 @@ export function Hero({ onSearch, committed = '' }) {
               drops a point: at 11px mono with 0.06em tracking the long
               label measures about 400px, so it takes three lines on a phone
               and two at 10px. */}
-          {/* THE FIRST THING TO RESOLVE, and it used to be the one block here
+          {/* THE first thing to resolve, and it used to be the one block here
               that did not animate at all — it was simply present. In a hero
               where everything below it arrives, that read as the page having
               started without it. It leads the sequence now. */}
@@ -154,7 +136,7 @@ export function Hero({ onSearch, committed = '' }) {
               left is a block that starts under the eyebrow and ends at the
               chips, with one padding value above it. */}
           <div className="pt-8 md:pt-12">
-          {/* THE INTRO IS ONE SEQUENCE OF FOUR: eyebrow, headline, the line
+          {/* THE intro IS one sequence of four: eyebrow, headline, the line
               under it, then the field. 170ms between each, widened from 90 to
               go with the slower curve — a stagger has to be read against the
               length of the thing it is staggering, and at 90ms against a 1.05s
@@ -187,7 +169,7 @@ export function Hero({ onSearch, committed = '' }) {
 
                 No comma before "not": the line break does that work, and the
                 house rule is no trailing punctuation. */}
-            {/* TWO LINES, AND THE MEASURE HAS TO WIDEN TO HOLD THEM.
+            {/* Two lines, AND THE measure has to widen to hold them.
 
                 Merging "Enterprise AI" and "built to run" makes a 26-
                 character line where the longest was 13. That doubles the
@@ -205,8 +187,8 @@ export function Hero({ onSearch, committed = '' }) {
 
                 The break falls where the phrase already pauses, so the
                 contrast still lands on a line of its own. */}
-            {/* THREE LINES ON A PHONE, TWO FROM `md` UP — AND THE FLOOR OF THE
-                CLAMP IS RAISED, NOT LOWERED, TO PAY FOR IT.
+            {/* Three lines on A Phone, two from `md` UP — AND THE floor of THE
+                clamp IS raised, NOT lowered, to pay for IT.
 
                 Left to itself the two-line setting wraps on any phone: line
                 one is 26 characters, which needs about 420px at the old 34px
@@ -281,7 +263,7 @@ export function Hero({ onSearch, committed = '' }) {
               centred layout is done with distance and nothing else — no
               columns, no rules — so this is what separates what we say from
               what you do. Everything else stays tight. */}
-          {/* THE FIELD GROUP IS THE ONE BLOCK HERE THAT DOES NOT GET THE BLUR,
+          {/* THE field group IS THE one block here that does NOT get THE blur,
               and it is the exception that keeps the rest cheap. Inside it are a
               white pill with a 70px-spread shadow, an input, three buttons and
               six chips carrying `backdrop-blur-sm` — a filter on the wrapper

@@ -1,17 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE PARTS EVERY ILLUSTRATED WINDOW IS BUILT FROM
+/* The pieces every step picture is drawn from: the title bar with its three
+   dots, the toolbar strip, the small square buttons, the status bar.
 
-   WHERE YOU SEE THIS
-     Inside the product windows beside "Four steps, days not months".
-
-   WHAT IS IN HERE
-     · The white window itself: its rounded corners, thin line and three-layer shadow.
-     · The title bar with its three grey dots, the toolbar strip, the small square buttons, and the status bar along the bottom.
-     · The type sizes used for labels, values and micro-captions, so all four panels speak with one voice.
-
-   WORTH KNOWING
-     Nothing here is a real control. It is a drawing of an interface, and every part of it is shared so the four panels cannot drift apart.
-   ========================================================================== */
+   None of it is a real control. It is a drawing of an interface, shared so
+   that the four pictures cannot drift apart. */
 
 import {  } from './sharedStyles.js';
 

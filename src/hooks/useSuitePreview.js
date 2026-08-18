@@ -1,21 +1,11 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE PREVIEW CARD THAT FOLLOWS YOUR POINTER IN LIST VIEW
+/* The preview card that trails your pointer down the suite list, and the lit
+   row underneath it.
 
-   WHERE YOU SEE THIS
-     The nine-suites section, when switched from grid to list.
-
-   WHAT IS IN HERE
-     · The small preview card that trails your pointer, and the lit row
-       underneath it.
-     · It keeps clear of the number on the left and the text on the
-       right so both stay readable, and it flips to the other side near
-       the screen edge.
-
-   WORTH KNOWING
-     It follows the pointer real position rather than plain hover,
-     because hover does not update while the page scrolls under a still
-     mouse. On touch screens it does not appear at all.
-   ========================================================================== */
+   It follows the pointer's real position rather than plain hover, because the
+   browser does not re-check hover while the page scrolls under a still mouse,
+   and the card would stick to whichever row you were over before. It keeps
+   clear of the number on the left and the text on the right, and flips sides
+   near the edge of the screen. On touch screens it never appears. */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 

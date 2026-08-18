@@ -1,20 +1,10 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  SWITCHES OFF THE ANIMATIONS FOR PEOPLE WHO ASK FOR THAT
+/* Switches the animations off for anyone whose device asks for that.
 
-   WHERE YOU SEE THIS
-     Nowhere visible — unless a visitor has asked their device for less
-     motion.
-
-   WHAT IS IN HERE
-     · It cancels the fades, the blurs, the drifting background and the
-       self-advancing walkthrough, and makes sure everything still ends
-       up in the right place and fully visible.
-
-   WORTH KNOWING
-     This file MUST load last, because its only job is to overrule the
-     ones before it. Some people get motion sickness from moving
-     interfaces; this is how the site respects that setting.
-   ========================================================================== */
+   This file has to load last, because overruling the others is its whole job.
+   Entrances are cancelled outright rather than shortened: a shortened one still
+   fires the blur and the movement, which is exactly what the setting is asking
+   us not to do. Cancelling one also strands the element mid-animation, so the
+   resting state has to be put back by hand. */
 
 @media (prefers-reduced-motion: reduce) {
   /* `scroll-behavior` is no longer set on the root, so there is nothing to

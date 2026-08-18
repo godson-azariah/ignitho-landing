@@ -1,26 +1,16 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE MENU BAR SHADOW
+/* Answers one question: has the page been scrolled at all? If it has, the top
+   bar sits on a soft shadow; at the very top it carries a thin line instead.
 
-   WHERE YOU SEE THIS
-     The top menu bar.
-
-   WHAT IS IN HERE
-     · One thing: whether the page has been scrolled at all. If it has,
-       the bar lifts onto a soft shadow; at the very top it carries only
-       a thin line.
-
-   WORTH KNOWING
-     The bar used to hide itself when you scrolled down. It no longer
-     does — navigation that comes and goes makes you check whether it is
-     there.
-   ========================================================================== */
+   It used to answer a second question — whether to hide the bar — and that
+   went with the hiding. Navigation that comes and goes makes you check whether
+   it is there. */
 
 import { useEffect, useState } from 'react';
 
 /* The top bar's one piece of scroll state: whether the page has moved under it
    at all, which is what decides between a thin line and a soft shadow.
 
-   IT USED TO RETURN A SECOND FLAG, `hidden`, AND THE BAR RETRACTED ON THAT.
+   IT used to return A SECOND FLAG, `hidden`, AND THE bar retracted on that.
    Scrolling down past 80px hid it, scrolling up brought it back, with a 6px
    small amount of movement that is ignored so trackpad jitter could not flicker it. The whole mechanism has
    gone: a fixed bar that comes and goes makes the reader check whether the

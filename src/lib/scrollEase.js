@@ -1,16 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  DECIDES WHETHER SCROLLING GLIDES OR JUMPS
+/* Glide or jump? Anyone whose device is set to reduce motion gets an instant
+   jump.
 
-   WHERE YOU SEE THIS
-     Every menu item and suggestion chip that scrolls you to a section.
-
-   WHAT IS IN HERE
-     · One question: has the visitor asked their device for less motion?
-       If so the page jumps instantly instead of gliding.
-
-   WORTH KNOWING
-     That preference is set in the operating system, not on this site.
-   ========================================================================== */
+   It has to be asked here in the code rather than handled in a style file: a
+   scripted scroll ignores CSS entirely. */
 
 /* A scripted `behavior: 'smooth'` ignores CSS, so the reduced-motion
    preference cannot be handled in the stylesheet — it has to be read here.

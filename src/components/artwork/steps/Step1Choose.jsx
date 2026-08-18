@@ -1,16 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  STEP 1 OF THE WALKTHROUGH — the catalogue, drawn as a screen
+/* Step 1: the catalogue drawn as a table, with a search box, the filter tabs
+   and three rows.
 
-   WHERE YOU SEE THIS
-     The right-hand illustration while "Choose the suite" is the active step.
+   The rows are read from the real suite list, so this picture cannot show a
+   suite the site does not have. */
 
-   WHAT IS IN HERE
-     · A window showing the suite catalogue as a table: a search box, the filter tabs, column headings and three rows of real suite names.
-     · A second, smaller window showing one suite selected.
-
-   WORTH KNOWING
-     The rows are read from the real suite list, so this drawing cannot show a suite the site does not have.
-   ========================================================================== */
 import { Check, ChevronRight, LayoutGrid, List, ListFilter, Search } from 'lucide-react';
 import { Bar, Tool, Btn, Foot } from './WindowParts.jsx';
 import { WIN, RULE, MICRO, LABEL, VALUE, PICKED, TOP, BOT, at, FOUNDATIONS, FOUNDATION_TAB, CHOSEN } from './sharedStyles.js';
@@ -146,6 +139,6 @@ export function Step1Choose() {
   );
 }
 
-/* 02 — THE SIMULATOR: a run toolbar, three DAG nodes WITH THE EDGES DRAWN
+/* 02 — THE SIMULATOR: a run toolbar, three DAG nodes With THE edges drawn
    between them, per-node durations, a progress track with a percentage, and the
    console as a second window with line numbers and a status footer. */

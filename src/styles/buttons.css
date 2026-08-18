@@ -1,34 +1,22 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE BUTTON, THE CARD HOVER, AND THE LIST-ROW FILL
+/* The button, the 3px lift on the four violet cards, and the colour that wipes
+   across a suite row from whichever side your pointer came in.
 
-   WHERE YOU SEE THIS
-     Every button, the four outcome cards, and the suite list rows.
-
-   WHAT IS IN HERE
-     · The rounded pill in its four colours, and the tone change on
-       hover.
-     · The 3px lift on the outcome cards when your mouse is over them.
-     · The colour that wipes across a suite list row, growing from the
-       side your pointer came in from.
-     · The preview card entrance in list view.
-
-   WORTH KNOWING
-     Every hover effect here is switched off on touch screens, because a
-     tap leaves an element looking hovered until you tap something else.
-   ========================================================================== */
+   Everything here is inside a check for a real pointer. A tap leaves a phone
+   showing the hover state until something else is tapped, which looks like a
+   fault. */
 
 /* =========================================================================
    4b. THE BUTTON
    One solid pill, one colour, one quiet tone change on hover.
 
-   WHAT WAS HERE BEFORE: three bands riding a tilted track, translating up by
+   What was here before: three bands riding a tilted track, translating up by
    exactly one button height so the resting face left as an arriving face in a
    different brand colour took its place, with a ripple blooming from the
    centre, the pill scaling to 1.045, and both labels counter-rotating so they
    read level at either end and tilted in transit. Every button on the site did
    it. It has all gone.
 
-   IT WAS THE MOVEMENT THAT WAS WRONG, NOT THE CRAFT. A button that changes
+   IT was THE movement that was wrong, NOT THE craft. A button that changes
    colour BY MOVING makes the reader's eye track a thing that is going
    somewhere, and a button is not going anywhere — it is waiting to be pressed.
    Apple's buttons do not travel on hover: the surface stays exactly where it
@@ -41,7 +29,7 @@
    untouched by this.
    ========================================================================= */
 
-/* THE COLOUR PAIRS. Each variant sets two custom properties, and the rules
+/* THE colour pairs. Each variant sets two custom properties, and the rules
    below are written once against those rather than four times against literal
    colours.
 
@@ -102,8 +90,8 @@
     opacity 0.12s ease;
 }
 
-/* GUARDED ON `hover: hover`, WHICH IS THE FIX FOR A BUG THIS FILE USED TO
-   CARRY 30 LINES OF OVERRIDES FOR.
+/* GUARDED ON `hover: hover`, Which IS THE fix for A Bug this file used to
+   CARRY 30 Lines of overrides for.
 
    A tap makes a button match `:hover` on a touchscreen, and with no pointer to
    move away it goes on matching until something else is tapped. The old block
@@ -132,7 +120,7 @@
   cursor: not-allowed;
 }
 
-/* THE QUIET CARD HOVER — 3px and a shadow, and nothing else.
+/* THE quiet card hover — 3px and a shadow, and nothing else.
 
    Written here rather than as `hover:` utilities for one reason: a tap makes a
    touchscreen element match `:hover` until something else is tapped, and these
@@ -225,7 +213,7 @@
   transform: scaleY(1);
 }
 
-/* THE LIT ROW.
+/* THE lit row.
 
    Keyed off `.row-on`, which JavaScript sets from the pointer's position —
    NOT off `:hover`. The browser does not re-evaluate :hover while the page

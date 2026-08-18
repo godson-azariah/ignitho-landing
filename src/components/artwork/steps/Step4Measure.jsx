@@ -1,16 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  STEP 4 OF THE WALKTHROUGH — the measured return, drawn as a screen
+/* Step 4: the return. Figures, a comparison bar, and the headline saving.
 
-   WHERE YOU SEE THIS
-     The right-hand illustration while "Measure the return" is the active step.
+   The numbers come from the same assumptions the savings calculator uses, so
+   the two cannot end up quoting different figures. */
 
-   WHAT IS IN HERE
-     · A window showing the outcome as figures and a comparison bar.
-     · A second window with the headline saving.
-
-   WORTH KNOWING
-     The numbers are taken from the same assumptions the savings calculator higher up the page uses.
-   ========================================================================== */
 import { Check, Minus, MoveHorizontal, Plus, TrendingUp } from 'lucide-react';
 import { Bar, Tool, Btn, Foot } from './WindowParts.jsx';
 import { WIN, MICRO, LABEL, TOP, BOT, at, UP } from './sharedStyles.js';

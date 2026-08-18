@@ -1,20 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE TEST AGENT POPUP
+/* The window that opens from a Test Agent button. A dark console that plays
+   through the stages of a run and ticks each one off.
 
-   WHERE YOU SEE THIS
-     Opens over a suite page when you press "Test Agent" on any
-     accelerator row.
-
-   WHAT IS IN HERE
-     · A dark console-style window that plays through the stages of a
-       run, ticking each one off, then shows the finished result.
-     · A Close Tester button. The Escape key also closes it.
-
-   WORTH KNOWING
-     It is a demonstration on a timer, not a real agent — nothing is
-     sent anywhere. Opening the same one twice always starts from the
-     first step.
-   ========================================================================== */
+   It is a demonstration on a timer. Nothing is really run and nothing leaves
+   the browser. Opening the same one twice always starts from the first step. */
 
 import { Fragment, useEffect, useState } from 'react';
 import { Activity, Check, Cpu, Terminal, X } from 'lucide-react';

@@ -1,20 +1,7 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE QUESTIONS PAGE — "Questions people ask first"
+/* The questions page. Opening one answer closes whichever was open before,
+   which is the only reason the page stays scannable.
 
-   WHERE YOU SEE THIS
-     Its own page, reached from the FAQ link in the menu bar. The address
-     becomes /faq.
-
-   WHAT IS IN HERE
-     · The dark heading band at the top.
-     · The questions, in groups. Clicking one opens its answer and
-       closes whichever was open before, so the page stays scannable.
-     · At the bottom, "Something here not covered?" with a Contact Sales
-       button.
-
-   WORTH KNOWING
-     The questions and answers themselves live in data/faq.js.
-   ========================================================================== */
+   Questions and answers are in data/faq.js. */
 
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
@@ -30,7 +17,7 @@ import { noOrphan } from '../lib/noOrphan.js';
    uses, so arriving here from the top bar feels like the same site: the dark
    aurora top bar with a way back, then a light band with the content.
 
-   ONE OPEN AT A TIME, tracked by a single id rather than a set. An open-and-close list
+   One open at A TIME, tracked by a single id rather than a set. An open-and-close list
    that lets everything open at once is a list of paragraphs with extra clicks in
    front of it; the point of the control is that the page stays scannable, and it
    only does that if opening the ninth question closes whichever was open before.
@@ -46,7 +33,7 @@ export function Faq({ openContact }) {
     <main>
       {/* top bar · BACKGROUND A (DARK PURPLE)
 
-          NO BACK BUTTON, AND NOTHING REPLACES IT. This page has its own URL now,
+          No back button, AND nothing replaces IT. This page has its own URL now,
           so the browser's back is the way out — and a second one drawn on the
           page is both redundant and worse, because it always goes to the home page
           where back goes wherever you actually came from.
@@ -80,7 +67,7 @@ export function Faq({ openContact }) {
       </section>
 
       {/* content · BACKGROUND B (PALE LAVENDER) */}
-      {/* THE TOP AND BOTTOM PADDINGS ARE NO LONGER THE SAME NUMBER, because
+      {/* THE top AND bottom paddings are no longer THE same number, because
           what sits above and below this band is not the same kind of thing.
 
           Above is the dark purple background top bar, and a band opening under one needs its
@@ -171,7 +158,7 @@ export function Faq({ openContact }) {
             ))}
 
             {/* The one thing an FAQ owes a reader it could not answer */}
-            {/* NO CARD AT ALL NOW — the dashed outline has gone, and with it the
+            {/* No card at all now — the dashed outline has gone, and with it the
                 radius and the padding that only existed to sit inside it.
 
                 A dashed border is a placeholder convention: it says "something

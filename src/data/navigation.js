@@ -1,25 +1,13 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  MENU LABELS, THE SIGN-IN LINK, AND THE CONTACT FORM OPTION LISTS
+/* Menu labels, the sign-in address, the filter buttons, the search suggestions
+   under the hero field, the industry list for the contact form, and the
+   certifications.
 
-   WHERE YOU SEE THIS
-     The menu bar, the phone menu, the footer, the suite filter buttons,
-     the hero suggestion chips, and the Contact Sales form.
+   The top bar, the phone menu and the footer all read the same list of
+   destinations, so a menu item is added once.
 
-   WHAT IS IN HERE
-     · The four destinations: ROI Calculator, 9 Core Suites, How It
-       Works, FAQ.
-     · The Sign in web address.
-     · The three filter button labels, and the six search suggestions
-       under the hero field.
-     · The industry list for the contact form, and the certifications.
-     · WHERE THE CONTACT FORM SENDS — currently nowhere, deliberately.
-       Put a real address in and the form starts working with no other
-       change.
-
-   WORTH KNOWING
-     Three different parts of the site read the same destination list
-     from here, so a menu item is added once and appears everywhere.
-   ========================================================================== */
+   CONTACT_ENDPOINT is where the contact form posts, and it is deliberately
+   empty. A form that thanks you and drops the message is worse than one that
+   admits it cannot send. */
 
 /* Everything that names a destination or a filter. Kept apart from the suite
    catalogue because it changes for different reasons and at a different pace. */
@@ -30,7 +18,7 @@ import { BadgeCheck, Boxes, HeartPulse, ShieldCheck, Truck, Workflow } from 'luc
    sensibly be in: the calculator, the catalogue, then the walkthrough that sits
    between the catalogue and the closing band at the very top or very bottom.
 
-   "OVERVIEW" HAS GONE, AND IT WAS DOING NOTHING. It mapped to `goHome`, which
+   "OVERVIEW" Has gone, AND IT was doing nothing. It mapped to `goHome`, which
    sets the open suite to null — so from a suite page it worked, and from the
    index, where the value was already null, React saw no state change, re-rendered
    nothing, and the effect that scrolls to the top never ran. A destination that
@@ -55,7 +43,7 @@ export const NAV_LINKS = ['ROI Calculator', '9 Core Suites', 'How It Works', FAQ
    link to it, so the top bar and the menu sheet cannot drift apart. */
 export const SIGN_IN_URL = 'https://ignitho-login.vercel.app/';
 
-/* THE CONTACT FORM'S INDUSTRY OPTIONS — the supplied list, verbatim and in its
+/* THE contact form's industry options — the supplied list, verbatim and in its
    own order.
 
    Which means alphabetical with "Other" sitting between "Oil & Gas" and
@@ -106,7 +94,7 @@ export const CONTACT_INDUSTRIES = [
    would have buried the rest of this file. */
 export { COUNTRIES as CONTACT_COUNTRIES } from './countries.js';
 
-/* WHERE THE FORM POSTS — AND IT POSTS NOWHERE YET.
+/* Where THE form posts — AND IT posts nowhere yet.
 
    Deliberately `null` rather than a placeholder URL. With no endpoint the dialog
    validates, then says plainly that it cannot send and offers the address

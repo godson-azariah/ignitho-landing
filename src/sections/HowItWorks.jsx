@@ -1,26 +1,12 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE WALKTHROUGH — "Four steps, days not months"
+/* "Four steps, days not months" — the steps on the left, the matching picture
+   on the right, moving on by itself every 5.6 seconds.
 
-   WHERE YOU SEE THIS
-     The fifth section of the home page, on the near-white band.
+   Three separate things can stop the timer: pressing pause, hovering the step
+   that is currently showing, or tabbing into the list. They are tracked apart
+   rather than as one flag, otherwise a mouse wandering out of the section
+   would cancel a pause you actually meant.
 
-   WHAT IS IN HERE
-     · The four steps down the left: Choose the suite, Test the agent,
-       Deploy in days, Measure the return.
-     · The current step is a lavender card; the other three are a pale
-       green wash.
-     · A green circle beside each step. The current one has a dark ring
-       winding around it like a countdown — 5.6 seconds, then it moves
-       on by itself.
-     · You can click any step to jump to it, and hovering the CURRENT
-       step pauses the countdown so you can read it.
-     · The illustrated product windows on the right, which change with
-       the step.
-
-   WORTH KNOWING
-     The step wording lives in data/howItWorks.js. The windows are
-     components/StepWindows.jsx.
-   ========================================================================== */
+   Wording is in data/howItWorks.js. The pictures are StepWindows.jsx. */
 
 import { useEffect, useRef, useState } from 'react';
 import { CornerMark } from '../components/ui/CornerMark.jsx';
@@ -43,7 +29,7 @@ export function HowItWorks() {
      current step restarts its countdown rather than doing nothing. */
   const [turn, setTurn] = useState(0);
   const [live, setLive] = useState(false);
-  /* THREE SEPARATE REASONS THE CLOCK MIGHT BE STOPPED, kept apart because they
+  /* Three separate reasons THE clock might be stopped, kept apart because they
      behave differently. `paused` is a decision and persists until reversed;
      `hovering` and `focusWithin` are conditions and end by themselves. Rolling
      them into one boolean would mean a mouse leaving the section could cancel a
@@ -68,8 +54,8 @@ export function HowItWorks() {
   const held = paused || hoverIndex === activeIndex || focusWithin;
   const active = HOW_IT_WORKS[activeIndex];
 
-  /* THE RING RUNS EXACTLY WHEN THE TIMER RUNS, AND THAT IS THE WHOLE POINT OF
-     DERIVING IT ONCE.
+  /* THE ring runs exactly when THE timer runs, AND that IS THE whole point of
+     deriving IT once.
 
      The ring used to be held on `held` alone, which left out `live` — and `live`
      is false until the section is scrolled to. But the section is in the page structure from
@@ -94,7 +80,7 @@ export function HowItWorks() {
     setCalm(Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches));
   }, []);
 
-  /* THE CAROUSEL ONLY RUNS WHILE IT IS ON SCREEN.
+  /* THE carousel ONLY runs while IT IS on screen.
 
      Two reasons, and the second is the important one. A timer firing every
      5.6s for the life of the page is waste, but worse than that: without this,
@@ -108,7 +94,7 @@ export function HowItWorks() {
       setLive(true);
       return undefined;
     }
-    /* THE HOLDS ARE CLEARED ON THE WAY OUT, and this is the backstop for the
+    /* THE holds are cleared on THE way out, and this is the backstop for the
        other way a hold gets stranded.
 
        `pointerleave` fires when the pointer moves off an element. It does NOT
@@ -132,7 +118,7 @@ export function HowItWorks() {
     return () => io.disconnect();
   }, []);
 
-  /* AUTO-ADVANCE — AND IT RESUMES WHERE IT STOPPED RATHER THAN STARTING OVER.
+  /* AUTO-ADVANCE — AND IT resumes where IT stopped rather than starting over.
 
      That distinction is the whole reason this is not a two-line effect. The
      dwell ring around the active icon is a CSS animation, and pausing a CSS
@@ -151,7 +137,7 @@ export function HowItWorks() {
      `performance.now()` rather than `Date.now()`: it is monotonic, so a clock
      adjustment mid-dwell cannot produce a negative remainder.
 
-     OFF ENTIRELY UNDER `prefers-reduced-motion`. For a reader who has asked the
+     Off entirely under `prefers-reduced-motion`. For a reader who has asked the
      whole system for less motion, the honest answer is not a pause button — it
      is not to start. */
   const remaining = useRef(DWELL_MS);
@@ -191,7 +177,7 @@ export function HowItWorks() {
         <CornerMark className="-top-7 left-1 md:left-3" />
         <CornerMark className="-top-7 right-1 md:right-3" />
 
-        {/* THE HEADING IS ITS OWN ROW NOW, AND THAT IS THE WHOLE FIX.
+        {/* THE heading IS its own row now, AND that IS THE whole fix.
 
             Inside the left column, the heading meant the two columns could
             never start at the same height: the steps began 130px below the
@@ -216,7 +202,7 @@ export function HowItWorks() {
               "days not months" is `pillars.js` verbatim in substance —
               "deploy in days rather than custom multi-month projects" — so the
               heading is not writing a new promise. */}
-          {/* SIZED TO THE CATALOGUE'S HEADING, NOT THE CALCULATOR'S.
+          {/* Sized to THE catalogue's heading, NOT THE calculator's.
 
               This was already byte-identical to OutcomeCards and the calculator —
               clamp(27px, 3.9vw, 48px), same leading, same tracking. The page
@@ -226,7 +212,7 @@ export function HowItWorks() {
               48px one is the step change that reads as a mismatch, so this
               takes the 64px scale — leading and tracking copied across too, or
               the size would match while the line spacing did not. */}
-          {/* ONE LINE, ONE COLOUR, ONE FACE — no forced break, no serif italic,
+          {/* One line, one colour, one face — no forced break, no serif italic,
               no purple. Every other heading on the page splits into a bold half
               and an italic violet half; this one is set plain, and it is the
               only section whose heading is a single clause rather than two
@@ -252,7 +238,7 @@ export function HowItWorks() {
             floor on a 12-track grid, and 11 × 40px is wider than any phone's
             shell. Same lesson as the other five grids on the page. */}
         <div className="relative mt-10 grid grid-cols-12 gap-x-0 gap-y-8 md:mt-12 lg:gap-x-10">
-          {/* THE HOLDS ARE SCOPED TO THE STEP LIST, NOT THE WHOLE ROW, and the
+          {/* THE holds are scoped to THE step list, NOT THE whole row, and the
               reason is the pause control sitting over the illustration opposite. If
               hovering anywhere in the row held the clock, pressing "Resume"
               would clear `paused` and still leave the countdown frozen, because
@@ -261,19 +247,19 @@ export function HowItWorks() {
               button. So: the steps are the hover region, the illustration is where the
               control lives, and the two never fight.
 
-              POINTER TYPE IS CHECKED, and it has to be. `pointerenter` fires for
+              Pointer type IS checked, and it has to be. `pointerenter` fires for
               touch as well as mouse, and a touch has no matching leave — tapping
               a step would set the hold and never clear it, which is the same
               sticky-hover bug the swap buttons had. Mouse only.
 
-              THE FOCUS HOLD IS NOT OPTIONAL. React's `onFocus` maps to
+              THE focus hold IS NOT optional. React's `onFocus` maps to
               `focusin` and so bubbles, which is what lets one handler cover all
               four buttons. Without it, tabbing to step two and starting to read
               it would get you yanked to step three mid-sentence.
               `relatedTarget` stops focus MOVING between two steps from counting
               as leaving: the blur only registers if focus has actually left. */}
-          {/* THE FOCUS HOLD ONLY COUNTS WHEN THE FOCUS IS VISIBLE, AND THAT WAS
-              THE BUG THAT STOPPED THE CLOCK "SOMETIMES".
+          {/* THE focus hold ONLY counts when THE focus IS visible, AND that was
+              THE bug that stopped THE clock "SOMETIMES".
 
               Clicking a button focuses it in Chrome and Firefox, and focus stays
               put until something else takes it. So `onFocus` set the hold on
@@ -316,7 +302,7 @@ export function HowItWorks() {
                 height the row settles on, so the first one's top edge and the
                 last one's bottom edge land on the illustration's, instead of the
                 column ending wherever the copy happened to. */}
-            {/* BACK TO FOUR CARDS, AND THE RAIL HAS GONE WITH THEM.
+            {/* Back to four cards, AND THE rail has gone with them.
 
                 The stepper drew the sequence as one violet line threaded
                 through the marks, which meant no step could carry a background
@@ -352,8 +338,8 @@ export function HowItWorks() {
                       onPointerLeave={(e) =>
                         e.pointerType === 'mouse' && setHoverIndex((h) => (h === i ? -1 : h))
                       }
-                      /* THE TWO STATES ARE DIFFERENT HUES, NOT TWO STRENGTHS OF
-                         ONE.
+                      /* THE two states are different hues, NOT two strengths of
+                         one.
 
                          The current step keeps the violet lavender with its
                          thin line and shadow; the other three take the teal at
@@ -369,14 +355,14 @@ export function HowItWorks() {
                          bought its recession by taking the card most of the way
                          back to the page ground.
 
-                         THE HIERARCHY STILL RUNS THE RIGHT WAY, and that had to
+                         THE hierarchy still runs THE right way, and that had to
                          be checked, because teal is the more saturated of the
                          two and could easily have out-shouted the selection. It
                          does not, because the current card is carrying three
                          things no wash can answer: an inset thin line, a shadow
                          that lifts it off the band, and 2.5% of scale.
 
-                         SCALE IS RELATIVE, NOT ADDITIVE: the current step stays
+                         Scale IS relative, NOT additive: the current step stays
                          at 1 and the others shrink to 0.975, so the step you are
                          reading is rendered at its natural size and its type is
                          never resampled. Hover lands between the two at 0.99 and
@@ -388,10 +374,10 @@ export function HowItWorks() {
                           : 'scale-[0.975] bg-ig-teal/[0.06] hover:scale-[0.99] hover:bg-ig-teal/[0.11]'
                       }`}
                     >
-                      {/* SOLID TEAL WITH A WHITE LETTER SHAPE — the green filled rather
+                      {/* Solid teal with A White letter shape — the green filled rather
                           than outlined.
 
-                          THE FILL IS THE CIRCLE, NOT THE LETTER SHAPE, and that is
+                          THE fill IS THE circle, NOT THE letter shape, and that is
                           forced by the icon set. Lucide draws in strokes, so
                           `fill="currentColor"` turns each one into its own
                           silhouette: a solid rocket and a solid flask survive
@@ -405,15 +391,15 @@ export function HowItWorks() {
                           A teal letter shape on a teal tint — the other way to "fill
                           with green" — measures 2.75:1 and fails.
 
-                          IDENTICAL ON ALL FOUR, and that is the point of it
+                          Identical on all four, and that is the point of it
                           being here at all. The card behind now says which step
                           is current; if the mark said it as well, the two would
                           be making the same statement twice and the green would
                           stop being a constant. Four marks in one colour read as
                           a set — which is what four steps of one process are.
 
-                          ON THE TEAL WASH IT IS A SOLID CIRCLE ON A TINT OF
-                          ITSELF, which is deliberate: 6% and 100% of one hue
+                          On THE teal wash IT IS A Solid circle on A Tint of
+                          itself, which is deliberate: 6% and 100% of one hue
                           are unmistakably the same colour family, so the three
                           inactive cards read as a set the current one has been
                           lifted out of. The circle's own edge measures 2.94:1
@@ -429,7 +415,7 @@ export function HowItWorks() {
                           coloured card would read as a mistake. */}
                       <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ig-teal text-white">
                         <Icon className="h-4 w-4" strokeWidth={2} />
-                        {/* THE DWELL METER. `key={turn}` is what restarts it:
+                        {/* THE dwell meter. `key={turn}` is what restarts it:
                             `turn` changes on every commit, including one that
                             lands on the step already showing, so pressing the
                             active step remounts this node and the ring winds
@@ -442,7 +428,7 @@ export function HowItWorks() {
                             viewBox="0 0 40 40"
                             className="pointer-events-none absolute inset-0 -rotate-90"
                           >
-                            {/* A TRACK UNDER THE METER, and it is what marks the
+                            {/* A Track under THE meter, and it is what marks the
                                 step rather than merely measuring it.
 
                                 Without it the current mark is identical to the
@@ -460,7 +446,7 @@ export function HowItWorks() {
                               strokeWidth="2"
                               className="text-ig-ink/[0.12]"
                             />
-                            {/* DARK, NOT TEAL. The mark it circles is solid
+                            {/* Dark, NOT teal. The mark it circles is solid
                                 teal, and a countdown drawn in that same green
                                 would read as one blob rather than as a measure.
                                 `--ink` is the darkest value in the palette: 5.7:1
@@ -495,7 +481,7 @@ export function HowItWorks() {
                             title 30px off the left edge the body copy below it
                             starts from. Dropping it puts the title and the body
                             on one axis. */}
-                        {/* 75%, BACK UP FROM 55%. A slight recession rather than
+                        {/* 75%, Back up from 55%. A slight recession rather than
                             a heavy one — #030303 at 75% over this band is
                             #414142 and 9.8:1, so the inactive titles stay fully
                             comfortable to read and the difference is a nudge
@@ -519,7 +505,7 @@ export function HowItWorks() {
                         >
                           {step.title}
                         </span>
-                        {/* THE BODY IS A DESKTOP-ONLY CHILD OF THE CARD NOW.
+                        {/* THE body IS A Desktop-only child of THE card now.
 
                             It used to show here on the ACTIVE step below `lg`,
                             which is what made one card roughly twice the height
@@ -537,8 +523,8 @@ export function HowItWorks() {
                             showed every body before, and every card shows every
                             body now. The condition that varied by state is
                             simply gone. */}
-                        {/* NOT DIMMED ON THE INACTIVE CARDS, EITHER, AND THAT IS
-                            A CONTRAST FLOOR RATHER THAN A PREFERENCE.
+                        {/* NOT dimmed on THE inactive cards, either, AND that IS
+                            A Contrast floor rather than A PREFERENCE.
 
                             Fading the body copy is the obvious way to make three
                             steps recede, and it is the one move available here
@@ -558,7 +544,7 @@ export function HowItWorks() {
                 );
               })}
 
-              {/* THE CURRENT STEP'S COPY, BELOW THE WHOLE LIST — phones only.
+              {/* THE current step's copy, below THE whole list — phones only.
 
                   This is where the body text that used to swell one card went.
                   Under the list it costs the same one block of copy the active
@@ -592,7 +578,7 @@ export function HowItWorks() {
                 neither does any work while the section is off screen. */}
             <StepWindows activeId={active.id} live={live} />
 
-            {/* THE PAUSE CONTROL IS STILL HERE — IT IS JUST NOT DRAWN.
+            {/* THE pause control IS still here — IT IS just NOT drawn.
 
                 The pill in the panel's bottom-right corner has gone. What
                 replaced it is the same button, `sr-only`: present in the
@@ -601,7 +587,7 @@ export function HowItWorks() {
                 the illustration moves or reflows — `sr-only` is a 1px clip, so it
                 occupies no space at any width.
 
-                WHY NOT DELETE IT OUTRIGHT. Hover is a mouse gesture and focus is
+                Why NOT delete IT outright. Hover is a mouse gesture and focus is
                 a keyboard one, so on a touchscreen neither of the two remaining
                 holds can be reached — and this section moves on its own every
                 5.6 seconds. WCAG 2.2.2 asks for a mechanism to pause moving

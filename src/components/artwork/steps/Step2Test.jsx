@@ -1,16 +1,6 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  STEP 2 OF THE WALKTHROUGH — a test run, drawn as a screen
+/* Step 2: a test run. A console ticking off its stages, and a second window
+   showing it finish cleanly. */
 
-   WHERE YOU SEE THIS
-     The right-hand illustration while "Test the agent" is the active step.
-
-   WHAT IS IN HERE
-     · A console window playing through the stages of a simulated run, each one ticking off.
-     · A second window showing the run finishing cleanly.
-
-   WORTH KNOWING
-     It illustrates the same idea as the Test Agent button on a suite page, but nothing here runs.
-   ========================================================================== */
 import { Activity, Check, Clock, Play, Terminal } from 'lucide-react';
 import { Bar, Tool } from './WindowParts.jsx';
 import { WIN, RULE, MICRO, LABEL, VALUE, TOP, BOT, at } from './sharedStyles.js';
@@ -151,6 +141,6 @@ export function Step2Test() {
   );
 }
 
-/* 03 — TIME TO PRODUCTION: a header with a dropdown-style scope control, two
+/* 03 — Time to production: a header with a dropdown-style scope control, two
    tracks with an axis scale beneath them, a status bar, and the rollout week as
    a second window with day letters and a live chip. */

@@ -1,26 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE WHITE PROMPT CARD — "Ready when you are"
+/* The white card between the four steps and the dark closing band. Badge,
+   heading, a sentence, Sign in, a link to the questions page, and three ticked
+   facts along the bottom.
 
-   WHERE YOU SEE THIS
-     Between the four steps and the dark closing section, on the
-     lavender band.
-
-   WHAT IS IN HERE
-     · A white card with a thin three-colour stripe across its very top
-       edge.
-     · The green-dotted "Ready when you are" badge, and the heading
-       "Name the outcome. We will engineer it".
-     · One sentence, then the green Sign in button and the quieter
-       "Questions people ask first" link, which opens the questions
-       page.
-     · Along the bottom, three ticked facts: three foundations six
-       verticals, accelerators ship as governed DAGs, live in days
-       rather than months.
-
-   WORTH KNOWING
-     An earlier version of this card is kept at
-     reference/backups/ReadyPrompt.card-v1.jsx.
-   ========================================================================== */
+   This one went through a lot of drafts. An earlier version is kept in
+   reference/backups if it is ever wanted back. */
 
 import { ArrowUpRight, Check } from 'lucide-react';
 import { FadeIn } from '../components/ui/FadeIn.jsx';
@@ -28,13 +11,13 @@ import { PrimaryButton } from '../components/ui/Button.jsx';
 import { SIGN_IN_URL } from '../data/navigation.js';
 import { SHELL } from '../lib/layout.js';
 
-/* THE THREE FACTS THE STRIP CARRIES, and not one of them is new.
+/* THE three facts THE strip carries, and not one of them is new.
 
      1  the catalogue's own split — this is its section heading, word for word
      2  the badge on every accelerator row of every suite page
      3  the claim the walkthrough two sections up is built on
 
-   CUT TO ONE LINE EACH, AND THAT IS A STRUCTURAL FIX RATHER THAN AN EDIT. Three
+   Cut to one line each, AND that IS A Structural fix rather than an edit. Three
    columns only read as three columns if they are of a size; the first of these
    ran to 51 characters and wrapped while its neighbours did not, which left the
    strip with one tall column and two short ones and a ragged bottom edge. At
@@ -53,7 +36,7 @@ const PROOF = [
 
 /* The soft prompt between the walkthrough and the closing band at the very top or very bottom.
 
-   REDESIGNED AGAINST THE PATTERN EVERY closing section LIBRARY CONVERGES ON: copy and the
+   Redesigned against THE pattern every closing section Library converges on: copy and the
    action on one side, a small panel answering "yes but" on the other. The
    advice underneath it is consistent across sources — neutralise the reasons a
    qualified reader hesitates BEFORE the last ask, and keep one primary action
@@ -79,7 +62,7 @@ const PROOF = [
        any of this card on them. It is set as a text link, not a second pill —
        two pills side by side is what splits intent.
 
-   NOT DARK, DELIBERATELY, and this is the one place the pattern libraries had
+   NOT dark, deliberately, and this is the one place the pattern libraries had
    to be overruled. Nearly every "final closing section" example is a dark or gradient
    full-bleed band, and this page already HAS one directly below: the closing
    band at the very top or very bottom with the map. Two dark bands in a row would flatten the rhythm the
@@ -102,9 +85,9 @@ export function ReadyPrompt({ openFaq }) {
             className="absolute inset-x-0 top-0 block h-[3px] bg-[linear-gradient(90deg,#4A2FD4_0%,#7A00C2_52%,#00A274_100%)]"
           />
 
-          {/* THREE FULL-WIDTH BANDS: the statement, the pair, the evidence.
+          {/* Three full-width bands: the statement, the pair, the evidence.
 
-              WHY THE HEADING IS NO LONGER IN A COLUMN. Capping it at 62% and
+              Why THE heading IS no longer in A COLUMN. Capping it at 62% and
               putting the buttons opposite meant the buttons sat on the LAST
               line of a block whose first two lines had nothing beside them —
               so the top right of the card was empty by construction, and no
@@ -124,7 +107,7 @@ export function ReadyPrompt({ openFaq }) {
               columns of one card is a structure; one column of a third of a
               card is a leftover.
 
-              THIS BAND IS CENTRED AT EVERY WIDTH — no `md:text-left`. The badge
+              This band IS centred at every width — no `md:text-left`. The badge
               and the heading are the card's announcement and they are now set
               on its centre line, which the rest of the card can hang off: the
               row below stays a split, and the strip below that stays three
@@ -142,8 +125,8 @@ export function ReadyPrompt({ openFaq }) {
                 Ready when you are
               </span>
 
-              {/* SIZED TO THE MEASURE, WHICH IS THE ACTUAL FIX FOR THE EMPTY
-                  TOP RIGHT.
+              {/* Sized to THE measure, which IS THE actual fix for THE empty
+                  top right.
 
                   At 44px this sentence draws about 715px of ink inside a 960px
                   card, so a quarter of the top band was blank — and no
@@ -167,7 +150,7 @@ export function ReadyPrompt({ openFaq }) {
                 </span>
               </h2>
 
-            {/* ON THE CENTRE LINE WITH THE TWO ABOVE IT, not opposite the
+            {/* On THE centre line with THE two above IT, not opposite the
                 buttons.
 
                 The split row it used to be in was the problem: a 460px sentence
@@ -186,7 +169,7 @@ export function ReadyPrompt({ openFaq }) {
             </p>
           </div>
 
-          {/* THE VERTICAL RHYTHM IS 16 · 16 · 24 · 24: the badge close to the
+          {/* THE vertical rhythm IS 16 · 16 · 24 · 24: the badge close to the
               heading it labels, the sentence close to the heading it explains,
               then two equal gaps into the actions and the evidence. An uneven
               set of gaps down a card is the difference between "structured" and
@@ -223,7 +206,7 @@ export function ReadyPrompt({ openFaq }) {
               </button>
           </div>
 
-          {/* THE EVIDENCE STRIP — full width, three across, over a thin line.
+          {/* THE evidence strip — full width, three across, over a thin line.
 
               No tint and no box. On a white card a tinted panel is a second
               surface, and a second surface has to earn its edges; across the
@@ -234,8 +217,8 @@ export function ReadyPrompt({ openFaq }) {
 
               One column on a phone, two at `sm`, three from `lg`.
 
-              A THIN LINE BETWEEN THE COLUMNS, AND ONLY WHERE THERE ARE THREE OF
-              THEM. It is what turns three items that happen to be beside each
+              A Thin line between THE columns, AND ONLY where there are three of
+              them. It is what turns three items that happen to be beside each
               other into three columns of one strip — the same device the
               top bar uses between its two groups. It is a left border on the
               second and third rather than `divide-x`, because a divide utility

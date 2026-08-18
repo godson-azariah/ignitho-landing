@@ -1,22 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE CONTACT SALES FORM
+/* The Contact Sales form. Dark panel down one side, fields on the other:
+   name, work email, company, job title, country, industry, message.
 
-   WHERE YOU SEE THIS
-     Opens over whatever page you are on, from any Contact Sales button.
-
-   WHAT IS IN HERE
-     · A dark violet panel down the left with the invitation on it, and
-       the form on the right: name, work email, company, job title,
-       country, industry, and a message box.
-     · A privacy note under the Submit button.
-     · The Escape key closes it, as does clicking outside it.
-
-   WORTH KNOWING
-     IT IS NOT CONNECTED YET. The form checks what you typed and then
-     says plainly that it cannot send, offering info@ignitho.com instead
-     — rather than thanking you for a message that went nowhere.
-     Connecting it is one line in data/navigation.js.
-   ========================================================================== */
+   It does not send anywhere yet. Rather than showing a thank-you for a message
+   that went nowhere, it says so plainly and offers the email address. Set
+   CONTACT_ENDPOINT in data/navigation.js and it starts working. */
 
 import { useState } from 'react';
 import { ArrowRight, Check, Mail, X } from 'lucide-react';
@@ -33,7 +20,7 @@ import {
 
 /* The contact form, as a dialog over the page.
 
-   TWO PANELS, WHICH IS THE SHAPE THE REFERENCE USES AND THE RIGHT ONE: the left
+   Two panels, which IS THE shape THE reference uses AND THE right one: the left
    says why you are here and the right is the work. On our palette that becomes
    the page's own dark band at the very top or very bottom ground on the left — the same `aurora` the hero and
    the closing section stand on — against a white form. It is the only place on
@@ -43,7 +30,7 @@ import {
    The left panel is hidden below `lg`. On a phone a form is the whole screen and
    a decorative half would push every field below the bottom of the first screen.
 
-   FIELDS AND VALIDATION MATCH THE REFERENCE EXACTLY: name, surname, business
+   Fields AND validation match THE reference exactly: name, surname, business
    e-mail, company, industry, country, message with a 2000-character counter, and
    the five that carry an asterisk are the five that are required. What is ours is
    the copy and the options — the industries are the catalogue's six verticals,
@@ -162,7 +149,7 @@ export function ContactForm({ open, onClose }) {
         {/* the left panel — the page's own dark ground, and the only decorative
             surface in the dialog. 34%, not 38%: the reference gives its panel
             29% and the form is the part that needed the width. */}
-        {/* CENTRED, AND SET IN ONE FACE THROUGHOUT.
+        {/* Centred, AND set in one face throughout.
 
             The second line was `serif-accent` — Instrument Serif italic, which
             is the page's editorial voice and belongs on section headings where
@@ -338,7 +325,7 @@ export function ContactForm({ open, onClose }) {
                 </span>
               </div>
 
-              {/* NOT A LINK, AND THAT IS DELIBERATE. The reference underlines
+              {/* NOT A Link, AND that IS deliberate. The reference underlines
                   "privacy policy" and points it somewhere. I do not have the real
                   URL, and a href that guesses at one — or a `#` that goes
                   nowhere — is worse than plain text on a line about a legal

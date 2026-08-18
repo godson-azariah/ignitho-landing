@@ -1,16 +1,5 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE QUESTIONS AND ANSWERS
-
-   WHERE YOU SEE THIS
-     The questions page, reached from FAQ in the menu bar.
-
-   WHAT IS IN HERE
-     · The questions, grouped by subject, each with its answer.
-
-   WORTH KNOWING
-     EDIT THE FAQ HERE. Adding a question is one entry in a list; the
-     page picks it up with no other change.
-   ========================================================================== */
+/* The questions and answers, grouped by subject. Add one entry and the page
+   picks it up. */
 
 /* Placeholder answers, and every one is assembled from something the site
    already says out loud — the catalogue's split, the badge on the accelerator

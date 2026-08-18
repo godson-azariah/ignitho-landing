@@ -1,22 +1,12 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  STEP 3 OF THE WALKTHROUGH — going live, drawn as a screen
+/* Step 3: going live. A schedule measured in days, and a release confirmation.
+   The picture makes the same point the step text makes in words. */
 
-   WHERE YOU SEE THIS
-     The right-hand illustration while "Deploy in days" is the active step.
-
-   WHAT IS IN HERE
-     · A window showing a deployment schedule measured in days.
-     · A second window confirming the release.
-
-   WORTH KNOWING
-     The point it makes visually is the one the step text makes in words: days, not months.
-   ========================================================================== */
 import { Calendar, Check, ChevronDown } from 'lucide-react';
 import { Bar, Tool, Foot } from './WindowParts.jsx';
 import { WIN, RULE, MICRO, LABEL, VALUE, TOP, BOT, at } from './sharedStyles.js';
 
 export function Step3Deploy() {
-  /* NO FIGURE ON THE LONG BAR, DELIBERATELY. The page's claim is "days rather
+  /* No figure on THE long bar, deliberately. The page's claim is "days rather
      than custom multi-month projects", and "multi-month" is not a number.
      "~6 months" would have invented one and handed it to the reader as a
      measurement. The tracks illustrate a ratio the page states in words, so

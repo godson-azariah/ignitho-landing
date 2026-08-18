@@ -1,24 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE NINE SUITES — "Three foundations, six verticals"
+/* The nine suites. Filter buttons, a search box, the grid-or-list switch, and
+   then either nine cards or nine rows.
 
-   WHERE YOU SEE THIS
-     The fourth section of the home page, on the pale lavender band.
-
-   WHAT IS IN HERE
-     · The three filter buttons: All 9 Suites, 3 Universal Foundations,
-       6 Industry Verticals. On a phone these become a strip you swipe
-       sideways.
-     · The search box, tied to the one in the hero — searching or
-       clearing in either place affects both.
-     · The grid-or-list switch to the right of the search box.
-     · The nine suite cards, or the same nine as a list of rows with a
-       preview card that follows your pointer.
-     · Clicking any suite opens that suite own page.
-
-   WORTH KNOWING
-     The suite names and descriptions are not here — they live in
-     data/suites.js.
-   ========================================================================== */
+   The search box is tied to the one in the opening band, so clearing either
+   one clears both. In list view a preview card follows your pointer around;
+   that is useSuitePreview.js. */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, Search, X } from 'lucide-react';
@@ -184,7 +169,7 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
         </FadeIn>
 
         {/* Segmented control — the indicator measures each tab and glides */}
-        {/* ON A PHONE THIS IS A SCROLLING CHIP STRIP, NOT A SEGMENTED CONTROL.
+        {/* ON A Phone this IS A Scrolling chip strip, NOT A SEGMENTED CONTROL.
 
             One row of segments cannot be made to fit at any padding: the three
             labels are 78, 150 and 130px of type before a single pixel of it —
@@ -200,14 +185,14 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
             naming the three things that make that pattern work, because
             leaving any of them out is what makes a scroll strip feel broken:
 
-              · IT BLEEDS TO THE SCREEN EDGE. `-mx-5 px-5` cancels the page container's
+              · IT bleeds to THE screen edge. `-mx-5 px-5` cancels the page container's
                 gutter and puts it back inside the scroll box, so the last
-                chip is cut off by the VISIBLE PART OF THE SCREEN rather than stopping short of
+                chip is cut off by the Visible part of THE screen rather than stopping short of
                 it. A strip that ends inside a margin looks finished, and a
                 strip that looks finished never gets scrolled.
               · NO SCROLLBAR. `.no-bar` — a 10px violet lane under a 42px row
                 of chips is thicker than the thing it measures.
-              · THE ACTIVE CHIP SCROLLS ITSELF INTO VIEW, below. Tapping the
+              · THE active chip scrolls itself into view, below. Tapping the
                 half-visible third chip must not leave you looking at a
                 selection you cannot see.
 
@@ -395,8 +380,8 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
                     </span>
 
                     <span className="min-w-0 flex-1">
-                      {/* THE NAME WRAPS ON A PHONE; ONLY THE TAGLINE STILL
-                          TRUNCATES.
+                      {/* THE name wraps on A PHONE; ONLY THE tagline still
+                          truncates.
 
                           A row leaves the name about 180px on a 375px screen
                           once the home page, the gap and the 44px arrow are

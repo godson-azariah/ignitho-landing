@@ -1,37 +1,32 @@
 # Ignitho AI — the website, explained
 
-What every file is, what every part does, and why it works the way it does.
-Written in plain words for someone who knows the website but not the code.
+What every file is, what the moving parts do, and why things are built the way
+they are. Written for someone who knows the website but not the code.
 
-It is laid out the way the [Diátaxis](https://diataxis.fr/) approach suggests,
-because anyone opening this is in one of four situations:
+Start wherever you need to:
 
-| If you want to… | Read |
-| --- | --- |
-| get it running on your computer | **1 · Getting started** |
-| find out what a file is | **2 · The map**, then **3 · Every file** |
-| make a particular change | **5 · How do I…?** |
-| understand why it is built this way | **4 · How things work**, **6 · The rules** |
-
-A note on names: a few short words appear all through the code because the
-browser has to match them exactly. They are all explained in **7 · Word list**.
+- **Just want to run it?** Section 1.
+- **Looking for a particular file?** Section 2 has the map, section 3 says what
+  each one does.
+- **Trying to change something?** Section 5 has the common jobs.
+- **Wondering why it works this way?** Sections 4 and 6.
+- **Hit a short word you don't recognise?** Section 8 is a word list.
 
 ---
 
 ## 1 · Getting started
 
     npm install      once, the first time
-    npm run dev      opens the site on your computer, updates as you save
+    npm run dev      opens the site on your machine, updates as you save
     npm run build    makes the version that gets published, into dist/
     npm run lint     checks the code for mistakes
 
-You need Node installed. Nothing else — no database, no server, no accounts. The
-website is a set of files that a browser reads.
+You need Node. That's it — no database, no server, no accounts.
 
-**The whole website is one page.** The suite pages and the questions page have
-real web addresses and the back button works properly, but they are drawn by the
-same running page rather than fetched fresh each time. That is why moving around
-the site feels instant.
+One thing worth knowing up front: the whole site is a single page. The suite
+pages and the questions page have proper web addresses and the back button works
+normally, but nothing is fetched again when you move between them. That's why
+navigating feels instant.
 
 ---
 
@@ -39,23 +34,23 @@ the site feels instant.
 
     index.html               the file the browser asks for first
     package.json             the project name and its commands
-    vite.config.js           settings for building the site
-    vercel.json              tells the web host to answer every address
-                             with index.html
+    vite.config.js           build settings
+    vercel.json              tells the host to answer every address with
+                             index.html
     public/                  pictures used as they are: the world map, the
-                             little icon in the browser tab
+                             browser-tab icon
 
     src/
-      main.jsx               switches the site on. Three lines.
+      main.jsx               starts the site. Three lines.
       App.jsx                the running order of the page, and which page
-                             you are looking at
-      index.css              the list of style files, in the order they load
+                             you're on
+      index.css              the style files, in the order they load
 
-      sections/              ONE FILE PER BAND OF THE PAGE, top to bottom
-        Hero.jsx               the dark opening, with the headline and search
+      sections/              one file per band of the page, top to bottom
+        Hero.jsx               the dark opening, headline and search
         OutcomeCards.jsx       the four violet cards
         SavingsCalculator.jsx  the slider and the figures
-        Catalog.jsx            the nine suites, with filters and grid or list
+        Catalog.jsx            the nine suites, filters, grid or list
         HowItWorks.jsx         the four steps and their picture
         ReadyPrompt.jsx        the white "Ready when you are" card
         ClosingSection.jsx     the dark closing band with the office map
@@ -63,375 +58,396 @@ the site feels instant.
         SuitePage.jsx          a page of its own: one suite
         Faq.jsx                a page of its own: the questions
 
-      components/            THE PIECES THOSE BANDS ARE BUILT FROM
-        ui/                    small pieces used all over the site
+      components/            the pieces those bands are built from
+        ui/                    small things used all over
           Button.jsx             every button
           SectionLabel.jsx       the small label above a section heading
-          CornerMark.jsx         the small + marks at section corners
+          CornerMark.jsx         the + marks at section corners
           FadeIn.jsx             the fade-in as you scroll
           SuiteCard.jsx          one suite, drawn as a card
           ViewToggle.jsx         the grid-or-list switch
-        navigation/            the menus, present on every page
+        navigation/            the menus
           TopBar.jsx             the bar across the top
-          PhoneMenu.jsx          the menu that slides down on a phone
-        popups/                things that open ON TOP of a page
+          PhoneMenu.jsx          the panel that slides down on a phone
+        popups/                things that open on top of a page
           ContactForm.jsx        the Contact Sales form
-          Dropdown.jsx           the country and industry dropdowns
+          Dropdown.jsx           the country and industry pickers
           AgentDemo.jsx          the Test Agent window
-          ChatBubble.jsx         the Ask Ignitho AI bubble
+          ChatBubble.jsx         the chat bubble
         artwork/               the two big decorative pictures
-          HeroGlow.jsx           the moving purple glow behind the dark bands
+          HeroGlow.jsx           the purple light behind the dark bands
           StepWindows.jsx        the product windows beside the four steps
           steps/
             sharedStyles.js      sizes and colours the four pictures share
             WindowParts.jsx      title bars, toolbars, buttons, status bars
-            Step1Choose.jsx      step 1 · the catalogue
-            Step2Test.jsx        step 2 · a test run
-            Step3Deploy.jsx      step 3 · going live
-            Step4Measure.jsx     step 4 · the measured return
+            Step1Choose.jsx      the catalogue
+            Step2Test.jsx        a test run
+            Step3Deploy.jsx      going live
+            Step4Measure.jsx     the measured return
 
-      hooks/                 THINGS THAT REACT TO THE BROWSER
+      hooks/                 things that react to the browser
         useRoute.js            the web address and the back button
-        useOverlay.js          Escape closes a popup, page behind cannot scroll
+        useOverlay.js          Escape closes a popup, page behind can't scroll
         useTopBarShadow.js     the shadow under the top bar
         useScrollSpy.js        which menu link is highlighted
         useSuitePreview.js     the preview card that follows your pointer
 
-      lib/                   SMALL HELPERS. Give them a value, get one back.
+      lib/                   small helpers. Give them a value, get one back.
         layout.js              the page width every section shares
         noOrphan.js            stops one word being left alone on a line
         splitHeading.js        breaks a suite name into two tidy lines
-        scrollEase.js          glide or jump, depending on the visitor's setting
+        scrollEase.js          glide or jump
         revealObserver.js      the one watcher behind every fade-in
 
-      data/                  EVERY WORD AND NUMBER. No design in here.
-        suites.js              the nine suites — the biggest piece of writing
+      data/                  every word and number. No design in here.
+        suites.js              the nine suites
         outcomes.js            the four violet cards
-        howItWorks.js          the four steps, and how long each one holds
+        howItWorks.js          the four steps and their timing
         faq.js                 the questions and answers
-        navigation.js          menu labels, the sign-in link, the form's lists
+        navigation.js          menu labels, the sign-in link, the form lists
         countries.js           the country dropdown
 
-      styles/                EVERY RULE ABOUT APPEARANCE. No words in here.
+      styles/                everything about appearance. No words in here.
         base.css               colours, fonts, and the word list
         type.css               headline styles
         backgrounds.css        section backgrounds and their patterns
-        buttons.css            buttons, card hovers, list-row fills
-        controls.css           the slider, keyboard outlines, opening answers
+        buttons.css            buttons, card hovers, row fills
+        controls.css           slider, keyboard outlines, opening answers
         motion.css             every animation
         overlay.css            the phone menu sliding
-        reduced-motion.css     switches motion off for people who ask for that
+        reduced-motion.css     turns motion off for people who ask
 
-    reference/               ON YOUR COMPUTER ONLY, not in git. Working notes
-                             and old designs kept to look back at.
+    reference/               on your machine only, not in git. Working notes
+                             and old designs.
 
-Every file also opens with its own **PLAIN-ENGLISH GUIDE**, answering the same
-three questions: where you see it, what is in it, what is worth knowing.
+Every file also opens with a short note saying what it draws and anything odd
+about it.
 
 ---
 
 ## 3 · Every file, explained
 
-### The three that hold it all together
+### The three that hold it together
 
-**`main.jsx`** finds the empty box in `index.html` and tells the site to draw
-itself there. Three lines. Delete it and the page loads blank.
+**`main.jsx`** finds the empty div in `index.html` and hands it to `App`. Three
+lines, and deleting it gives you a blank page.
 
-**`App.jsx`** is the table of contents. It lists the sections in the order they
-appear, works out which of the three kinds of page you are on, and keeps the top
-bar, phone menu, chat bubble and contact form on all of them. It holds the only
-two things more than one section needs to know: which suite is open, and what has
-been searched for.
+**`App.jsx`** is the table of contents. It lists the sections in order, works out
+which of the three kinds of page you're on, and keeps the top bar, phone menu,
+chat bubble and contact form present everywhere. Two things live here because two
+sections each need them: which suite is open, and the last search.
 
-**`index.css`** lists the eight style files in the order they load. A later file
-can overrule an earlier one, which is why the one that switches motion off is
-last.
+**`index.css`** lists the style files in load order. Later files can overrule
+earlier ones, and `reduced-motion.css` is last for exactly that reason.
 
-### Sections — one per band of the page
+### Sections
 
-**`Hero.jsx`** The dark opening: the small line at the top, the big headline, the
-sentence under it, the white search box and six suggestion buttons. Searching
-jumps down to the nine suites and filters them.
+**`Hero.jsx`** The dark band at the top. Small line above a rule, big headline,
+one sentence, the white search box, six suggestion buttons. Searching scrolls you
+to the suites with results already filtered.
 
-**`OutcomeCards.jsx`** Four violet cards — Revenue Acceleration, Cost Reduction,
-Corporate Governance, Rapid Deployment. The words come from `data/outcomes.js`.
-All four share one colour, so they read as four results of one thing rather than
-four separate categories.
+**`OutcomeCards.jsx`** Four violet cards. Words in `data/outcomes.js`, along with
+the colour they share. They each had their own colour once, and it made them look
+like four categories rather than four results of one thing.
 
-**`SavingsCalculator.jsx`** The slider and the figures that move with it, all
-worked out live from where the slider sits. It shares its two assumptions with
-the fourth step picture, so the two can never quote different numbers.
+**`SavingsCalculator.jsx`** The slider and the figures under it. Nothing is
+stored; everything is worked out from where the slider sits. Its two assumptions
+are shared with the fourth step picture so the two can't end up disagreeing.
 
-**`Catalog.jsx`** The nine suites: three filter buttons, a search box tied to the
-one in the opening band, the grid-or-list switch, and either nine cards or nine
-rows. In list view a small preview card follows your pointer.
+**`Catalog.jsx`** The nine suites, with filters, a search box tied to the one
+upstairs, and the grid-or-list switch. In list view a preview card follows your
+pointer.
 
-**`HowItWorks.jsx`** The four steps and the timer that moves them along every 5.6
-seconds. Three separate things can hold that timer — pressing pause, hovering the
-step that is currently showing, or reaching it with the keyboard — and they are
-kept apart so that a mouse leaving the section cannot cancel a deliberate pause.
+**`HowItWorks.jsx`** The four steps and the timer that advances them every 5.6
+seconds. Three separate things can stop that timer — the pause control, hovering
+the step that's showing, or tabbing into the list. They're tracked separately so a
+mouse leaving the section can't cancel a pause you meant.
 
-**`ReadyPrompt.jsx`** The white card between the four steps and the dark closing
-band: badge, heading, one sentence, the Sign in button, a link to the questions
-page, and three ticked facts along the bottom.
+**`ReadyPrompt.jsx`** The white card before the closing band. This one went
+through several drafts; an earlier version is kept in `reference/backups`.
 
-**`ClosingSection.jsx`** The dark closing band: the last heading, the Contact
-Sales button, and the dotted world map. Every office marker is placed by hand, so
-moving an office means moving a dot in this file.
+**`ClosingSection.jsx`** The dark closing band and the dotted world map. The map
+is a picture, and every office marker is placed by hand in that file.
 
-**`Footer.jsx`** The bottom of every page — the Ignitho AI name, the menu
-repeated, the nine suites, the certifications and the copyright line.
+**`Footer.jsx`** Name, menu, the nine suites, certifications, copyright. The menu
+reads the same list as the top bar.
 
-**`SuitePage.jsx`** One file that draws all nine suite pages. The layout is the
-same every time; only the suite handed to it changes.
+**`SuitePage.jsx`** One file draws all nine suite pages. The layout never changes;
+only the suite handed to it does.
 
-**`Faq.jsx`** The questions page. One answer open at a time, so the page stays
-easy to scan.
+**`Faq.jsx`** The questions page. Opening one answer closes the last one, which is
+the only reason the page stays scannable.
 
-### The pieces they are built from
+### Components
 
-**`ui/Button.jsx`** Every button on the site: one rounded pill in one of four
-colours. Hovering deepens the colour slightly and nothing moves; pressing dims
-it.
+**`ui/Button.jsx`** Every button: a rounded pill in one of four colours. It used
+to slide its label and change colour on hover; now it holds still and only the
+tone shifts.
 
-**`ui/SectionLabel.jsx`** The small `[04] How It Works` label above a section
-heading, in a dark version for pale backgrounds and a light one for dark
-backgrounds.
+**`ui/SectionLabel.jsx`** The small `[04] How It Works` line above a heading.
 
-**`ui/CornerMark.jsx`** A small `+` marking the corners of a section. One
-character, borrowed from printing, where it is used to line plates up.
+**`ui/CornerMark.jsx`** The `+` at a section's corners, borrowed from printing.
 
-**`ui/FadeIn.jsx`** Wraps a block and fades it upwards into view, once. A delay
-can be given, which is how a row of cards arrives one after another instead of
-all together.
+**`ui/FadeIn.jsx`** Wrap something and it fades upwards into view, once. Pass a
+delay and a row of cards arrives one after another.
 
-**`ui/SuiteCard.jsx`** One suite as a white card. It draws whatever suite it is
-handed and holds no words of its own.
+**`ui/SuiteCard.jsx`** One suite as a card. It draws whatever it's handed.
 
-**`ui/ViewToggle.jsx`** Two small icons in a white pill: cards or rows.
+**`ui/ViewToggle.jsx`** Cards or rows, in one fixed spot so it doesn't jump.
 
-**`navigation/TopBar.jsx`** The bar across the top — the Ignitho AI name, three
-links that scroll to a section, FAQ, Contact Sales and Sign in, shrinking to one
-round button on a phone. It is built as three columns of equal width, which is
-what puts the middle links on the centre of the page rather than in whatever
-space is left over.
+**`navigation/TopBar.jsx`** The bar across the top. Three columns with the outer
+two forced to equal width, which is what puts the middle links on the centre of
+the page rather than in whatever gap is left.
 
-**`navigation/PhoneMenu.jsx`** The panel that slides down on a phone: the same
-links, the nine suites, and both buttons.
+**`navigation/PhoneMenu.jsx`** The slide-down panel: same links, plus the nine
+suites and both buttons.
 
-**`popups/ContactForm.jsx`** The Contact Sales form. It checks what you typed and
-then says plainly that it cannot send yet — see §5 for how to connect it.
+**`popups/ContactForm.jsx`** The Contact Sales form. It doesn't send yet — see
+section 5.
 
-**`popups/Dropdown.jsx`** A dropdown built by hand, because the browser's own
-decides for itself whether to open upwards or downwards, and it kept opening
-upwards.
+**`popups/Dropdown.jsx`** The country and industry pickers, built by hand because
+the browser's own kept opening upwards.
 
-**`popups/AgentDemo.jsx`** The Test Agent window: a dark console that plays
-through the stages of a run on a timer. Nothing is really run and nothing is
-sent.
+**`popups/AgentDemo.jsx`** The Test Agent window: a console that plays through a
+run on a timer. Nothing leaves the browser.
 
-**`popups/ChatBubble.jsx`** The chat bubble in the corner. Its answers are
-written in advance and picked by keyword; it is not connected to a real
-assistant.
+**`popups/ChatBubble.jsx`** The chat bubble. Replies are written in advance and
+matched on keywords.
 
-**`artwork/HeroGlow.jsx`** Six layers of colour drifting slowly behind the dark
-bands, on cycles between 15 and 29 seconds so the light never visibly repeats. It
-stops completely once scrolled past.
+**`artwork/HeroGlow.jsx`** Six layers of light drifting on cycles between 15 and
+29 seconds, so nothing visibly repeats. Stops when scrolled past.
 
-**`artwork/StepWindows.jsx`** The container that fades between the four pictures,
-with one file per step drawing that step's screen. `sharedStyles.js` holds the
-sizes they all use and `WindowParts.jsx` the pieces built from them, so the four
-cannot drift apart.
+**`artwork/StepWindows.jsx`** Holds the four step pictures and fades between
+them. `sharedStyles.js` has the sizes, `WindowParts.jsx` the pieces, and one file
+per step.
 
-### Things that react to the browser
+### Hooks
 
-**`useRoute.js`** reads and updates the web address. This is why `/faq` and
-`/suites/…` can be bookmarked and shared, and why the back button works.
+**`useRoute.js`** reads and updates the address bar, so `/faq` and `/suites/…`
+can be bookmarked and the back button works properly.
 
-**`useOverlay.js`** gives all three popups the same two rules: Escape closes
-them, and the page behind cannot scroll while one is open.
+**`useOverlay.js`** gives all three popups the same two rules: Escape closes,
+page behind can't scroll.
 
-**`useTopBarShadow.js`** answers one question — has the page been scrolled at
-all? — which decides between a thin line and a soft shadow under the top bar.
+**`useTopBarShadow.js`** answers one question — has the page scrolled at all.
 
-**`useScrollSpy.js`** watches a narrow band near the top of the screen and
-reports which section is crossing it, so that menu link turns violet.
+**`useScrollSpy.js`** works out which section you're looking at. It watches a
+narrow band near the top rather than the whole screen, because sections are
+taller than the screen and otherwise three of them are "in view" at once.
 
-**`useSuitePreview.js`** runs the preview card that follows your pointer in list
-view.
+**`useSuitePreview.js`** the pointer-following preview card in list view.
 
-### Small helpers
+### Helpers, words, appearance
 
-**`layout.js`** the one page width every section uses · **`noOrphan.js`** ties
-the last two words of a line together so one cannot be left alone ·
-**`splitHeading.js`** breaks a suite name at a chosen word so a row of cards
-breaks in the same place · **`scrollEase.js`** answers glide or jump ·
-**`revealObserver.js`** the single watcher behind every fade-in.
+`lib/` is five small functions: the page width, the one that stops a word being
+stranded, the one that breaks suite names consistently, the glide-or-jump answer,
+and the shared fade-in watcher.
 
-### Words and appearance
-
-Everything in `data/` is words and numbers with no design attached, so it can be
-edited with no risk of breaking a layout. Everything in `styles/` is appearance
-with no words. A section file is the only place the two meet.
+`data/` is words and numbers with no design attached, so it's the safest place to
+edit. `styles/` is appearance with no words. A section file is the only place the
+two meet.
 
 ---
 
 ## 4 · How things work
 
-### Which page you are looking at
+### Which page you're on
 
 The page never reloads. `useRoute.js` reads the address, `App.jsx` turns it into
-one of three things, and the address updates as you move around.
+one of three things, and the address updates as you move.
 
-    /                 the home page
-    /faq              the questions page
+    /                 home
+    /faq              the questions
     /suites/<name>    one suite
 
-Two things follow from that. `vercel.json` exists because a web host asked for
-`/faq` directly would otherwise go looking for a file with that name — the file
-tells it to answer every address with `index.html` and let the page sort it out.
-And **going back is the browser's job**, which is why there are no "back to home"
-buttons drawn on the page: the browser returns you to wherever you actually came
-from and puts you back at the same scroll position, which no button can do.
+`vercel.json` exists because a host asked for `/faq` directly would otherwise go
+looking for a file with that name. It tells the host to answer everything with
+`index.html` and let the page work it out.
 
-### How something fades in as you scroll
+There are no "back to home" buttons drawn on the page, on purpose. The browser's
+back button returns you to wherever you actually came from and restores your
+scroll position; a drawn button always goes to the same place and can't.
 
-One watcher, shared by every fading block on the page, notices when a block is
-about to come into view and adds a marker to it. The movement itself is done by
-the style files. It happens once — scrolling back up does not replay it — and a
-block stops being watched as soon as it has appeared.
+### Fading in as you scroll
 
-A few blocks also sharpen from blurred to clear. That is the same thing with one
-extra marker, used only on the opening band and the section headings, because
-blurring is the one effect here that makes the graphics card work hard and cheap
-phones have to draw it too.
+One watcher, shared by every fading block, notices when something is about to
+come into view and marks it. The movement itself is in the style files. It
+happens once. A block stops being watched as soon as it has appeared.
+
+A few blocks also sharpen from blurred to clear — the opening band and the
+section headings. That's deliberately rare; see section 7 for why.
 
 ### The four steps and their timer
 
-A step holds for 5.6 seconds. The ring drawn around the icon and the timer
-underneath it are driven by the same switch, so what you see can never disagree
-with what is actually happening. When it pauses, the countdown **remembers how
-much time was left** instead of starting over — otherwise the ring would sit
-nearly full while the clock behind it had gone back to zero.
+A step holds for 5.6 seconds. The ring drawn around the icon and the timer behind
+it run off the same switch, so what you see can't disagree with what's happening.
+When it pauses, the countdown remembers how much time was left rather than
+starting over — otherwise the ring would sit nearly full while the clock behind
+it had gone back to zero.
 
-Nothing runs while the section is off screen. That is also why everyone sees step
-one first, rather than whichever step the clock happened to have reached.
+Nothing runs while the section is off screen, which is also why everyone sees
+step one first rather than whichever step the clock had reached.
 
 ### The search
 
-What you type stays in the opening band until you press enter; pressing enter
-sets the one value the nine suites are filtered by. That is why typing a letter
-does not redraw the whole page. Clearing the search in **either** place ends it in
-both.
+What you type stays in the opening band until you press enter. Pressing enter
+sets the one value the catalogue filters on, which is why typing a letter doesn't
+redraw the page. Clearing the search in either place ends it in both.
 
 ### The backgrounds
 
-Sections alternate: dark, pale lavender, near-white, pale lavender, near-white,
-dark. The dark ones are kept for the very top and the very bottom, so the page
-opens and closes on the same note. The pale ones carry a faint dot pattern, and
-any text on top of one gets a soft patch of plain colour behind it, so the
-pattern never sits under words.
+Dark, pale lavender, near-white, pale lavender, near-white, dark. The dark ones
+are kept for the very top and very bottom so the page opens and closes on the
+same note. The pale ones carry a faint dot pattern, and text sitting on one gets
+a soft patch of plain colour behind it so the dots never run under words.
 
 ### Movement
 
-Four speeds are written down once and everything uses one of them, which is why
-the whole site feels like it moves in a single way. Animations either **arrive**
-(something appearing, a window sharpening into focus) or **report** something
-(a countdown, a colour following your pointer). Nothing loops in front of the
-reader, and the controls — buttons, the top bar — hold still.
+Four speeds are written down once and everything uses one of them. Animations
+either arrive (something appearing, a window sharpening) or report something (the
+countdown, a colour following your pointer). Nothing loops in front of the
+reader, and the controls hold still.
 
-Anyone whose device is set to reduce motion gets none of it. One style file
-switches the lot off and makes sure everything still ends up in the right place,
-fully visible.
+Anyone whose device asks for reduced motion gets none of it.
 
-### One trap worth knowing about
+### A trap to watch for
 
-The styling tool (Tailwind) is loaded as a script that writes its styles into the
-page **before** our own style files. So when both set the same thing, ours wins.
-Two real bugs came from this: one of our rules set a shadow and silently
-cancelled a border that was supposed to be there, and another set a position and
-collapsed a background to nothing.
+Tailwind is loaded as a script that writes its styles into the page *before* our
+own style files. So when both set the same property, ours wins. Two real bugs
+came from this: one of our rules set a shadow and silently cancelled a border
+that was meant to be there, and another set a position and collapsed a background
+to nothing.
 
-**The rule: one of our own style rules must not set something the styling tool is
-also expected to set on the same element.**
+The rule: don't set something in our own CSS that a Tailwind class is also
+expected to set on the same element.
 
 ---
 
 ## 5 · How do I…?
 
-**Change the words for a suite** — `src/data/suites.js`. Names, taglines,
-summaries, figures and the agent list are all there, with no layout to break.
+**Change the words for a suite** — `src/data/suites.js`. No layout in there, so
+nothing can break visually. Much longer text will wrap differently on the cards,
+and that's the only thing to watch.
 
-**Add a question to the FAQ** — one entry in `src/data/faq.js`. The page picks it
-up with no other change.
+**Add a question to the FAQ** — one entry in `src/data/faq.js`.
 
-**Add or rename a menu item** — `src/data/navigation.js`. The top bar, the phone
-menu and the footer all read the same list, so it is changed once. If it scrolls
-to a section, it also needs a line in the short table at the top of `App.jsx`
-saying which section that is.
+**Add or rename a menu item** — `src/data/navigation.js`. The top bar, phone menu
+and footer read the same list. If it scrolls to a section it also needs a line in
+the short table at the top of `App.jsx`.
 
-**Make the contact form actually send** — put a real web address into
-`CONTACT_ENDPOINT` in `src/data/navigation.js`. The form switches to a proper
-thank-you on its own. Until then it says honestly that it cannot send and offers
-the email address instead.
+**Make the contact form send** — put a real address into `CONTACT_ENDPOINT` in
+`src/data/navigation.js`. The form switches to a proper thank-you by itself.
 
 **Change how long a step holds** — `DWELL_MS` in `src/data/howItWorks.js`. The
-countdown ring reads the same number, so both change together.
+countdown ring reads the same number.
 
 **Change a colour** — `src/styles/base.css` names every colour once, and
-`index.html` repeats the same names for the styling tool. Change both, or they
-will disagree.
+`index.html` repeats the same names for Tailwind. Change both or they disagree.
 
-**Change the page width** — `SHELL` in `src/lib/layout.js`. Every section uses
-it, so they all move together.
+**Change the page width** — `SHELL` in `src/lib/layout.js`.
 
-**Add a new band to the home page** — write it in `src/sections/`, then add it to
-the list in `App.jsx`, giving it a background that keeps the alternation going.
+**Add a band to the home page** — write it in `src/sections/`, add it to the list
+in `App.jsx`, and give it a background that keeps the alternation going.
 
 ---
 
 ## 6 · The rules
 
-Settled decisions. Breaking one will look like a mistake even if nobody can say
+Settled decisions. Breaking one looks like a mistake even if nobody can say
 exactly why.
 
-1. **Green is for actions only.** Violet and blue are the site; green marks what
-   you can press, what is confirmed, what is the fix. It never fills a whole
-   section or a whole card.
-2. **No text sits on a pattern.** Text on a dotted background gets a plain patch
-   behind it.
-3. **Nothing ends with a full stop** — not headings, not card text, not captions.
-   Full stops *inside* a sentence stay.
-4. **No words in capitals only**, anywhere.
-5. **No colour fades on flat surfaces.** The only two exceptions are the dark
-   bands at the top and bottom, and the 3px coloured stripe.
-6. **Two headings never share the same important word.**
-7. **Nothing is hidden on a phone without a replacement.** If it matters on a
-   computer, it has to be reachable on a phone.
-8. **Check narrow screens (320–414px) after any layout change** — nothing should
+1. Green is for actions only. Violet and blue are the site; green marks what you
+   can press, what's confirmed, what's the fix. It never fills a section or a
+   card.
+2. No text sits on a pattern.
+3. Nothing ends with a full stop — not headings, not card text, not captions.
+   Full stops inside a sentence stay.
+4. No words in capitals only.
+5. No colour fades on flat surfaces. The exceptions are the dark bands top and
+   bottom, and the 3px stripe.
+6. Two headings never share the same important word.
+7. Nothing is hidden on a phone without a replacement.
+8. Check narrow screens (320–414px) after any layout change. Nothing should
    scroll sideways.
 
 ---
 
-## 7 · Word list
+## 7 · Where the site was made faster
 
-Short names that appear all through the code. The browser has to match them
-exactly, so they cannot be spelled out every time. The same list is kept at the
-top of `src/styles/base.css`.
+Most of this came from one rule: a lot of people will open this on a cheap phone,
+and it has to be smooth there.
+
+**Blur is the expensive one.** A blur makes the graphics card redraw the blurred
+area on every frame, and the cost grows with the *square* of the radius, so 10px
+costs four times what 5px costs. Three things follow from that:
+
+- Every radius on the site was cut by about 30% (roughly half the work, since it
+  squares). They now run from 3.5px on a phone to 18px for the patch behind text.
+- A blur always finishes early. Where a block fades in over 1.05 seconds, the
+  blur clears in 0.72 — so the expensive part is over in the first two-thirds
+  while the movement finishes as ordinary text.
+- It's always put on the smallest element that holds the content, never a
+  wrapper. Moving two blurs off a centring wrapper and onto the block inside cut
+  the blurred area by about a third for an identical result.
+
+**The purple glow in the dark bands has no blur at all.** Six full-width blurred
+layers is what made that section drag on older machines. The softness is baked
+into the colour steps of the gradients instead — a gradient is drawn once and
+then just moved about, which is nearly free. At these speeds you can't tell the
+difference.
+
+**Nothing animates off screen.** The glow, the step timer, the countdown ring and
+every fade-in are switched off unless their section is actually visible. Before
+that, a page left open ran six animated layers behind a section nobody was
+looking at.
+
+**One watcher instead of fifty.** Every fade-in shares a single observer rather
+than creating its own, and each element is dropped from it the moment it has
+appeared, so the list empties as you read down the page.
+
+**Scroll is read once per frame.** Scroll events fire far faster than the screen
+can redraw, and asking the browser for the scroll position forces it to
+recalculate layout. So the answer is taken at most once per frame.
+
+**No `will-change` on anything repeated.** It was on the buttons, which meant the
+graphics card held a separate layer for about 25 of them permanently. Browsers
+promote an element on their own while it's actually animating.
+
+**Filters end at `none`, not zero.** A zero-radius blur is still a blur as far as
+the browser is concerned, and it keeps that separate layer alive for as long as
+the page is open.
+
+**The suite list moves one thing.** Changing rows slides a single pre-drawn strip
+rather than mounting and unmounting cards, so no image is ever loaded twice.
+
+**Images are told their size in advance**, so nothing jumps around as they
+arrive, and everything below the first screen loads lazily.
+
+**Reduced motion cancels animations rather than shortening them.** A shortened
+one still fires the blur and the movement, which is the whole thing the setting
+is asking us not to do.
+
+---
+
+## 8 · Word list
+
+Short names used all through the code. The browser has to match them exactly, so
+they can't be spelled out every time. The same list sits at the top of
+`src/styles/base.css`.
 
 | Name | What it means |
 | --- | --- |
-| `aurora` | the dark purple background, used only at the very top and very bottom |
+| `aurora` | the dark purple background, top and bottom of the page only |
 | `bg-b` | the pale lavender background |
 | `bg-c` | the near-white background |
-| `dots` | the faint dot pattern on the two pale backgrounds |
-| `plate` | a soft patch of plain background colour behind text, so the dots never sit under words |
-| `flank-field` | the same dot pattern showing only down the outer edges of a white card |
-| `reveal` | fade in and rise slightly, once, as you scroll to it |
+| `dots` | the faint dot pattern on the pale backgrounds |
+| `plate` | a patch of plain colour behind text, keeping the dots out from under words |
+| `flank-field` | the same dots, showing only down the outer edges of a white card |
+| `reveal` | fade in and rise slightly, once |
 | `reveal-soft` | the same, but also sharpening from blurred to clear |
 | `mg` | the blur-into-focus arrival inside the product windows |
 | `dwell-ring` | the countdown drawn around the current step |
 | `disclose` | an answer opening to exactly the height of its own text |
-| `SHELL` | the one page width every section shares |
+| `SHELL` | the page width every section shares |
 | `DWELL_MS` | how long a step holds — 5.6 seconds |
-| `DAG` | the client's own term, used in the site's copy: a set of steps that run in a fixed, checkable order |
+| `DAG` | the client's own term, used in the site's copy: steps that run in a fixed, checkable order |

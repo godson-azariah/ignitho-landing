@@ -1,20 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE WORDS FOR ALL NINE SUITES
+/* Every word for the nine suites: names, taglines, summaries, figures, photos
+   and the agents listed on each page.
 
-   WHERE YOU SEE THIS
-     The nine cards in the catalogue and every one of the nine suite
-     pages. This is the biggest single piece of writing on the site.
-
-   WHAT IS IN HERE
-     · For each suite: its name, its tagline, whether it is a foundation
-       or an industry vertical, its executive summary, its figures, its
-       photograph, and every accelerator listed on its page.
-
-   WORTH KNOWING
-     EDIT SUITE WORDING HERE. There is no layout in this file, so
-     changing the text cannot break anything visually — though much
-     longer text will wrap differently on the cards.
-   ========================================================================== */
+   The biggest piece of writing on the site, and the safest file to edit —
+   there is no layout in here, so nothing can break visually. Much longer text
+   will wrap differently on the cards, and that is the only thing to watch. */
 
 import {
   Database,

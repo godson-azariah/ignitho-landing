@@ -1,24 +1,12 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  EVERY ANIMATION ON THE SITE
+/* Every animation on the site, and the four speeds they all use.
 
-   WHERE YOU SEE THIS
-     Everything that moves, fades or blurs.
+   Things either arrive (a block appearing, a window sharpening into focus) or
+   report something (the countdown ring, a colour following your pointer).
+   Nothing loops in front of the reader.
 
-   WHAT IS IN HERE
-     · The fade-and-lift as blocks scroll into view, and the
-       blur-into-focus version used on the hero and the section
-       headings.
-     · The rising lines of the hero headline.
-     · The blur-to-solid arrival of the walkthrough windows, and the way
-       the outgoing ones blur away again.
-     · The countdown ring around the active step.
-     · The small pops and the typing dots in the chat bubble.
-
-   WORTH KNOWING
-     Four movement speeds are defined at the top and everything uses one
-     of them, which is why the whole site feels like it moves the same
-     way.
-   ========================================================================== */
+   Blur is the expensive one: the graphics card redraws the blurred area every
+   frame. So it always clears early, always ends at "none" rather than zero,
+   and is only ever put on the smallest element that holds the content. */
 
 /* =========================================================================
    3. MOTION
@@ -36,10 +24,10 @@
   transform: none;
 }
 
-/* THE FOCUS PULL — the illustration's blur-to-solid entrance, brought out to the page
+/* THE focus pull — the illustration's blur-to-solid entrance, brought out to the page
    at a fraction of its strength.
 
-   OPT-IN, AND IT HAS TO BE. `filter` is the one property here that costs real
+   Opt-in, AND IT has to be. `filter` is the one property here that costs real
    GPU work: a blur is a convolution over the element's painted area, every
    frame it is running. Putting this on `.reveal` itself would have put it on
    every revealing element on the page — cards, images, whole grids — which is
@@ -47,7 +35,7 @@
    second class, added by hand, and only to blocks of TYPE: a heading, a
    paragraph, a field. Never a card, never anything holding an image.
 
-   SLOWED, AND THE NUMBERS ARE NOT ARBITRARY. The published recipe for this
+   Slowed, AND THE numbers are NOT arbitrary. The published recipe for this
    effect — Cruip's blur-reveal, the one most of the current crop of landing
    pages is built from — is a 1s duration, a 10px blur and a ~20px rise, with
    staggers spaced 200–300ms apart to walk the eye down the page. That is
@@ -56,7 +44,7 @@
    appeared", at 1.05s it registers as a camera settling. Slow is most of what
    reads as expensive.
 
-   1.05s for the lift, 0.72s for the blur. THE RATIO IS THE POINT, not either
+   1.05s for the lift, 0.72s for the blur. THE ratio IS THE point, not either
    number on its own: the blur must finish comfortably before the movement does,
    so the element is already sharp while it is still travelling the last few
    pixels. Resolving first and settling second reads as a lens finding focus;
@@ -79,7 +67,7 @@
    filter, and it keeps a separate layer the graphics card holds alive on the element for as long as
    the page is open. `none` releases it. */
 .reveal-soft {
-  filter: blur(var(--soft, 8px));
+  filter: blur(var(--soft, 5.5px));
   transform: translate3d(0, 22px, 0);
   transition:
     opacity 1.05s var(--ease-mg),
@@ -95,19 +83,19 @@
    still well inside the 20px ceiling above which a blur stops being a focus pull
    and starts being an expensive frosted pane. */
 .soft-lg {
-  --soft: 14px;
+  --soft: 10px;
 }
-/* SMALLER RADII ON SMALL SCREENS, which is the one piece of advice every source
+/* Smaller radii on small screens, which is the one piece of advice every source
    on this effect agrees on. Two reasons and they point the same way: a phone's
    type is roughly half the size, so the same radius is twice as strong against
    it, and a phone's GPU is the one that cannot afford the convolution. Written
    last so it wins over `.soft-lg` on the same element. */
 @media (max-width: 639px) {
   .reveal-soft {
-    --soft: 5px;
+    --soft: 3.5px;
   }
   .reveal-soft.soft-lg {
-    --soft: 9px;
+    --soft: 6.5px;
   }
 }
 
@@ -186,19 +174,19 @@
    from, `--mg-s` the scale it grows from, `--mg-b` how far out of focus it
    starts.
 
-   THE CURVE IS THE WHOLE THING. `cubic-bezier(0.32, 0.72, 0, 1)` is the
+   THE curve IS THE whole thing. `cubic-bezier(0.32, 0.72, 0, 1)` is the
    settle Apple uses for sheets and for the Dynamic Island: it leaves fast,
    covers most of the distance early, and then eases into place over a long
    tail with a zero-slope landing. That last part is what reads as expensive.
    An `ease-out` arrives and stops; this one arrives and SETTLES.
 
-   BLUR RESOLVES BEFORE THE TRANSFORM DOES, on purpose — the 55% stop. The
+   Blur resolves before THE transform does, on purpose — the 55% stop. The
    element comes into focus while it is still moving, so it is legible before
    it lands rather than snapping into clarity at the end. That is the order
    the Dynamic Island does it in, and reversing it makes the whole thing feel
    like a cheap fade.
 
-   ON THE BLUR AND THE HERO'S BAN ON IT: `backgrounds.css` refuses `filter:
+   On THE blur AND THE hero's ban on IT: `backgrounds.css` refuses `filter:
    blur()` outright, and that still stands there — five full-bleed layers,
    re-drawn to pixels every frame, forever. This is the opposite case: five small
    boxes, once, for 720ms, on an element the user is looking at. The cost is
@@ -208,7 +196,7 @@
   /* The settle: fast out, most of the distance early, long zero-slope
      landing. Used where nothing should overshoot. */
   --ease-mg: cubic-bezier(0.32, 0.72, 0, 1);
-  /* THE SAME CURVE WITH A LITTLE OVERSHOOT PAST 1, which is what turns the
+  /* THE same curve with A Little overshoot past 1, which is what turns the
      entrance from a settle into a bounce. The second control point sits at
      1.28 rather than 1, so the element carries a few percent past its resting
      size and eases back — the ripple then reads as one wave rolling through
@@ -225,7 +213,7 @@
   animation: mg-in 0.76s var(--ease-mg-bounce) both;
   animation-delay: var(--mg-d, 0ms);
 }
-/* THE BLUR IS FINISHED BY 45%, AND THAT IS ABOUT THE BOUNCE, NOT THE LOOK.
+/* THE blur IS finished by 45%, AND that IS about THE bounce, NOT THE look.
 
    An overshooting curve drives the eased value past 1 in the tail. Every
    property interpolating over that stretch overshoots with it — which is
@@ -238,7 +226,7 @@
    is how the Dynamic Island does it, and reversing the two makes the whole
    thing read as a cheap fade.
 
-   `filter: none` RATHER THAN `filter: blur(0px)`, AND THAT IS NOT A STYLE
+   `filter: none` RATHER THAN `filter: blur(0px)`, AND that IS NOT A STYLE
    CHOICE. Lightning CSS minifies `blur(0px)` by dropping the argument
    entirely, and ships `filter: blur()`. The spec does allow an omitted
    argument, so it is legal — but a filter function with no parameter is a
@@ -250,7 +238,7 @@
 @keyframes mg-in {
   0% {
     opacity: 0;
-    filter: blur(var(--mg-b, 9px));
+    filter: blur(var(--mg-b, 6px));
     transform: translate3d(var(--mg-x, 0px), var(--mg-y, 14px), 0) scale(var(--mg-s, 0.965));
   }
   45% {
@@ -263,14 +251,14 @@
   }
 }
 
-/* THE EXIT, WHICH IS THE ENTRANCE RUN BACKWARDS.
+/* THE exit, which IS THE entrance run backwards.
 
    A panel that arrives out of focus and leaves by vanishing is only half an
    effect — the blur reads as production value on the way in and as a missing
    frame on the way out. This is `mg-in` reversed: sharp to blurred, full size
    to a hair under, opaque to gone.
 
-   ON THE SETTLE CURVE, NOT THE BOUNCE. Something leaving has nowhere to settle
+   On THE settle curve, NOT THE bounce. Something leaving has nowhere to settle
    into, so an overshoot would push it back toward the viewer for a moment
    before it went — which reads as a stumble. Bounce belongs to arrivals.
 
@@ -289,12 +277,12 @@
   }
   100% {
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(7px);
     transform: scale(0.972);
   }
 }
 
-/* THE GROUP RIPPLE. The windows arrive one at a time, but the block they belong
+/* THE group ripple. The windows arrive one at a time, but the block they belong
    to has to arrive as one thing too, or four staggered elements read as four
    events rather than as one panel changing.
 
@@ -302,7 +290,7 @@
    of focus, settling back on the bouncing curve — and the stagger inside it
    then reads as a ripple THROUGH something rather than as a queue.
 
-   TWO PROPERTIES, NOT THREE: scale and blur, no opacity. The children already
+   Two properties, NOT three: scale and blur, no opacity. The children already
    fade, and a second fade over the top of theirs would double the ramp and make
    the panel look like it is arriving through gauze. Scale and blur are the two
    that compound usefully — a soft, slightly-too-large block resolving into a
@@ -318,7 +306,7 @@
 @keyframes stage-swap {
   0% {
     transform: scale(1.04);
-    filter: blur(5px);
+    filter: blur(3.5px);
   }
   40% {
     filter: none;
@@ -329,14 +317,14 @@
   }
 }
 
-/* THE PANEL'S OWN BOUNCE — the bordered block, not its contents.
+/* THE panel's own bounce — the bordered block, not its contents.
 
    `stage-swap` above moves the windows INSIDE the panel. This moves the panel.
    Both fire on the same change, so the block dips and springs back while its
    contents ripple through it, and the whole thing reads as one object reacting
    rather than as a slideshow swapping frames.
 
-   1.5% INWARD, WHICH IS SMALL ON PURPOSE. This element is 700px wide on a
+   1.5% Inward, which IS small on purpose. This element is 700px wide on a
    desktop, so 1.5% is a 10px dip — plenty to feel, and the bouncing curve
    carries it a shade past its resting size on the way back, which is where the
    spring comes from. Any more and a panel with a visible border starts to look
@@ -376,7 +364,7 @@
   }
 }
 
-/* THE DWELL METER, DRAWN AROUND THE STEP'S ICON RATHER THAN DOWN THE CARD.
+/* THE dwell meter, drawn around THE step's icon rather than down THE card.
 
    It was a 3px column pinned to the card's left edge, and the card has a 16px
    radius — so the clip turned the top and bottom of the meter into two curved

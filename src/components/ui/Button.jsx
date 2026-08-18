@@ -1,21 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  EVERY BUTTON ON THE SITE
+/* Every button on the site. One rounded pill, four colours: green for the main
+   action, deep violet, white, near-black.
 
-   WHERE YOU SEE THIS
-     All of them: Contact Sales, Sign in, Close, Clear, Test Agent, the
-     phone menu button.
-
-   WHAT IS IN HERE
-     · One rounded pill in one of four colours — green for the main
-       action, deep violet, white, or near-black.
-     · On hover the colour deepens slightly. Nothing moves.
-     · When pressed it dims a little.
-
-   WORTH KNOWING
-     These buttons used to slide their label upwards and change to a
-     second colour on hover. That was removed: a button is waiting to be
-     pressed, so it should not look like it is going somewhere.
-   ========================================================================== */
+   It used to slide its label upwards and change colour on hover. That is gone.
+   A button is waiting to be pressed, so it should not look like it is heading
+   somewhere. Now it holds still and the colour deepens a little. */
 
 /* The page's one button — a plain solid pill.
 

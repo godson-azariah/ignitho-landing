@@ -1,20 +1,10 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE WEB ADDRESS AND THE BACK BUTTON
+/* Reads and updates the address bar, so /faq and /suites/… are real addresses
+   you can bookmark, share or reload.
 
-   WHERE YOU SEE THIS
-     The address bar. It is why /faq and /suites/... are real addresses
-     you can bookmark or share, and why the back button works.
-
-   WHAT IS IN HERE
-     · It reads the address to decide which page to show, and updates
-       the address when you navigate.
-     · Going back restores where you were on the page you came from.
-
-   WORTH KNOWING
-     This is why the on-page "back to home" buttons could be removed —
-     the browser own back button does the job better, because it returns
-     you to wherever you actually came from.
-   ========================================================================== */
+   Back and forward are the browser's job. It also restores your scroll
+   position, which is why the on-page "back to home" buttons could go: a drawn
+   button always returns to the same place, while back returns you to wherever
+   you actually came from. */
 
 import { useCallback, useEffect, useState } from 'react';
 
@@ -31,7 +21,7 @@ import { useCallback, useEffect, useState } from 'react';
    that is larger than every icon on the page put together. If a fourth shape
    arrives with children, this stops being the right call.
 
-   THE SUITE IDS WERE ALREADY SLUGS — `data-engineering`, `supply-chain`, `bfsi`
+   THE suite ids were already slugs — `data-engineering`, `supply-chain`, `bfsi`
    — so the URL needs no encoding layer and no lookup table. That is luck rather
    than planning, but it is the difference between this being thirty lines and
    being a hundred.

@@ -1,18 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE ONE WATCHER THAT TRIGGERS EVERY FADE-IN
+/* One watcher for every fade-in on the page, rather than one each.
 
-   WHERE YOU SEE THIS
-     Everywhere something fades in as you scroll.
-
-   WHAT IS IN HERE
-     · A single watcher shared by all fifty-odd revealing blocks,
-       instead of one each. Blocks stop being watched the moment they
-       have appeared.
-
-   WORTH KNOWING
-     This is purely about speed — fifty separate watchers is real work
-     for no gain.
-   ========================================================================== */
+   There are about fifty of them, and fifty separate watchers all recalculate
+   on every scroll for no benefit. Each element is dropped the moment it has
+   appeared, so the list empties itself as you read down. */
 
 /* One IntersectionObserver for the whole page rather than one per element.
 

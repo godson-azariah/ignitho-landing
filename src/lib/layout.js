@@ -1,20 +1,10 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE PAGE WIDTH, USED BY EVERY SECTION
+/* The one page width, used by every section. Change it here and the whole page
+   moves together.
 
-   WHERE YOU SEE THIS
-     Everywhere, invisibly — it is why every section left and right
-     edges line up.
-
-   WHAT IS IN HERE
-     · One measurement: how wide the content may be, and how far it sits
-       from the screen edges.
-     · The list of card header colours, and the shared styling for form
-       fields.
-
-   WORTH KNOWING
-     Change the width here and the whole page moves together, which is
-     why it is one setting instead of fifty.
-   ========================================================================== */
+   Also the card header colours, and the shared look of a form field — the
+   contact form's inputs and its dropdowns have to be indistinguishable, and a
+   select that sits a pixel off its neighbour is the first thing anyone
+   notices. */
 
 /* Shared layout and palette constants.
 

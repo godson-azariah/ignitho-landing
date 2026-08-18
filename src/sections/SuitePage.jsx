@@ -1,23 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  AN INDIVIDUAL SUITE PAGE
+/* One suite, as its own page. Dark heading band, the summary and figures, the
+   list of agents with a Test Agent button on each, a Contact Sales card, and
+   related suites at the foot.
 
-   WHERE YOU SEE THIS
-     Its own page, reached by clicking any of the nine suites. The
-     address becomes /suites/something, so the back button returns you
-     to where you were.
-
-   WHAT IS IN HERE
-     · The dark heading band with the suite name and tagline.
-     · The executive summary and the figures that suite claims.
-     · "Agents in this suite" — the accelerator rows, each with a
-       "Governed DAG Ready" badge and a Test Agent button that opens a
-       simulator.
-     · A Contact Sales card at the side, and related suites at the foot.
-
-   WORTH KNOWING
-     ONE file draws all nine suite pages. The layout is the same every
-     time; only the content passed into it changes.
-   ========================================================================== */
+   One file draws all nine of these. The layout never changes; only the suite
+   handed to it does. */
 
 import { useCallback, useState } from 'react';
 import { ArrowRight, Check, Play } from 'lucide-react';
@@ -39,7 +25,7 @@ export function SuitePage({ suite, openContact }) {
     <main>
       {/* top bar · BACKGROUND A (DARK PURPLE)
 
-          NO "BACK TO ALL SUITES", for the same reason the FAQ page lost its back
+          NO "Back to all suites", for the same reason the FAQ page lost its back
           button: every suite has its own URL now, so the browser's back is the
           way out — and it is the better one, because a drawn button always
           returns to the catalogue while back returns to wherever the reader
@@ -162,7 +148,7 @@ export function SuitePage({ suite, openContact }) {
                       ))}
                     </div>
 
-                    {/* THE BUTTON'S LABEL CANNOT WRAP, SO ITS PADDING HAS TO
+                    {/* THE button's label cannot wrap, so its padding has to
                         GIVE INSTEAD.
 
                         `.btn` is `white-space: nowrap`, so a label wider than
@@ -211,7 +197,7 @@ export function SuitePage({ suite, openContact }) {
           <div className="plate relative">
             {suite.accelerators.map((acc, idx) => (
               <FadeIn key={acc.name} delay={Math.min(idx * 55, 260)}>
-                {/* A PLAIN TINT, NOT THE WIPE THE SUITE LIST USES.
+                {/* A Plain tint, NOT THE wipe THE suite list uses.
 
                     The catalog's rows are the page's main navigation — nine
                     destinations, so a violet wipe that inverts the whole row

@@ -1,21 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE MEASUREMENTS THE ILLUSTRATED WINDOWS SHARE
+/* Sizes and colours the four step pictures share: the white window with its
+   shadow, the three type sizes used inside it, the tint for a selected row.
 
-   WHERE YOU SEE THIS
-     Inside the product windows beside "Four steps, days not months".
-
-   WHAT IS IN HERE
-     · The white window: its rounded corners, thin line and three-layer
-       shadow, written once so all four panels match.
-     · The three type sizes used inside the windows — a label, a value,
-       and a micro-caption.
-     · The tint used for a selected row, and the two window positions,
-       one wide at the top and one narrow at the bottom.
-
-   WORTH KNOWING
-     No components live here, only measurements. Anything drawn is in
-     chrome.jsx next door, which is what keeps hot-reloading working.
-   ========================================================================== */
+   Kept apart from WindowParts.jsx next door for a dull but real reason: a file
+   that exports both settings and components breaks hot reloading while you
+   work. */
 
 import { SUITES } from '../../../data/suites.js';
 import { TABS } from '../../../data/navigation.js';

@@ -1,24 +1,12 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE TABLE OF CONTENTS FOR THE WHOLE SITE
+/* The running order of the home page, and the switch between the three kinds
+   of page: home, one suite, or the questions page.
 
-   WHERE YOU SEE THIS
-     Everything. This file says which sections exist and in what order.
+   The top bar, phone menu, chat bubble and contact form live here too, which
+   is why they are on every page. Two things are held here rather than lower
+   down, because two sections each need them: which suite is open, and whatever
+   was last searched for.
 
-   WHAT IS IN HERE
-     · The running order of the home page: hero, the four outcome cards,
-       the savings calculator, the nine suites, the four steps, the
-       ready-when-you-are card, the dark closing section with the map,
-       then the footer.
-     · Which PAGE you are looking at — the home page, one suite page, or
-       the questions page — and the web address, so the browser back
-       button works.
-     · The menu bar, the phone menu, the chat bubble and the Contact
-       Sales form, which are on every page because they live here.
-
-   WORTH KNOWING
-     To move a section up or down the home page, or to remove one, this
-     is the only file you need.
-   ========================================================================== */
+   If you want to move a band of the home page, or drop one, this is the file. */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -66,7 +54,7 @@ const NAV_BY_ID = Object.fromEntries(Object.entries(NAV_TARGETS).map(([k, v]) =>
    catalog, the conversation in the chat widget — which is why dragging a
    slider no longer re-renders the whole site. */
 export default function App() {
-  /* THE PAGES ARE URLS NOW, NOT BOOLEANS.
+  /* THE pages are URLS now, NOT booleans.
 
      They were `activeSuiteId` and `faqOpen`, which the browser knew nothing
      about — so back left the site entirely from a suite page, a suite could not
@@ -82,7 +70,7 @@ export default function App() {
      per keystroke: the hero holds what you are typing until you commit it. */
   const [searchQuery, setSearchQuery] = useState('');
 
-  /* WHAT TO DO ABOUT SCROLL AFTER A ROUTE CHANGE, and `null` is a real answer.
+  /* What to do about scroll after A ROUTE CHANGE, and `null` is a real answer.
 
      A push is ours, so we place the reader: at the top of the new page, or at
      the section they asked for. A POP is the browser's, and the browser already
@@ -135,7 +123,7 @@ export default function App() {
   /* Run a search from the hero: set the term, then go to the results. Routed
      through `goTo` rather than a direct scroll so it still behaves if it is
      ever called while a suite page is open. */
-  /* THE SCROLL IS CONDITIONAL ON THERE BEING SOMETHING TO SCROLL TO.
+  /* THE scroll IS conditional on there being something to scroll to.
 
      Clearing the hero's field now commits an empty search — that is how one
      clear can undo both ends of it — and an empty search must not then drag the
@@ -150,7 +138,7 @@ export default function App() {
     [goTo]
   );
 
-  /* A LOOKUP RATHER THAN A TERNARY CHAIN, and the change is not cosmetic.
+  /* A Lookup rather than A TERNARY CHAIN, and the change is not cosmetic.
 
      The old form ended in a fallback that sent anything unrecognised to the
      catalogue, so adding "How It Works" to `NAV_LINKS` would have silently
@@ -171,7 +159,7 @@ export default function App() {
     [goHome, goTo, openFaq]
   );
 
-  /* WHICH DESTINATION TO MARK IN THE NAVBAR, and it comes from two different
+  /* Which destination to mark in THE navbar, and it comes from two different
      places because the destinations are two different kinds of thing.
 
      "FAQ" is a page, so it is answered by the URL — flatly true or false, no
@@ -231,7 +219,7 @@ export default function App() {
         activeNav={activeNav}
       />
 
-      {/* THREE PAGES, ONE AT A TIME, and the order of the test matters: the FAQ
+      {/* Three pages, one at A TIME, and the order of the test matters: the FAQ
           is checked first so that reaching it from a suite page shows the FAQ
           rather than the suite it was opened from. `goHome` clears both, so
           nothing can end up with two set at once. */}

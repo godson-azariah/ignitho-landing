@@ -1,22 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE DARK CLOSING SECTION — "Pick one workflow"
+/* The dark band at the bottom: last heading, Contact Sales, and the dotted
+   world map.
 
-   WHERE YOU SEE THIS
-     The last full section before the footer, on the dark violet-to-blue
-     band.
-
-   WHAT IS IN HERE
-     · The closing headline "Pick one workflow. We will take it to
-       production" and the green Contact Sales button, which opens the
-       contact form.
-     · The dotted world map with the office markers: Chicago, New York,
-       Richmond, Tampa (HQ), San Jose, London, Brighton, Stockholm,
-       Bengaluru, Chennai.
-
-   WORTH KNOWING
-     The map is decoration, not a real map — every marker is placed by
-     hand, so moving an office means moving a dot here.
-   ========================================================================== */
+   The map is a picture, not a real map. Every office marker is positioned by
+   hand in this file, so moving an office means moving a dot here. */
 
 import { ArrowRight } from 'lucide-react';
 import { FadeIn } from '../components/ui/FadeIn.jsx';
@@ -34,10 +20,10 @@ export function ClosingSection({ openContact }) {
   return (
     <section className="aurora dots-inv relative py-12 md:py-16">
       <div className={SHELL}>
-        {/* `gap-x-0` UNTIL THE COLUMNS ACTUALLY SPLIT. THIS IS THE BUG.
+        {/* `gap-x-0` Until THE columns actually split. This IS THE bug.
 
             `grid-cols-12` is `repeat(12, minmax(0, 1fr))`. Those tracks can
-            be squeezed to zero — but a COLUMN GAP IS A FIXED LENGTH and never
+            be squeezed to zero — but a Column gap IS A FIXED LENGTH and never
             shrinks at all. So this grid has a hard minimum width of 11 × 40px
             = 440px, whatever the container says, and on a 412px screen the
             shell only offers it 372px. The grid laid out to 440 anyway and
@@ -53,7 +39,7 @@ export function ClosingSection({ openContact }) {
             BETWEEN columns, and below `lg` both children are `col-span-12`,
             so there is no between. The 40px returns with the second column. */}
         <FadeIn className="relative grid grid-cols-12 items-center gap-x-0 gap-y-8 lg:gap-x-10">
-          {/* CENTRED WHILE THERE IS ONE COLUMN, LEFT ONCE THERE ARE TWO.
+          {/* Centred while there IS one column, left once there are two.
 
               Left alignment here was never a choice about this heading — it
               is what a heading does when something sits beside it. Stacked,
@@ -97,7 +83,7 @@ export function ClosingSection({ openContact }) {
               </span>
             </h2>
 
-            {/* NO `w-full`. THE BUTTON SIZES TO ITS OWN LABEL AT EVERY WIDTH.
+            {/* NO `w-full`. THE button sizes to its own label at every width.
 
                 `w-full sm:w-auto` was left over from when this button lived
                 alone in the right-hand column and had to fill it. Under the
@@ -145,8 +131,8 @@ export function ClosingSection({ openContact }) {
               a hard-right map under it. Centred until the grid splits at
               `lg`, then back to the right edge.
 
-              A GUTTER ON BOTH SIDES — WHICH IS WHAT THE 440px CAP ALWAYS
-              MEANT. IT JUST NEVER GOT THE CHANCE.
+              A Gutter on both sides — Which IS what THE 440px CAP ALWAYS
+              MEANT. IT just NEVER got THE chance.
 
               The full-bleed version that briefly lived here was solving the
               wrong problem. The map looked like it ran off the right edge

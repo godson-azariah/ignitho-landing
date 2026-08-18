@@ -1,21 +1,6 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  ONE SUITE, AS A CARD
-
-   WHERE YOU SEE THIS
-     The nine cards in the catalogue, and the related-suite cards on a
-     suite page.
-
-   WHAT IS IN HERE
-     · A white card with a coloured icon square, the suite name on two
-       lines, its tagline, how many agents are inside it, and its target
-       return.
-     · A thin brand stripe across the top edge.
-     · The whole card is clickable and opens that suite page.
-
-   WORTH KNOWING
-     The card draws whatever suite it is handed — it holds no words of
-     its own.
-   ========================================================================== */
+/* One suite drawn as a white card, used in the catalogue and again at the foot
+   of a suite page. Hand it a suite and it draws whatever it is given; there
+   are no words of its own in here. */
 
 import { ArrowUpRight } from 'lucide-react';
 import { BLOCKS } from '../../lib/layout.js';

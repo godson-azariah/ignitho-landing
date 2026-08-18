@@ -1,21 +1,10 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE FADE-IN AS YOU SCROLL
+/* Wrap anything in this and it fades upwards into view as you scroll to it.
+   Once only — scrolling back up does not replay it.
 
-   WHERE YOU SEE THIS
-     Everywhere. Almost every block on the site is wrapped in this,
-     which is why things ease upwards into place as you scroll to them.
-
-   WHAT IS IN HERE
-     · It watches for its content coming into view, then fades and lifts
-       it in.
-     · It happens ONCE — scrolling back up does not replay it.
-     · A delay can be passed in, which is how rows of cards arrive one
-       after another instead of all together.
-
-   WORTH KNOWING
-     Some blocks — the hero and the section headings — also blur into
-     focus. That is the same mechanism with one extra class on it.
-   ========================================================================== */
+   Pass a delay and a row of cards will arrive one after another instead of all
+   at once. Add the reveal-soft class as well and it sharpens from blurred to
+   clear; that costs real work on the graphics card, so it is only used on the
+   opening band and the section headings. */
 
 import { useEffect, useRef, useState } from 'react';
 import { observeReveal } from '../../lib/revealObserver.js';

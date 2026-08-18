@@ -1,25 +1,12 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE MENU BAR ALONG THE TOP
+/* The bar across the top of every page. Name on the left, three links in the
+   middle, FAQ and the two buttons on the right. On a phone all of that becomes
+   one round menu button.
 
-   WHERE YOU SEE THIS
-     Fixed to the top of every page. It does not slide away when you
-     scroll.
+   It is a three-column grid with the outer two forced to equal width. That is
+   what puts the middle links on the centre of the page rather than in the gap
+   left over, which is where they ended up in the two earlier attempts.
 
-   WHAT IS IN HERE
-     · The Ignitho AI Ignitho AI name on the left, which returns you to the
-       home page.
-     · In the middle: ROI Calculator, 9 Core Suites, How It Works. Each
-       scrolls to that section, and whichever you are currently looking
-       at turns violet with a line under it.
-     · On the right: FAQ with a green speech-bubble icon, the green
-       Contact Sales button, and the violet Sign in button.
-     · On a phone all of that collapses to the round menu button on the
-       right.
-
-   WORTH KNOWING
-     The bar gains a soft shadow once the page has scrolled, which is
-     the only thing about it that changes.
-   ========================================================================== */
+   It no longer hides when you scroll down; it just picks up a shadow. */
 
 import { ArrowUpRight, MessageCircle, Menu } from 'lucide-react';
 import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
@@ -48,7 +35,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
           scrolled ? 'shadow-[0_16px_36px_-30px_rgba(22,6,58,0.95)]' : 'shadow-none'
         }`}
       >
-        {/* A THREE-COLUMN GRID WITH EQUAL FLANKS — which is what "centred on the
+        {/* A Three-column grid with equal flanks — which is what "centred on the
             page" actually requires, and neither of the two previous layouts
             could give.
 
@@ -70,7 +57,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             cannot silently overlap. At 1024 — the width this appears at — the
             three tracks come to about 930px inside a 960px shell.
 
-            EVERY ITEM IS PLACED EXPLICITLY, and that is a bug fix rather than
+            Every item IS placed explicitly, and that is a bug fix rather than
             tidiness. A `display: none` element is not a grid item at all — it is
             removed from layout, it does not hold a cell, and auto-placement
             simply moves the next item up into the track it would have used. So
@@ -101,7 +88,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             </span>
           </button>
 
-          {/* THE MIDDLE TRACK — sized to its own content, centred by the two
+          {/* THE middle track — sized to its own content, centred by the two
               equal tracks either side of it.
 
               The gap steps rather than sitting at one value: 20px where the row
@@ -110,7 +97,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
               type stays at 15px at every width — shrinking a nav label to buy
               layout is the kind of saving a reader pays for. */}
           <div className="col-start-2 hidden items-center justify-center gap-5 lg:flex xl:gap-9">
-            {/* FAQ IS FILTERED OUT HERE AND RENDERED BESIDE THE ACTIONS.
+            {/* FAQ IS filtered out here AND rendered beside THE actions.
 
                 It is the odd one among the four: the other three scroll to a
                 section of the page you are already on, and this one leaves for
@@ -128,7 +115,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
                       "you are here" to anything not looking at the colour, and
                       without it the state is purple type and nothing else. */
                   aria-current={on ? 'page' : undefined}
-                  /* NO WEIGHT CHANGE IN THE ACTIVE STATE, deliberately. Medium
+                  /* No weight change in THE active state, deliberately. Medium
                       to semibold widens the label by a few pixels, and in a row
                       that is centred between two fixed ends every neighbour
                       shifts sideways as you scroll past a section boundary.
@@ -156,7 +143,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             })}
           </div>
 
-          {/* ONE GAP FOR ALL THREE, AND IT IS A SMALL ONE.
+          {/* One gap for all three, AND IT IS A SMALL ONE.
 
               These are the three things you LEAVE for rather than scroll to,
               and they now read as one cluster: 10px between each, nothing
@@ -170,7 +157,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
               buttons would sit at the track's left edge instead of the page's
               right. */}
           <div className="col-start-3 flex items-center justify-end gap-2.5">
-            {/* THE ONE ICON IN THE BAR, AND IT IS TEAL.
+            {/* THE one icon in THE bar, AND IT IS teal.
 
                 Colour with a job rather than colour for its own sake: the bar is
                 otherwise a Ignitho AI name, four labels and two pills, and this single
@@ -211,7 +198,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
 
             {/* below lg both actions live in the menu sheet, so the bar keeps
                 to a Ignitho AI name and one control */}
-            {/* TIGHTER THAN THE PAGE'S OTHER PRIMARY BUTTONS, on purpose. A
+            {/* Tighter than THE page's other primary buttons, on purpose. A
                 button in a 72px bar is not the same object as one at the end of
                 a section: it shares its row with a Ignitho AI name, three destinations
                 and a second action, and 24px of padding either side of a
@@ -224,7 +211,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
               </PrimaryButton>
             </div>
 
-            {/* AN ANCHOR, NOT A BUTTON WITH A CLICK HANDLER. This leaves the
+            {/* An anchor, NOT A BUTTON WITH A CLICK HANDLER. This leaves the
                 site for the application on another host, and a thing that
                 navigates has to be a link — for middle-click, copy-link, the
                 status-bar preview, and the role a screen reader announces.

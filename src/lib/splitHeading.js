@@ -1,20 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  BREAKS A SUITE NAME INTO TWO TIDY LINES
+/* Breaks a suite name into two lines at a chosen word.
 
-   WHERE YOU SEE THIS
-     The names on the nine suite cards, and the headings on the suite
-     pages.
-
-   WHAT IS IN HERE
-     · It chooses the break point by counting words, so "Enterprise Data
-       Foundation Suite" always breaks in the same place instead of
-       wherever the box happens to run out.
-
-   WORTH KNOWING
-     Left to itself the browser breaks each name differently, so a row
-     of cards ends up with some titles on one line and some on two, and
-     nothing aligns.
-   ========================================================================== */
+   Left alone, the browser breaks each name wherever the box runs out, so a row
+   of cards ends up with some titles on one line and some on two and nothing
+   lines up. Choosing the break by word count gives the same shape every time. */
 
 /* Words that should not be left hanging at the end of a line */
 const HANGING = new Set(['&', 'and', 'or', 'of', 'the', 'for', 'to', 'with']);

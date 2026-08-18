@@ -1,17 +1,5 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE SMALL + MARKS AT THE CORNERS OF SECTIONS
-
-   WHERE YOU SEE THIS
-     Tiny grey plus signs at the top corners of several sections.
-
-   WHAT IS IN HERE
-     · One character. It is a printer alignment mark, borrowed as
-       decoration.
-
-   WORTH KNOWING
-     It shows where the page content edges are, which is part of what
-     makes the sections feel aligned with each other.
-   ========================================================================== */
+/* The little + at the corners of a section. It is a printer's alignment mark,
+   used here to show where the page's content edges are. */
 
 /* Swiss registration mark — a printer's alignment cross, used to pin the
    corners of a section's measure. */

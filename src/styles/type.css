@@ -1,19 +1,6 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE HEADLINE STYLES
-
-   WHERE YOU SEE THIS
-     Every heading on the site.
-
-   WHAT IS IN HERE
-     · The italic serif accent — the second half of nearly every
-       heading, in violet.
-     · The outlined word in the hero headline ("prompt").
-     · The rising-line effect on the hero headline.
-
-   WORTH KNOWING
-     Three typefaces, each with one job: one for structure, one for
-     accent, one for figures.
-   ========================================================================== */
+/* Headline styles: the italic serif half of nearly every heading, the outlined
+   word in the opening headline, and the effect that lifts headline lines into
+   place. */
 
 /* =========================================================================
    2. TYPE
@@ -21,7 +8,7 @@
 
 /* Only the lavender outline is still in use — on "Measurable" in the hero
    headline and the big numeral on the suite top bar. */
-/* A FAINT FILL, NOT A FULLY TRANSPARENT ONE.
+/* A Faint fill, NOT A Fully transparent one.
 
    At `color: transparent` this is a wireframe: the counters of a, o and p go
    the same colour as the ground, so at a glance the word reads as a shape

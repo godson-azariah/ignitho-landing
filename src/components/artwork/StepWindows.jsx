@@ -1,23 +1,13 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE ILLUSTRATED PRODUCT WINDOWS IN THE WALKTHROUGH
+/* Holds the four step pictures and fades between them.
 
-   WHERE YOU SEE THIS
-     The right-hand side of "Four steps, days not months".
+   The outgoing panel stays mounted while it blurs away, which is the only way
+   an exit animation can run at all. The 360ms it waits has to match the length
+   of the animation in motion.css; if the two drift apart the panel either
+   vanishes halfway or hangs around after it has finished.
 
-   WHAT IS IN HERE
-     · Two overlapping white windows per step, one on a phone, drawn to
-       look like real screens: title bars, toolbars, tables, sliders,
-       progress bars.
-     · Step 1 shows the catalogue, step 2 a test run, step 3 a
-       deployment, step 4 the measured return.
-     · When the step changes the outgoing windows blur away and the new
-       ones blur into focus, one element after another.
+   All of it is decoration, so the whole thing is hidden from screen readers.
+   Every word in these pictures is already in the step text beside them. */
 
-   WORTH KNOWING
-     It is a picture, not a real interface — nothing in it can be
-     clicked, and screen readers skip it, because every word in it is
-     already in the step text beside it.
-   ========================================================================== */
 import { useEffect, useState } from 'react';
 
 import { Step1Choose } from './steps/Step1Choose.jsx';
@@ -28,33 +18,33 @@ import { Step4Measure } from './steps/Step4Measure.jsx';
 /* The illustration beside the four steps: two windows per step, each one built
    to read as a working screen rather than as a picture of one.
 
-   WHAT MAKES A MOCK-UP LOOK LIKE AN INTERFACE, and what these windows now have:
+   WHAT MAKES A Mock-up look like an interface, and what these windows now have:
 
-     · CHROME THAT DOES SOMETHING. A title bar with dots and a name, plus a
+     · Chrome that does something. A title bar with dots and a name, plus a
        right-hand slot carrying live state — a count, an elapsed time, a unit.
-     · A TOOLBAR UNDER THE CHROME. Real apps put controls in a strip of their
+     · A Toolbar under THE chrome. Real apps put controls in a strip of their
        own, separated by a thin line: a field, icon buttons, a segmented view
        switch. A screen with no controls is a diagram.
-     · COLUMN HEADERS OVER ROWS. Two words of tiny mono over a list is the
+     · Column headers over rows. Two words of tiny mono over a list is the
        single cheapest signal that the list is DATA.
-     · A STATUS BAR AT THE FOOT. Count on the left, context on the right, above
+     · A Status bar at THE foot. Count on the left, context on the right, above
        a thin line. Every real window has one and no illustration ever does.
-     · EDGES BETWEEN THE DAG NODES. They were three adjacent boxes with gaps,
+     · Edges between THE DAG nodes. They were three adjacent boxes with gaps,
        which is a row of cards; a pipeline needs the connections drawn, and the
        reached ones fill teal behind the node that follows.
-     · CONTROLS IN THEIR REAL STATES. The calculator window carries the actual
+     · Controls in their real states. The calculator window carries the actual
        stepper, the actual slider with its 50 and 10,000 end stops, and the
        handle sitting at the position 500 employees really puts it.
-     · RIGHT-ALIGNED VALUES AGAINST LEFT-ALIGNED LABELS, mono for anything
+     · Right-aligned values against left-aligned labels, mono for anything
        numeric. That one alignment habit does more for realism than any amount
        of decoration.
 
-   THE PALETTE IS UNTOUCHED. White windows, `paper-2` for recessed controls,
+   THE palette IS untouched. White windows, `paper-2` for recessed controls,
    violet tints for selection, ink for type, `divider` thin lines, and teal on
    the accent alone — one confirmed state and one measured outcome per window.
    Nothing here goes dark and nothing new enters the palette.
 
-   THE COMPOSITION IS A DIAGONAL: a wide window at the TOP against one side, a
+   THE composition IS A DIAGONAL: a wide window at the TOP against one side, a
    narrow one at the BOTTOM against the OTHER, alternating which side leads. Their
    widths sum past 100% so they must overlap horizontally, and a 22px negative
    top margin overlaps them vertically — so the meeting is a CORNER, the only
@@ -63,9 +53,9 @@ import { Step4Measure } from './steps/Step4Measure.jsx';
    content, and every offset is measured from the windows' own edges so the
    diagonal survives the illustration being three different heights.
 
-   ONE WINDOW ON A PHONE. Two overlapping windows in a 290px box is a pile.
+   One window on A PHONE. Two overlapping windows in a 290px box is a pile.
 
-   THE WHOLE STAGE IS DECORATION — everything it says is in the step copy beside
+   THE whole stage IS decoration — everything it says is in the step copy beside
    it, so it is `aria-hidden` at the root and none of it is announced. */
 
 
@@ -83,7 +73,7 @@ const EXIT_MS = 360;
 
 const CENTRE = 'absolute inset-0 grid place-items-center p-5 sm:p-8';
 
-/* THE OUTGOING PANEL HAS TO STAY MOUNTED TO BE ABLE TO LEAVE.
+/* THE outgoing panel has to stay mounted to be able to leave.
 
    `key={activeId}` alone gives a free entrance — a freshly mounted element runs
    its CSS animations from the top — but it also means the old panel is gone from
@@ -102,7 +92,7 @@ export function StepWindows({ activeId, live }) {
   const [shown, setShown] = useState(activeId);
   const [leaving, setLeaving] = useState(null);
 
-  /* NOTHING IN HERE RENDERS UNTIL THE SECTION HAS BEEN REACHED ONCE.
+  /* Nothing in here renders until THE section has been reached once.
 
      The panel is in the page structure from first paint, so its entrance — eight to
      thirteen elements each animating a blur — used to run during page load,
@@ -134,7 +124,7 @@ export function StepWindows({ activeId, live }) {
   const Leaving = leaving ? PANELS[leaving] : null;
 
   return (
-    /* THE PANEL IS A KEYED LAYER INSIDE A PLAIN SIZING BOX, NOT THE BOX ITSELF.
+    /* THE panel IS A Keyed layer inside A Plain sizing box, NOT THE box itself.
 
        The block has to bounce when the step changes, and in React the way an
        element replays a CSS animation is by being remounted — which is what a
@@ -147,7 +137,7 @@ export function StepWindows({ activeId, live }) {
        `shown`, so it remounts and replays `stage-pulse` on every change while the
        crossfade layers beside it are left alone.
 
-       NO `overflow-hidden` ON THE OUTER BOX: the clip belongs to the skin, which
+       NO `overflow-hidden` On THE outer box: the clip belongs to the skin, which
        is what has rounded corners to clip. Leaving the outer open is also what
        lets the skin scale without being cut, and nothing else can escape — the
        compositions are centred inside 40-64px of padding and the largest
@@ -172,7 +162,7 @@ export function StepWindows({ activeId, live }) {
         className="panel-field stage-pulse absolute inset-0 overflow-hidden rounded-[26px] bg-[#f7f2ff]"
       />
 
-      {/* BOTH BLURS SIT ON THE 470px BLOCK, NOT ON THE FULL-SIZE WRAPPER, and
+      {/* Both blurs sit on THE 470px Block, NOT on THE full-size wrapper, and
           that is the single biggest thing that could be done for weak hardware
           without touching a pixel of the result.
 

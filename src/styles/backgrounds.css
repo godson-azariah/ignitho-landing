@@ -1,34 +1,19 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE BACKGROUND OF EVERY SECTION, AND ITS TEXTURE
+/* Every section background and its pattern: the dark purple glow at the top and
+   bottom, the pale lavender, the near-white, the dots, and the clear patch
+   that keeps those dots out from under text.
 
-   WHERE YOU SEE THIS
-     Behind everything.
-
-   WHAT IS IN HERE
-     · The three grounds the page alternates between: the dark violet
-       aurora at the top and bottom only, the pale lavender, and the
-       near-white.
-     · The faint dot-and-line texture on the pale bands.
-     · The clear patch behind every block of text, so no texture ever
-       sits behind words you are reading.
-     · The textured panel behind the walkthrough product windows, and
-       the texture in the margins of the white prompt card.
-
-   WORTH KNOWING
-     The order of the bands is deliberate: dark, lavender, near-white,
-     lavender, near-white, dark. It is what gives the page its rhythm as
-     you scroll.
-   ========================================================================== */
+   The order the page alternates in — dark, lavender, near-white, lavender,
+   near-white, dark — is deliberate. It is what gives the page its rhythm. */
 
 /* =========================================================================
-   1. THE THREE BACKGROUND STYLES
+   1. THE three background styles
    ========================================================================= */
 
 /* A — the dark bands at the very top and very bottom. Both of them (hero and closing section) now sit on the
    brand's `--aurora-ground` gradient defined below, so the old flat variant
    that used to live here has gone with its last user. */
 
-/* B — FLAT LAVENDER TINT. The alternating content band. Flat colour; the
+/* B — Flat lavender tint. The alternating content band. Flat colour; the
    texture layers below arrive with `.dots`. */
 .bg-b {
   position: relative;
@@ -61,7 +46,7 @@
       #0a5670 100%
     );
 
-  /* ONE KNOB FOR THE HERO'S COLOUR.
+  /* One knob for THE hero's colour.
 
      The hero and the closing section stand on the identical gradient above, but
      they did not read as the same colour, because the hero has five lit
@@ -93,7 +78,7 @@
   pointer-events: none;
 }
 
-/* NOT ONE `filter: blur()` IN HERE, DELIBERATELY.
+/* Not one `filter: blur()` in here, deliberately.
    A blur is a separable convolution the GPU re-runs every single frame, and a
    layer that also animates `scale` has to be re-drawn to pixels before the blur
    even starts. Five full-bleed blurred layers is what made this hero drag.
@@ -326,15 +311,15 @@
    alive rather than as a loop, even though every one of these is a plain
    two-keyframe alternate.
 
-   TRAVEL IS ROUGHLY HALVED THROUGHOUT, AND THE PERIODS ARE HALF AGAIN AS
-   LONG. Both matter, and for different reasons: shrinking the range is what
+   Travel IS roughly halved throughout, AND THE periods are half again as
+   long. Both matter, and for different reasons: shrinking the range is what
    stops a fold crossing the headline, while stretching the period is what
    drops the per-second rate of change — the same distance covered slowly
    sits below the threshold at which peripheral vision reports motion at all.
    Cutting only the distance would have left it just as twitchy, only
    smaller. The stops themselves are untouched, so the hero still looks
    identical in a still frame; only the amount it moves has changed. */
-/* NOT ONE OF THESE ANIMATES `opacity` ANY MORE, ON PURPOSE.
+/* NOT one of these animates `opacity` Any more, on purpose.
 
    Each layer now declares a fixed opacity above, and a keyframe that also
    set `opacity` would simply win over it — the dimming would last exactly
@@ -463,7 +448,7 @@
   inset: var(--plate-inset, -28px -36px -22px -36px);
   border-radius: 48px;
   background: var(--plate, #fbf9ff);
-  filter: blur(var(--plate-blur, 26px));
+  filter: blur(var(--plate-blur, 18px));
   pointer-events: none;
 }
 /* For a plate on something that already has an edge of its own — a bordered
@@ -472,17 +457,17 @@
    as clear paper. This keeps the same effect at a quarter of the reach. */
 .plate-tight {
   --plate-inset: -10px -14px -8px -14px;
-  --plate-blur: 14px;
+  --plate-blur: 10px;
 }
 
 /* -------------------------------------------------------------------------
-   THE STAGE FIELD — the ground the "how it works" windows stand on.
+   THE stage field — the ground the "how it works" windows stand on.
 
    A flat lavender panel is what a flat lavender panel looks like, and next to
    four white cards it read as a hole rather than a surface. This gives it
    something to be, with two devices and no gradient anywhere:
 
-   1. THE PAGE'S OWN FIELD AT HALF PITCH. 14px dots under 28px rules, against
+   1. THE page's own field at half pitch. 14px dots under 28px rules, against
       the 28/56 the bands use. Half is the point rather than an arbitrary
       smaller number: the panel sits INSIDE a band already wearing the 28/56
       field, and two grids at the same pitch a few pixels apart moiré against
@@ -494,7 +479,7 @@
       decision `.dots` already made for the bands, and the reason still holds
       — a square grid reads as graph paper.
 
-   2. POOLED EDGE LIGHT, VIA INSET BOX-SHADOW. This is the Apple move on a
+   2. Pooled edge light, via inset box-shadow. This is the Apple move on a
       product panel: the surface is not tinted, it is LIT, brightest a little
       inside its own border, falling off toward the middle. Done with two
       inset shadows rather than a radial gradient — a 90px-blurred inset
@@ -507,7 +492,7 @@
       edge is what makes a panel read as catching light from above rather than
       as a rectangle of colour.
    ------------------------------------------------------------------------- */
-/* WHY THIS IS DEEPER THAN THE BAND AROUND IT, AND WHY THAT IS THE WHOLE FIX.
+/* Why this IS deeper than THE band around IT, AND why that IS THE whole fix.
 
    It was #F0E9FF — the same lavender the windows' own title bars are painted
    in — so a white window on it had nothing to be white AGAINST. Its top edge
@@ -520,19 +505,19 @@
    land. Every white card in this panel got its contrast for free the moment
    the ground stepped down.
 
-   THE BLOOMS ARE GRADIENTS, AND THAT IS DELIBERATE. The house rule is that
+   THE blooms are gradients, AND that IS deliberate. The house rule is that
    flat surfaces carry no colour gradient, with the dark purple background as the exception —
    and this is the same category as the dark purple background, not the same category as a
    card: it is a depicted atmosphere, a thing being looked INTO. Three wide,
    soft ellipses, indigo and sky and violet, all from the palette, none of them
    near the centre where the windows sit.
 
-   NOT ONE `filter: blur()` AMONG THEM, following the rule the hero set: the
+   Not one `filter: blur()` among them, following the rule the hero set: the
    softness is baked into the stops, which drawn to pixels once and then costs
    nothing. A 60%-wide ellipse fading to transparent at 62% IS a blurred blob;
    running an actual blur over it would change nothing anyone can see and add a
    convolution per frame. */
-/* #F0E9FF — `ig-paper-2`, THE SAME FILL THE ACTIVE STEP CARD CARRIES.
+/* #F0E9FF — `ig-paper-2`, THE same fill THE active step card carries.
 
    Not a value picked to solve a contrast problem, which is what the previous
    three were: #DED3F5, then #EEE9FA, then #F5F0FD, each one a guess at how dark
@@ -549,16 +534,16 @@
    colour as this panel — and it is white now like the rest, keeping its
    identity by being the only window set entirely in mono.
 
-   NOTE THE SCOPE: elements INSIDE the windows still carry their tints, and
+   Note THE scope: elements INSIDE the windows still carry their tints, and
    several of them are `paper-2` too. That is fine and it is a different
    question — a search field on a white window is not a window on a panel. */
-/* THIS CLASS DECLARES PAINT ONLY. NO `position`, DELIBERATELY, AND THE REASON
-   GENERALISES TO EVERY HAND-WRITTEN CLASS IN THIS PROJECT.
+/* This class declares paint ONLY. NO `position`, Deliberately, AND THE reason
+   generalises to every hand-written class in this project.
 
    Tailwind here is the Play CDN, which injects its utilities into a style
    element EARLY in the head — before the bundled stylesheet this file ends up
-   in. So at equal which style rule wins, one class against one class, THESE RULES WIN AND
-   THE UTILITIES LOSE. Nothing warns about it and it is silent in both
+   in. So at equal which style rule wins, one class against one class, These rules win AND
+   THE utilities lose. Nothing warns about it and it is silent in both
    directions.
 
    It has already cost twice on this element. `position: relative` here beat the
@@ -574,7 +559,7 @@
    `absolute` on the element in JSX. */
 /* #F7F2FF — solid, opaque, no overlays. The specified value, not a derived one.
 
-   WHY EVERY ATTEMPT TO DERIVE IT MISSED. `bg-ig-paper-2` is #F0E9FF, and I kept
+   Why every attempt to derive IT missed. `bg-ig-paper-2` is #F0E9FF, and I kept
    reaching for that token because it is what the active step card is written
    with. But the card that reads as this colour on screen is not painting
    #F0E9FF — it is `bg-ig-paper-2/40` over the band's #FBF9FF, and 40% of
@@ -605,7 +590,7 @@
    crisp 28px rules, soft dots. */
 /* NO `background-color` HERE — the fill comes from a utility at the call site.
 
-   ONE USER TODAY, the walkthrough's window panel, and the name stays general
+   One user today, the walkthrough's window panel, and the name stays general
    rather than going back to `stage-field`. The closing prompt's card briefly
    wore this too and it was wrong there: a dot field and 28px rules behind a
    PARAGRAPH is texture interfering with the thing it sits behind, where behind
@@ -622,11 +607,11 @@
   box-shadow: inset 0 0 0 1px rgba(122, 0, 194, 0.25);
 }
 
-/* TEXTURE, AND THE BRIEF FOR IT IS "OCCUPIED, NOT PLAIN" — so it is the page's
+/* Texture, AND THE brief for IT IS "Occupied, NOT plain" — so it is the page's
    own field rather than anything new, and it is quiet enough that the panel
    still reads as the flat #F7F2FF it is specified to be.
 
-   NO `z-index` ON EITHER LAYER, unlike the version of this that existed before.
+   NO `z-index` On either layer, unlike the version of this that existed before.
    A pseudo-element with `position: absolute` already paints above its own
    element's background and below anything that follows in the page structure — and the
    windows are LATER SIBLINGS of this skin, not children of it. So the stacking
@@ -640,14 +625,14 @@
   pointer-events: none;
 }
 
-/* SOFT DOTS, AND THE SOFTNESS IS IN THE GRADIENT RATHER THAN IN A FILTER.
+/* Soft dots, AND THE softness IS in THE gradient rather than in A FILTER.
 
    `filter: blur()` would do it, and this file opens by refusing that outright —
    for animated layers, which have to be re-convolved every frame. This layer is
    static, so a blur here would in fact drawn to pixels once and cost nothing after.
    The stops are still the better answer, for two reasons that survive that:
 
-     · A GAUSSIAN BLUR OF A DISC IS A RADIAL FALLOFF. That is not an
+     · A Gaussian blur of A DISC IS A RADIAL FALLOFF. That is not an
        approximation, it is what the operation produces — so a radial gradient
        with a ramp is not imitating a blurred dot, it IS one, computed in closed
        form instead of by sampling.
@@ -659,7 +644,7 @@
    about a fifth of the way to the next dot, so nothing clips at the tile seam
    and no two blobs run together into a wash.
 
-   HALVED, NOT DOUBLED — I read "reduce the transparency to 50%" the wrong way
+   Halved, NOT doubled — I read "reduce the transparency to 50%" the wrong way
    round and took the stops UP to 0.28 / 0.14 / 0.03, which is what made the
    panel look rough. They are half of where they started instead: 0.07 / 0.035 /
    0.0075, a quarter of what was there a moment ago.
@@ -702,14 +687,14 @@
 }
 
 /* -------------------------------------------------------------------------
-   THE FIELD, MASKED TO THE FLANKS — texture where there is no text.
+   THE field, masked to THE flanks — texture where there is no text.
 
    The full field behind a card of centred copy is interference: every line
    crosses two rules on its way across and the eye keeps stopping on them. But
    the card is wider than its own widest line, and the strips either side of that
    line are doing nothing at all. This puts the field only there.
 
-   THE MASK IS THE WHOLE MECHANISM, and the numbers in it are measured, not
+   THE mask IS THE whole mechanism, and the numbers in it are measured, not
    picked. On a 1040px card the widest thing is the heading at about 780px of
    ink, so the clear strip either side is roughly 130px — 12.5% of the width. The
    mask runs from opaque at the very edge to nothing by 11%, which is 114px, so
@@ -722,7 +707,7 @@
 
    Alphas match the walkthrough panel's exactly, so the two textured surfaces on
    the page are the same material seen through different windows. */
-/* OFF BELOW 640px, AND NOT AS A PERFORMANCE CHOICE — THE FLANKS STOP EXISTING.
+/* OFF BELOW 640px, AND NOT as A PERFORMANCE CHOICE — THE flanks stop existing.
 
    The mask clears at 11% of the card, which is a measured figure: it has to fade
    out before the widest line begins, and on a desktop card the heading is 798px
@@ -737,8 +722,8 @@
 
    Nothing else changes at any width — the fill, the shadow, the brand rule and
    the copy are identical either side of this. */
-/* STRENGTHENED, AND THE STRENGTH GOES WHERE THE MASK IS SOLID RATHER THAN
-   EVERYWHERE.
+/* Strengthened, AND THE strength goes where THE mask IS solid rather than
+   everywhere.
 
    The field was there and barely readable — 0.07 on a white card is close to
    the limit of what a screen resolves, and the mask started fading from the
@@ -751,7 +736,7 @@
      · Alphas up by about half — 0.07 → 0.105 on the dot core and 0.04 → 0.058
        on the rules. Still well under the 0.18 the open bands carry, because
        this sits on white where the bands sit on lavender.
-     · THE MASK NOW HAS A PLATEAU. `#000 0%, #000 5%` holds the field at full
+     · THE mask now has A PLATEAU. `#000 0%, #000 5%` holds the field at full
        strength across the outer 5% before it begins to fade, so there is a real
        band of texture rather than a single opaque column of pixels. The fade
        then runs out to 15%, longer than the old 11%, so the falloff is gentler

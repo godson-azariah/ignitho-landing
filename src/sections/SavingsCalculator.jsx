@@ -1,19 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE SAVINGS CALCULATOR — "Set your headcount see what you save"
+/* The headcount slider and the figures under it. Nothing here is stored: every
+   number is worked out from wherever the slider is sitting.
 
-   WHERE YOU SEE THIS
-     The third section of the home page, on the near-white band.
-
-   WHAT IS IN HERE
-     · The slider you drag to set how many people you employ.
-     · The figures that recalculate as you drag: hours returned, cost
-       avoided, and the payback line.
-     · The small print explaining what the numbers assume.
-
-   WORTH KNOWING
-     Every figure is worked out live from the slider position. Nothing
-     here is a stored number.
-   ========================================================================== */
+   The two assumptions behind those numbers are exported, because the fourth
+   step picture quotes them. Better that than two files inventing figures
+   separately and slowly disagreeing. */
 
 import { useMemo, useState } from 'react';
 import { Minus, MoveHorizontal, Plus } from 'lucide-react';

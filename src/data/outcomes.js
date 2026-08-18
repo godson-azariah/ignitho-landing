@@ -1,25 +1,14 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE WORDS FOR THE FOUR OUTCOME CARDS
+/* The four violet cards on the home page: number, icon, title, sentence and
+   the green target line.
 
-   WHERE YOU SEE THIS
-     The four violet cards in "What actually changes once it is live".
-
-   WHAT IS IN HERE
-     · For each card: its number, its icon, its title, its sentence and
-       its green target line.
-     · Also the one violet colour all four cards share.
-
-   WORTH KNOWING
-     All four cards were once four different colours. They are one
-     colour now, because they are four outcomes of one thing rather than
-     four categories.
-   ========================================================================== */
+   The colour they all share is here too. They used to have one each, which
+   made them look like four categories instead of four results of one thing. */
 
 import { TrendingUp, DollarSign, ShieldCheck, Clock } from 'lucide-react';
 
 /* The four reasons, for the comparison row. */
 
-/* ONE FILL FOR ALL FOUR CARDS, and it is a constant rather than the same
+/* One fill for all four cards, and it is a constant rather than the same
    string written out four times — four copies of a colour are four chances for
    three of them to be updated.
 

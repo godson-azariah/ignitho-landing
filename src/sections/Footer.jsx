@@ -1,19 +1,7 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE FOOTER
+/* The footer. Name, the menu again, the nine suites, certifications, copyright.
 
-   WHERE YOU SEE THIS
-     The bottom of every page.
-
-   WHAT IS IN HERE
-     · The Ignitho AI Ignitho AI name and the line under it.
-     · The Menu column, which repeats the menu bar destinations.
-     · The Suites column, which links to the nine suite pages.
-     · The certifications, the copyright line, and the closing rule.
-
-   WORTH KNOWING
-     The links come from the same list the menu bar uses, so the two
-     cannot drift apart.
-   ========================================================================== */
+   The menu links come from the same list the top bar reads, so the two cannot
+   drift apart. */
 
 import { useMemo } from 'react';
 import { Check } from 'lucide-react';
@@ -50,7 +38,7 @@ export function Footer({ openSuite, navAction, goHome }) {
   return (
     <footer className="bg-c relative">
       <div className={`${SHELL} py-9 md:py-10`}>
-        {/* THE ONE OF THESE FIVE GRIDS THAT CANNOT HAVE ITS GAP ZEROED.
+        {/* THE one of these five grids that cannot have its gap zeroed.
 
             Eleven fixed 32px column gaps put a 352px floor under it, and a
             320px phone's shell offers 280px — so it overflowed by 72px like

@@ -1,19 +1,9 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE COUNTRY AND INDUSTRY DROPDOWNS IN THE CONTACT FORM
+/* The country and industry pickers. Built by hand rather than using the
+   browser's own, because the browser decides for itself whether its list opens
+   up or down, and it kept choosing up.
 
-   WHERE YOU SEE THIS
-     The two dropdown fields in the Contact Sales form.
-
-   WHAT IS IN HERE
-     · A field that opens its list DOWNWARDS, always.
-     · For long lists — the countries — you can type to narrow it down,
-       and matches that start with what you typed are shown first.
-
-   WORTH KNOWING
-     This is hand-built rather than the browser own dropdown, because
-     the browser decides for itself whether its list opens up or down,
-     and it kept choosing up.
-   ========================================================================== */
+   Long lists can be typed into. Matches that start with what you typed come
+   first, which is what makes "united" find United Kingdom before Réunion. */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, ChevronDown, Search } from 'lucide-react';
@@ -21,7 +11,7 @@ import { FORM_FIELD } from '../../lib/layout.js';
 
 /* A select that opens DOWNWARD, which a native one cannot be made to do.
 
-   WHY THIS EXISTS AT ALL. The browser decides where a native `<select>`'s popup
+   Why this exists at all. The browser decides where a native `<select>`'s popup
    goes, and it decides on room: with 199 countries the popup is 400-500px tall,
    so a field sitting in the lower half of a centred dialog has nowhere near that
    below it and the popup flips up. That placement is done by the platform, not
@@ -29,16 +19,16 @@ import { FORM_FIELD } from '../../lib/layout.js';
    reaches it. Controlling the direction means owning the list.
 
    Three things come free once you do:
-     · IT MATCHES THE FORM. A native popup is drawn by the OS, so on Windows the
+     · IT matches THE form. A native popup is drawn by the OS, so on Windows the
        one control on this form that was not in our palette was the one asking
        for a country.
-     · IT CAN BE FILTERED. Nineteen-nine options is a scroll of about ten screens;
+     · IT can be filtered. Nineteen-nine options is a scroll of about ten screens;
        typing "ind" is the difference between a usable field and a chore. Turned
        on past twelve options, off below, so Industry gets a plain list.
-     · PREFIX MATCHES SORT FIRST. Typing "un" should reach United Kingdom before
+     · Prefix matches sort first. Typing "un" should reach United Kingdom before
        Brunei, which a plain `includes` filter gets backwards.
 
-   WHAT IT COSTS, stated plainly: on a phone a native select hands you the OS
+   What IT costs, stated plainly: on a phone a native select hands you the OS
    picker — a big, familiar, thumb-friendly wheel — and this does not. It is a
    real loss and the reason to keep it in mind if the form ever gets more selects.
    The compensation is that the panel is full-width, its rows are 38px, and the
@@ -97,7 +87,7 @@ export function Dropdown({
   /* On open: put the cursor on what is already chosen, focus the filter if there
      is one, and pull the panel into view.
 
-     THAT LAST PART IS NOT COSMETIC. This lives inside the dialog's
+     That last part IS NOT cosmetic. This lives inside the dialog's
      `overflow-y-auto` form column, which clips anything that reaches its bottom
      edge — so a panel that opens downward from a field near the foot of the form
      would be half invisible. `block: 'nearest'` scrolls the nearest scrollable
@@ -124,7 +114,7 @@ export function Dropdown({
   };
 
   const onKeyDown = (e) => {
-    /* ESCAPE CLOSES THE LIST, NOT THE DIALOG. `useOverlay` listens for Escape on
+    /* Escape closes THE list, NOT THE dialog. `useOverlay` listens for Escape on
        `window`, and React dispatches from its root container, so the native event
        would carry on up and shut the whole form while the reader only wanted to
        abandon a dropdown. React's `stopPropagation` calls the native one too,

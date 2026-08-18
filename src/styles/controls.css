@@ -1,21 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE SLIDER, THE FOCUS OUTLINES, AND THE OPENING ANSWERS
+/* The calculator's slider, the outline that shows where you are when tabbing,
+   and the way an answer opens on the questions page.
 
-   WHERE YOU SEE THIS
-     The calculator, the questions page, and anyone navigating by
-     keyboard.
-
-   WHAT IS IN HERE
-     · The calculator slider track and handle.
-     · The green outline that appears around whatever you have tabbed
-       to.
-     · The smooth open-and-close of an FAQ answer, which expands to
-       exactly the height of its own text.
-
-   WORTH KNOWING
-     The focus outline matters: without it, keyboard users cannot see
-     where they are on the page.
-   ========================================================================== */
+   That outline is not decoration. Without it, anyone navigating by keyboard
+   cannot see where they are. */
 
 /* =========================================================================
    5. CONTROLS

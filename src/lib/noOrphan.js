@@ -1,17 +1,8 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  STOPS A HEADING ENDING WITH ONE WORD ALONE ON A LINE
+/* Ties the last two words of a line together so one cannot be left stranded on
+   its own.
 
-   WHERE YOU SEE THIS
-     Every page heading and the sentence under it.
-
-   WHAT IS IN HERE
-     · It glues the last two words of a line together so they can never
-       be split. If they no longer fit, BOTH move to the next line.
-
-   WORTH KNOWING
-     A single stranded word at the end of a heading is the thing this
-     prevents.
-   ========================================================================== */
+   You do not tell the browser where to break; you tell it one place it may
+   not. If the pair no longer fits, both drop to the next line together. */
 
 /* This is U+00A0, a literal non-breaking space, not a plain one. It looks
    identical in every editor, so a search-and-replace typed with the ordinary

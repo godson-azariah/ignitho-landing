@@ -1,21 +1,7 @@
-/* ==========================================================================
-   PLAIN-ENGLISH GUIDE  ·  THE PHONE MENU — the panel that slides down from the top
+/* The panel that slides down after tapping the menu button. Same links as the
+   top bar, plus the nine suites and both buttons.
 
-   WHERE YOU SEE THIS
-     On phones and small tablets, after tapping the round menu button.
-
-   WHAT IS IN HERE
-     · The same destinations the menu bar shows on a computer, stacked.
-     · The nine suites, so they are reachable without scrolling to the
-       catalogue.
-     · The Contact Sales and Sign in buttons.
-     · A Close button. Tapping the dark area behind the panel also
-       closes it.
-
-   WORTH KNOWING
-     While it is open the page behind cannot scroll, and the Escape key
-     closes it.
-   ========================================================================== */
+   While it is open the page behind it cannot scroll, and Escape closes it. */
 
 import { ArrowRight, ArrowUpRight, X } from 'lucide-react';
 import { CERTS, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
@@ -76,7 +62,7 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
                   className="sheet-item group flex w-full items-center justify-between gap-6 border-b border-white/15 py-6 text-left first:border-t md:py-8"
                 >
                   <span className="flex items-baseline gap-5">
-                    {/* SKY ON THIS GROUND, NOT THE PURPLE THE TOP BAR USES.
+                    {/* Sky on this ground, NOT THE purple THE top bar uses.
                         Same meaning, different surface — the brand gives dark
                         grounds `--sky` for exactly this, which is why the hero's
                         eyebrow is sky and not violet. Purple on violet would be
@@ -108,7 +94,7 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
           </nav>
 
           <div className="col-span-12 lg:col-span-4 lg:col-start-9">
-            {/* BOTH ACTIONS ARE HERE, because below `lg` the bar carries
+            {/* Both actions are here, because below `lg` the bar carries
                 neither — it keeps to a Ignitho AI name and the menu control, so this
                 sheet is the only place a reader on a phone can reach either the
                 briefing or the application.
