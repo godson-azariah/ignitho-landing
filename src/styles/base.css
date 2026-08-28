@@ -194,3 +194,55 @@ body {
 .no-bar::-webkit-scrollbar {
   display: none;
 }
+
+/* Where a menu link scrolls to.
+
+   The bar is fixed, so scrolling a section to the top of the screen puts its
+   heading underneath the bar. `scroll-margin-top` tells the browser to stop
+   short by that much. The numbers track the bar's real height: 72px on a
+   phone, 84px from 768 up. */
+[id='workflow'],
+[id='solutions'],
+[id='accelerators'],
+[id='governance'],
+[id='suites'],
+[id='how-it-works'],
+[id='overview'] {
+  scroll-margin-top: 84px;
+}
+@media (min-width: 640px) {
+  [id='workflow'],
+[id='solutions'],
+[id='accelerators'],
+[id='governance'],
+  [id='suites'],
+  [id='how-it-works'],
+  [id='overview'] {
+    scroll-margin-top: 84px;
+  }
+}
+@media (min-width: 768px) {
+  [id='workflow'],
+[id='solutions'],
+[id='accelerators'],
+[id='governance'],
+  [id='suites'],
+  [id='how-it-works'],
+  [id='overview'] {
+    scroll-margin-top: 96px;
+  }
+}
+
+/* The hero picture, grown to close the gap in the two-column layout above
+   1536. The number is arithmetic, not taste: 598 x 1.13 is 676, and
+   740 of copy + 80 of gap + 676 is the 1496 the shell gives at that width, so
+   the copy column resolves to exactly the 740 the copy is capped at.
+
+   Its own rule rather than a Tailwind class because `zoom` has no utility, and
+   it must be `zoom`: this has to change the size of the grid column, which a
+   transform does not do. */
+@media (min-width: 1536px) {
+  .art-fill {
+    zoom: 1.13;
+  }
+}

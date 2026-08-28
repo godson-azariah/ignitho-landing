@@ -21,6 +21,14 @@ export const FAQ_GROUPS = [
     title: 'What it is',
     items: [
       {
+        q: "What is Freind?",
+        a: 'A method that uses AI to generate production code (PySpark, dbt and SQL) and deploy it directly to your own repository, with automated testing at every step'
+      },
+      {
+        q: "Do we need software engineering experience to use it?",
+        a: "No manual coding required. State your data source and transformation rules in plain English, and the method handles code generation and testing"
+      },
+      {
         q: 'What is an AI suite?',
         a: 'A packaged set of accelerators covering one domain. There are nine: three universal foundations that any enterprise runs on, and six built for a specific industry. You take a suite rather than commissioning one'
       },
@@ -30,7 +38,7 @@ export const FAQ_GROUPS = [
       },
       {
         q: 'What does “governed DAG” mean?',
-        a: 'The shape an accelerator executes as — a fixed graph of steps rather than an open-ended conversation. Domain rules and policy guardrails are applied as it runs, which is what the execution stream in the simulator is reporting'
+        a: 'The shape an accelerator executes as: a fixed graph of steps rather than an open-ended conversation. Domain rules and policy guardrails are applied as it runs, which is what the execution stream in the simulator is reporting'
       },
       {
         q: 'How is this different from a chat assistant?',
@@ -43,6 +51,14 @@ export const FAQ_GROUPS = [
     title: 'Getting it live',
     items: [
       {
+        q: "Which cloud providers and databases are supported?",
+        a: "Amazon Web Services, Microsoft Azure, Google Cloud Platform, Snowflake, Oracle, PostgreSQL, and ordinary Excel or CSV files"
+      },
+      {
+        q: "How much time can my team save?",
+        a: "Roughly 90% less development time and 10x faster workflow generation, compared with building the same workflow by hand"
+      },
+      {
         q: 'How long does deployment take?',
         a: 'Days rather than the multi-month cycle a custom build asks for. The accelerators are pre-built and modular, so the work is configuration and connection rather than engineering from scratch'
       },
@@ -52,7 +68,7 @@ export const FAQ_GROUPS = [
       },
       {
         q: 'Can we start with a single workflow?',
-        a: 'Yes, and it is the normal way in. One accelerator from one suite is a complete starting point — the rest of the suite is there when the first one has proved itself'
+        a: 'Yes, and it is the normal way in. One accelerator from one suite is a complete starting point. The rest of the suite is there when the first one has proved itself'
       },
       {
         q: 'Which industries are covered?',
@@ -65,8 +81,12 @@ export const FAQ_GROUPS = [
     title: 'Governance and return',
     items: [
       {
+        q: "Is our private company data safe when using this?",
+        a: "Sensitive fields (credentials, customer names, PII) are encrypted on your own device before anything is processed. Nothing sensitive leaves your environment unprotected"
+      },
+      {
         q: 'How is our data governed?',
-        a: 'Ignitho AI is ISO 27001 certified and SOC2 Type II compliant. The Fortress security firewall prevents data leaks, prompt attacks and PII violations automatically rather than by policy alone'
+        a: 'Freind is ISO 27001 certified and SOC2 Type II compliant. The Fortress security firewall prevents data leaks, prompt attacks and PII violations automatically rather than by policy alone'
       },
       {
         q: 'How is the return measured?',

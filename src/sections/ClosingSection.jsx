@@ -1,4 +1,4 @@
-/* The dark band at the bottom: last heading, Contact Sales, and the dotted
+/* The dark band at the bottom: last heading, Contact Us, and the dotted
    world map.
 
    The map is a picture, not a real map. Every office marker is positioned by
@@ -76,12 +76,18 @@ export function ClosingSection({ openContact }) {
                 by itself. Balanced, it breaks after "take it" instead, which
                 is a phrase. Above the wrap point the property has nothing to
                 balance and the desktop setting is untouched. */}
+            <span className="mb-4 block font-mono text-[10px] font-bold tracking-[0.06em] text-ig-sky sm:text-[11px]">
+              Let&rsquo;s Build What&rsquo;s Possible
+            </span>
             <h2 className="balance font-extrabold leading-[1.05] tracking-[-0.04em] text-[clamp(28px,3.6vw,44px)] text-white">
-              <span className="block">Pick one workflow.</span>
+              <span className="block">Fewer people.</span>
               <span className="serif-accent block font-normal text-ig-sky">
-                We&rsquo;ll take it to production
+                Greater possibilities
               </span>
             </h2>
+            <p className="mt-5 max-w-[52ch] text-[15.5px] leading-[1.6] text-ig-lavender md:text-[17px]">
+              Turn enterprise data and AI ambitions into governed, production-ready workflows
+            </p>
 
             {/* NO `w-full`. THE button sizes to its own label at every width.
 
@@ -104,7 +110,7 @@ export function ClosingSection({ openContact }) {
                 once there is a second column to align against. */}
             <div className="mt-7 flex justify-center lg:justify-start">
               <PrimaryButton onClick={openContact}>
-                Contact Sales
+                Contact Us
                 <ArrowRight className="h-3.5 w-3.5" />
               </PrimaryButton>
             </div>

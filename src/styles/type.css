@@ -6,25 +6,16 @@
    2. TYPE
    ========================================================================= */
 
-/* Only the lavender outline is still in use — on "Measurable" in the hero
-   headline and the big numeral on the suite top bar. */
-/* A Faint fill, NOT A Fully transparent one.
+/* THE LAVENDER OUTLINE HAS GONE, and its last user with it.
 
-   At `color: transparent` this is a wireframe: the counters of a, o and p go
-   the same colour as the ground, so at a glance the word reads as a shape
-   before it reads as a word. A 10% lavender fill closes those counters just
-   enough to give the letters a body, while the stroke still carries the
-   outlined effect. The word stops looking unfinished next to the solid one
-   beside it, and nothing about the device changes. */
-.stroke-lilac {
-  -webkit-text-stroke: 1.2px var(--lavender);
-  color: rgba(214, 205, 238, 0.1);
-}
-@media (min-width: 768px) {
-  .stroke-lilac {
-    -webkit-text-stroke-width: 2px;
-  }
-}
+   It set one word of the hero headline in a hollow lavender stroke. The trouble
+   was never the device itself, it was the company it kept: that headline was
+   already running heavy sans and an Instrument Serif italic, and an outline made
+   three display ideas inside one sentence. Any two of those is a decision; all
+   three is indecision.
+
+   It was also the weakest-contrast word in the largest type on the page, which
+   inverts the emphasis an outline is put there to create. */
 
 /* The fill-on-hover variants went with the hero's entry cells — no outlined
    numeral on the page is inside a hoverable group any more. */

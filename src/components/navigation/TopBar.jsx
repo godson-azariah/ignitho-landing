@@ -27,7 +27,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
        The only thing that still answers the scroll is the shadow below, which
        is a change in the bar rather than a change to whether the bar exists. */
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* A plain white bar, balanced in three: Ignitho AI name left, destinations
+      {/* A plain white bar, balanced in three: wordmark left, destinations
           optically centred, one action right. It carries a thin line at rest
           and lifts onto a soft shadow once the page has moved under it. */}
       <nav
@@ -43,7 +43,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             not be squeezed, so at 1024 it painted them straight over the
             buttons. `flex-1` fixed the overlap by centring them in the space
             that was FREE — and free space is not symmetrical here: the actions
-            on the right are roughly three times the width of the Ignitho AI name on
+            on the right are roughly three times the width of the wordmark on
             the left, so the group sat about 90px right of where the eye expects
             the middle of a page to be.
 
@@ -70,7 +70,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             is rendered. On desktop this is exactly where auto-placement was
             already putting all three, so nothing there moves by a pixel; on a
             phone the empty middle track now collapses to zero and the equal
-            sides put the Ignitho AI name hard left and the menu button hard right,
+            sides put the wordmark hard left and the menu button hard right,
             which is what `justify-between` used to do. */}
         <div
           className={`${SHELL} grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[84px]`}
@@ -78,13 +78,10 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
           <button
             onClick={goHome}
             className="col-start-1 flex items-baseline gap-1.5 justify-self-start"
-            aria-label="Ignitho AI"
+            aria-label="Freind"
           >
             <span className="text-[21px] font-black tracking-[-0.03em] text-ig-ink md:text-[24px]">
-              Ignitho
-            </span>
-            <span className="serif-accent text-[25px] leading-none text-ig-purple md:text-[29px]">
-              AI
+              Freind
             </span>
           </button>
 
@@ -102,7 +99,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
                 It is the odd one among the four: the other three scroll to a
                 section of the page you are already on, and this one leaves for
                 a page of its own. Sitting it with them implied it was another
-                stop on the same journey. Beside "Contact Sales" — the other
+                stop on the same journey. Beside "Contact Us" — the other
                 thing you go to rather than scroll to — it reads as what it is. */}
             {NAV_LINKS.filter((l) => l !== FAQ_LABEL).map((label) => {
               const on = label === activeNav;
@@ -160,7 +157,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             {/* THE one icon in THE bar, AND IT IS teal.
 
                 Colour with a job rather than colour for its own sake: the bar is
-                otherwise a Ignitho AI name, four labels and two pills, and this single
+                otherwise a wordmark, four labels and two pills, and this single
                 green mark is what stops the right-hand group reading as a wall
                 of type. Teal is the page's accent, so it is the colour already
                 licensed to appear once and mean "here".
@@ -197,17 +194,17 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             })()}
 
             {/* below lg both actions live in the menu sheet, so the bar keeps
-                to a Ignitho AI name and one control */}
+                to a wordmark and one control */}
             {/* Tighter than THE page's other primary buttons, on purpose. A
                 button in a 72px bar is not the same object as one at the end of
-                a section: it shares its row with a Ignitho AI name, three destinations
+                a section: it shares its row with a wordmark, three destinations
                 and a second action, and 24px of padding either side of a
                 13.5px label was reading as a wide pill in a crowded row rather
                 than as a compact control. 20/12 and 13px sit it beside "Sign
                 in" as a pair. */}
             <div className="hidden lg:block">
               <PrimaryButton onClick={openContact} className="!px-5 !py-3 !text-[13px]">
-                <span className="whitespace-nowrap">Contact Sales</span>
+                <span className="whitespace-nowrap">Contact Us</span>
               </PrimaryButton>
             </div>
 
@@ -236,7 +233,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
                 variant="violet"
                 className="!px-4 !py-3 !text-[13px]"
               >
-                <span className="whitespace-nowrap">Sign in</span>
+                <span className="whitespace-nowrap">Log in</span>
                 <ArrowUpRight className="h-3 w-3" strokeWidth={2.6} />
               </Button>
             </div>

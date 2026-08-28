@@ -1,4 +1,4 @@
-/* The Contact Sales form. Dark panel down one side, fields on the other:
+/* The Contact Us form. Dark panel down one side, fields on the other:
    name, work email, company, job title, country, industry, message.
 
    It does not send anywhere yet. Rather than showing a thank-you for a message
@@ -157,7 +157,7 @@ export function ContactForm({ open, onClose }) {
             348px panel at this size it just reads as a different font, so both
             lines are Urbanist now and the accent is carried by colour alone.
 
-            The block centres on both axes with the Ignitho AI name pinned to the foot,
+            The block centres on both axes with the wordmark pinned to the foot,
             rather than sitting at the top of a column with 300px of empty ground
             under it — centred text in a top-aligned box is the one arrangement
             that looks unfinished from every angle. */}
@@ -179,9 +179,7 @@ export function ContactForm({ open, onClose }) {
               your process rather than about scoping a build
             </p>
           </div>
-          <span className="absolute bottom-8 font-mono text-[10.5px] font-bold tracking-[0.055em] text-ig-lavender/60">
-            Ignitho AI
-          </span>
+          <span className="absolute bottom-8 font-mono text-[10.5px] font-bold tracking-[0.055em] text-ig-lavender/60">Freind</span>
         </div>
 
         {/* the form side — its own scroll, so the panel beside it never moves */}

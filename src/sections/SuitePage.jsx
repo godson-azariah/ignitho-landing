@@ -1,5 +1,5 @@
 /* One suite, as its own page. Dark heading band, the summary and figures, the
-   list of agents with a Test Agent button on each, a Contact Sales card, and
+   list of agents with a Test Agent button on each, a Contact Us card, and
    related suites at the foot.
 
    One file draws all nine of these. The layout never changes; only the suite
@@ -42,8 +42,8 @@ export function SuitePage({ suite, openContact }) {
 
         <div className={SHELL}>
           <div className="relative mx-auto max-w-3xl">
-            {/* `noOrphan` on both. Suite names run to 46 characters — "Banking,
-                Financial Services & Accounting Suite" — so they wrap whatever
+            {/* `noOrphan` on both. Suite names run long — "Enterprise Data Trust &
+                Governance Suite", "Digital Growth & Brand Protection Suite" — so they wrap whatever
                 the size, and without this the last line is regularly the single
                 word "Suite" sitting under everything else. */}
             <h1 className="font-extrabold leading-[0.98] tracking-[-0.042em] text-[clamp(30px,4.6vw,60px)] text-white">
@@ -162,7 +162,7 @@ export function SuitePage({ suite, openContact }) {
                         same-which style rule wins utilities resolve by source order
                         rather than by intent. */}
                     <PrimaryButton onClick={openContact} className="mt-7 w-full !px-4 sm:!px-6">
-                      Contact Sales
+                      Contact Us
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </PrimaryButton>
                   </div>

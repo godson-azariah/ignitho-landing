@@ -10,7 +10,7 @@ import { scrollEase } from '../../lib/scrollEase.js';
 
 const GREETING = {
   sender: 'bot',
-  text: 'Hello! I am the Ignitho AI Assistant. How can I assist your executive team today?'
+  text: 'Hello. I am the Freind concierge. Ask me about the suites, the agents, or how a workflow gets from your data to a pull request'
 };
 
 /* Canned answers, matched on keywords. First hit wins, so the more specific
@@ -18,20 +18,20 @@ const GREETING = {
 const REPLIES = [
   {
     match: ['roi', 'cost', 'save'],
-    text: 'On average, Ignitho AI reduces routine operational overhead by 60% to 80% and cuts AI cloud API spending by up to 40% via CostPilot routing'
+    text: 'On average, Freind reduces routine operational overhead by 60% to 80% and cuts AI cloud API spending by up to 40% via CostPilot routing'
   },
   {
     match: ['security', 'hipaa', 'compliance', 'fda'],
-    text: 'Ignitho AI is ISO 27001 certified and SOC2 Type II compliant. Our Fortress security firewall prevents data leaks, prompt attacks, and PII violations automatically'
+    text: 'Freind is ISO 27001 certified and SOC2 Type II compliant. Our Fortress security firewall prevents data leaks, prompt attacks, and PII violations automatically'
   },
   {
     match: ['deploy', 'time', 'fast'],
-    text: 'Because Ignitho AI relies on modular, pre-built accelerators, deployment takes days rather than custom multi-month software engineering cycles'
+    text: 'Because Freind relies on modular, pre-built accelerators, deployment takes days rather than custom multi-month software engineering cycles'
   }
 ];
 
 const FALLBACK =
-  'Ignitho AI delivers pre-built, multi-agent AI accelerators that automate complex business workflows securely. Would you like to schedule an executive briefing with our leadership team?';
+  'Freind delivers pre-built, multi-agent AI accelerators that automate complex business workflows securely. Would you like to schedule an executive briefing with our leadership team?';
 
 const answerFor = (query) => {
   const q = query.toLowerCase();
@@ -76,7 +76,7 @@ export function ChatBubble() {
             <span className="absolute -right-1.5 -top-1.5 h-2 w-2 rounded-full bg-ig-sky" />
           </span>
           <span className="font-mono text-[11.5px] font-bold tracking-[0.05em]">
-            Ask Ignitho AI
+            Ask Freind
           </span>
         </button>
       ) : (
@@ -86,11 +86,11 @@ export function ChatBubble() {
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
             <div>
               <h4 className="text-[13px] font-extrabold tracking-[-0.01em]">
-                Ignitho AI Executive Assistant
+                Governed AI Suite Concierge
               </h4>
               <span className="mt-0.5 flex items-center gap-1.5 font-mono text-[11.5px] tracking-[0.05em] text-ig-sky">
                 <span className="h-1.5 w-1.5 rounded-full bg-ig-sky" />
-                Online • Governed AI
+                Online • Zero-trust security
               </span>
             </div>
             <button
@@ -157,7 +157,7 @@ export function ChatBubble() {
           <div className="flex items-center gap-2 border-t border-white/10 p-3">
             <input
               type="text"
-              placeholder="Ask about Ignitho AI ROI, security, or deployment..."
+              placeholder="Ask about Freind ROI, security, or deployment..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}

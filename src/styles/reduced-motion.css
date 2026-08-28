@@ -33,6 +33,14 @@
      hover scale — have no targets any more. The button neither moves nor
      animates in any state; a 0.2s colour fade is the whole of it, and a colour
      fade is not the kind of movement this preference is about. */
+  .globe-orbit,
+  .globe-star {
+    animation: none !important;
+  }
+  .globe-sat {
+    animation: none !important;
+    opacity: 1 !important;
+  }
   .peek {
     display: none !important;
   }
@@ -75,9 +83,26 @@
     animation: none !important;
     display: none !important;
   }
+  /* The arrivals on the harness diagram are cancelled outright rather than
+     shortened: shortened, each one still fires a rise and a scale. `both` means a
+     cancelled animation strands the element at its `from` keyframe — invisible and
+     offset — so the resting state has to be put back by hand. The five
+     notifications are simply there, which is what the preference is asking for. */
+  .note-float,
+  .note-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
   *,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* The play button's return ring — nothing to scale down to, so it goes */
+.ripple-out {
+  animation: none !important;
+  opacity: 0 !important;
 }

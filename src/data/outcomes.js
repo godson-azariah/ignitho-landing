@@ -4,7 +4,7 @@
    The colour they all share is here too. They used to have one each, which
    made them look like four categories instead of four results of one thing. */
 
-import { TrendingUp, DollarSign, ShieldCheck, Clock } from 'lucide-react';
+import { Database, ShieldCheck, Cpu, MessagesSquare } from 'lucide-react';
 
 /* The four reasons, for the comparison row. */
 
@@ -26,31 +26,67 @@ export const OUTCOME_CARD_COLOUR = 'bg-ig-violet-600';
 
 export const OUTCOMES = [
   {
-    n: '01',
-    icon: TrendingUp,
-    title: 'Revenue Acceleration',
-    body: 'Shortens proposal turnaround from 4 days to 45 minutes and boosts sales close rates',
-    target: 'Target: +18% Sales Win Rate'
+    n: "01",
+    icon: Database,
+    kicker: "Universal ingestion and transformation",
+    title: "Privacy shield",
+    body: "Sensitive data is never sent to an external model unprotected, and personal identifying information is detected and handled automatically",
+    points: [
+      "Self-healing automation that spots schema drifts and broken pipelines",
+      "One set of figures across AWS, Azure, GCP and Snowflake"
+    ],
+    target: "10x faster pipeline speed"
   },
   {
-    n: '02',
-    icon: DollarSign,
-    title: 'Cost Reduction',
-    body: 'Automates accounts payable and data pipelines, slashing routine operational overhead',
-    target: 'Target: 60%–80% Overhead Savings'
-  },
-  {
-    n: '03',
+    n: "02",
     icon: ShieldCheck,
-    title: 'Corporate Governance',
-    body: 'Embedded AI firewalls prevent hallucinations and data privacy leaks automatically',
-    target: 'Target: 100% Policy Compliance'
+    kicker: "Compliance and security shield",
+    title: "HIPAA ready, GDPR aligned",
+    body: "Meets the handling standards healthcare data requires, and the standards EU data protection requires",
+    points: [
+      "Full masking of personal data, with no leakage to a model",
+      "Audit trails that match HIPAA, SOC 2 and GDPR",
+      "Live cost routing, so model spend cannot run past its budget"
+    ],
+    target: "100% privacy shielded"
   },
   {
-    n: '04',
-    icon: Clock,
-    title: 'Rapid Deployment',
-    body: 'Pre-built modular accelerators deploy in days rather than custom multi-month projects',
-    target: 'Target: Deploys in Days'
+    n: "03",
+    icon: Cpu,
+    kicker: "DevOps and pipeline automation",
+    title: "Immutable audit trails",
+    body: "Every action is logged in a record that cannot be altered after the fact",
+    points: [
+      "Unit tests run before a pull request is opened",
+      "Legacy Oracle PL/SQL and SAS translated into Snowflake SQL",
+      "Manual engineering workload down by up to 60%"
+    ],
+    target: "60% engineering cost reduction"
+  },
+  {
+    n: "04",
+    icon: MessagesSquare,
+    kicker: "Plain-English data intelligence",
+    title: "Role-based access",
+    body: "Who can see or change what is enforced automatically by policy, at every stage of the method",
+    points: [
+      "Plain-English questions turned straight into SQL",
+      "Charts and dashboards that update as the numbers do",
+      "No more spreadsheets compiled by hand, and no typing errors"
+    ],
+    target: "Reports in seconds"
   }
+];
+
+/* The six marks the platform is held to, shown as a row under the four cards.
+
+   Labels, not claims: each names a standard or a control that either applies or
+   does not. They sit apart from the cards above them for that reason. */
+export const COMPLIANCE_MARKS = [
+  'Zero-LLM privacy shield',
+  'PII protection',
+  'HIPAA ready',
+  'GDPR aligned',
+  'Immutable audit trails',
+  'Role-based policy controls'
 ];

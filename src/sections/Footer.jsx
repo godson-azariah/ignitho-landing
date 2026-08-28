@@ -56,7 +56,7 @@ export function Footer({ openSuite, navAction, goHome }) {
               name clear of the truncation. */}
           <div className="col-span-12 lg:col-span-8">
             <span className="block font-mono text-[11px] font-bold tracking-[0.03em] text-ig-muted">
-              Enterprise Catalog
+              Applications
             </span>
             <div className="mt-3.5 grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
               {footerDirectory}
@@ -99,12 +99,14 @@ export function Footer({ openSuite, navAction, goHome }) {
           </div>
         </FadeIn>
 
-        {/* the Ignitho AI name at its real size, alongside the notice */}
+        {/* the wordmark at its real size, alongside the notice */}
         <div className="mt-7 flex flex-col items-center justify-between gap-3 border-t border-ig-ink/12 pt-5 sm:flex-row">
-          <button onClick={goHome} className="flex items-baseline gap-1.5" aria-label="Ignitho AI">
-            <span className="text-[19px] font-black tracking-[-0.03em] text-ig-ink">Ignitho</span>
-            <span className="serif-accent text-[22px] leading-none text-ig-purple">AI</span>
+          <button onClick={goHome} className="flex items-baseline gap-1.5" aria-label="Freind">
+            <span className="text-[19px] font-black tracking-[-0.03em] text-ig-ink">Freind</span>
           </button>
+          <p className="max-w-[46ch] text-center text-[12.5px] leading-[1.5] text-ig-muted sm:text-left">
+            Build and deploy governed data &amp; AI workflows in minutes
+          </p>
           <p className="font-mono text-[11px] tracking-[0.055em] text-ig-muted">
             © 2026 Ignitho Technologies. All rights reserved
           </p>

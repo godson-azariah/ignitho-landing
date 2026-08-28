@@ -5,7 +5,7 @@
    style file because the countdown ring reads the same value, and the two must
    agree. */
 
-import { FlaskConical, LineChart, MousePointerClick, Rocket } from 'lucide-react';
+import { Cpu, GitPullRequest, Plug, ShieldCheck } from 'lucide-react';
 
 /* The four steps, and every one of them is something the page already claims
    somewhere else — this section is a summary, not a new set of promises:
@@ -23,31 +23,41 @@ import { FlaskConical, LineChart, MousePointerClick, Rocket } from 'lucide-react
    not already on the page. */
 export const HOW_IT_WORKS = [
   {
-    id: 'pick',
-    icon: MousePointerClick,
-    /* "Choose", not "Pick" — the closing call to action already opens with
-       "Pick one workflow", and two prominent imperatives sharing a verb read
-       as the page repeating itself rather than as two separate asks. */
-    title: 'Choose the suite',
-    body: 'Search the catalogue and take one of three universal foundations or six industry verticals. Nothing gets scoped from scratch'
+    id: "connect",
+    icon: Plug,
+    title: "Connect data and specify rules",
+    body: "Select your data source and state your transformation rules in plain English"
   },
   {
-    id: 'test',
-    icon: FlaskConical,
-    title: 'Test the agent',
-    body: 'Every accelerator arrives as a governed DAG. Simulate a run end to end before it touches a production system'
+    id: "lock",
+    icon: ShieldCheck,
+    title: "Lock credentials and privacy",
+    body: "Database passwords, customer names and PII are encrypted on your own device"
   },
   {
-    id: 'deploy',
-    icon: Rocket,
-    title: 'Deploy in days',
-    body: 'Pre-built modular accelerators go live in days rather than the multi-month cycle a custom build asks for'
+    id: "generate",
+    icon: Cpu,
+    title: "Code generation and testing",
+    body: "The method writes production code and runs automated unit tests"
   },
   {
-    id: 'measure',
-    icon: LineChart,
-    title: 'Measure the return',
-    body: 'Each suite carries a measured target, and the calculator above already put a figure against your own headcount'
+    id: "ship",
+    icon: GitPullRequest,
+    /* THREE WORDS, NOT TWO, AND THAT IS THE WHOLE OF THE FIX.
+
+       The stage cards reserve two lines for a title so every body starts on the
+       same row. Three of the four fill both lines; this one filled one, which
+       left an empty line inside its card — a 43-pixel gap between title and body
+       against 16 in the other three, and the only visible hole in the row.
+
+       No layout can close it. "One-click deployment" is two words: it is one
+       line, or it is two lines of one word each, and a word alone on a line is
+       the thing the balancing was there to prevent. A third word is the only
+       way, and it sets as "One-click deployment" over "to production" — the
+       original phrase intact on the first line, and nothing orphaned on the
+       second. */
+    title: "One-click deployment to production",
+    body: "Deploys clean, validated code directly to your repository"
   }
 ];
 

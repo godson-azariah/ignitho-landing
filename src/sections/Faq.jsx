@@ -50,16 +50,21 @@ export function Faq({ openContact }) {
 
         <div className={SHELL}>
           <div className="relative mx-auto max-w-3xl">
+            {/* The eyebrow this page never had. Every other band on the site
+                opens with one; the questions page opened on its headline. */}
+            <span className="mb-5 block font-mono text-[10px] font-bold tracking-[0.06em] text-ig-sky sm:text-[11px]">
+              Common Questions
+            </span>
             {/* `noOrphan` on both: it swaps the last space for a non-breaking one,
                 so whatever else happens the final line can never be one word on
                 its own. On the heading that is the difference between "Questions
                 people ask" over "first" and a clean two-line break. */}
             <h1 className="font-extrabold leading-[0.98] tracking-[-0.042em] text-[clamp(30px,4.6vw,60px)] text-white">
-              {noOrphan('Questions people ask first')}
+              {noOrphan('Questions before you explore')}
             </h1>
             <p className="mx-auto mt-6 max-w-[54ch] text-[16.5px] leading-[1.5] text-ig-lavender md:text-[19px]">
               {noOrphan(
-                'What the suites are, how long they take to stand up, and who is accountable for what they do'
+                'Understand how the method, applications and capabilities work together across enterprise workflows'
               )}
             </p>
           </div>
@@ -185,7 +190,7 @@ export function Faq({ openContact }) {
               <p className="text-[17px] font-extrabold tracking-[-0.02em] text-ig-ink md:text-[19px]">
                 Something here not covered?
               </p>
-              <PrimaryButton onClick={openContact}>Contact Sales</PrimaryButton>
+              <PrimaryButton onClick={openContact}>Contact Us</PrimaryButton>
             </FadeIn>
           </div>
         </div>

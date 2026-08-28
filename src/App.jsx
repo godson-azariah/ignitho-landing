@@ -14,16 +14,17 @@ import { ChatBubble } from './components/popups/ChatBubble.jsx';
 import { ContactForm } from './components/popups/ContactForm.jsx';
 import { TopBar } from './components/navigation/TopBar.jsx';
 import { PhoneMenu } from './components/navigation/PhoneMenu.jsx';
+import { AutonomousWorkflow } from './sections/AutonomousWorkflow.jsx';
+import { Solutions } from './sections/Solutions.jsx';
+import { BusinessAccelerators } from './sections/BusinessAccelerators.jsx';
+import { HarnessOverview } from './sections/HarnessOverview.jsx';
 import { Catalog } from './sections/Catalog.jsx';
 import { ClosingSection } from './sections/ClosingSection.jsx';
 import { Footer } from './sections/Footer.jsx';
 import { SuitePage } from './sections/SuitePage.jsx';
 import { Faq } from './sections/Faq.jsx';
 import { Hero } from './sections/Hero.jsx';
-import { HowItWorks } from './sections/HowItWorks.jsx';
 import { OutcomeCards } from './sections/OutcomeCards.jsx';
-import { ReadyPrompt } from './sections/ReadyPrompt.jsx';
-import { SavingsCalculator } from './sections/SavingsCalculator.jsx';
 import { SUITES } from './data/suites.js';
 import { scrollEase } from './lib/scrollEase.js';
 import { useRoute } from './hooks/useRoute.js';
@@ -33,9 +34,10 @@ import { useScrollSpy } from './hooks/useScrollSpy.js';
    real section element; "Overview" is deliberately absent because it means
    "back to the home page", not "scroll somewhere". */
 const NAV_TARGETS = {
-  'ROI Calculator': 'roi-calculator',
-  '9 Core Suites': 'suites-catalog',
-  'How It Works': 'how-it-works'
+  Workflow: 'workflow',
+  Applications: 'suites',
+  'Capability Modules': 'accelerators',
+  'The Method': 'harness-overview'
 };
 
 /* Both derived from the table above rather than written out again, so a
@@ -69,6 +71,11 @@ export default function App() {
      nowhere lower is an ancestor of both. It changes on submit only, never
      per keystroke: the hero holds what you are typing until you commit it. */
   const [searchQuery, setSearchQuery] = useState('');
+
+  /* Which family the catalogue is filtered to. Up here because two sections
+     set it: the filter row inside the catalogue, and the two cards in the
+     solutions band above it. */
+  const [catalogTab, setCatalogTab] = useState('ALL');
 
   /* What to do about scroll after A ROUTE CHANGE, and `null` is a real answer.
 
@@ -130,10 +137,32 @@ export default function App() {
      reader down to the catalogue. Nothing has been asked for, so there is
      nothing to go and look at. A non-empty search still scrolls, which is the
      behaviour the field was built for. */
+  const pickGroup = useCallback(
+    (id) => {
+      setCatalogTab(id);
+      goTo('suites');
+    },
+    [goTo]
+  );
+
+  /* A SEARCH ALSO DROPS THE TAB, and without that the two controls could
+     contradict each other in a way only one of them was visible for.
+
+     The tab and the query are separate filters and the catalogue applies both.
+     So with "Foundation" selected, searching for anything in an industry suite
+     returned nothing — the reader saw an empty catalogue and a search box with
+     their term in it, and no reason for the emptiness, because the tab that
+     caused it was a screen away by then. Asking for something specific is the
+     clearest possible statement that the earlier, broader filter is finished
+     with. Clearing the search does not put the tab back, and should not: it was
+     already gone. */
   const searchFor = useCallback(
     (q) => {
       setSearchQuery(q);
-      if (q) goTo('suites-catalog');
+      if (q) {
+        setCatalogTab('ALL');
+        goTo('suites');
+      }
     },
     [goTo]
   );
@@ -190,7 +219,7 @@ export default function App() {
   /* A page with its own URL needs its own title, or every one of them is filed
      under the home page's name in history, in bookmarks and in a tab strip. */
   useEffect(() => {
-    const base = 'Ignitho AI | Ignitho Technologies';
+    const base = 'Freind | Ignitho Technologies';
     document.title =
       route.name === 'faq'
         ? `Questions | ${base}`
@@ -231,25 +260,31 @@ export default function App() {
               The hero owns what is being typed; this is what has actually been
               asked for, and the field follows it so the two can never disagree
               about whether a search is in effect. */}
-          <Hero onSearch={searchFor} committed={searchQuery} />
-          <OutcomeCards />
-          <SavingsCalculator />
+          <Hero
+            onSearch={searchFor}
+            committed={searchQuery}
+          />
+          <AutonomousWorkflow />
+          <Solutions onPickGroup={pickGroup} />
           <Catalog
             openSuite={openSuite}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            activeTab={catalogTab}
+            setActiveTab={setCatalogTab}
           />
           {/* After the catalogue and before the closing band at the very top or very bottom, which is also
               where the background alternation wants it: the calculator is C,
               the catalogue is B, so this is C and the dark closing section follows. */}
-          <HowItWorks />
+          <BusinessAccelerators onSearch={searchFor} />
+          <HarnessOverview onExploreHarness={navAction('Workflow')} />
+          <OutcomeCards />
           {/* The soft prompt between the walkthrough and the dark band at the very top or very bottom. B,
               which keeps the alternation running C → B → A into the close. */}
           {/* The card's quiet second destination. `navAction` already knows the
               FAQ is a page rather than a scroll target, so this is the same
               handler the top bar and the menu sheet use — one route change,
               defined once. */}
-          <ReadyPrompt openFaq={navAction('FAQ')} />
         </>
       ) : (
         <SuitePage suite={activeSuite} openContact={openContact} />

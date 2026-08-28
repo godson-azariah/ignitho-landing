@@ -397,3 +397,169 @@
     stroke-dashoffset: 0;
   }
 }
+
+/* THE GLOBE, in the workflow picture.
+
+   THE WORLD ITSELF IS NOT HERE ANY MORE. Its land, its ground stations and their
+   pings were three CSS animations over several hundred elements; they are all
+   painted into one canvas now, on one clock, in HarnessGlobe.jsx. Three rules
+   lost their last user and went with them.
+
+   What is left is the two satellite planes, which are eight elements and belong
+   in CSS: a turn and a fade, both composited, neither costing a repaint.
+
+   Under `prefers-reduced-motion` both stop, and the canvas draws a single frame
+   and never asks for another — which is the correct still image rather than a
+   blank space. */
+
+/* Each satellite, on its own tilted ring. The duration and the direction are set
+   per ring in HarnessGlobe.jsx, which is where the two of them are described;
+   this is only the turn itself. */
+.globe-orbit {
+  animation: globe-orbit 14s linear infinite;
+}
+@keyframes globe-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* THE SATELLITE GOING ROUND THE BACK.
+
+   The rings themselves are cut in half and painted on either side of the sphere
+   — see HarnessGlobe.jsx — but a satellite moves, so it cannot be cut once and
+   left. Its depth is R times sin(spin), which is positive for exactly the first
+   half of every circuit, so this hides it for the second.
+
+   It runs on the same duration and the same direction as the spin it belongs
+   to, both set on the element, so the two stay in step — reversed, both
+   timelines run backwards together and the pairing still holds. */
+.globe-sat {
+  animation: globe-sat 14s linear infinite;
+}
+@keyframes globe-sat {
+  0%,
+  44% {
+    opacity: 1;
+  }
+  52%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* A STAR BREATHING.
+
+   Seven of the fifty-two carry this and the rest are still, which is the point:
+   a whole sky twinkling reads as a screensaver, and a few doing it reads as a
+   sky. Nine seconds, and each one is started at a different moment by a negative
+   delay, so no two are ever caught doing the same thing.
+
+   Opacity only, on a one-pixel element. Seven of these cost nothing. */
+.globe-star {
+  animation: globe-star 9s ease-in-out infinite;
+}
+@keyframes globe-star {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* THE HARNESS DIAGRAM, beside the opening headline, has no rules here.
+
+   It has had five at various points: a light travelling a path and its sideways
+   twin, a rim turning round a core, a ring pulsing out of it, a caret blinking,
+   and cards drifting as they hung in the air. The drawing is a stack of notices
+   climbing a ladder now, and the whole of its movement is one transform per
+   notice changing when the count does — a transition written where the element
+   is, because it depends on which rung the notice is on and a stylesheet cannot
+   know that.
+
+   Left here they would be five rules nobody could find a user for. */
+
+
+/* ONE NOTIFICATION LANDING on the face of the laptop, beside the headline.
+
+   The block above is out of date: the drawing is no longer a stack of notices
+   climbing a ladder. It is five of them at five places across the machine, and
+   every two and a half seconds one of those places takes the next one.
+
+   Rising and growing into itself, which is what something arriving from further
+   away does — twenty-two pixels and a tenth of its size, on the settle curve, so
+   it comes most of the way at once and then eases the last of it. `both` matters:
+   the element is mounted at the moment the animation is asked for, and without
+   it there is a frame where the new notification is drawn at full size in the
+   old one's place before the animation takes hold.
+
+   It is asked for by React remounting the element, not by a class being removed
+   and added — the second needs two frames and a reflow between them, and gets
+   skipped whenever those two frames land in the same paint. */
+.note-in {
+  animation: note-in 720ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+@keyframes note-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* THE FIVE NOTIFICATIONS DRIFTING, beside the opening headline.
+
+   Six pixels, up and back, over seven to nine seconds — slow enough that you
+   register it as the picture being alive rather than as something moving. Each
+   card has its own period and each is started part-way through its own cycle by
+   a negative delay, so no two are ever at the same point and the group never
+   pulses together.
+
+   It is on the outer element and the arrival is on the inner one. Both are
+   transforms, and one element cannot run two animations on the same property
+   without the second one winning outright. */
+.note-float {
+  animation: note-float 8s ease-in-out infinite;
+}
+@keyframes note-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* The ring that goes out from the play button when it lands back in the middle
+   of the film.
+
+   It is a full stop, not an ornament: the button springs home, overshoots, and
+   settles, and without this the settle just stops. One ring, out to just under
+   twice its size and gone — anything more than one and it reads as a loading
+   state rather than as the end of a gesture.
+
+   Scale and opacity only, so it is composited and costs nothing. `forwards`
+   because the element stays mounted until the next return remounts it, and it
+   must not snap back to full size while it waits. */
+.ripple-out {
+  animation: ripple-out 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes ripple-out {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.85);
+  }
+}

@@ -25,7 +25,7 @@ export const SUITES = [
   {
     id: 'data-engineering',
     number: '01',
-    name: 'Enterprise Data Foundation Suite',
+    name: 'Data Foundation',
     type: 'foundation',
     icon: Database,
     badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
@@ -51,7 +51,7 @@ export const SUITES = [
   {
     id: 'data-quality',
     number: '02',
-    name: 'Enterprise Data Trust and Governance Suite',
+    name: 'Data Trust & Analysis',
     type: 'foundation',
     icon: BarChart3,
     badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
@@ -70,13 +70,13 @@ export const SUITES = [
       { name: 'Golden Record Prime', type: 'Master Profile Creator', desc: 'Consolidates duplicate customer records into a single accurate master profile' },
       { name: 'Data Cleansing Forge', type: 'Anomaly Cleaner', desc: 'Strips corrupt formatting and invalid values automatically upon entry' },
       { name: 'Data Validation Sentinel', type: 'Error Preventer', desc: 'Validates records against strict business rules before client billing occurs' },
-      { name: 'Address Validation Atlas', type: 'Address Verifier', desc: 'Verifies and normalizes global postal and shipping addresses instantly' }
+      { name: 'Address Verification', type: 'Address Verifier', desc: 'Verifies and normalises postal and shipping addresses globally' }
     ]
   },
   {
     id: 'data-science',
     number: '03',
-    name: 'Enterprise AI & Governance Studio',
+    name: 'AI & Governance',
     type: 'foundation',
     icon: BrainCircuit,
     badgeColor: 'bg-violet-50 text-violet-700 border-violet-200',
@@ -92,23 +92,23 @@ export const SUITES = [
     ],
     subDomains: ['AI Security Firewall', 'Cost Optimizer', 'Predictive Analytics'],
     accelerators: [
-      { name: 'Fortress', type: 'AI Security Firewall', desc: 'Blocks prompt injection attacks, unauthorized access, and sensitive data leaks' },
-      { name: 'CostPilot', type: 'API Budget Optimizer', desc: 'Routes AI tasks across efficient models to slash monthly cloud spend' },
-      { name: 'TruthGuard', type: 'Hallucination Prevention', desc: 'Verifies AI outputs against real company documents before decisions are made' },
+      { name: 'Security Filtering', type: 'AI Security Firewall', desc: 'Applies input filtering to block prompt injection and unapproved payload access' },
+      { name: 'Cost-Aware Routing', type: 'API Budget Optimizer', desc: 'Routes queries across tiered models based on task complexity to reduce spend' },
+      { name: 'Output Verification', type: 'Hallucination Prevention', desc: 'Evaluates model outputs against provided reference documents to catch errors' },
       { name: 'DriftWatch', type: 'Model Accuracy Monitor', desc: 'Monitors live models and triggers automatic retraining when accuracy drops' }
     ]
   },
   {
     id: 'healthcare-pharma',
     number: '04',
-    name: 'Healthcare & Pharma Acceleration Suite',
+    name: 'Healthcare & Pharma',
     type: 'industry',
     icon: Pill,
     badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     gradient: 'from-emerald-600 to-teal-600',
     imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1000&q=80',
-    tagline: 'Speed Up Clinical Research & Automate Regulatory Filings',
-    executiveSummary: `Automates patient matching for clinical trials, summarizes medical research papers instantly, and verifies strict FDA, EMA, and HIPAA regulatory compliance automatically`,
+    tagline: 'Clinical Protocol Parsing & Pharmacovigilance Surveillance',
+    executiveSummary: `Accelerates life-sciences documentation by parsing clinical protocol criteria, summarising biomedical literature, and supporting post-market pharmacovigilance checks`,
     businessImpact: 'Cuts clinical trial protocol review times by 50% and accelerates drug time-to-market',
     outcomes: [
       'Shortens clinical candidate matching from 6 weeks to 3 days',
@@ -125,14 +125,14 @@ export const SUITES = [
   {
     id: 'supply-chain',
     number: '05',
-    name: 'Supply Chain & Procurement Suite',
+    name: 'Supply Chain & Procurement',
     type: 'industry',
     icon: Truck,
     badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200',
     gradient: 'from-cyan-600 to-blue-600',
     imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80',
-    tagline: 'Predictive Stock Planning & Automated Vendor Negotiations',
-    executiveSummary: `Predicts inventory stockouts, audits vendor master agreements to highlight cost variances, and calculates fuel-efficient logistics delivery routes`,
+    tagline: 'Demand Forecasting, Safety Stock & Supplier Analytics',
+    executiveSummary: `Enhances inventory planning by calculating dynamic safety stock thresholds, monitoring logistics transit times, and auditing vendor contract pricing benchmarks`,
     businessImpact: 'Uncovers up to 12% in procurement contract savings and achieves 99.2% on-time inventory fulfillment',
     outcomes: [
       'Prevents inventory stockouts that result in lost customer sales',
@@ -149,14 +149,14 @@ export const SUITES = [
   {
     id: 'retail-ecommerce',
     number: '06',
-    name: 'Retail, Sales & Customer Growth Suite',
+    name: 'Retail, Sales & Customer Growth',
     type: 'industry',
     icon: ShoppingBag,
     badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
     gradient: 'from-amber-600 to-orange-600',
     imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1000&q=80',
-    tagline: 'Accelerate Sales Close Rates & Customer Lifetime Value',
-    executiveSummary: `Automates opportunity lead scoring, proposal drafting, dynamic product pricing, and customer churn prediction to maximize recurring revenue`,
+    tagline: 'Pipeline Scoring, Proposal Automation & Churn Analytics',
+    executiveSummary: `Supports commercial sales operations with opportunity scoring, automated RFP proposal drafting, and customer retention modelling`,
     businessImpact: 'Boosts sales close rates by 18% and slashes proposal turnaround time by 90%',
     outcomes: [
       'Tells sales teams exactly which prospective deals will close first',
@@ -173,7 +173,7 @@ export const SUITES = [
   {
     id: 'digital-marketing',
     number: '07',
-    name: 'Digital Growth & Brand Protection Suite',
+    name: 'Digital Growth & Brand Protection',
     type: 'industry',
     icon: Megaphone,
     badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
@@ -197,7 +197,7 @@ export const SUITES = [
   {
     id: 'bfsi',
     number: '08',
-    name: 'Banking, Financial Services & Accounting Suite',
+    name: 'Banking, Financial Services & Fintech',
     type: 'industry',
     icon: Landmark,
     badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
@@ -221,7 +221,7 @@ export const SUITES = [
   {
     id: 'transport-logistics',
     number: '09',
-    name: 'Logistics & Fleet Operations Suite',
+    name: 'Logistics & Fleet Operations',
     type: 'industry',
     icon: Compass,
     badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
@@ -243,3 +243,4 @@ export const SUITES = [
     ]
   }
 ];
+

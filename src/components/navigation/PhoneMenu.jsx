@@ -23,11 +23,10 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
     >
       <div className="sheet-panel dots-inv relative isolate h-full w-full overflow-y-auto bg-ig-violet text-white">
         <div className="flex h-[76px] items-center justify-between gap-5 px-5 md:h-[92px] md:px-8">
-          <button onClick={goHome} className="flex items-baseline gap-2" aria-label="Ignitho AI">
+          <button onClick={goHome} className="flex items-baseline gap-2" aria-label="Freind">
             <span className="text-[19px] font-black tracking-[-0.02em] md:text-[22px]">
-              Ignitho
+              Freind
             </span>
-            <span className="serif-accent text-[23px] md:text-[27px]">AI</span>
           </button>
           <Button
             onClick={onClose}
@@ -95,7 +94,7 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
 
           <div className="col-span-12 lg:col-span-4 lg:col-start-9">
             {/* Both actions are here, because below `lg` the bar carries
-                neither — it keeps to a Ignitho AI name and the menu control, so this
+                neither — it keeps to a wordmark and the menu control, so this
                 sheet is the only place a reader on a phone can reach either the
                 briefing or the application.
 
@@ -113,7 +112,7 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
                   openContact();
                 }}
               >
-                Contact Sales
+                Contact Us
                 <ArrowRight className="h-3.5 w-3.5" />
               </PrimaryButton>
               <Button
@@ -122,7 +121,7 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
                 variant="light"
                 className="px-6 py-3.5 text-[13px] font-semibold"
               >
-                Sign in
+                Log in
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Button>
             </div>

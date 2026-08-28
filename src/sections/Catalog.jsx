@@ -12,7 +12,7 @@ import { SuiteCard } from '../components/ui/SuiteCard.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { ViewToggle } from '../components/ui/ViewToggle.jsx';
 import { SUITES } from '../data/suites.js';
-import { TABS } from '../data/navigation.js';
+import { TABS, TAB_NOTES } from '../data/navigation.js';
 import { ROW_FILL, SHELL } from '../lib/layout.js';
 import { scrollEase } from '../lib/scrollEase.js';
 import { PEEK_H, useSuitePreview } from '../hooks/useSuitePreview.js';
@@ -22,21 +22,49 @@ const matchesTab = (suite, tab) =>
   (tab === 'FOUNDATION' && suite.type === 'foundation') ||
   (tab === 'INDUSTRY' && suite.type === 'industry');
 
+/* ONE LOWERCASE HAYSTACK PER SUITE, and it has to include the accelerators.
+
+   The search read three fields — name, tagline, executive summary — and none of
+   them holds an accelerator's name. So every card in the Business Accelerators
+   band searched for something the catalogue could not find: press "Data
+   Ingestion Nexus" and it scrolled you to nine hidden suites and the words "0
+   results". `agents.js` even carried a comment saying the catalogue searched
+   accelerator names as well as suite names, which is what it was written
+   against and not what the code did.
+
+   The accelerator names are also what anyone would actually type. They are the
+   named things on the page.
+
+   Built once at module load rather than on every keystroke: nine suites of five
+   accelerators is forty-odd `toLowerCase` calls, and doing that per character
+   typed is the sort of thing that makes a search field feel heavy for no
+   reason. */
+const HAYSTACK = new Map(
+  SUITES.map((suite) => [
+    suite.id,
+    [
+      suite.name,
+      suite.tagline,
+      suite.executiveSummary,
+      suite.businessImpact,
+      ...(suite.subDomains ?? []),
+      ...suite.accelerators.flatMap((a) => [a.name, a.type, a.desc])
+    ]
+      .join(' ')
+      .toLowerCase()
+  ])
+);
+
 const matchesSearch = (suite, query) => {
   const q = query.trim().toLowerCase();
   if (!q) return true;
-  return (
-    suite.name.toLowerCase().includes(q) ||
-    suite.tagline.toLowerCase().includes(q) ||
-    suite.executiveSummary.toLowerCase().includes(q)
-  );
+  return (HAYSTACK.get(suite.id) ?? '').includes(q);
 };
 
 /* The search term now arrives from the page container, because the field that sets it
    lives in the hero. The tab and the view stay here: nothing outside this
    section has any use for them. */
-export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
-  const [activeTab, setActiveTab] = useState('ALL');
+export function Catalog({ openSuite, searchQuery, setSearchQuery, activeTab, setActiveTab }) {
   const [view, setView] = useState('grid');
 
   // the segmented control's pill measures the active tab and glides to it
@@ -146,26 +174,26 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
      none of that, because an opaque surface already covers what is behind
      it. */
   return (
-    <section id="suites-catalog" className="bg-b dots relative pb-24 pt-12 md:pb-32 md:pt-16">
+    <section id="suites" className="bg-b dots relative py-16 md:py-24">
       <div className={SHELL}>
         <FadeIn className="reveal-soft plate mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center rounded-full bg-white px-6 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-purple shadow-[0_10px_30px_-18px_rgba(22,6,58,0.6)]">
-            Enterprise Catalog
+            Enterprise Automation Solutions
           </span>
-          {/* Names how the catalogue is actually split, which is the one
-              thing a reader needs before touching the control directly
-              underneath — the tabs offer exactly these two filters, "3
-              Universal Foundations" and "6 Industry Verticals".
-
-              It also drops "built". The hero now reads "built to run", and a
-              heading two sections later repeating the same word spends it
-              twice for no gain. */}
-          <h2 className="mt-5 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(32px,4.8vw,64px)] text-ig-ink">
-            Three foundations,{' '}
+          {/* The `[03]` label that used to sit here said the same six words as
+              the pill above it. Two sizes of the same sentence, one under the
+              other, is not emphasis — the pill is the one that stayed because
+              it is the one you see. */}
+          <h2 className="mt-6 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(30px,4.8vw,64px)] text-ig-ink">
+            A repeatable method, applied to{' '}
             <span className="serif-accent font-normal text-ig-purple">
-              six verticals
+              enterprise automation
             </span>
           </h2>
+          <p className="mx-auto mt-5 max-w-[60ch] text-[15.5px] leading-[1.6] text-ig-muted md:text-[17px]">
+            Foundation and industry applications turn complex requirements into governed,
+            repeatable data and AI workflows
+          </p>
         </FadeIn>
 
         {/* Segmented control — the indicator measures each tab and glides */}
@@ -246,6 +274,13 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
               })}
             </div>
           </div>
+          {/* One line under the filters, saying what the group you are looking
+              at is. It changes with the tab, which is the only way a filter
+              can explain itself without a heading per group — and headings per
+              group would break a catalogue that is one grid. */}
+          <p className="mx-auto mt-6 max-w-[64ch] text-center text-[13.5px] leading-[1.55] text-ig-muted md:text-[14.5px]">
+            {TAB_NOTES[activeTab]}
+          </p>
         </FadeIn>
 
         {/* The field itself is in the hero now, so what is left here is the

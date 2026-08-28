@@ -12,8 +12,6 @@
 /* Everything that names a destination or a filter. Kept apart from the suite
    catalogue because it changes for different reasons and at a different pace. */
 
-import { BadgeCheck, Boxes, HeartPulse, ShieldCheck, Truck, Workflow } from 'lucide-react';
-
 /* In page order, which is the only order a set of scroll destinations can
    sensibly be in: the calculator, the catalogue, then the walkthrough that sits
    between the catalogue and the closing band at the very top or very bottom.
@@ -24,7 +22,7 @@ import { BadgeCheck, Boxes, HeartPulse, ShieldCheck, Truck, Workflow } from 'luc
    nothing, and the effect that scrolls to the top never ran. A destination that
    silently does nothing four times out of five is worse than no destination.
 
-   Nothing is lost by removing it: the Ignitho AI name beside it already calls the same
+   Nothing is lost by removing it: the wordmark beside it already calls the same
    `goHome`, and that is the conventional place to look for "back to the start"
    anyway. Every label that remains has a real section id behind it.
 
@@ -36,7 +34,7 @@ import { BadgeCheck, Boxes, HeartPulse, ShieldCheck, Truck, Workflow } from 'luc
    to identify it. The menu sheet and the footer take the list whole. */
 export const FAQ_LABEL = 'FAQ';
 
-export const NAV_LINKS = ['ROI Calculator', '9 Core Suites', 'How It Works', FAQ_LABEL];
+export const NAV_LINKS = ['Workflow', 'Applications', 'Capability Modules', 'The Method', FAQ_LABEL];
 
 /* The product itself, which is a separate application on its own host. Kept
    here beside the destinations rather than inline in the two components that
@@ -108,30 +106,28 @@ export const CONTACT_ENDPOINT = null;
 export const CONTACT_EMAIL = 'info@ignitho.com';
 
 export const TABS = [
-  { id: 'ALL', label: 'All 9 Suites' },
-  { id: 'FOUNDATION', label: '3 Universal Foundations' },
-  { id: 'INDUSTRY', label: '6 Industry Verticals' }
+  { id: 'ALL', label: 'All Applications' },
+  { id: 'FOUNDATION', label: 'Foundation' },
+  { id: 'INDUSTRY', label: 'Industry Applications' }
 ];
 
 export const CERTS = ['ISO 27001 Certified', 'SOC2 Type II', 'HIPAA Compliant'];
 
-/* The starting points offered under the hero's search field.
+/* A line under the filter row that changes with the filter, saying what the
+   group you are looking at actually is. Keyed by the tab ids above. */
+export const TAB_NOTES = {
+  ALL: 'Nine suites in two groups: the foundations any enterprise runs on, and the verticals built for one industry',
+  FOUNDATION:
+    'Core suites covering the capabilities every enterprise reuses, across data engineering, quality, analytics and AI workflows',
+  INDUSTRY:
+    'The same governed platform, applied to real industries, with workflows for healthcare, financial services, retail and more'
+};
 
-   Every one of these was checked against the catalogue rather than chosen for
-   how it reads: the search matches a suite's name, tagline and executive
-   summary, and each term below returns at least one suite. A suggestion chip
-   that lands on an empty result is worse than no chip at all — it teaches the
-   reader that the search does not work. Counts today, in order: 2, 3, 1, 1,
-   1, 2.
-
-   `label` is what the chip says; `term` is what it searches for. They are the
-   same today, but keeping them apart means a chip can be phrased for a reader
-   later without silently changing which suites it returns. */
-export const SEARCH_SUGGESTIONS = [
-  { label: 'Governance', term: 'Governance', icon: ShieldCheck },
-  { label: 'Compliance', term: 'Compliance', icon: BadgeCheck },
-  { label: 'Supply chain', term: 'Supply Chain', icon: Boxes },
-  { label: 'Healthcare', term: 'Healthcare', icon: HeartPulse },
-  { label: 'Automation', term: 'Automation', icon: Workflow },
-  { label: 'Logistics', term: 'Logistics', icon: Truck }
+/* The three figures under the search field in the opening band. Each one is a
+   claim the platform makes for itself, and the same 90% appears again further
+   down the page. */
+export const HERO_FIGURES = [
+  { figure: '10x', label: 'Faster workflow generation' },
+  { figure: '90%', label: 'Development time saved' },
+  { figure: '100%', label: 'Auditable workflow' }
 ];
