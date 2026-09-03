@@ -27,7 +27,10 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
           {/* The light version: this sheet is painted in `ig-violet`, and the
               plum "Ignitho's" measures 1.4:1 against it. */}
           <button
-            onClick={goHome}
+            onClick={() => {
+              onClose();
+              goHome();
+            }}
             className="flex items-center"
             aria-label="Ignitho's FRIEND Framework, back to the top"
           >

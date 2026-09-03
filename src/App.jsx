@@ -110,7 +110,13 @@ export default function App() {
   const openContact = useCallback(() => setContactOpen(true), []);
   const closeContact = useCallback(() => setContactOpen(false), []);
 
-  const goHome = useCallback(() => navigate('/'), [navigate]);
+  /* From the home page this is a scroll to the top, not a navigation: pushing
+     `/` while already on `/` is a deliberate no-op in `useRoute`, so `route`
+     never changes and the scroll effect below never runs. Mirrors `goTo`. */
+  const goHome = useCallback(() => {
+    if (onIndex) window.scrollTo({ top: 0, left: 0, behavior: scrollEase() });
+    else navigate('/');
+  }, [onIndex, navigate]);
   const openSuite = useCallback((id) => navigate(`/suites/${id}`), [navigate]);
   const openFaq = useCallback(() => navigate('/faq'), [navigate]);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
