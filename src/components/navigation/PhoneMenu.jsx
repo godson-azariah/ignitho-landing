@@ -7,6 +7,7 @@ import { ArrowRight, ArrowUpRight, X } from 'lucide-react';
 import { CERTS, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
 import { useOverlay } from '../../hooks/useOverlay.js';
 import { Button, PrimaryButton } from '../ui/Button.jsx';
+import { Wordmark } from '../ui/Wordmark.jsx';
 
 /* A full sheet over the page rather than a dropdown. It opens by sliding down
    and closes by sliding back up the same way — the CSS holds `visibility`
@@ -23,10 +24,14 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
     >
       <div className="sheet-panel dots-inv relative isolate h-full w-full overflow-y-auto bg-ig-violet text-white">
         <div className="flex h-[76px] items-center justify-between gap-5 px-5 md:h-[92px] md:px-8">
-          <button onClick={goHome} className="flex items-baseline gap-2" aria-label="Freind">
-            <span className="text-[19px] font-black tracking-[-0.02em] md:text-[22px]">
-              Freind
-            </span>
+          {/* The light version: this sheet is painted in `ig-violet`, and the
+              plum "Ignitho's" measures 1.4:1 against it. */}
+          <button
+            onClick={goHome}
+            className="flex items-center"
+            aria-label="Ignitho's FRIEND Framework, back to the top"
+          >
+            <Wordmark tone="light" className="h-9 md:h-10" />
           </button>
           <Button
             onClick={onClose}

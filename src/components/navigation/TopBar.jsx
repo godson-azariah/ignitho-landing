@@ -13,6 +13,7 @@ import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
 import { SHELL } from '../../lib/layout.js';
 import { useTopBarShadow } from '../../hooks/useTopBarShadow.js';
 import { Button, PrimaryButton } from '../ui/Button.jsx';
+import { Wordmark } from '../ui/Wordmark.jsx';
 
 /* Owns its own scroll state — nothing else on the page needs to know whether
    the page has moved under the bar, so nothing else has to hold it. */
@@ -77,12 +78,15 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
         >
           <button
             onClick={goHome}
-            className="col-start-1 flex items-baseline gap-1.5 justify-self-start"
-            aria-label="Freind"
+            className="col-start-1 flex items-center justify-self-start"
+            aria-label="Ignitho's FRIEND Framework, back to the top"
           >
-            <span className="text-[21px] font-black tracking-[-0.03em] text-ig-ink md:text-[24px]">
-              Freind
-            </span>
+            {/* 36 and 44, against a bar that is 72 and 84. The logo is three
+                lines deep where the word it replaces was one, so matching the
+                old 21px of type would have put the top line at 6px. Half the
+                bar's height is the most a mark can take before the row reads as
+                a header for the logo rather than a bar with a logo in it. */}
+            <Wordmark className="h-9 md:h-11" />
           </button>
 
           {/* THE middle track — sized to its own content, centred by the two

@@ -10,7 +10,7 @@ import { scrollEase } from '../../lib/scrollEase.js';
 
 const GREETING = {
   sender: 'bot',
-  text: 'Hello. I am the Freind concierge. Ask me about the suites, the agents, or how a workflow gets from your data to a pull request'
+  text: 'Hello. I am the FRIEND concierge. Ask me about the suites, the agents, or how a workflow gets from your data to a pull request'
 };
 
 /* Canned answers, matched on keywords. First hit wins, so the more specific
@@ -18,20 +18,20 @@ const GREETING = {
 const REPLIES = [
   {
     match: ['roi', 'cost', 'save'],
-    text: 'On average, Freind reduces routine operational overhead by 60% to 80% and cuts AI cloud API spending by up to 40% via CostPilot routing'
+    text: 'On average, FRIEND reduces routine operational overhead by 60% to 80% and cuts AI cloud API spending by up to 40% via CostPilot routing'
   },
   {
     match: ['security', 'hipaa', 'compliance', 'fda'],
-    text: 'Freind is ISO 27001 certified and SOC2 Type II compliant. Our Fortress security firewall prevents data leaks, prompt attacks, and PII violations automatically'
+    text: 'FRIEND is ISO 27001 certified and SOC2 Type II compliant. Our Fortress security firewall prevents data leaks, prompt attacks, and PII violations automatically'
   },
   {
     match: ['deploy', 'time', 'fast'],
-    text: 'Because Freind relies on modular, pre-built accelerators, deployment takes days rather than custom multi-month software engineering cycles'
+    text: 'Because FRIEND relies on modular, pre-built accelerators, deployment takes days rather than custom multi-month software engineering cycles'
   }
 ];
 
 const FALLBACK =
-  'Freind delivers pre-built, multi-agent AI accelerators that automate complex business workflows securely. Would you like to schedule an executive briefing with our leadership team?';
+  'FRIEND delivers pre-built, multi-agent AI accelerators that automate complex business workflows securely. Would you like to schedule an executive briefing with our leadership team?';
 
 const answerFor = (query) => {
   const q = query.toLowerCase();
@@ -76,7 +76,7 @@ export function ChatBubble() {
             <span className="absolute -right-1.5 -top-1.5 h-2 w-2 rounded-full bg-ig-sky" />
           </span>
           <span className="font-mono text-[11.5px] font-bold tracking-[0.05em]">
-            Ask Freind
+            Ask FRIEND
           </span>
         </button>
       ) : (
@@ -157,7 +157,7 @@ export function ChatBubble() {
           <div className="flex items-center gap-2 border-t border-white/10 p-3">
             <input
               type="text"
-              placeholder="Ask about Freind ROI, security, or deployment..."
+              placeholder="Ask about FRIEND ROI, security, or deployment..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}

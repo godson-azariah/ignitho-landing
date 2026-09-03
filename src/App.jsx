@@ -219,7 +219,7 @@ export default function App() {
   /* A page with its own URL needs its own title, or every one of them is filed
      under the home page's name in history, in bookmarks and in a tab strip. */
   useEffect(() => {
-    const base = 'Freind | Ignitho Technologies';
+    const base = 'FRIEND | Ignitho Technologies';
     document.title =
       route.name === 'faq'
         ? `Questions | ${base}`

@@ -21,7 +21,7 @@ export const FAQ_GROUPS = [
     title: 'What it is',
     items: [
       {
-        q: "What is Freind?",
+        q: "What is FRIEND?",
         a: 'A method that uses AI to generate production code (PySpark, dbt and SQL) and deploy it directly to your own repository, with automated testing at every step'
       },
       {
@@ -86,7 +86,7 @@ export const FAQ_GROUPS = [
       },
       {
         q: 'How is our data governed?',
-        a: 'Freind is ISO 27001 certified and SOC2 Type II compliant. The Fortress security firewall prevents data leaks, prompt attacks and PII violations automatically rather than by policy alone'
+        a: 'FRIEND is ISO 27001 certified and SOC2 Type II compliant. The Fortress security firewall prevents data leaks, prompt attacks and PII violations automatically rather than by policy alone'
       },
       {
         q: 'How is the return measured?',

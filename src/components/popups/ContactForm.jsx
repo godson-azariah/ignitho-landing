@@ -179,7 +179,7 @@ export function ContactForm({ open, onClose }) {
               your process rather than about scoping a build
             </p>
           </div>
-          <span className="absolute bottom-8 font-mono text-[10.5px] font-bold tracking-[0.055em] text-ig-lavender/60">Freind</span>
+          <span className="absolute bottom-8 font-mono text-[10.5px] font-bold tracking-[0.055em] text-ig-lavender/60">FRIEND</span>
         </div>
 
         {/* the form side — its own scroll, so the panel beside it never moves */}

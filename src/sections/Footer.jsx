@@ -6,6 +6,7 @@
 import { useMemo } from 'react';
 import { Check } from 'lucide-react';
 import { FadeIn } from '../components/ui/FadeIn.jsx';
+import { Wordmark } from '../components/ui/Wordmark.jsx';
 import { CERTS, NAV_LINKS } from '../data/navigation.js';
 import { SUITES } from '../data/suites.js';
 import { SHELL } from '../lib/layout.js';
@@ -101,8 +102,12 @@ export function Footer({ openSuite, navAction, goHome }) {
 
         {/* the wordmark at its real size, alongside the notice */}
         <div className="mt-7 flex flex-col items-center justify-between gap-3 border-t border-ig-ink/12 pt-5 sm:flex-row">
-          <button onClick={goHome} className="flex items-baseline gap-1.5" aria-label="Freind">
-            <span className="text-[19px] font-black tracking-[-0.03em] text-ig-ink">Freind</span>
+          <button
+            onClick={goHome}
+            className="flex shrink-0 items-center"
+            aria-label="Ignitho's FRIEND Framework, back to the top"
+          >
+            <Wordmark className="h-10" />
           </button>
           <p className="max-w-[46ch] text-center text-[12.5px] leading-[1.5] text-ig-muted sm:text-left">
             Build and deploy governed data &amp; AI workflows in minutes
