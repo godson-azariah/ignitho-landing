@@ -8,9 +8,8 @@
 
    It no longer hides when you scroll down; it just picks up a shadow. */
 
-import { ArrowUpRight, MessageCircle, Menu } from 'lucide-react';
+import { ArrowUpRight, Menu } from 'lucide-react';
 import { FAQ_LABEL, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
-import { SHELL } from '../../lib/layout.js';
 import { useTopBarShadow } from '../../hooks/useTopBarShadow.js';
 import { Button, PrimaryButton } from '../ui/Button.jsx';
 import { Wordmark } from '../ui/Wordmark.jsx';
@@ -27,13 +26,17 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
 
        The only thing that still answers the scroll is the shadow below, which
        is a change in the bar rather than a change to whether the bar exists. */
-    <header className="fixed inset-x-0 top-0 z-50">
-      {/* A plain white bar, balanced in three: wordmark left, destinations
-          optically centred, one action right. It carries a thin line at rest
-          and lifts onto a soft shadow once the page has moved under it. */}
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
+      {/* A white capsule floating over the page, balanced in three: wordmark
+          left, destinations optically centred, actions right. Its width is the
+          page's shell, so its content lines up with the content below it. It
+          carries a hairline at rest and a deeper shadow once the page has
+          moved under it. */}
       <nav
-        className={`relative border-b border-ig-ink/10 bg-white transition-shadow duration-500 ease-out ${
-          scrolled ? 'shadow-[0_16px_36px_-30px_rgba(22,6,58,0.95)]' : 'shadow-none'
+        className={`relative mx-auto w-full max-w-[1360px] rounded-full bg-white transition-shadow duration-500 ease-out 2xl:max-w-[1560px] ${
+          scrolled
+            ? 'shadow-[0_0_0_1px_rgba(22,6,58,0.06),0_18px_40px_-20px_rgba(11,7,23,0.55)]'
+            : 'shadow-[0_0_0_1px_rgba(22,6,58,0.06),0_10px_30px_-18px_rgba(11,7,23,0.5)]'
         }`}
       >
         {/* A Three-column grid with equal flanks — which is what "centred on the
@@ -74,7 +77,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
             sides put the wordmark hard left and the menu button hard right,
             which is what `justify-between` used to do. */}
         <div
-          className={`${SHELL} grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-3 md:h-[84px]`}
+          className="tb-row grid h-[60px] grid-cols-[1fr_auto_1fr] items-center gap-3 pl-6 pr-2 md:h-[68px] md:pl-8 md:pr-3"
         >
           <button
             onClick={goHome}
@@ -86,7 +89,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
                 old 21px of type would have put the top line at 6px. Half the
                 bar's height is the most a mark can take before the row reads as
                 a header for the logo rather than a bar with a logo in it. */}
-            <Wordmark className="h-9 md:h-11" />
+            <Wordmark compact className="h-7 md:h-8" />
           </button>
 
           {/* THE middle track — sized to its own content, centred by the two
@@ -97,7 +100,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
               are 250-odd pixels spare and the destinations should breathe. The
               type stays at 15px at every width — shrinking a nav label to buy
               layout is the kind of saving a reader pays for. */}
-          <div className="col-start-2 hidden items-center justify-center gap-5 lg:flex xl:gap-9">
+          <div className="tb-links col-start-2 hidden items-center justify-center gap-5 lg:flex xl:gap-9">
             {/* FAQ IS filtered out here AND rendered beside THE actions.
 
                 It is the odd one among the four: the other three scroll to a
@@ -179,11 +182,6 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
                     on ? 'text-ig-purple' : 'text-ig-muted hover:text-ig-ink'
                   }`}
                 >
-                  <MessageCircle
-                    className="h-4 w-4 shrink-0 text-ig-teal"
-                    strokeWidth={2.2}
-                    aria-hidden="true"
-                  />
                   {FAQ_LABEL}
                   <span
                     aria-hidden="true"

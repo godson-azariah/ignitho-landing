@@ -15,8 +15,7 @@ import { ContactForm } from './components/popups/ContactForm.jsx';
 import { TopBar } from './components/navigation/TopBar.jsx';
 import { PhoneMenu } from './components/navigation/PhoneMenu.jsx';
 import { AutonomousWorkflow } from './sections/AutonomousWorkflow.jsx';
-import { Solutions } from './sections/Solutions.jsx';
-import { BusinessAccelerators } from './sections/BusinessAccelerators.jsx';
+import { Foundations } from './sections/Foundations.jsx';
 import { HarnessOverview } from './sections/HarnessOverview.jsx';
 import { Catalog } from './sections/Catalog.jsx';
 import { ClosingSection } from './sections/ClosingSection.jsx';
@@ -75,7 +74,6 @@ export default function App() {
   /* Which family the catalogue is filtered to. Up here because two sections
      set it: the filter row inside the catalogue, and the two cards in the
      solutions band above it. */
-  const [catalogTab, setCatalogTab] = useState('ALL');
 
   /* What to do about scroll after A ROUTE CHANGE, and `null` is a real answer.
 
@@ -143,35 +141,6 @@ export default function App() {
      reader down to the catalogue. Nothing has been asked for, so there is
      nothing to go and look at. A non-empty search still scrolls, which is the
      behaviour the field was built for. */
-  const pickGroup = useCallback(
-    (id) => {
-      setCatalogTab(id);
-      goTo('suites');
-    },
-    [goTo]
-  );
-
-  /* A SEARCH ALSO DROPS THE TAB, and without that the two controls could
-     contradict each other in a way only one of them was visible for.
-
-     The tab and the query are separate filters and the catalogue applies both.
-     So with "Foundation" selected, searching for anything in an industry suite
-     returned nothing — the reader saw an empty catalogue and a search box with
-     their term in it, and no reason for the emptiness, because the tab that
-     caused it was a screen away by then. Asking for something specific is the
-     clearest possible statement that the earlier, broader filter is finished
-     with. Clearing the search does not put the tab back, and should not: it was
-     already gone. */
-  const searchFor = useCallback(
-    (q) => {
-      setSearchQuery(q);
-      if (q) {
-        setCatalogTab('ALL');
-        goTo('suites');
-      }
-    },
-    [goTo]
-  );
 
   /* A Lookup rather than A TERNARY CHAIN, and the change is not cosmetic.
 
@@ -262,27 +231,16 @@ export default function App() {
         <Faq openContact={openContact} />
       ) : !activeSuite ? (
         <>
-          {/* `committed` is the search the CATALOGUE is currently filtered by.
-              The hero owns what is being typed; this is what has actually been
-              asked for, and the field follows it so the two can never disagree
-              about whether a search is in effect. */}
-          <Hero
-            onSearch={searchFor}
-            committed={searchQuery}
-          />
+          {/* The hero's two actions: talk to the team, or go and look at the
+              applications. The catalogue keeps its own search field. */}
+          <Hero openContact={openContact} navAction={navAction} />
+          <Foundations />
           <AutonomousWorkflow />
-          <Solutions onPickGroup={pickGroup} />
           <Catalog
             openSuite={openSuite}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            activeTab={catalogTab}
-            setActiveTab={setCatalogTab}
           />
-          {/* After the catalogue and before the closing band at the very top or very bottom, which is also
-              where the background alternation wants it: the calculator is C,
-              the catalogue is B, so this is C and the dark closing section follows. */}
-          <BusinessAccelerators onSearch={searchFor} />
           <HarnessOverview onExploreHarness={navAction('Workflow')} />
           <OutcomeCards />
           {/* The soft prompt between the walkthrough and the dark band at the very top or very bottom. B,
@@ -301,6 +259,8 @@ export default function App() {
           it on a phone. */}
       <ContactForm open={contactOpen} onClose={closeContact} />
 
+      {/* The page's top and bottom edges: content scrolling under them is
+          smudged out rather than cut off. Styles in edges.css. */}
       <ChatBubble />
       <ClosingSection openContact={openContact} />
       <Footer openSuite={openSuite} navAction={navAction} goHome={goHome} />

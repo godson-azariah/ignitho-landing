@@ -66,6 +66,21 @@
   --btn-bg-over: var(--paper-2);
   --btn-fg: var(--ink);
 }
+/* Outline on a dark band, for the secondary action beside a green one. The
+   ring is drawn as an inset shadow so the pill keeps exactly the size of its
+   solid neighbour. */
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-bg-over: rgba(22, 6, 58, 0.05);
+  --btn-fg: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(22, 6, 58, 0.18);
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-bg-over: rgba(255, 255, 255, 0.08);
+  --btn-fg: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.26);
+}
 
 .btn {
   display: inline-flex;

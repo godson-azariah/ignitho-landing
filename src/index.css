@@ -30,4 +30,14 @@
 @import './styles/buttons.css';
 @import './styles/overlay.css';
 @import './styles/controls.css';
+@import './styles/hero.css';
+@import './styles/edges.css';
+@import './styles/steps.css';
+@import './styles/method.css';
+@import './styles/solutions.css';
+@import './styles/carousel.css';
+@import './styles/video.css';
+@import './styles/governance.css';
+@import './styles/island.css';
+@import './styles/fit.css';
 @import './styles/reduced-motion.css';

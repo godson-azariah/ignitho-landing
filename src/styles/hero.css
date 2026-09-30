@@ -1,0 +1,1112 @@
+/* The hero: the ground, the words, the laptop with its screen, the panels
+   around it, and the grained horizon behind it. Loaded after motion.css and
+   before reduced-motion.css; the reduced-motion rules specific to this band
+   are at the bottom of this file. */
+
+:root {
+  /* Fast off the mark, then a long settle. Every arrival here uses it. */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ------------------------------------------------------------------ GROUND */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  container-type: inline-size;
+  background: linear-gradient(180deg, #120b24 0%, #0b0717 46%, #07040f 100%);
+  color: #ffffff;
+}
+/* A faint spotlight from above and a vignette pulling the eye inward. */
+.hero-ground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 42% at 50% -6%, rgba(143, 111, 232, 0.2) 0%, transparent 100%),
+    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(4, 2, 10, 0.7) 100%);
+}
+
+/* ------------------------------------------------------------------- WORDS */
+.hero-stage {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  padding: 128px 20px 0;
+}
+@media (min-width: 768px) {
+  .hero-stage {
+    padding: 144px 32px 0;
+  }
+}
+.hw {
+  width: 100%;
+  max-width: 1240px;
+  text-align: center;
+}
+.hw-kicker {
+  margin-bottom: 26px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(214, 205, 238, 0.66);
+}
+.hl {
+  font-size: clamp(38px, 5vw, 72px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  color: #ffffff;
+}
+.hl-line {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hl-mask {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.hl-rise {
+  display: inline-block;
+  animation: hl-rise 1.2s var(--ease-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+.hl-accent {
+  color: var(--lavender);
+}
+.hw-body {
+  max-width: 600px;
+  margin: 26px auto 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(214, 205, 238, 0.78);
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .hw-body {
+    font-size: 19px;
+  }
+}
+.hw-actions {
+  margin-top: 36px;
+}
+.hero-cta {
+  height: 48px;
+  padding: 0 22px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 12px 30px -14px rgba(0, 162, 116, 0.6);
+}
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.86);
+  transition: color 0.2s ease;
+}
+@media (hover: hover) {
+  .hero-link:hover {
+    color: #ffffff;
+  }
+}
+.hero-rise {
+  display: inline-block;
+  animation: hero-rise 1s var(--ease-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes hl-rise {
+  from {
+    transform: translate3d(0, 105%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------- SCENE */
+/* The laptop's width sets everything else: the scene's height, the panels'
+   places, the screen's type. It shows the lid and the top of the base; the
+   rest runs off the bottom of the band. */
+.hero-scene {
+  --lw: clamp(320px, 62cqw, 900px);
+  position: relative;
+  z-index: 1;
+  height: calc(var(--lw) * 0.58);
+  margin-top: 56px;
+}
+@media (min-width: 768px) {
+  .hero-scene {
+    margin-top: 72px;
+  }
+}
+
+/* THE LAPTOP. A flat drawing: a dark lid with a thin bezel and a camera, on
+   a wider base with a lip. It stands up out of the bottom edge on load. */
+.lap {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 2;
+  width: var(--lw);
+  transform: translateX(-50%);
+  perspective: 2000px;
+}
+.lap-lid,
+.lap-base {
+  animation: lap-in 1.6s var(--ease-expo) 0.55s both;
+}
+.lap-lid {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  padding: calc(var(--lw) * 0.012);
+  border-radius: calc(var(--lw) * 0.022) calc(var(--lw) * 0.022) 0 0;
+  background: linear-gradient(180deg, #24202f, #14111c);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 -30px 80px -30px rgba(122, 0, 194, 0.35),
+    0 40px 100px -30px rgba(0, 0, 0, 0.9);
+}
+.lap-cam {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--lw) * 0.004);
+  width: calc(var(--lw) * 0.005);
+  height: calc(var(--lw) * 0.005);
+  border-radius: 999px;
+  background: #0a0812;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transform: translateX(-50%);
+}
+.lap-base {
+  position: relative;
+  left: -6%;
+  width: 112%;
+  height: calc(var(--lw) * 0.026);
+  border-radius: 0 0 calc(var(--lw) * 0.02) calc(var(--lw) * 0.02);
+  background: linear-gradient(180deg, #3a3449 0%, #221d2e 55%, #15111d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 30px 60px -20px rgba(0, 0, 0, 0.9);
+}
+.lap-base > span {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 14%;
+  height: 34%;
+  border-radius: 0 0 6px 6px;
+  background: #0f0c17;
+  transform: translateX(-50%);
+}
+@keyframes lap-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0) rotateX(14deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* THE SCREEN. The FRIEND AI workspace in the light theme. Everything is in
+   em off one size taken from the laptop's width, so it scales as one piece. */
+.scr {
+  display: grid;
+  grid-template-columns: 22% 1fr;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--lw) * 0.012) calc(var(--lw) * 0.012) 0 0;
+  font-size: calc(var(--lw) * 0.0138);
+  background: #ffffff;
+  color: var(--ink);
+  text-align: left;
+}
+.scr-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  padding: 1.4em 1em;
+  border-right: 1px solid rgba(22, 6, 58, 0.07);
+  background: #faf8ff;
+}
+.scr-logo {
+  margin-bottom: 1em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--purple);
+}
+.scr-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  height: 2.5em;
+  margin-bottom: 1.2em;
+  border-radius: 999px;
+  font-weight: 500;
+  color: #ffffff;
+  background: var(--teal);
+}
+.scr-new svg {
+  width: 1em;
+  height: 1em;
+}
+.scr-label {
+  margin-bottom: 0.3em;
+  font-size: 0.82em;
+  color: rgba(84, 89, 95, 0.7);
+}
+.scr-chat {
+  padding: 0.55em 0.7em;
+  border-radius: 0.6em;
+  font-size: 0.92em;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scr-chat.is-on {
+  color: var(--ink);
+  background: rgba(122, 0, 194, 0.07);
+}
+.scr-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.scr-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 1em 1.6em;
+  border-bottom: 1px solid rgba(22, 6, 58, 0.07);
+}
+.scr-head b {
+  display: block;
+  font-weight: 600;
+}
+.scr-head em {
+  display: block;
+  font-size: 0.84em;
+  font-style: normal;
+  color: var(--muted);
+}
+.scr-avatar {
+  display: grid;
+  place-items: center;
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--purple), var(--indigo));
+}
+.scr-avatar svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.scr-live {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  margin-left: auto;
+  padding: 0.35em 0.8em;
+  border-radius: 999px;
+  font-size: 0.84em;
+  color: var(--teal-hover);
+  background: rgba(0, 162, 116, 0.08);
+}
+.scr-live i {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 999px;
+  background: var(--teal);
+}
+.scr-thread {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1.6em 1.6em 0;
+  overflow: hidden;
+  background: #fcfbff;
+}
+.scr-msg {
+  max-width: 78%;
+  padding: 0.85em 1.1em;
+  border-radius: 1.1em;
+  line-height: 1.45;
+}
+.scr-msg.is-user {
+  align-self: flex-end;
+  border-bottom-right-radius: 0.3em;
+  color: #ffffff;
+  background: var(--ink);
+}
+.scr-msg.is-ai {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  border-bottom-left-radius: 0.3em;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(22, 6, 58, 0.07);
+}
+.scr-ask {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.92em;
+  color: var(--muted);
+}
+.scr-ask b {
+  font-weight: 500;
+  color: var(--ink);
+}
+.scr-ask svg {
+  width: 0.9em;
+  height: 0.9em;
+  color: var(--teal);
+}
+.scr-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  max-width: 78%;
+  padding: 0.9em;
+  border-radius: 1.1em;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(22, 6, 58, 0.07),
+    0 1.2em 2.4em -1.6em rgba(74, 18, 184, 0.35);
+}
+.scr-plan-head {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0.3em 0.5em;
+  font-size: 0.84em;
+  font-weight: 500;
+  color: var(--muted);
+}
+.scr-step {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.55em 0.6em;
+  border-radius: 0.6em;
+  font-size: 0.94em;
+}
+.scr-step svg {
+  width: 1em;
+  height: 1em;
+  color: var(--purple);
+}
+.scr-step em {
+  margin-left: auto;
+  font-size: 0.86em;
+  font-style: normal;
+  color: var(--muted);
+}
+.scr-step.is-done em {
+  color: var(--teal);
+}
+.scr-step.is-running {
+  background: rgba(122, 0, 194, 0.07);
+}
+.scr-step.is-running em {
+  color: var(--purple);
+}
+.scr-step.is-queued {
+  opacity: 0.5;
+}
+.scr-input {
+  display: flex;
+  align-items: center;
+  margin: 1em 1.6em 1.4em;
+  padding: 0.5em 0.5em 0.5em 1.2em;
+  border-radius: 999px;
+  color: rgba(84, 89, 95, 0.7);
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(22, 6, 58, 0.1);
+}
+.scr-input i {
+  display: grid;
+  place-items: center;
+  width: 2.2em;
+  height: 2.2em;
+  margin-left: auto;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--teal);
+}
+.scr-input svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* THE PANELS. Dark glass, a hairline, overlapping the laptop's edges. Only
+   from lg, where there is room for them beside it. */
+.panels {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.panel {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  gap: 0.35em;
+  padding: 16px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  text-align: left;
+  background: rgba(20, 15, 34, 0.72);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 30px 60px -24px rgba(0, 0, 0, 0.9);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  animation:
+    panel-in 1.1s var(--ease-expo) var(--d) both,
+    panel-float 9s ease-in-out var(--f) infinite alternate;
+}
+@media (min-width: 1024px) {
+  .panel {
+    display: flex;
+  }
+}
+.panel-figure {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+.panel-label {
+  display: block;
+  color: rgba(214, 205, 238, 0.62);
+}
+.panel-name {
+  display: block;
+  font-weight: 500;
+  color: #ffffff;
+}
+.panel-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.panel-row > svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--lavender);
+}
+.panel-certs {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+.panel-certs > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(214, 205, 238, 0.7);
+  white-space: nowrap;
+}
+.panel-certs svg {
+  width: 11px;
+  height: 11px;
+  color: var(--teal-ring);
+}
+/* Places: just outside the lid's corners, tucked in over its edges. */
+.slot-tl { left: calc(50% - var(--lw) * 0.5 - 150px); top: 8%; }
+.slot-bl { left: calc(50% - var(--lw) * 0.5 - 180px); top: 62%; }
+.slot-tr { right: calc(50% - var(--lw) * 0.5 - 140px); top: 16%; }
+.slot-br { right: calc(50% - var(--lw) * 0.5 - 190px); top: 66%; }
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes panel-float {
+  from {
+    translate: 0 -4px;
+  }
+  to {
+    translate: 0 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hl-rise,
+  .lap-lid,
+  .lap-base,
+  .panel {
+    animation: none !important;
+  }
+}
+
+/* Tighter, so the words and the top of the laptop share one screen; the
+   panels overlap only the lid's bezel, never the console. */
+@media (min-width: 768px) {
+  .hero-stage { padding-top: 116px; }
+  .hero-scene { margin-top: 44px; }
+}
+.hw-kicker { margin-bottom: 20px; }
+.hw-body { margin-top: 22px; }
+.hw-actions { margin-top: 28px; }
+.hero-scene { height: calc(var(--lw) * 0.5); }
+.hl { font-size: clamp(34px, 5vw, 72px); }
+.slot-tl, .slot-bl { left: auto; right: calc(50% + var(--lw) * 0.5 - 26px); }
+.slot-tr, .slot-br { right: auto; left: calc(50% + var(--lw) * 0.5 - 26px); }
+.slot-tl { top: 6%; }
+.slot-bl { top: 52%; }
+.slot-tr { top: 14%; }
+.slot-br { top: 58%; }
+
+/* ==========================================================================
+   LIGHT. White ground with a mesh of the brand violets rising from the
+   bottom edge; ink type; light glass panels; a silver laptop.
+   ========================================================================== */
+.hero {
+  background: #ffffff;
+  color: var(--ink);
+}
+.hero-ground {
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 108%, rgba(122, 0, 194, 0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 50% at 18% 100%, rgba(74, 47, 212, 0.42) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 50% at 82% 100%, rgba(179, 90, 232, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(214, 205, 238, 0.9) 0%, transparent 75%),
+    linear-gradient(180deg, #ffffff 0%, #ffffff 38%, #f6f1ff 70%, #eadffc 100%);
+}
+.hero-scene::before {
+  display: none;
+}
+.hw-kicker {
+  color: var(--purple);
+}
+.hl {
+  color: var(--ink);
+}
+.hl-accent {
+  color: var(--purple);
+}
+.hw-body {
+  color: var(--muted);
+}
+.hero-link {
+  color: var(--ink);
+}
+@media (hover: hover) {
+  .hero-link:hover {
+    color: var(--purple);
+  }
+}
+.lap-lid {
+  background: linear-gradient(180deg, #2a2733, #16141d);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 50px 100px -40px rgba(74, 18, 184, 0.55),
+    0 30px 60px -30px rgba(22, 6, 58, 0.5);
+}
+.lap-base {
+  background: linear-gradient(180deg, #e9e6ef 0%, #c9c4d4 55%, #a7a1b4 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 24px 50px -20px rgba(22, 6, 58, 0.45);
+}
+.lap-base > span {
+  background: #b6b0c2;
+}
+.panel {
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 0 0 1px rgba(22, 6, 58, 0.07),
+    0 24px 50px -24px rgba(74, 18, 184, 0.4);
+}
+.panel-figure,
+.panel-name {
+  color: var(--ink);
+}
+.panel-label,
+.panel-certs > span {
+  color: var(--muted);
+}
+.panel-row > svg {
+  color: var(--purple);
+}
+.panel-certs svg {
+  color: var(--teal);
+}
+/* The mesh stronger and higher, as in the reference: white through the
+   words, then the violets rising from about halfway down. */
+.hero-ground {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 115%, rgba(122, 0, 194, 0.85) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 55% at 12% 100%, rgba(74, 47, 212, 0.75) 0%, transparent 72%),
+    radial-gradient(ellipse 50% 55% at 88% 100%, rgba(179, 90, 232, 0.78) 0%, transparent 72%),
+    radial-gradient(ellipse 100% 70% at 50% 100%, rgba(214, 205, 238, 1) 0%, transparent 78%),
+    linear-gradient(180deg, #ffffff 0%, #ffffff 34%, #f3ecff 58%, #dccdf8 100%);
+}
+/* panels over the bezel only, never the screen; the right pair clear of the
+   chat button */
+.slot-tl, .slot-bl { right: calc(50% + var(--lw) * 0.5 - 10px); }
+.slot-tr, .slot-br { left: calc(50% + var(--lw) * 0.5 - 10px); }
+.slot-tl { top: 10%; }
+.slot-bl { top: 58%; }
+.slot-tr { top: 20%; }
+.slot-br { top: 46%; }
+
+/* DARK TOP. The ground is dark down through the words; the violet mesh
+   still rises from the bottom edge. Type back to light to read on it. */
+.hero {
+  background: #0b0717;
+  color: #ffffff;
+}
+.hero-ground {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 115%, rgba(122, 0, 194, 0.85) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 55% at 12% 100%, rgba(74, 47, 212, 0.75) 0%, transparent 72%),
+    radial-gradient(ellipse 50% 55% at 88% 100%, rgba(179, 90, 232, 0.78) 0%, transparent 72%),
+    radial-gradient(ellipse 100% 70% at 50% 100%, rgba(91, 22, 196, 0.55) 0%, transparent 78%),
+    linear-gradient(180deg, #0b0717 0%, #0b0717 34%, #150a33 60%, #2c0a78 100%);
+}
+.hw-kicker {
+  color: rgba(214, 205, 238, 0.7);
+}
+.hl {
+  color: #ffffff;
+}
+.hl-accent {
+  color: var(--lavender);
+}
+.hw-body {
+  color: rgba(214, 205, 238, 0.78);
+}
+.hero-link {
+  color: rgba(255, 255, 255, 0.88);
+}
+@media (hover: hover) {
+  .hero-link:hover {
+    color: #ffffff;
+  }
+}
+
+/* ==========================================================================
+   DARK LAPTOP. A thin space-grey bezel with a notch at the top centre, and
+   the FRIEND AI workspace in its dark theme.
+   ========================================================================== */
+.lap-lid {
+  padding: calc(var(--lw) * 0.006);
+  border-radius: calc(var(--lw) * 0.018) calc(var(--lw) * 0.018) 0 0;
+  background: #0a0910;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 2px #1c1a24,
+    0 60px 120px -40px rgba(122, 0, 194, 0.6),
+    0 30px 60px -30px rgba(0, 0, 0, 0.8);
+}
+/* the notch: a rounded tab hanging from the top edge, the camera inside */
+.lap-cam {
+  top: calc(var(--lw) * 0.006);
+  z-index: 2;
+  width: calc(var(--lw) * 0.1);
+  height: calc(var(--lw) * 0.019);
+  border-radius: 0 0 calc(var(--lw) * 0.009) calc(var(--lw) * 0.009);
+  background: #0a0910;
+  box-shadow: none;
+}
+.lap-cam::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: calc(var(--lw) * 0.0055);
+  height: calc(var(--lw) * 0.0055);
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, #3a3a5a, #111118 70%);
+  transform: translateX(-50%);
+}
+.lap-base {
+  left: -7%;
+  width: 114%;
+  height: calc(var(--lw) * 0.022);
+  background: linear-gradient(180deg, #4a4656 0%, #2b2834 50%, #17151d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 24px 50px -20px rgba(0, 0, 0, 0.8);
+}
+.lap-base > span {
+  background: #1b1922;
+}
+
+/* the screen, dark */
+.scr {
+  border-radius: calc(var(--lw) * 0.013) calc(var(--lw) * 0.013) 0 0;
+  background: #0e0c16;
+  color: #ffffff;
+}
+.scr-side {
+  padding-top: 2.6em;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0a0911;
+}
+.scr-logo {
+  color: #ffffff;
+}
+.scr-label {
+  color: rgba(214, 205, 238, 0.4);
+}
+.scr-chat {
+  color: rgba(214, 205, 238, 0.6);
+}
+.scr-chat.is-on {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+.scr-head {
+  padding-top: 2.2em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.scr-head em {
+  color: rgba(214, 205, 238, 0.55);
+}
+.scr-live {
+  color: var(--teal-ring);
+  background: rgba(0, 188, 106, 0.1);
+}
+.scr-thread {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(122, 0, 194, 0.12), transparent 70%),
+    #0e0c16;
+}
+.scr-msg.is-user {
+  color: #ffffff;
+  background: linear-gradient(135deg, #5b16c4, #4a2fd4);
+}
+.scr-msg.is-ai,
+.scr-plan {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.scr-ask {
+  color: rgba(214, 205, 238, 0.6);
+}
+.scr-ask b {
+  color: #ffffff;
+}
+.scr-ask svg,
+.scr-step.is-done em {
+  color: var(--teal-ring);
+}
+.scr-plan-head,
+.scr-step em {
+  color: rgba(214, 205, 238, 0.5);
+}
+.scr-step svg {
+  color: var(--lavender);
+}
+.scr-step.is-running {
+  background: rgba(122, 0, 194, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(179, 140, 255, 0.3);
+}
+.scr-step.is-running em {
+  color: #c9b8ff;
+}
+.scr-input {
+  color: rgba(214, 205, 238, 0.45);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* the panels, dark glass to match */
+.panel {
+  background: rgba(18, 12, 32, 0.72);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 30px 60px -24px rgba(0, 0, 0, 0.8);
+}
+.panel-figure,
+.panel-name {
+  color: #ffffff;
+}
+.panel-label,
+.panel-certs > span {
+  color: rgba(214, 205, 238, 0.62);
+}
+.panel-row > svg {
+  color: var(--lavender);
+}
+.panel-certs svg {
+  color: var(--teal-ring);
+}
+/* the screen a shade lighter than the bezel, so the thin bezel reads */
+.scr {
+  background: #12101c;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+.scr-side {
+  background: #0f0d18;
+}
+.scr-thread {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(122, 0, 194, 0.14), transparent 70%),
+    #12101c;
+}
+
+/* THE HAND-OFF. The bottom of the band dissolves into the next section's
+   lavender, laptop and all, so the page runs on instead of stopping at a
+   hard edge. Eased stops, so there is no visible line where it begins. */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  height: clamp(160px, 24vw, 300px);
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(240, 233, 255, 0) 0%,
+    rgba(240, 233, 255, 0.08) 18%,
+    rgba(240, 233, 255, 0.28) 38%,
+    rgba(240, 233, 255, 0.58) 60%,
+    rgba(240, 233, 255, 0.86) 80%,
+    #f0e9ff 100%
+  );
+}
+
+/* THE WHOLE LAPTOP. The scene is tall enough for the lid, the base and a
+   stretch of floor below it; the fade covers only that floor, so the
+   laptop is seen complete and the band dissolves after it. */
+.hero-scene {
+  height: calc(var(--lw) * 0.625 + var(--lw) * 0.022 + clamp(120px, 14vw, 220px));
+}
+/* its shadow on the floor, so it stands on something */
+.lap::after {
+  content: '';
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: calc(var(--lw) * -0.035);
+  height: calc(var(--lw) * 0.05);
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(8, 4, 20, 0.55) 0%, transparent 70%);
+  filter: blur(8px);
+}
+.hero::after {
+  height: clamp(170px, 18vw, 260px);
+}
+.scr-typing {
+  display: flex;
+  gap: 0.35em;
+  width: fit-content;
+  padding: 0.8em 1em;
+  border-radius: 1.1em;
+  border-bottom-left-radius: 0.3em;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.scr-typing i {
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 999px;
+  background: rgba(214, 205, 238, 0.7);
+  animation: scr-typing 1.2s ease-in-out infinite;
+}
+.scr-typing i:nth-child(2) { animation-delay: 0.15s; }
+.scr-typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes scr-typing {
+  0%, 60%, 100% { opacity: 0.3; transform: none; }
+  30% { opacity: 1; transform: translateY(-0.2em); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scr-typing i { animation: none; }
+}
+/* the thread gives way before the input does: it may clip, the input
+   never leaves the screen */
+.scr-thread {
+  min-height: 0;
+  gap: 0.75em;
+  padding-top: 1.2em;
+}
+.scr-head {
+  padding-bottom: 0.8em;
+}
+.scr-input {
+  flex-shrink: 0;
+  margin: 0.8em 1.6em 1.1em;
+}
+
+/* THE CARD. The dark band is inset from the page on every side and rounded,
+   standing on the next section's lavender, so the page reads as a framed
+   panel handing over to the light rather than a band that fades. The
+   laptop is cut by the panel's rounded bottom edge, on purpose. */
+.hero-frame {
+  padding: 8px 8px 0;
+  background: #f0e9ff;
+}
+@media (min-width: 768px) {
+  .hero-frame {
+    padding: 12px 12px 0;
+  }
+}
+.hero-frame > .hero {
+  border-radius: 24px;
+  box-shadow: 0 40px 80px -40px rgba(44, 10, 120, 0.45);
+}
+@media (min-width: 768px) {
+  .hero-frame > .hero {
+    border-radius: 32px;
+  }
+}
+/* no fade and no floor: the panel's edge does the hand-over */
+.hero-frame > .hero::after {
+  display: none;
+}
+.lap::after {
+  display: none;
+}
+/* the laptop cut just above its base, the screen almost whole */
+.hero-scene {
+  height: calc(var(--lw) * 0.56);
+}
+
+/* THE FRAME, REVISED. No crop at the top; a slim inset on the sides only,
+   and the rounded bottom edge standing on the dark of the next section. */
+.hero-frame {
+  padding: 0 6px;
+  background: #07040f;
+}
+@media (max-width: 767px) {
+  .hero-frame {
+    padding: 0 4px;
+  }
+}
+.hero-frame > .hero,
+.hero-frame > .hero {
+  border-radius: 0 0 24px 24px;
+  box-shadow: none;
+}
+@media (min-width: 768px) {
+  .hero-frame > .hero {
+    border-radius: 0 0 32px 32px;
+  }
+}
+
+/* Full width; only the bottom corners are rounded, over the next section's
+   colour. */
+.hero-frame,
+.hero-frame {
+  padding: 0;
+  background: #1a1624;
+}
+.hero-frame {
+  background: #ffffff;
+}
+
+
+/* THE WHOLE LAPTOP, AS THE LAST RELEASE DREW IT: the lid on a slim silver
+   base, wider than the lid, with a lit top edge either side of the lid's
+   footprint, a groove and shadow where the lid seats, a darker lip, the
+   small notch at the front, and a soft floor shadow. Proportions taken
+   from HarnessDiagram.jsx (base 560 x 22 under a 502 lid) and scaled from
+   the laptop's width. The laptop is a little narrower so the whole of it
+   fits in the band. */
+.hero-scene {
+  --lw: clamp(300px, 52cqw, 750px);
+  height: calc(var(--lw) * 0.669 + 36px);
+  margin-top: 48px;
+}
+.lap-base {
+  left: -5.8%;
+  width: 111.6%;
+  height: calc(var(--lw) * 0.044);
+  border-radius: 2px 2px calc(var(--lw) * 0.016) calc(var(--lw) * 0.016);
+  background-color: #88849a;
+  background-image:
+    /* the lit top edge, either side of the lid */
+    linear-gradient(#bebacc, #bebacc),
+    linear-gradient(#bebacc, #bebacc),
+    /* the groove the lid seats into, and its shadow on the base */
+    linear-gradient(rgba(10, 3, 28, 0.55), rgba(10, 3, 28, 0.55)),
+    linear-gradient(180deg, rgba(10, 3, 28, 0.32) 0%, transparent 100%),
+    /* the lip along the front */
+    linear-gradient(#67637a, #67637a);
+  background-repeat: no-repeat;
+  background-size:
+    5.2% 1.5px,
+    5.2% 1.5px,
+    89.6% 3px,
+    89.6% 8px,
+    100% 23%;
+  background-position:
+    left top,
+    right top,
+    50% 0,
+    50% 3px,
+    left bottom;
+  box-shadow: none;
+}
+/* the notch at the front, for a thumb to lift the lid */
+.lap-base > span {
+  top: auto;
+  bottom: 0;
+  width: 13.6%;
+  height: 18%;
+  border-radius: 4px 4px 0 0;
+  background: rgba(20, 6, 52, 0.34);
+  box-shadow: none;
+}
+/* the floor shadow under the base */
+.lap::after {
+  display: block;
+  left: -8%;
+  right: -8%;
+  bottom: calc(var(--lw) * -0.03);
+  height: calc(var(--lw) * 0.06);
+  background: radial-gradient(closest-side, rgba(3, 0, 12, 0.8) 0%, rgba(3, 0, 12, 0.28) 46%, transparent 100%);
+  filter: none;
+}
+
+/* the rounded foot stands on the lavender of the section after it */
+.hero-frame {
+  background: #f0e9ff;
+}

@@ -1,0 +1,1845 @@
+/* How it works (section 2): centred heading, then four white cards in one
+   row. Each card: a tinted violet media panel (its own proportion) with the
+   step's film inside, larger than the panel, so the panel crops it; then
+   title and body. Hover eases the film up a touch; click zooms it in.
+   Radius 28 for cards, 20 for media panels. */
+
+.gc {
+  position: relative;
+  padding: 120px 0 128px;
+}
+.gc-head {
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+.gc-title {
+  font-size: clamp(2.125rem, 3.8vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.gc-lede {
+  max-width: 58ch;
+  margin: 20px auto 0;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+.gc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+}
+@media (min-width: 640px) {
+  .gc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .gc-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* THE CARD */
+.gc-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 28px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgb(22 6 58 / 0.1);
+}
+.gc-card-title {
+  margin: 22px 12px 0;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.gc-card-body {
+  margin: 10px 12px 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* THE MEDIA PANEL: its own proportion; the film inside is larger, so it is cropped */
+.gc-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 0.92;
+  overflow: hidden;
+  border-radius: 20px;
+  container-type: inline-size;
+  /* a quiet, cool surface tinted from the brand: the white window is the
+     only bright thing in the panel */
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgb(74 47 212 / 0.14), transparent 70%),
+    linear-gradient(160deg, #f1eff8 0%, #e4e0f1 100%);
+}
+/* the camera: the film is moved and scaled from its top-left corner (see
+   AutonomousWorkflow.jsx), and every move eases like a slow dolly */
+.gc-film {
+  position: absolute;
+  left: 12%;
+  top: 14%;
+  width: 236%;
+  transform: scale(0.5);
+  transform-origin: 0 0;
+  transition: transform 2200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gc-film .mstage {
+  aspect-ratio: 16 / 10;
+  font-size: clamp(12px, 5cqw, 22px);
+  border-radius: 12px 0 0 0;
+  overflow: hidden;
+}
+.gc-film .win {
+  border-radius: 12px 0 0 0;
+  box-shadow:
+    0 30px 60px -20px rgb(44 10 120 / 0.45),
+    0 0 0 1px rgb(22 6 58 / 0.06);
+}
+
+@media (max-width: 767px) {
+  .gc {
+    padding: 80px 0 88px;
+  }
+  .gc .v-cursor {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gc-film {
+    transition: none;
+  }
+}
+
+/* THE FOUNDATIONS: three Labs-style tiles that turn over. The front is a
+   white tile with a tinted panel holding the suite's picture as a window,
+   then the name, its line and a text link. The back is the same tile
+   turned: a tinted head with the suite's name, three numbered rows of
+   accelerators, and the way into the suite. */
+.uf {
+  margin-top: 112px;
+}
+.uf-head {
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: center;
+}
+.uf-title {
+  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.uf-lede {
+  max-width: 58ch;
+  margin: 16px auto 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: balance;
+}
+.uf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1120px;
+  margin: 44px auto 0;
+}
+@media (min-width: 768px) {
+  .uf-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* THE TURN */
+.uf-flip {
+  height: 452px;
+  perspective: 1800px;
+}
+.uf-turn {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.is-on .uf-turn {
+  transform: rotateY(180deg);
+}
+.uf-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 22px;
+  border-radius: 28px;
+  text-align: left;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.08),
+    0 12px 28px -18px rgb(22 6 58 / 0.3);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.uf-back {
+  transform: rotateY(180deg);
+  cursor: pointer;
+}
+.uf-face:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* THE FRONT */
+.uf-front {
+  width: 100%;
+  transition:
+    transform 400ms var(--ease-out),
+    box-shadow 400ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .uf-flip:not(.is-on) .uf-front:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px rgb(22 6 58 / 0.1),
+      0 28px 48px -24px rgb(22 6 58 / 0.4);
+  }
+}
+.uf-media {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  height: 168px;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgb(74 47 212 / 0.16), transparent 70%),
+    linear-gradient(160deg, #f1eff8 0%, #e4e0f1 100%);
+}
+/* the picture, set in as a window off the panel's bottom-right corner */
+.uf-shot {
+  position: absolute;
+  left: 22%;
+  top: 34%;
+  width: 100%;
+  opacity: 0.92;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px 0 0 0;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.08),
+    0 30px 60px -20px rgb(22 6 58 / 0.45);
+  transition: transform 1200ms var(--ease-out);
+}
+.uf-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.uf-front:hover .uf-shot {
+  transform: translate(-6px, -6px);
+}
+.uf-num,
+.uf-ico {
+  position: absolute;
+  top: 14px;
+  z-index: 1;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgb(22 6 58 / 0.08);
+}
+.uf-num {
+  left: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.uf-ico {
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+}
+.uf-ico svg {
+  width: 15px;
+  height: 15px;
+}
+.uf-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 22px 10px 0;
+}
+.uf-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+.uf-tag {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.uf-foot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.uf-foot svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 300ms var(--ease-out);
+}
+.uf-front:hover .uf-foot svg {
+  transform: translate(2px, -2px);
+}
+
+/* THE BACK: one tinted panel filling the tile, the way the front panel
+   does, with the accelerators set as type alone: a light numeral, the
+   name, its kind, its line. No boxes, no discs, no rules. */
+.uf-back-head {
+  position: relative;
+  flex-shrink: 0;
+  padding: 20px 22px 0;
+}
+.uf-back {
+  padding: 14px;
+}
+.uf-back::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgb(74 47 212 / 0.16), transparent 70%),
+    linear-gradient(160deg, #f1eff8 0%, #e4e0f1 100%);
+}
+.uf-back > * {
+  position: relative;
+}
+.uf-back-kicker {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--purple);
+}
+.uf-back-title {
+  display: block;
+  margin-top: 3px;
+  padding-right: 44px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+.uf-back-ico {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgb(22 6 58 / 0.08);
+}
+.uf-back-ico svg {
+  width: 15px;
+  height: 15px;
+}
+.uf-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 20px 16px;
+}
+.uf-list li {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 0 8px;
+  align-items: start;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 400ms ease,
+    transform 600ms var(--ease-expo);
+}
+.is-on .uf-list li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(380ms + var(--i) * 80ms);
+}
+.uf-n {
+  grid-row: span 3;
+  margin-top: -4px;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--indigo);
+}
+.uf-acc {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.uf-type {
+  margin-top: 2px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--purple);
+}
+.uf-desc {
+  margin-top: 3px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+@media (max-width: 767px) {
+  .uf {
+    margin-top: 80px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .uf-turn,
+  .uf-list li,
+  .uf-shot {
+    transition: none;
+  }
+}
+
+/* THE FOUNDATIONS AS A SECTION OF THEIR OWN (section 2) */
+.uf-section {
+  position: relative;
+  padding: 120px 0 0;
+}
+.uf-section .uf {
+  margin-top: 0;
+}
+@media (max-width: 767px) {
+  .uf-section {
+    padding-top: 80px;
+  }
+}
+
+/* HOW IT WORKS, SPLIT: a vertical tab rail on the left, the product on the
+   right, after Linear's and Apple's feature tabs. Only the open step shows
+   its line; a hairline rail runs down the left of the list and the open
+   step's stretch of it fills for as long as its scene runs. The window is
+   shown whole, 1:1, in a tinted frame. */
+.gc-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  margin-top: 64px;
+}
+@media (min-width: 1024px) {
+  .gc-split {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.42fr);
+    gap: 64px;
+    align-items: center;
+  }
+}
+@media (max-width: 1023px) {
+  .gc-stage {
+    order: -1;
+  }
+}
+
+/* THE RAIL */
+.gc-steps {
+  display: flex;
+  flex-direction: column;
+}
+.gc-step-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 22px 0 22px 28px;
+  text-align: left;
+  color: var(--ink);
+}
+.gc-step-btn:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.gc-rail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgb(22 6 58 / 0.1);
+}
+.gc-rail i {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  transform: scaleY(0);
+  background: var(--purple);
+}
+.is-on .gc-rail i {
+  transform: scaleY(1);
+}
+.is-on .gc-rail i.is-run {
+  transform: scaleY(0);
+  animation: gc-fill var(--ms, 12s) linear forwards;
+}
+@keyframes gc-fill {
+  to {
+    transform: scaleY(1);
+  }
+}
+.gc-step-title {
+  font-size: clamp(1.125rem, 1.45vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.024em;
+  color: rgb(22 6 58 / 0.42);
+  transition: color 300ms ease;
+  text-wrap: balance;
+}
+@media (hover: hover) and (pointer: fine) {
+  .gc-step:not(.is-on) .gc-step-btn:hover .gc-step-title {
+    color: rgb(22 6 58 / 0.72);
+  }
+}
+.is-on .gc-step-title {
+  color: var(--ink);
+}
+.gc-step-fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 500ms var(--ease-expo);
+}
+.is-on .gc-step-fold {
+  grid-template-rows: 1fr;
+}
+.gc-step-body {
+  display: block;
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  text-wrap: pretty;
+}
+.is-on .gc-step-body {
+  padding-top: 10px;
+  opacity: 1;
+  transition-delay: 150ms;
+}
+
+/* THE FRAME: the window whole, set in a tinted panel */
+.gc-frame {
+  padding: clamp(18px, 2.6vw, 40px);
+  border-radius: 28px;
+  container-type: inline-size;
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgb(74 47 212 / 0.16), transparent 70%),
+    linear-gradient(160deg, #f1eff8 0%, #e4e0f1 100%);
+}
+.gc-frame .mstage {
+  aspect-ratio: 16 / 10;
+  font-size: clamp(7px, 2.05cqw, 14px);
+}
+.gc-frame .win {
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.06),
+    0 30px 60px -24px rgb(44 10 120 / 0.4);
+}
+@media (max-width: 767px) {
+  .gc-frame .v-cursor {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gc-step-fold,
+  .gc-step-body {
+    transition: none;
+  }
+}
+
+/* THE FOUNDATIONS AS EXPANDING PANELS (section 2). Three panels in a row;
+   the open one takes the room and turns ink, the others narrow to a spine
+   of number, name and line on the tinted surface. */
+.uf-section {
+  padding-bottom: 120px;
+}
+.fx {
+  display: flex;
+  gap: 12px;
+  max-width: 1200px;
+  height: 480px;
+  margin: 48px auto 0;
+}
+.fx-panel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 28px;
+  cursor: pointer;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.08),
+    0 12px 28px -20px rgb(22 6 58 / 0.3);
+  transition:
+    flex-grow 800ms var(--ease-expo),
+    box-shadow 500ms ease;
+}
+.fx-panel:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+.fx-panel.is-on {
+  flex-grow: 2.7;
+  cursor: default;
+  box-shadow: 0 40px 70px -40px rgb(44 10 120 / 0.7);
+}
+/* the ink surface fades in over the white, so the colour turns rather
+   than jumps */
+.fx-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 100% 100%, rgb(122 0 194 / 0.55), transparent 70%),
+    linear-gradient(180deg, rgb(28 12 68 / 0.9) 0%, #1a0a3f 70%);
+  transition: opacity 600ms ease;
+}
+.fx-panel.is-on::before {
+  opacity: 1;
+}
+/* the picture, as texture only */
+.fx-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: grayscale(1) contrast(1.1);
+  transition: opacity 800ms ease;
+}
+.fx-panel.is-on .fx-bg {
+  z-index: 0;
+  opacity: 0.22;
+  mix-blend-mode: luminosity;
+}
+.fx-panel.is-on::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, rgb(26 10 63 / 0.2) 0%, rgb(26 10 63 / 0.75) 45%, #1a0a3f 80%);
+}
+
+/* THE TWO FACES */
+.fx-closed,
+.fx-open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 28px;
+}
+.fx-closed {
+  justify-content: space-between;
+  transition: opacity 300ms ease 250ms;
+}
+.is-on .fx-closed {
+  opacity: 0;
+  pointer-events: none;
+  transition-delay: 0ms;
+  transition-duration: 150ms;
+}
+.fx-open {
+  padding: 30px 34px 32px;
+  color: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+.is-on .fx-open {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 500ms ease 280ms;
+}
+.fx-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fx-num {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--purple);
+  background: rgb(122 0 194 / 0.08);
+}
+.fx-open .fx-num {
+  color: #ffffff;
+  background: rgb(255 255 255 / 0.12);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2);
+}
+.fx-ico {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgb(22 6 58 / 0.14);
+}
+.fx-open .fx-ico {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.25);
+}
+.fx-ico svg {
+  width: 16px;
+  height: 16px;
+}
+.fx-foot {
+  display: flex;
+  flex-direction: column;
+}
+.fx-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+.fx-line {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.fx-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--purple);
+}
+.fx-more svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* the open face */
+.fx-copy {
+  margin-top: auto;
+}
+.fx-title {
+  font-size: clamp(1.75rem, 2.6vw, 2.375rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.032em;
+}
+.fx-tag {
+  max-width: 40ch;
+  margin-top: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgb(233 226 255 / 0.78);
+  text-wrap: pretty;
+}
+.fx-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+.fx-list li {
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 300ms ease,
+    transform 500ms var(--ease-expo);
+}
+.is-on .fx-list li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(380ms + var(--i) * 70ms);
+}
+.fx-acc {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+}
+.fx-type {
+  margin-top: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #c9b8ff;
+}
+.fx-desc {
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgb(233 226 255 / 0.66);
+  text-wrap: pretty;
+}
+
+/* a phone: the panels stack and the open one grows downwards */
+@media (max-width: 899px) {
+  .fx {
+    flex-direction: column;
+    height: auto;
+  }
+  .fx-panel {
+    flex: none;
+    height: 200px;
+    transition: height 700ms var(--ease-expo);
+  }
+  .fx-panel.is-on {
+    height: 640px;
+  }
+  .fx-open {
+    padding: 24px 22px 24px;
+  }
+  .fx-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-panel,
+  .fx-closed,
+  .fx-open,
+  .fx-list li {
+    transition: none;
+  }
+}
+
+/* HOW IT WORKS AS A FILM WITH CHAPTERS (section 3): the film large and
+   centred, the four steps under it as chapters, each with a line across
+   its top that fills while its scene runs. Overrides the tab rail above. */
+.gc-split {
+  display: block;
+  margin-top: 56px;
+}
+.gc-stage {
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.gc-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+  max-width: 1080px;
+  margin: 36px auto 0;
+}
+.gc-step-btn {
+  height: 100%;
+  padding: 22px 0 0;
+}
+.gc-rail {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  width: auto;
+  height: 2px;
+}
+.gc-rail i {
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.is-on .gc-rail i {
+  transform: scaleX(1);
+}
+.is-on .gc-rail i.is-run {
+  transform: scaleX(0);
+  animation: gc-fill-x var(--ms, 12s) linear forwards;
+}
+@keyframes gc-fill-x {
+  to {
+    transform: scaleX(1);
+  }
+}
+.gc-step-title {
+  font-size: 1.0625rem;
+}
+.gc-step-fold {
+  grid-template-rows: 1fr;
+}
+.gc-step-body {
+  padding-top: 8px;
+  font-size: 0.9375rem;
+  opacity: 0.55;
+}
+.is-on .gc-step-body {
+  padding-top: 8px;
+  opacity: 1;
+  transition-delay: 0ms;
+}
+@media (max-width: 1023px) {
+  .gc-stage {
+    order: 0;
+  }
+  .gc-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
+  }
+}
+@media (max-width: 559px) {
+  .gc-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* film and chapters in one view */
+.gc-stage,
+.gc-steps {
+  max-width: 960px;
+}
+
+
+/* THE FOUNDATIONS AND THEIR ACCELERATORS (section 2): the three suite
+   cards, a filter bar, and one draggable row of accelerators running the
+   full width of the page. */
+.fr-section {
+  position: relative;
+  padding: 112px 0 120px;
+  overflow-x: clip;
+}
+.fr-suites {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1120px;
+  margin: 48px auto 0;
+}
+@media (min-width: 768px) {
+  .fr-suites {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* the chosen suite: a brand-gradient edge, nothing else */
+.fr-suite button {
+  border: 2px solid transparent;
+}
+.suite-card-on {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #4a2fd4 0%, #7a00c2 55%, #00a274 100%) border-box !important;
+}
+.fr-suite button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* THE BAR: filter chips on the left, arrows on the right */
+.fr-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1120px;
+  margin: 56px auto 0;
+}
+.fr-status {
+  font-size: 0.9375rem;
+  color: rgb(22 6 58 / 0.62);
+}
+.fr-status b {
+  font-weight: 600;
+  color: var(--ink);
+}
+.fr-arrows {
+  display: flex;
+  gap: 8px;
+}
+.fr-arrows button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgb(22 6 58 / 0.1);
+  transition: background-color 200ms ease;
+}
+.fr-arrows button:hover {
+  background: var(--paper);
+}
+.fr-arrows svg {
+  width: 17px;
+  height: 17px;
+}
+.fr-arrows button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+.fr-arrows button:active {
+  transform: scale(0.96);
+}
+
+/* THE ROW: full width, starting in line with the content above */
+/* the row starts at the very edge of the page and runs off the other, so
+   it is cut the same way on both sides; when the cards fit (a filter of
+   three), they sit centred */
+.fr-row {
+  --gutter: 32px;
+  display: flex;
+  justify-content: safe center;
+  gap: 16px;
+  /* a scrolling row clips on both axes, so it carries its own room for the
+     cards' shadows (top and bottom) and gives it back with negative margins:
+     the cards sit exactly where they did */
+  height: 290px;
+  margin-top: -2px;
+  margin-bottom: -48px;
+  padding: 28px var(--gutter) 46px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.fr-row::-webkit-scrollbar {
+  display: none;
+}
+.fr-row.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+.fr-row.is-dragging .fr-card {
+  pointer-events: none;
+}
+/* the stretch at either end is carried by the cards, as a translate that
+   composes with their own transform */
+.fr-card {
+  translate: var(--rb, 0px) 0;
+  transition: scale 450ms var(--ease-expo), box-shadow 450ms var(--ease-expo);
+}
+/* while the hand holds the row the cards settle back a touch, and lift
+   again as it lets go */
+.fr-row.is-dragging .fr-card {
+  scale: 0.985;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.08),
+    0 10px 24px -22px rgb(44 10 120 / 0.4);
+}
+.fr-card {
+  display: flex;
+  flex: 0 0 340px;
+  flex-direction: column;
+  padding: 22px 24px 24px;
+  border-radius: 20px;
+  scroll-snap-align: start;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.07),
+    0 18px 36px -30px rgb(44 10 120 / 0.45);
+  animation: fr-in 550ms var(--ease-expo) both;
+  animation-delay: calc(var(--i) * 45ms);
+}
+@keyframes fr-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+.fr-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fr-suite-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--purple);
+}
+.fr-n {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgb(22 6 58 / 0.3);
+}
+.fr-acc {
+  margin-top: auto;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.024em;
+  color: var(--ink);
+}
+.fr-type {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(22 6 58 / 0.6);
+}
+.fr-desc {
+  display: -webkit-box;
+  margin-top: 12px;
+  padding-top: 12px;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(22 6 58 / 0.62);
+  border-top: 1px solid rgb(22 6 58 / 0.07);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+@media (max-width: 767px) {
+  .fr-section {
+    padding: 80px 0 88px;
+  }
+  .fr-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .fr-arrows {
+    display: none;
+  }
+  .fr-card {
+    flex-basis: 82vw;
+  }
+  .fr-row {
+    --gutter: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fr-card {
+    animation: none;
+  }
+}
+
+/* HOW IT WORKS, SIDE BY SIDE (section 3). Overrides the chapter layout
+   above: the film on the left, the four steps as a stack of cards on the
+   right. The card on screen is raised, the rest sit back; a line along the
+   foot of the raised card fills while its scene runs. */
+.gc-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  max-width: 1280px;
+  margin: 56px auto 0;
+}
+@media (min-width: 1100px) {
+  .gc-split {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: 32px;
+    align-items: center;
+  }
+}
+.gc-stage {
+  max-width: none;
+  margin: 0;
+}
+.gc-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: none;
+  margin: 0;
+}
+
+/* THE CARD */
+.gc-step-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 18px 20px 20px;
+  overflow: hidden;
+  border-radius: 18px;
+  text-align: left;
+  color: var(--ink);
+  background: rgb(255 255 255 / 0.55);
+  box-shadow: inset 0 0 0 1px rgb(22 6 58 / 0.07);
+  transition:
+    background-color 450ms ease,
+    box-shadow 450ms var(--ease-expo),
+    transform 450ms var(--ease-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .gc-step:not(.is-on) .gc-step-btn:hover {
+    background: rgb(255 255 255 / 0.85);
+  }
+}
+.gc-step-btn:active {
+  transform: scale(0.99);
+}
+.gc-step-btn:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 18px;
+}
+.is-on .gc-step-btn {
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(122 0 194 / 0.14),
+    0 24px 44px -28px rgb(44 10 120 / 0.55);
+}
+.gc-step-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gc-step-n {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgb(22 6 58 / 0.45);
+  background: rgb(22 6 58 / 0.05);
+  transition:
+    color 400ms ease,
+    background-color 400ms ease;
+}
+.is-on .gc-step-n {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--indigo), var(--purple));
+}
+.gc-step-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+  color: rgb(22 6 58 / 0.6);
+  transition: color 400ms ease;
+}
+.is-on .gc-step-title {
+  color: var(--ink);
+}
+/* the line is two lines tall on every card, so no card changes height */
+.gc-step-fold {
+  display: block;
+  padding-left: 44px;
+}
+.gc-step-body {
+  display: -webkit-box;
+  min-height: 3em;
+  margin-top: 8px;
+  padding-top: 0;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgb(22 6 58 / 0.5);
+  opacity: 1;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  transition: color 400ms ease;
+}
+.is-on .gc-step-body {
+  padding-top: 0;
+  color: rgb(22 6 58 / 0.7);
+}
+
+/* the progress line, along the foot of the card */
+.gc-rail {
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: 3px;
+  background: transparent;
+}
+.gc-rail i {
+  background: linear-gradient(90deg, var(--indigo), var(--purple));
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.is-on .gc-rail i {
+  transform: scaleX(1);
+}
+.is-on .gc-rail i.is-run {
+  transform: scaleX(0);
+  animation: gc-fill-x var(--ms, 12s) linear forwards;
+}
+
+@media (max-width: 1099px) {
+  .gc-steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 599px) {
+  .gc-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* the resting cards cover the dotted ground; on a phone the line gets a
+   third row so nothing is cut */
+.gc-step-btn {
+  background: rgb(255 255 255 / 0.78);
+}
+@media (max-width: 599px) {
+  .gc-step-body {
+    min-height: 4.5em;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* THE STEP CARDS, REFINED: no numbers; title and line only, a little more
+   room, and the film scaled so every scene fits its frame whole */
+.gc-frame .mstage {
+  font-size: clamp(6.5px, 1.72cqw, 12px);
+}
+.gc-step-btn {
+  padding: 22px 26px 24px;
+}
+.gc-step-title {
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
+.gc-step-fold {
+  padding-left: 0;
+}
+.gc-step-body {
+  margin-top: 6px;
+}
+.is-on .gc-step-btn {
+  box-shadow:
+    0 0 0 1px rgb(122 0 194 / 0.16),
+    0 28px 48px -30px rgb(44 10 120 / 0.55);
+}
+@media (max-width: 599px) {
+  .gc-frame .mstage {
+    aspect-ratio: 16 / 11;
+  }
+}
+
+/* THE ACCELERATOR CARD: a plain white card, the suite as a quiet tag at
+   the top, the name, kind and line at the foot. No numbers, no icons. */
+.fr-row {
+  height: 300px;
+}
+.fr-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex-basis: 320px;
+  padding: 18px;
+  border-radius: 26px;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.06),
+    0 24px 44px -34px rgb(44 10 120 / 0.55);
+}
+
+/* the suite tag */
+.fr-tag {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--purple);
+  background: rgb(122 0 194 / 0.07);
+}
+
+/* the words */
+.fr-body {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  padding: 0 6px 4px;
+}
+.fr-acc {
+  margin-top: 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.028em;
+}
+.fr-type {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(22 6 58 / 0.55);
+}
+.fr-desc {
+  margin-top: 12px;
+  padding-top: 0;
+  border-top: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(22 6 58 / 0.66);
+}
+@media (max-width: 767px) {
+  .fr-row {
+    height: 300px;
+  }
+  .fr-card {
+    flex-basis: 82vw;
+  }
+}
+
+/* THE ACCELERATOR CARD, APPLE TILE: a flat light tile, no border and no
+   shadow, the suite in colour, the name set large, the kind and the line
+   in quiet grey (after the tiles on apple.com). */
+.fr-card {
+  padding: 26px 26px 28px;
+  border-radius: 24px;
+  background: #f5f5f7;
+  box-shadow: none;
+  transition: scale 500ms var(--ease-expo);
+}
+.fr-row.is-dragging .fr-card {
+  scale: 0.985;
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .fr-row:not(.is-dragging) .fr-card:hover {
+    scale: 1.015;
+  }
+}
+.fr-tag {
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--purple);
+  background: none;
+  box-shadow: none;
+}
+.fr-body {
+  padding: 0;
+}
+.fr-acc {
+  font-size: 1.625rem;
+  letter-spacing: -0.034em;
+}
+.fr-type {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  color: #6e6e73;
+}
+.fr-desc {
+  margin-top: 12px;
+  font-size: 0.9375rem;
+  color: rgb(29 29 31 / 0.8);
+}
+
+.fr-desc {
+  -webkit-line-clamp: 3;
+}
+
+/* white tiles, to match the suite cards above; every line of type sits at
+   the same height on every card: the words run from the top at fixed gaps,
+   the name holds one line and the description always reserves three */
+.fr-card {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgb(22 6 58 / 0.06);
+}
+.fr-body {
+  margin-top: 40px;
+}
+.fr-acc {
+  overflow: hidden;
+  font-size: 1.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.fr-desc {
+  min-height: 4.5em;
+}
+.fr-row {
+  height: 326px;
+}
+.fr-body {
+  margin-top: 32px;
+}
+
+/* no scaling on the tiles: a scale animates the card as a bitmap and the
+   type goes soft until it lands. The hover lifts by whole pixels instead,
+   and the drag leaves the tiles as they are, so the text stays sharp */
+.fr-card {
+  scale: none;
+  transition:
+    translate 400ms var(--ease-expo),
+    box-shadow 400ms var(--ease-expo);
+}
+.fr-row.is-dragging .fr-card {
+  scale: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .fr-row:not(.is-dragging) .fr-card:hover {
+    scale: none;
+    translate: var(--rb, 0px) -4px;
+    box-shadow:
+      0 0 0 1px rgb(22 6 58 / 0.08),
+      0 22px 40px -28px rgb(44 10 120 / 0.45);
+  }
+}
+
+/* THE FILM'S WINDOW (section 3). On a wide screen the window is the film,
+   shown whole. On a phone the film is drawn wider than the window, at a
+   readable size, and pans to follow the action (AutonomousWorkflow.jsx);
+   the cursor shows, since it now leads the eye. */
+.gc-pan {
+  container-type: inline-size;
+}
+@media (max-width: 767px) {
+  .gc-frame {
+    padding: 10px;
+    border-radius: 22px;
+  }
+  .gc-view {
+    position: relative;
+    aspect-ratio: 1 / 0.86;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 0 0 1px rgb(22 6 58 / 0.06);
+  }
+  .gc-pan {
+    width: 190%;
+    transition: transform 1100ms var(--ease-expo);
+    will-change: transform;
+  }
+  .gc-frame .gc-pan .mstage {
+    aspect-ratio: 16 / 10.5;
+    font-size: clamp(9px, 1.72cqw, 12px);
+  }
+  .gc-frame .win {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .gc-frame .v-cursor {
+    display: block;
+  }
+
+  /* the step cards: no reserved third line, a little less padding */
+  .gc-steps {
+    gap: 8px;
+  }
+  .gc-step-btn {
+    padding: 16px 18px 18px;
+  }
+  .gc-step-title {
+    font-size: 1rem;
+  }
+  .gc-step-body {
+    min-height: 0;
+    font-size: 0.875rem;
+    -webkit-line-clamp: 3;
+  }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .gc-pan {
+    transition: none;
+  }
+}
+/* the phone film a little narrower, so each column of the window fits
+   whole in view while the camera is on it */
+@media (max-width: 767px) {
+  .gc-pan {
+    width: 162%;
+  }
+  .gc-frame .gc-pan .mstage {
+    font-size: clamp(9px, 1.72cqw, 12px);
+  }
+}
+
+/* THE ROW AT THE CONTENT'S WIDTH: the row sits inside the same 1120 as the
+   suite cards above it, and four tiles fill it exactly, so both edges line
+   up with the cards; the rest are dragged into view. The name holds two
+   lines on every tile, so the type still sits level across them. */
+@media (min-width: 768px) {
+  .fr-row {
+    --gutter: 0px;
+    max-width: 1120px;
+    height: 360px;
+    margin-inline: auto;
+    justify-content: flex-start;
+  }
+  .fr-card {
+    flex: 0 0 calc((100% - 48px) / 4);
+    padding: 22px 22px 24px;
+  }
+  .fr-body {
+    margin-top: 26px;
+  }
+  .fr-acc {
+    display: -webkit-box;
+    min-height: 2.3em;
+    font-size: 1.25rem;
+    line-height: 1.15;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .fr-type,
+  .fr-desc {
+    font-size: 0.875rem;
+  }
+}
+@media (min-width: 768px) and (max-width: 1159px) {
+  .fr-row {
+    max-width: calc(100vw - 64px);
+  }
+}
+@media (min-width: 768px) {
+  .fr-acc {
+    display: block;
+    min-height: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.1875rem;
+  }
+  .fr-row {
+    height: 318px;
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  .fr-card {
+    flex-basis: calc((100% - 32px) / 3);
+  }
+}
+@media (min-width: 768px) and (max-width: 899px) {
+  .fr-card {
+    flex-basis: calc((100% - 16px) / 2);
+  }
+}
+
+/* THE ROW'S SOFT EDGES: at the content's width the row would cut cards
+   with a hard vertical edge; instead each side fades over 72px, and only
+   while there are cards beyond it. The two fade widths are registered so
+   they animate as the row reaches an end. */
+@property --fade-l {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --fade-r {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@media (min-width: 768px) {
+  .fr-row {
+    --fade-l: 0px;
+    --fade-r: 0px;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 var(--fade-l),
+      #000 calc(100% - var(--fade-r)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 var(--fade-l),
+      #000 calc(100% - var(--fade-r)),
+      transparent 100%
+    );
+    transition:
+      --fade-l 350ms ease,
+      --fade-r 350ms ease;
+  }
+  .fr-row.has-left {
+    --fade-l: 72px;
+  }
+  .fr-row.has-right {
+    --fade-r: 72px;
+  }
+}
+
+/* The fade lives outside the content edges: the row runs one fade-width
+   past the suite cards on each side and pads it back, so the cards at
+   rest line up with the suite cards and stay whole, and only the card
+   peeking in from beyond fades. The fade is as wide as the room the page
+   has outside its content. */
+@media (min-width: 768px) {
+  .fr-row {
+    --edge: 32px;
+    --cw: min(1120px, calc(100vw - 64px));
+    max-width: calc(var(--cw) + 2 * var(--edge));
+    padding-left: var(--edge);
+    padding-right: var(--edge);
+    scroll-padding-inline: var(--edge);
+  }
+  .fr-row.has-left {
+    --fade-l: var(--edge);
+  }
+  .fr-row.has-right {
+    --fade-r: var(--edge);
+  }
+}
+@media (min-width: 1200px) {
+  .fr-row {
+    --edge: 64px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1159px) {
+  .fr-row {
+    max-width: calc(var(--cw) + 2 * var(--edge));
+  }
+}
+
+/* A wider, eased fade: it takes all the room the page has outside its
+   content (up to 160px), and eases in over that distance with several
+   stops, so a card passing through dissolves rather than looks sliced. */
+@media (min-width: 768px) {
+  .fr-row {
+    --edge: clamp(32px, calc((100vw - var(--cw)) / 2 - 8px), 160px);
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      rgb(0 0 0 / 0.08) calc(var(--fade-l) * 0.2),
+      rgb(0 0 0 / 0.3) calc(var(--fade-l) * 0.45),
+      rgb(0 0 0 / 0.66) calc(var(--fade-l) * 0.72),
+      #000 var(--fade-l),
+      #000 calc(100% - var(--fade-r)),
+      rgb(0 0 0 / 0.66) calc(100% - var(--fade-r) * 0.72),
+      rgb(0 0 0 / 0.3) calc(100% - var(--fade-r) * 0.45),
+      rgb(0 0 0 / 0.08) calc(100% - var(--fade-r) * 0.2),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      rgb(0 0 0 / 0.08) calc(var(--fade-l) * 0.2),
+      rgb(0 0 0 / 0.3) calc(var(--fade-l) * 0.45),
+      rgb(0 0 0 / 0.66) calc(var(--fade-l) * 0.72),
+      #000 var(--fade-l),
+      #000 calc(100% - var(--fade-r)),
+      rgb(0 0 0 / 0.66) calc(100% - var(--fade-r) * 0.72),
+      rgb(0 0 0 / 0.3) calc(100% - var(--fade-r) * 0.45),
+      rgb(0 0 0 / 0.08) calc(100% - var(--fade-r) * 0.2),
+      transparent 100%
+    );
+  }
+}
+@media (min-width: 1200px) {
+  .fr-row {
+    --edge: clamp(32px, calc((100vw - var(--cw)) / 2 - 8px), 160px);
+  }
+}
+
+/* THE ROW KEPT INSIDE THE CONTENT WIDTH (overrides the outer fade above):
+   the row's box is exactly the suite cards' width, and the tiles are sized
+   so the next one peeks in; the fade covers only the peek, inside the
+   content. After a move the row settles with the previous tile peeking in
+   on the left, under the left fade, and the tiles in view stay whole. */
+@media (min-width: 768px) {
+  .fr-row {
+    --edge: 0px;
+    --peek: 88px;
+    max-width: var(--cw);
+    padding-left: 0;
+    padding-right: 0;
+    scroll-padding-inline: var(--peek);
+  }
+  .fr-row.has-left {
+    --fade-l: var(--peek);
+  }
+  .fr-row.has-right {
+    --fade-r: var(--peek);
+  }
+  .fr-card {
+    flex-basis: calc((100% - 16px * 2 - var(--peek)) / 3);
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  .fr-card {
+    flex-basis: calc((100% - 16px - var(--peek)) / 2);
+  }
+}
+@media (min-width: 768px) and (max-width: 899px) {
+  .fr-row {
+    --peek: 64px;
+  }
+  .fr-card {
+    flex-basis: calc(100% - 16px - var(--peek));
+  }
+}
+@media (min-width: 1200px) {
+  .fr-row {
+    --edge: 0px;
+  }
+}
+/* room for a peek on both sides once the row has moved, so the tiles in
+   view are always whole and clear of both fades */
+@media (min-width: 1200px) {
+  .fr-card {
+    flex-basis: calc((100% - 16px * 2 - var(--peek) * 2) / 3);
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  .fr-card {
+    flex-basis: calc((100% - 16px - var(--peek) * 2) / 2);
+  }
+}
+@media (min-width: 768px) and (max-width: 899px) {
+  .fr-card {
+    flex-basis: calc(100% - var(--peek) * 2);
+  }
+}
+
+.gc-rail i {
+  background: rgb(122 0 194 / 0.45);
+}

@@ -26,7 +26,9 @@ const SRC = {
   light: '/friend-logo-light.png'
 };
 
-export function Wordmark({ tone = 'ink', className = '' }) {
+/* `compact` shows the lockup without its bottom "Framework" row: the image
+   keeps its full size and is cropped from the bottom by the box. */
+export function Wordmark({ tone = 'ink', className = '', compact = false }) {
   return (
     <img
       src={SRC[tone] ?? SRC.ink}
@@ -37,6 +39,7 @@ export function Wordmark({ tone = 'ink', className = '' }) {
          does the rest. The intrinsic pair above is here so the row does not
          reflow when the file lands — the browser reserves the right box before
          it has the image. */
+      style={compact ? { aspectRatio: '640 / 190', objectFit: 'cover', objectPosition: 'top' } : undefined}
       className={`block w-auto select-none ${className}`}
       draggable={false}
     />

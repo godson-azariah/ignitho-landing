@@ -38,3 +38,7 @@ reference/
 
 # output of npm run check
 .check/
+
+# design research: reference screenshots, comparison pages and backups of
+# earlier versions (about 24MB). Local only, like reference/.
+design-research/

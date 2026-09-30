@@ -108,7 +108,7 @@ body {
   width: 100%;
   background-color: var(--paper);
   color: var(--text);
-  font-family: 'Urbanist', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
   font-synthesis-weight: none;
   /* clip, not hidden — `hidden` on the root breaks position:sticky */
   overflow-x: clip;

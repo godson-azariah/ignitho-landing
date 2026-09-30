@@ -405,14 +405,20 @@
   z-index: -1;
   pointer-events: none;
 }
+/* THE FINE GRID. Small dots at low strength on a tight 22px pitch, with a
+   brighter violet dot on every fourth point for rhythm. It reads as paper
+   grain up close rather than a polka-dot pattern, and every block of text
+   still wears a `.plate` that clears it. The rules that ran across it are
+   gone; they were what made it look like graph paper. */
+/* One even field only: no brighter dot in the middle of every fourth, and a
+   wider 32px pitch so the dots read as a quiet texture, not a mesh. */
 .dots::before {
-  background-image: radial-gradient(var(--dot) 1.35px, transparent 1.35px);
-  background-size: 28px 28px;
+  background-image: radial-gradient(circle, rgba(44, 10, 120, 0.2) 0.9px, transparent 1.4px);
+  background-size: 32px 32px;
+  background-position: 16px 16px;
 }
-/* horizontal rules only — the verticals made it read as graph paper */
 .dots::after {
-  background-image: linear-gradient(to bottom, var(--rule-grid) 1px, transparent 1px);
-  background-size: 100% 56px;
+  background-image: none;
 }
 
 .bg-b {

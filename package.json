@@ -11,6 +11,7 @@
     "check": "vite build --ssr tools/check-renders.jsx --outDir .check --logLevel error && node .check/check-renders.js"
   },
   "dependencies": {
+    "gsap": "^3.15.0",
     "lucide-react": "^1.28.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

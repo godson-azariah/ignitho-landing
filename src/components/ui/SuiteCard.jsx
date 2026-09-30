@@ -22,7 +22,16 @@ import { splitHeading } from '../../lib/splitHeading.js';
    Usage:
      <SuiteCard suite={s} index={i} onOpen={openSuite} />
 */
-export function SuiteCard({ suite, index = 0, accent, onOpen }) {
+export function SuiteCard({
+  suite,
+  index = 0,
+  accent,
+  onOpen,
+  selected,
+  cta = 'Read more',
+  subtitle,
+  ctaPill = false
+}) {
   const Icon = suite.icon;
   const chip = accent ?? BLOCKS[index % BLOCKS.length];
   /* Every run of text in the card goes through `noOrphan`, so no line
@@ -37,7 +46,10 @@ export function SuiteCard({ suite, index = 0, accent, onOpen }) {
        a separate button. */
     <button
       onClick={() => onOpen?.(suite.id)}
-      className="group flex h-full w-full flex-col overflow-hidden rounded-[20px] bg-white text-center shadow-[0_10px_36px_-26px_rgba(22,6,58,0.45)] transition-all duration-[400ms] ease-out hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-32px_rgba(22,6,58,0.55)]"
+      aria-pressed={selected === undefined ? undefined : selected}
+      className={`group flex h-full w-full flex-col overflow-hidden rounded-[20px] bg-white text-center shadow-[0_10px_36px_-26px_rgba(22,6,58,0.45)] transition-all duration-[400ms] ease-out hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-32px_rgba(22,6,58,0.55)] ${
+        selected ? 'suite-card-on' : ''
+      }`}
     >
       {/* the brand rule across the top edge */}
       <span
@@ -73,10 +85,21 @@ export function SuiteCard({ suite, index = 0, accent, onOpen }) {
         {/* Set as two deliberate lines, centred. Reserving the pair also keeps
             every card's tagline and ROI block on the same baseline across the
             row. */}
-        <span className="block text-[18px] font-extrabold leading-[1.2] tracking-[-0.022em] text-ig-ink lg:text-[21px]">
-          <span className="block">{heading[0]}</span>
-          <span className="block">{heading[1]}</span>
-        </span>
+        {/* With a `subtitle`, the name holds one line and the subtitle sits
+            on the second, in place of the name's own break. */}
+        {subtitle ? (
+          <span className="block text-[18px] font-extrabold leading-[1.2] tracking-[-0.022em] text-ig-ink lg:text-[21px]">
+            <span className="block whitespace-nowrap">{suite.name}</span>
+            <span className="block text-[15px] font-semibold tracking-[-0.01em] text-ig-purple lg:text-[16px]">
+              {subtitle}
+            </span>
+          </span>
+        ) : (
+          <span className="block text-[18px] font-extrabold leading-[1.2] tracking-[-0.022em] text-ig-ink lg:text-[21px]">
+            <span className="block">{heading[0]}</span>
+            <span className="block">{heading[1]}</span>
+          </span>
+        )}
 
         <span className="clamp-2 mt-2.5 min-h-[2.6em] text-[14px] font-bold leading-[1.35] text-ig-teal">
           {noOrphan(suite.tagline)}
@@ -94,13 +117,27 @@ export function SuiteCard({ suite, index = 0, accent, onOpen }) {
           </span>
         </span>
 
-        <span className="mt-auto flex items-center justify-center gap-1.5 whitespace-nowrap pt-4 text-[14px] font-bold text-ig-ink transition-colors duration-300 group-hover:text-ig-purple">
-          Read more
-          <ArrowUpRight
-            className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            strokeWidth={2.4}
-          />
-        </span>
+        {/* With `ctaPill` the affordance is a small dark pill, the shape the
+            foundations section grows its island out of. */}
+        {ctaPill ? (
+          <span className="mt-auto flex justify-center pt-4">
+            <span
+              data-cta-pill
+              className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full bg-ig-ink px-5 text-[14px] font-bold text-white transition-colors duration-300 group-hover:bg-ig-violet-800"
+            >
+              {cta}
+              <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.4} />
+            </span>
+          </span>
+        ) : (
+          <span className="mt-auto flex items-center justify-center gap-1.5 whitespace-nowrap pt-4 text-[14px] font-bold text-ig-ink transition-colors duration-300 group-hover:text-ig-purple">
+            {cta}
+            <ArrowUpRight
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              strokeWidth={2.4}
+            />
+          </span>
+        )}
       </span>
     </button>
   );

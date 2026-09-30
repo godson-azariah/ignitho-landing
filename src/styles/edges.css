@@ -1,0 +1,67 @@
+/* The blurred edges at the top and bottom of the window (EdgeBlur.jsx).
+
+   Seven layers per edge, the usual way of faking a progressive blur: each
+   has a heavier backdrop blur than the last and is masked to a narrower
+   band against the edge, so the blur builds smoothly from nothing to heavy
+   and is strongest right at the edge. The script sets two numbers:
+     --edge-on  0..1, whether there is page beyond this edge at all
+     --edge-v   0..1, how fast the page is moving
+   The two heaviest layers and the tint only come in with speed, so at rest
+   the edge is a soft smudge and in motion it smears hard, then settles.
+   Below the top bar and the chat bubble, never in the way of a click. */
+
+.edge-blur {
+  --edge-on: 0;
+  --edge-v: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  height: 76px;
+  pointer-events: none;
+  opacity: var(--edge-on);
+}
+.edge-blur.is-top {
+  --dir: to bottom;
+  top: 0;
+  height: 100px;
+}
+.edge-blur.is-bottom {
+  --dir: to top;
+  bottom: 0;
+}
+@media (max-width: 767px) {
+  .edge-blur {
+    height: 60px;
+  }
+  .edge-blur.is-top {
+    height: 88px;
+  }
+}
+
+.edge-blur > i {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(var(--dir), #000 var(--a), transparent var(--b));
+  mask-image: linear-gradient(var(--dir), #000 var(--a), transparent var(--b));
+}
+.edge-blur > i:nth-child(1) { --a: 40%; --b: 100%; -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px); }
+.edge-blur > i:nth-child(2) { --a: 30%; --b: 85%;  -webkit-backdrop-filter: blur(2.5px); backdrop-filter: blur(2.5px); }
+.edge-blur > i:nth-child(3) { --a: 22%; --b: 70%;  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
+.edge-blur > i:nth-child(4) { --a: 15%; --b: 56%;  -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px); }
+.edge-blur > i:nth-child(5) { --a: 8%;  --b: 42%;  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+/* the two that arrive with speed */
+.edge-blur > i:nth-child(6) {
+  --a: 4%;
+  --b: 32%;
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
+  opacity: calc(0.35 + var(--edge-v) * 0.65);
+}
+.edge-blur > i:nth-child(7) {
+  --a: 0%;
+  --b: 22%;
+  -webkit-backdrop-filter: blur(48px);
+  backdrop-filter: blur(48px);
+  opacity: var(--edge-v);
+}

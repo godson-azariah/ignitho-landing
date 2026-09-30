@@ -34,7 +34,11 @@ const VARIANT = {
   teal: 'btn--teal',
   violet: 'btn--violet',
   light: 'btn--light',
-  ink: 'btn--ink'
+  ink: 'btn--ink',
+  /* outline on a dark band: the secondary action beside a green one */
+  ghost: 'btn--ghost',
+  /* outline on a light ground, the secondary action beside a green one */
+  outline: 'btn--outline'
 };
 
 /* `as` lets this render an anchor instead of a button, which the sign-in control

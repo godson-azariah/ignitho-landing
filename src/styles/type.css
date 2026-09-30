@@ -20,13 +20,13 @@
 /* The fill-on-hover variants went with the hero's entry cells — no outlined
    numeral on the page is inside a hoverable group any more. */
 
-/* Instrument Serif sits optically small next to Urbanist — nudge it up */
+/* The accent used to be a serif italic. It is now the same family, upright,
+   and carried by colour alone, so the page keeps one voice. The name stays
+   because a lot of markup still uses it. */
 .serif-accent {
-  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.08em;
-  letter-spacing: -0.005em;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
 }
 
 .tnum {

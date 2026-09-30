@@ -14,17 +14,16 @@
    assembled after this loads. -->
 
     <!--
-      Type system — three voices, no decoration:
-      Urbanist        display + UI  (the structure)
-      Instrument Serif  italic accents  (the editorial voice)
-      JetBrains Mono   labels, indices, figures  (the machine layer)
+      Type system: one family, Outfit, for everything. No serif, no mono.
+      Headlines get their authority from size and tight tracking at a light
+      weight, not from a second typeface.
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- every suite image comes from here; open the socket before one is asked for -->
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
     <link rel="dns-prefetch" href="https://images.unsplash.com">
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -32,9 +31,11 @@
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Urbanist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-              serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
-              mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+              sans: ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              /* serif and mono point at the same family, so older markup that
+                 still asks for them stays inside the one voice */
+              serif: ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              mono: ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
             },
             colors: {
               ig: {
@@ -70,6 +71,7 @@
             },
             transitionTimingFunction: {
               out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+              expo: 'cubic-bezier(0.16, 1, 0.3, 1)',
             },
           },
         },

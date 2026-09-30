@@ -1,0 +1,364 @@
+/* Governance (OutcomeCards.jsx) as a compliance ledger: one white panel,
+   one row per control with hairlines between, and the standards along its
+   foot. Radius 24 for the panel, as the tiles elsewhere on the page. */
+
+.lg-panel {
+  max-width: 1120px;
+  margin: 48px auto 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.06),
+    0 30px 60px -48px rgb(44 10 120 / 0.45);
+}
+
+/* THE ROWS */
+.lg-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding: 26px 24px;
+  transition: background-color 250ms ease;
+}
+.lg-row + .lg-row {
+  border-top: 1px solid rgb(22 6 58 / 0.07);
+}
+@media (min-width: 1024px) {
+  .lg-row {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr) minmax(0, 1.45fr) minmax(0, 0.75fr);
+    gap: 36px;
+    align-items: start;
+    padding: 30px 36px;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .lg-row:hover {
+    background: #fcfbff;
+  }
+}
+
+/* the control */
+.lg-kicker {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--purple);
+}
+.lg-title {
+  margin-top: 6px;
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.024em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* what it means */
+.lg-body {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: rgb(22 6 58 / 0.66);
+  text-wrap: pretty;
+}
+
+/* how it is enforced */
+.lg-points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lg-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(22 6 58 / 0.8);
+}
+.lg-points svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  color: var(--teal);
+}
+
+/* the result */
+.lg-target {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+@media (min-width: 1024px) {
+  .lg-target {
+    text-align: right;
+  }
+}
+@media (max-width: 1023px) {
+  .lg-target {
+    color: var(--purple);
+  }
+}
+
+/* THE STANDARDS: along the foot of the panel */
+.lg-marks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 26px;
+  padding: 18px 24px;
+  border-top: 1px solid rgb(22 6 58 / 0.07);
+  background: #faf8fe;
+}
+.lg-marks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(22 6 58 / 0.78);
+}
+.lg-marks svg {
+  width: 13px;
+  height: 13px;
+  color: var(--teal);
+}
+
+/* THE FOUR CARDS (replace the ledger panel): separate white tiles in a
+   2x2 grid, as the accelerator tiles are. Each leads with its result set
+   large, then the control and what it means, then its points under a
+   hairline. Equal heights across a row. */
+.gd-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  max-width: 1120px;
+  margin: 48px auto 0;
+}
+@media (min-width: 900px) {
+  .gd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+.gd-cell {
+  display: flex;
+}
+.gd-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 30px 30px 28px;
+  border-radius: 24px;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgb(22 6 58 / 0.06);
+  transition:
+    translate 400ms var(--ease-expo),
+    box-shadow 400ms var(--ease-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .gd-card:hover {
+    translate: 0 -4px;
+    box-shadow:
+      0 0 0 1px rgb(22 6 58 / 0.08),
+      0 22px 40px -28px rgb(44 10 120 / 0.45);
+  }
+}
+.gd-result {
+  font-size: clamp(1.625rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--purple);
+  text-wrap: balance;
+}
+.gd-head {
+  margin-top: 22px;
+}
+.gd-kicker {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(22 6 58 / 0.5);
+}
+.gd-title {
+  margin-top: 4px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.022em;
+}
+.gd-body {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: rgb(22 6 58 / 0.66);
+  text-wrap: pretty;
+}
+.gd-points {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: auto;
+  padding-top: 22px;
+}
+.gd-points::before {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-bottom: 13px;
+  background: rgb(22 6 58 / 0.08);
+}
+.gd-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(22 6 58 / 0.8);
+}
+.gd-points svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  color: var(--teal);
+}
+.gd-marks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 10px;
+  max-width: 1120px;
+  margin: 28px auto 0;
+}
+.gd-marks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px 8px 12px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgb(22 6 58 / 0.06);
+}
+.gd-marks svg {
+  width: 13px;
+  height: 13px;
+  color: var(--teal);
+}
+@media (max-width: 599px) {
+  .gd-card {
+    padding: 24px 22px;
+  }
+}
+
+/* THE ORIGINAL LAYOUT, CLEAN: four white cards in one row (two on a
+   tablet, one on a phone). Mark and area at the top, the title held to two
+   lines so the rows line up, the sentence, the points, and the result at
+   the foot above a hairline. Overrides the 2x2 rules above. */
+@media (min-width: 640px) {
+  .gd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1100px) {
+  .gd-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+  }
+}
+.gd-card {
+  padding: 24px 22px 22px;
+}
+.gd-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gd-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #ffffff;
+  background: linear-gradient(145deg, #6a4df0 0%, var(--purple) 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+.gd-mark svg {
+  width: 19px;
+  height: 19px;
+}
+.gd-kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: rgb(22 6 58 / 0.52);
+}
+.gd-title {
+  min-height: 2.5em;
+  margin-top: 20px;
+  font-size: 1.1875rem;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.gd-body {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.gd-points {
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 0;
+  flex: 1;
+}
+.gd-points::before {
+  margin-bottom: 10px;
+}
+.gd-points li {
+  font-size: 0.8125rem;
+}
+.gd-points svg {
+  width: 13px;
+  height: 13px;
+}
+.gd-result {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgb(22 6 58 / 0.08);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--purple);
+}
+/* every card's sentence holds the same room, so the points and results
+   line up across the row; the title only reserves a second line where the
+   cards are narrow enough to need one */
+@media (min-width: 1100px) {
+  .gd-body {
+    min-height: 6.2em;
+  }
+}
+@media (min-width: 1300px) {
+  .gd-title {
+    min-height: 0;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1299px) {
+  .gd-body {
+    min-height: 7.75em;
+  }
+}
