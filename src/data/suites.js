@@ -100,7 +100,7 @@ export const SUITES = [
   },
   {
     id: 'healthcare-pharma',
-    number: '04',
+    number: '01',
     name: 'Healthcare & Pharma',
     type: 'industry',
     icon: Pill,
@@ -124,7 +124,7 @@ export const SUITES = [
   },
   {
     id: 'supply-chain',
-    number: '05',
+    number: '02',
     name: 'Supply Chain & Procurement',
     type: 'industry',
     icon: Truck,
@@ -148,7 +148,7 @@ export const SUITES = [
   },
   {
     id: 'retail-ecommerce',
-    number: '06',
+    number: '03',
     name: 'Retail, Sales & Customer Growth',
     type: 'industry',
     icon: ShoppingBag,
@@ -172,7 +172,7 @@ export const SUITES = [
   },
   {
     id: 'digital-marketing',
-    number: '07',
+    number: '04',
     name: 'Digital Growth & Brand Protection',
     type: 'industry',
     icon: Megaphone,
@@ -196,7 +196,7 @@ export const SUITES = [
   },
   {
     id: 'bfsi',
-    number: '08',
+    number: '05',
     name: 'Banking, Financial Services & Fintech',
     type: 'industry',
     icon: Landmark,
@@ -220,7 +220,7 @@ export const SUITES = [
   },
   {
     id: 'transport-logistics',
-    number: '09',
+    number: '06',
     name: 'Logistics & Fleet Operations',
     type: 'industry',
     icon: Compass,
