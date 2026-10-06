@@ -199,3 +199,130 @@
   width: 18px;
   height: 18px;
 }
+
+/* THE SIX SUITES AS A PLAIN GRID (Catalog.jsx): no loop, no dragging.
+   Three across on a laptop, two on a tablet, one on a phone; every card
+   in a row is the same height */
+.st-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1120px;
+  margin: 48px auto 0;
+}
+@media (min-width: 640px) {
+  .st-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .st-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.st-cell {
+  display: flex;
+}
+.st-cell .arc-card {
+  flex: 1;
+  height: auto;
+}
+/* in the grid the ROI box holds just its words, at the card's foot */
+.st-cell .arc-roi {
+  flex: none;
+  height: auto;
+  min-height: 0;
+}
+.st-cell .arc-roi > b {
+  min-height: 0;
+}
+
+/* THE SIX SUITES AS A ROW (Catalog.jsx SuiteRail): draggable, swipeable,
+   no loop. The row runs edge to edge but its first card lines up with the
+   page's content edge; it snaps to a card. */
+.st-row {
+  --edge: max(20px, calc((100% - 1120px) / 2));
+  display: flex;
+  gap: 20px;
+  margin-top: 48px;
+  padding: 6px var(--edge) 18px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--edge);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.st-row::-webkit-scrollbar {
+  display: none;
+}
+.st-row.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+.st-row.is-dragging .arc-card {
+  pointer-events: none;
+}
+.st-slot {
+  flex: 0 0 340px;
+  scroll-snap-align: start;
+}
+@media (max-width: 639px) {
+  .st-slot {
+    flex-basis: min(300px, 84vw);
+  }
+}
+.st-slot .arc-card img {
+  -webkit-user-drag: none;
+}
+.st-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.st-nav button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.08),
+    0 8px 20px -14px rgb(22 6 58 / 0.4);
+  transition:
+    opacity 200ms ease,
+    background-color 200ms ease;
+}
+.st-nav button svg {
+  width: 17px;
+  height: 17px;
+}
+.st-nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.st-nav button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+/* the row is held to the screen's width (its wrapper would otherwise grow
+   to fit all six cards, leaving nothing to scroll) */
+.st-rail,
+.st-row {
+  min-width: 0;
+  max-width: 100vw;
+}
+/* a normal gutter at the row's ends, not the page's wide margin; the row
+   scrolls sideways only, so an up-or-down scroll over it always moves the
+   page, and the snap is gentle, so a trackpad gesture is never caught */
+.st-row {
+  --edge: clamp(20px, 3vw, 40px);
+  overflow-y: hidden;
+  overscroll-behavior-x: auto;
+  scroll-snap-type: x proximity;
+  touch-action: pan-x pan-y;
+}

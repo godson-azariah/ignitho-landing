@@ -1843,3 +1843,46 @@
 .gc-rail i {
   background: rgb(122 0 194 / 0.45);
 }
+
+/* THE ACTIVE STEP STANDS FORWARD, NO LINE. The progress line along the
+   card's foot is gone (the steps still advance on their timer). Instead the
+   card in play rises, grows a touch and takes a deeper shadow, while the
+   others step back, so the eye goes to it without any rule or ornament */
+.gc-rail {
+  display: none;
+}
+.gc-step {
+  position: relative;
+}
+.gc-step-btn {
+  transition:
+    background-color 450ms ease,
+    box-shadow 450ms var(--ease-expo),
+    transform 450ms var(--ease-expo),
+    opacity 450ms ease;
+}
+.gc-step:not(.is-on) .gc-step-btn {
+  opacity: 0.68;
+}
+@media (hover: hover) and (pointer: fine) {
+  .gc-step:not(.is-on) .gc-step-btn:hover {
+    opacity: 0.9;
+  }
+}
+.is-on {
+  z-index: 1;
+}
+.is-on .gc-step-btn {
+  opacity: 1;
+  background: #ffffff;
+  transform: translateY(-3px) scale(1.025);
+  box-shadow:
+    0 0 0 1px rgb(122 0 194 / 0.16),
+    0 2px 6px -2px rgb(22 6 58 / 0.08),
+    0 32px 60px -30px rgb(44 10 120 / 0.65);
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-on .gc-step-btn {
+    transform: none;
+  }
+}

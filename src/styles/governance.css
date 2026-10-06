@@ -362,3 +362,516 @@
     min-height: 7.75em;
   }
 }
+
+/* TINT AND WAVES. The card is not plain white: a soft wash of the brand
+   runs down it, and faint wave lines sweep along its foot, behind the
+   points and the result. The area reads first at the top left, its mark
+   set to the right. */
+.gd-top {
+  justify-content: space-between;
+}
+.gd-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 180' fill='none' stroke='%237A00C2' stroke-width='1.2'%3E%3Cpath d='M-10 70 C 60 40 140 40 210 72 S 340 110 410 70' stroke-opacity='.10'/%3E%3Cpath d='M-10 92 C 60 62 140 62 210 94 S 340 132 410 92' stroke-opacity='.13'/%3E%3Cpath d='M-10 114 C 60 84 140 84 210 116 S 340 154 410 114' stroke-opacity='.16'/%3E%3Cpath d='M-10 136 C 60 106 140 106 210 138 S 340 176 410 136' stroke-opacity='.19'/%3E%3Cpath d='M-10 158 C 60 128 140 128 210 160 S 340 198 410 158' stroke-opacity='.22'/%3E%3C/svg%3E")
+      50% 100% / 100% auto no-repeat,
+    radial-gradient(120% 70% at 100% 0%, rgb(122 0 194 / 0.07), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f6f2ff 100%);
+  box-shadow:
+    0 0 0 1px rgb(122 0 194 / 0.09),
+    0 18px 40px -34px rgb(44 10 120 / 0.5);
+}
+/* each card's waves sit at their own phase, so the row flows rather than
+   repeating one stamp */
+.gd-cell:nth-child(2n) .gd-card {
+  background-position:
+    30% 100%,
+    0 0,
+    0 0;
+  background-size:
+    130% auto,
+    auto,
+    auto;
+}
+.gd-cell:nth-child(3n) .gd-card {
+  background-size:
+    160% auto,
+    auto,
+    auto;
+  background-position:
+    80% 100%,
+    0 0,
+    0 0;
+}
+.gd-kicker {
+  color: var(--purple);
+}
+.gd-mark {
+  width: 42px;
+  height: 42px;
+}
+.gd-result {
+  border-top-color: rgb(122 0 194 / 0.14);
+}
+/* one card per row on a phone: nothing to line up with, so no reserved line */
+@media (max-width: 639px) {
+  .gd-title {
+    min-height: 0;
+  }
+}
+
+/* THE CARD, CLEAN AND FINISHED (its own style, not the suite cards').
+   White, with a fine violet gradient edge that fades down the sides, a
+   layered shadow, and a faint violet glow in the top corner behind the
+   mark. The mark is a gradient tile with a soft coloured shadow, the
+   ticks sit in small tinted discs, and the result is the card's footer: a
+   tinted strip under a hairline, with a rising-line icon. */
+.gd-card {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background:
+    radial-gradient(70% 45% at 100% 0%, rgb(122 0 194 / 0.07), transparent 70%) padding-box,
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(170deg, rgb(122 0 194 / 0.32) 0%, rgb(74 47 212 / 0.1) 35%, rgb(22 6 58 / 0.06) 100%) border-box;
+  box-shadow:
+    0 1px 2px rgb(22 6 58 / 0.04),
+    0 18px 40px -24px rgb(44 10 120 / 0.35);
+}
+.gd-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px 22px 22px;
+}
+.gd-kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--purple);
+}
+.gd-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  color: #ffffff;
+  background: linear-gradient(145deg, #6a4df0 0%, var(--purple) 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    0 10px 20px -10px rgb(122 0 194 / 0.7);
+}
+.gd-mark svg {
+  width: 20px;
+  height: 20px;
+}
+.gd-title {
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+/* the ticks, in small tinted discs */
+.gd-points li {
+  gap: 10px;
+}
+.gd-tick {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 999px;
+  background: rgb(0 162 116 / 0.12);
+}
+.gd-points .gd-tick svg {
+  width: 10px;
+  height: 10px;
+  margin-top: 0;
+  color: var(--teal);
+}
+.gd-points::before {
+  background: rgb(22 6 58 / 0.07);
+}
+/* the footer */
+.gd-result {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 15px 22px;
+  border-top: 1px solid rgb(122 0 194 / 0.1);
+  font-size: 0.96875rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--purple);
+  background: #faf7ff;
+}
+.gd-result svg {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+}
+@media (max-width: 599px) {
+  .gd-card {
+    padding: 0;
+  }
+  .gd-main {
+    padding: 22px 20px 20px;
+  }
+  .gd-result {
+    padding: 14px 20px;
+  }
+}
+
+/* QUIET AND FINISHED (after Linear's and Apple's feature cards). Overrides
+   the gradient-edged version above: no gradients, no glows. */
+.gd-card {
+  border: 1px solid rgb(22 6 58 / 0.08);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgb(22 6 58 / 0.04),
+    0 12px 32px -20px rgb(22 6 58 / 0.18);
+}
+@media (hover: hover) and (pointer: fine) {
+  .gd-card:hover {
+    translate: none;
+    box-shadow:
+      0 1px 2px rgb(22 6 58 / 0.04),
+      0 12px 32px -20px rgb(22 6 58 / 0.18);
+  }
+}
+.gd-main {
+  position: relative;
+  z-index: 1;
+  padding: 26px 24px 22px;
+}
+/* the mark: a line icon in a thin-bordered square */
+.gd-mark {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(22 6 58 / 0.1);
+  border-radius: 11px;
+  color: var(--purple);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(22 6 58 / 0.05);
+}
+.gd-mark svg {
+  width: 19px;
+  height: 19px;
+}
+.gd-kicker {
+  font-size: 0.78125rem;
+  font-weight: 500;
+  color: rgb(22 6 58 / 0.55);
+}
+.gd-title {
+  margin-top: 22px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+/* the watermark: the same mark, large and faint, cut by the corner */
+.gd-water {
+  position: absolute;
+  right: -26px;
+  bottom: 34px;
+  z-index: 0;
+  width: 150px;
+  height: 150px;
+  color: var(--purple);
+  opacity: 0.055;
+  pointer-events: none;
+}
+/* plain ticks */
+.gd-tick {
+  width: auto;
+  height: auto;
+  margin-top: 3px;
+  background: none;
+}
+.gd-points .gd-tick svg {
+  width: 14px;
+  height: 14px;
+  color: var(--purple);
+}
+/* the result, a footer under a hairline */
+.gd-result {
+  position: relative;
+  z-index: 1;
+  gap: 8px;
+  padding: 16px 24px 18px;
+  border-top: 1px solid rgb(22 6 58 / 0.07);
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--ink);
+  background: transparent;
+}
+.gd-result svg {
+  width: 16px;
+  height: 16px;
+  color: var(--purple);
+}
+@media (max-width: 599px) {
+  .gd-main {
+    padding: 22px 20px 20px;
+  }
+  .gd-result {
+    padding: 14px 20px 16px;
+  }
+}
+/* titles and results sized to hold one line across the row, and the
+   watermark kept low, behind the foot, clear of the words */
+.gd-title {
+  font-size: 1.125rem;
+}
+.gd-result {
+  font-size: 0.9375rem;
+}
+.gd-water {
+  right: -30px;
+  bottom: -34px;
+  width: 140px;
+  height: 140px;
+  opacity: 0.045;
+}
+
+/* THE DRAWING AT THE HEAD (GovArt.jsx): a soft plate inset in the card,
+   holding a line drawing of the guarantee. The faint watermark is gone */
+.gd-water {
+  display: none;
+}
+.gd-art {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  height: 128px;
+  margin: 10px 10px 0;
+  border: 1px solid rgb(22 6 58 / 0.06);
+  border-radius: 12px;
+  background:
+    radial-gradient(60% 80% at 50% 0%, #ffffff 0%, transparent 70%),
+    #f6f3fc;
+}
+.gd-art svg {
+  width: 100%;
+  max-width: 250px;
+  height: 112px;
+}
+.gd-main {
+  padding-top: 18px;
+}
+.gd-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+.gd-mark svg {
+  width: 16px;
+  height: 16px;
+}
+.gd-title {
+  margin-top: 14px;
+}
+
+/* WORDS ONLY. No drawing, no icons, no dark ground: a white card set with
+   care. The area in small purple type, the title, what it means, then the
+   ticked points gathered in a soft lavender panel (the card's one quiet
+   colour), and the result in bold purple as the footer */
+.gd-art,
+.gd-mark,
+.gd-water {
+  display: none;
+}
+.gd-card {
+  border: 1px solid rgb(22 6 58 / 0.07);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgb(22 6 58 / 0.04),
+    0 16px 36px -24px rgb(44 10 120 / 0.28);
+}
+.gd-main {
+  padding: 26px 24px 0;
+}
+.gd-kicker {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--purple);
+}
+.gd-title {
+  margin-top: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.024em;
+}
+.gd-body {
+  margin-top: 10px;
+  font-size: 0.90625rem;
+  line-height: 1.55;
+  color: rgb(22 6 58 / 0.64);
+}
+/* the points, in a soft panel */
+.gd-points {
+  gap: 10px;
+  margin-top: 18px;
+  padding: 16px 16px 16px 14px;
+  border-radius: 14px;
+  background: #f7f4fe;
+}
+.gd-points::before {
+  display: none;
+}
+.gd-points li {
+  font-size: 0.84375rem;
+  line-height: 1.45;
+  color: rgb(22 6 58 / 0.82);
+}
+.gd-tick {
+  margin-top: 2px;
+}
+.gd-points .gd-tick svg {
+  width: 14px;
+  height: 14px;
+  color: var(--purple);
+}
+/* the result */
+.gd-result {
+  margin: 0;
+  padding: 18px 24px 22px;
+  border-top: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  color: var(--purple);
+  background: transparent;
+}
+/* across a row of four the areas, titles and sentences hold the same room,
+   so the panels and results line up */
+@media (min-width: 1100px) {
+  .gd-kicker {
+    min-height: 2.7em;
+  }
+  .gd-title {
+    min-height: 2.44em;
+  }
+}
+@media (max-width: 599px) {
+  .gd-main {
+    padding: 22px 20px 0;
+  }
+  .gd-result {
+    padding: 16px 20px 20px;
+  }
+}
+/* titles at a size that holds one line across the row on a laptop, so no
+   room needs reserving there */
+.gd-title {
+  font-size: 1.125rem;
+}
+@media (min-width: 1300px) {
+  .gd-kicker,
+  .gd-title {
+    min-height: 0;
+  }
+}
+/* where a result can wrap (1100-1299), every footer holds two lines, so
+   the results start level */
+@media (min-width: 1100px) and (max-width: 1299px) {
+  .gd-result {
+    min-height: calc(2.6em + 40px);
+  }
+}
+
+/* BLUE WAVES. Soft, layered waves in the brand's blue-indigo rise along the
+   foot of each card, behind the result, so the white card has colour and
+   movement without pictures, icons or a dark ground. Each card's waves sit
+   at their own phase, so the row flows rather than repeating one stamp */
+.gd-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120' preserveAspectRatio='none'%3E%3Cpath d='M0 52 C 70 30 150 30 220 54 S 340 86 400 58 V120 H0Z' fill='%235B7CFA' fill-opacity='.10'/%3E%3Cpath d='M0 74 C 80 52 160 58 230 80 S 350 104 400 80 V120 H0Z' fill='%234A2FD4' fill-opacity='.12'/%3E%3Cpath d='M0 96 C 90 80 170 84 240 98 S 350 116 400 100 V120 H0Z' fill='%233B5BDB' fill-opacity='.16'/%3E%3C/svg%3E")
+      0 100% / 100% 92px no-repeat,
+    #ffffff;
+}
+.gd-cell:nth-child(2n) .gd-card {
+  background-size: 130% 92px, auto;
+  background-position: 30% 100%, 0 0;
+}
+.gd-cell:nth-child(3n) .gd-card {
+  background-size: 160% 92px, auto;
+  background-position: 80% 100%, 0 0;
+}
+.gd-result {
+  position: relative;
+  color: #3b2fc9;
+}
+/* a little taller and bluer, so the waves register at a glance */
+.gd-card {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120' preserveAspectRatio='none'%3E%3Cpath d='M0 46 C 70 22 150 22 220 48 S 340 82 400 52 V120 H0Z' fill='%235B7CFA' fill-opacity='.13'/%3E%3Cpath d='M0 70 C 80 46 160 52 230 76 S 350 102 400 76 V120 H0Z' fill='%234A6CF7' fill-opacity='.16'/%3E%3Cpath d='M0 94 C 90 76 170 80 240 96 S 350 116 400 98 V120 H0Z' fill='%233B5BDB' fill-opacity='.22'/%3E%3C/svg%3E")
+      0 100% / 100% 110px no-repeat,
+    #ffffff;
+}
+.gd-cell:nth-child(2n) .gd-card {
+  background-size: 130% 110px, auto;
+}
+.gd-cell:nth-child(3n) .gd-card {
+  background-size: 160% 110px, auto;
+}
+
+/* CONTOUR LINES, NOT FILLED WAVES. The filled waves along the foot crowded
+   the result and the pale blue sat outside the palette. Instead, fine
+   flowing lines in the brand's blue-indigo sweep through each card's top
+   right corner and fade out before they reach the words. The result is
+   purple again. Each card's lines are turned a little differently. */
+.gd-card {
+  background: #ffffff;
+}
+.gd-cell:nth-child(n) .gd-card {
+  background-size: auto;
+  background-position: 0 0;
+}
+.gd-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: 260px;
+  height: 180px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 160' fill='none' stroke='%234A2FD4' stroke-width='1.1'%3E%3Cpath d='M0 150C70 130 130 60 240 40' stroke-opacity='.18'/%3E%3Cpath d='M0 136C70 116 130 50 240 32' stroke-opacity='.24'/%3E%3Cpath d='M0 122C70 102 130 40 240 24' stroke-opacity='.3'/%3E%3Cpath d='M0 108C70 88 130 30 240 16' stroke-opacity='.36'/%3E%3Cpath d='M0 94C70 74 130 20 240 8' stroke-opacity='.42'/%3E%3Cpath d='M0 80C70 60 130 10 240 0' stroke-opacity='.48'/%3E%3Cpath d='M0 66C70 46 130 0 240 -8' stroke-opacity='.54'/%3E%3C/svg%3E")
+    100% 0 / 100% 100% no-repeat;
+  -webkit-mask-image: radial-gradient(120% 100% at 100% 0%, #000 25%, transparent 72%);
+  mask-image: radial-gradient(120% 100% at 100% 0%, #000 25%, transparent 72%);
+}
+.gd-cell:nth-child(2n) .gd-card::before {
+  transform: scaleY(-1) translateY(-14%);
+  transform-origin: top;
+}
+.gd-cell:nth-child(3n) .gd-card::before {
+  width: 300px;
+  height: 160px;
+}
+.gd-main,
+.gd-result {
+  position: relative;
+  z-index: 1;
+}
+.gd-result {
+  color: var(--purple);
+}
+/* fainter, and fading sooner, so the lines are a texture in the corner and
+   never compete with the words they pass behind */
+.gd-card::before {
+  opacity: 0.45;
+  -webkit-mask-image: radial-gradient(110% 90% at 100% 0%, #000 18%, transparent 62%);
+  mask-image: radial-gradient(110% 90% at 100% 0%, #000 18%, transparent 62%);
+}

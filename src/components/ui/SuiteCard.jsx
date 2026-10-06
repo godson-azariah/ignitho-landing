@@ -69,11 +69,11 @@ export function SuiteCard({
           aria-hidden="true"
           className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,7,34,0.62)_0%,rgba(13,7,34,0.3)_55%,rgba(13,7,34,0.5)_100%)]"
         />
-        <span className="absolute left-4 top-3.5 whitespace-nowrap rounded-full border border-white/30 bg-white/12 px-3.5 py-1 text-[12px] font-bold tracking-[-0.01em] text-white">
+        <span className="sc-pill absolute left-4 top-3.5 whitespace-nowrap rounded-full border border-white/30 bg-white/12 px-3.5 py-1 text-[12px] font-bold tracking-[-0.01em] text-white">
           Suite {suite.number}
         </span>
         <span
-          className={`absolute right-4 top-3.5 grid h-9 w-9 place-items-center rounded-full border border-white/30 text-white ${chip}`}
+          className={`sc-mark absolute right-4 top-3.5 grid h-9 w-9 place-items-center rounded-full border border-white/30 text-white ${chip}`}
         >
           <Icon className="h-[17px] w-[17px]" strokeWidth={1.9} />
         </span>
@@ -81,7 +81,7 @@ export function SuiteCard({
 
       {/* The body is lifted over the band and rounded, so the picture reads as
           something the card sits on rather than a slab stuck to its top. */}
-      <span className="relative -mt-3 flex flex-1 flex-col rounded-t-[18px] bg-white px-5 pb-5 pt-5">
+      <span className="sc-body relative -mt-3 flex flex-1 flex-col rounded-t-[18px] bg-white px-5 pb-5 pt-5">
         {/* Set as two deliberate lines, centred. Reserving the pair also keeps
             every card's tagline and ROI block on the same baseline across the
             row. */}

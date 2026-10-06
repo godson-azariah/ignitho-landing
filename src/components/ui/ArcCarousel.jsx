@@ -19,7 +19,7 @@ const EASE = 0.11; /* how fast the row settles on its target each frame */
 
 /* One suite as a card: a short picture band with the suite's number and
    icon, then the name, its line, the measured target and the way in. */
-function SuiteTile({ suite, onOpen }) {
+export function SuiteTile({ suite, onOpen }) {
   const Icon = suite.icon;
   return (
     <button type="button" className="arc-card" onClick={() => onOpen?.(suite.id)}>

@@ -10,7 +10,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { ChatBubble } from './components/popups/ChatBubble.jsx';
 import { ContactForm } from './components/popups/ContactForm.jsx';
 import { TopBar } from './components/navigation/TopBar.jsx';
 import { PhoneMenu } from './components/navigation/PhoneMenu.jsx';
@@ -261,7 +260,6 @@ export default function App() {
 
       {/* The page's top and bottom edges: content scrolling under them is
           smudged out rather than cut off. Styles in edges.css. */}
-      <ChatBubble />
       <ClosingSection openContact={openContact} />
       <Footer openSuite={openSuite} navAction={navAction} goHome={goHome} />
     </div>

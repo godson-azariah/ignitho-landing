@@ -305,3 +305,345 @@
 .fr-suites.has-open:not(.is-closing)::before {
   opacity: 1;
 }
+
+/* NO DEAD SPACE. As the Dynamic Island does, the expanded state is laid out
+   for the room it takes: the card's own line carries over under the header,
+   and each accelerator reads top-down (tag, name, what it does) at a size
+   meant to be read at a glance, so the cards fill without a hollow middle. */
+.di-line {
+  max-width: 62ch;
+  margin-top: 16px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: rgb(22 6 58 / 0.72);
+  text-wrap: pretty;
+}
+.di-cards {
+  margin-top: 18px;
+}
+.di-card {
+  min-height: 0;
+  padding: 20px 20px 22px;
+}
+.di-acc {
+  margin-top: 18px;
+  padding-top: 0;
+  font-size: 1.25rem;
+}
+.di-desc {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+@media (max-width: 767px) {
+  .di-line {
+    margin-top: 12px;
+    font-size: 0.9375rem;
+  }
+  .di-acc {
+    margin-top: 12px;
+    font-size: 1.0625rem;
+  }
+}
+/* on a wide screen the cards read as widgets do: the tag and name held at
+   the top, what it does set at the foot, so the height they share is
+   structure, not a gap */
+@media (min-width: 768px) {
+  .di-desc {
+    margin-top: auto;
+    padding-top: 18px;
+    font-size: 0.9375rem;
+    color: rgb(22 6 58 / 0.66);
+  }
+  .di-acc {
+    font-size: 1.375rem;
+  }
+}
+
+/* NO HOVER on the foundation cards: their lift, deeper shadow and picture
+   zoom only got in the way of the button that opens the island */
+.fr-suite-in > button:hover {
+  transform: none;
+  box-shadow: 0 10px 36px -26px rgb(22 6 58 / 0.45);
+}
+.fr-suite-in > button:hover img {
+  transform: none;
+}
+
+/* the accelerator cards in the island take the card's lavender callout
+   tint, and stay still under the pointer */
+.di-card,
+.di-card:hover {
+  translate: none;
+  background: var(--paper-2);
+  background-color: var(--paper-2);
+}
+
+/* THE CLOSE: a labelled pill, plainly a button, with a generous target; a
+   press anywhere outside the island closes it too (Foundations.jsx) */
+.di-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  height: 38px;
+  padding: 0 14px 0 16px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  background: #f1f0f5;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.di-close svg {
+  width: 15px;
+  height: 15px;
+}
+.di-close::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+.di-close {
+  position: relative;
+}
+@media (hover: hover) and (pointer: fine) {
+  .di-close:hover {
+    color: var(--ink);
+    background: #e7e4f0;
+  }
+}
+
+/* THE ACCELERATOR CARDS, FINISHED. Centred, as the suite cards are, and
+   held together: the kind, the name, a short brand rule, what it does, set
+   as one group in the middle of the card, so no part of it stands empty.
+   A soft lavender wash with light along the top edge gives the card depth
+   without a border or a shadow */
+.di-card,
+.di-card:hover {
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 26px 24px;
+  text-align: center;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgb(255 255 255 / 0.85), transparent 60%),
+    linear-gradient(180deg, #f4eeff 0%, #ece3ff 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 0 0 1px rgb(122 0 194 / 0.06);
+}
+.di-tag {
+  align-self: center;
+  padding: 5px 12px;
+  font-size: 0.71875rem;
+  box-shadow:
+    0 0 0 1px rgb(122 0 194 / 0.12),
+    0 4px 10px -6px rgb(122 0 194 / 0.35);
+}
+.di-acc {
+  margin-top: 14px;
+  padding-top: 0;
+  font-size: 1.3125rem;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+.di-rule {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4a2fd4, #7a00c2);
+}
+.di-desc {
+  max-width: 30ch;
+  margin-top: 14px;
+  padding-top: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgb(22 6 58 / 0.68);
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .di-desc {
+    margin-top: 14px;
+    padding-top: 0;
+  }
+}
+@media (max-width: 767px) {
+  .di-card,
+  .di-card:hover {
+    padding: 20px 18px;
+  }
+  .di-acc {
+    margin-top: 10px;
+    font-size: 1.125rem;
+  }
+  .di-rule {
+    margin-top: 10px;
+  }
+  .di-desc {
+    margin-top: 10px;
+    font-size: 0.875rem;
+  }
+}
+/* the groups start at the same height in every card, so the names line up
+   across the row; the cards are sized to the longest, so little is left */
+.di-card,
+.di-card:hover {
+  justify-content: flex-start;
+}
+/* an even lavender, no lighter wash at the top */
+.di-card,
+.di-card:hover {
+  background: #efe7ff;
+  box-shadow: inset 0 0 0 1px rgb(122 0 194 / 0.07);
+}
+
+/* THE ACCELERATOR CARDS IN THE SUITE CARDS' OWN DRESS. The lavender was
+   the section's own ground, so the cards sank into it. They are white
+   instead, lifted off the island by a soft shadow, and carry the suite
+   cards' brand rule across their top edge; the lavender moves to the tag,
+   where it marks the kind */
+.di-card,
+.di-card:hover {
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(22 6 58 / 0.07),
+    0 14px 30px -20px rgb(44 10 120 / 0.4);
+}
+.di-card::before {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: 0 0 auto;
+  width: auto;
+  height: 3px;
+  border-radius: 0;
+  background: linear-gradient(90deg, #4a2fd4 0%, #7a00c2 52%, #00a274 100%);
+}
+.di-tag {
+  color: var(--purple);
+  background: var(--paper-2);
+  box-shadow: none;
+}
+
+/* no rule across the accelerator cards' top */
+.di-card::before {
+  display: none;
+}
+
+/* ON A PHONE the island opens over the pressed card only; the other cards
+   stay where they are, dimmed, so the section is never left empty */
+@media (max-width: 767px) {
+  .fr-suites.has-open:not(.is-closing) .fr-suite-in {
+    opacity: 0.35;
+  }
+  .fr-suites.has-open:not(.is-closing) .fr-suite-in.is-active {
+    opacity: 0;
+  }
+}
+/* on a phone the suite's name wraps rather than being cut short by the
+   close */
+@media (max-width: 767px) {
+  .di-name {
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+    font-size: 1.125rem;
+  }
+}
+
+/* THE BANNER: the suite's picture across the island's head, shaded so the
+   white words read; the mark as a glass ring, the name and the card's
+   line, and the close as a glass pill. Rounded inside the island, as the
+   accelerator cards are */
+.di-banner {
+  position: relative;
+  isolation: isolate;
+  align-items: center;
+  gap: 16px;
+  min-height: 108px;
+  padding: 20px 20px 20px 22px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.di-banner-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.di-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(13 7 34 / 0.86) 0%, rgb(13 7 34 / 0.62) 55%, rgb(13 7 34 / 0.4) 100%);
+}
+.di-banner .di-app {
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgb(255 255 255 / 0.12);
+  box-shadow: none;
+}
+.di-banner .di-name {
+  color: #ffffff;
+  font-size: 1.375rem;
+}
+.di-banner .di-line {
+  max-width: none;
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 0.82);
+}
+.di-banner .di-close {
+  border: 1px solid rgb(255 255 255 / 0.28);
+  color: #ffffff;
+  background: rgb(255 255 255 / 0.14);
+}
+@media (hover: hover) and (pointer: fine) {
+  .di-banner .di-close:hover {
+    color: #ffffff;
+    background: rgb(255 255 255 / 0.24);
+  }
+}
+.di-banner + .di-cards {
+  margin-top: 14px;
+}
+@media (max-width: 767px) {
+  .di-banner {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+  .di-banner .di-app {
+    width: 40px;
+    height: 40px;
+  }
+  .di-banner .di-titles {
+    flex: 1 1 100%;
+    order: 3;
+  }
+  .di-banner .di-close {
+    margin-left: auto;
+  }
+  .di-banner .di-name {
+    font-size: 1.1875rem;
+  }
+}

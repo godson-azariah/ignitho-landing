@@ -1,15 +1,18 @@
-/* The six industry applications, as a looping, draggable arc of cards
-   (ArcCarousel.jsx), after the Google Labs experiments rail. The three
-   foundations have their own place under the workflow, so they are not
-   repeated here.
+/* The six industry applications, as one row of cards that can be dragged
+   (or swiped, or stepped with the arrows) and simply stops at the first
+   and the last card: no loop. It snaps to a card when let go. The card is
+   the suite tile from ArcCarousel.jsx (the looping arc and the plain grid
+   are kept in design-research/backup). The
+   three foundations have their own place under the workflow, so they are
+   not repeated here.
 
    The search box is tied to the one in the opening band, so clearing either
    one clears both. */
 
-import { useMemo } from 'react';
-import { Search, X } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, Search, X } from 'lucide-react';
 import { FadeIn } from '../components/ui/FadeIn.jsx';
-import { ArcCarousel } from '../components/ui/ArcCarousel.jsx';
+import { SuiteTile } from '../components/ui/ArcCarousel.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { SUITES } from '../data/suites.js';
 import { SHELL } from '../lib/layout.js';
@@ -41,6 +44,92 @@ const matchesSearch = (suite, query) => {
   return (HAYSTACK.get(suite.id) ?? '').includes(q);
 };
 
+/* THE ROW. Native horizontal scrolling with snap, so touch and trackpads
+   behave as they should; a mouse can also drag it (snap is off while
+   dragging and settles the row on a card after), and a drag never counts
+   as a click on the card under it. The arrows step one card and dim at the
+   ends. */
+function SuiteRail({ items, onOpen }) {
+  const row = useRef(null);
+  const drag = useRef(null);
+  const dragged = useRef(false);
+  const [edge, setEdge] = useState({ start: true, end: false });
+
+  useEffect(() => {
+    const el = row.current;
+    if (!el) return undefined;
+    const update = () =>
+      setEdge({
+        start: el.scrollLeft < 4,
+        end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
+      });
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [items]);
+
+  const step = (dir) => {
+    const el = row.current;
+    const slot = el?.querySelector('.st-slot');
+    if (!el || !slot) return;
+    el.scrollBy({ left: dir * (slot.offsetWidth + 20), behavior: 'smooth' });
+  };
+
+  const onPointerDown = (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    const el = row.current;
+    drag.current = { x: e.clientX, left: el.scrollLeft };
+    dragged.current = false;
+    const move = (ev) => {
+      const dx = ev.clientX - drag.current.x;
+      if (Math.abs(dx) > 5 && !dragged.current) {
+        dragged.current = true;
+        el.classList.add('is-dragging');
+      }
+      if (dragged.current) el.scrollLeft = drag.current.left - dx;
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      el.classList.remove('is-dragging');
+      drag.current = null;
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  const onClickCapture = (e) => {
+    if (dragged.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      dragged.current = false;
+    }
+  };
+
+  return (
+    <div className="st-rail">
+      <ul ref={row} className="st-row" onPointerDown={onPointerDown} onClickCapture={onClickCapture}>
+        {items.map((suite) => (
+          <li key={suite.id} className="st-slot">
+            <SuiteTile suite={suite} onOpen={onOpen} />
+          </li>
+        ))}
+      </ul>
+      <div className={`${SHELL} st-nav`}>
+        <button type="button" aria-label="Previous" disabled={edge.start} onClick={() => step(-1)}>
+          <ArrowLeft strokeWidth={2.2} />
+        </button>
+        <button type="button" aria-label="Next" disabled={edge.end} onClick={() => step(1)}>
+          <ArrowRight strokeWidth={2.2} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /* The search term arrives from the page container, because the field that
    sets it lives in the hero. */
 export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
@@ -58,11 +147,9 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
           <span className="inline-flex items-center rounded-full bg-white px-6 py-2.5 text-[11px] font-bold tracking-[0.055em] text-ig-purple shadow-[0_10px_30px_-18px_rgba(22,6,58,0.6)]">
             Enterprise Automation Solutions
           </span>
-          <h2 className="mt-6 font-extrabold leading-[1.02] tracking-[-0.035em] text-[clamp(30px,4.8vw,64px)] text-ig-ink">
-            A repeatable method, applied to{' '}
-            <span className="serif-accent font-normal text-ig-purple">
-              enterprise automation
-            </span>
+          <h2 className="sec-title mt-6">
+            <span>A repeatable method, applied to</span>
+            <span className="sec-accent">enterprise automation</span>
           </h2>
           <p className="mx-auto mt-5 max-w-[60ch] text-[15.5px] leading-[1.6] text-ig-muted md:text-[17px]">
             Foundation and industry applications turn complex requirements into governed,
@@ -108,10 +195,8 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
           </div>
         </div>
       ) : (
-        /* The arc runs the full width of the page, edge to edge, so the
-           outer cards are cut by the screen rather than by a margin */
         <FadeIn delay={120}>
-          <ArcCarousel items={filteredSuites} onOpen={openSuite} />
+          <SuiteRail items={filteredSuites} onOpen={openSuite} />
         </FadeIn>
       )}
     </section>

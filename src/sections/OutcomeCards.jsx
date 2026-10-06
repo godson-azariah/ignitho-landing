@@ -1,10 +1,11 @@
-/* "Governance is part of the method" (section 5), as four cards (earlier: a compliance ledger,
-   the way security pages lay out controls for a reviewer to scan: one white
-   panel, one row per control, hairlines between. Each row reads left to
-   right: the control (its area and name), what it means, how it is enforced
-   (the ticked points), and the result. The standards the platform is held
-   to run along the foot of the panel. No icons, no numbers. The words are in
-   data/outcomes.js. Styles in governance.css (.lg-). Earlier versions are
+/* "Governance is part of the method" (section 5), as four cards in a row:
+   the area with its mark at the top right, the title, what it means, how it
+   is enforced (the ticked points), and the result as the card's footer.
+   Each is a plain white card of words only, no pictures, icons or dark
+   grounds: the area in purple, the title, what it means, the ticked points
+   gathered in a soft lavender panel, and the result as a footer. The
+   standards the platform is held to sit below as pills. The words are in
+   data/outcomes.js. Styles in governance.css (.gd-). Earlier versions are
    kept in design-research/backup. */
 
 import { CornerMark } from '../components/ui/CornerMark.jsx';
@@ -25,41 +26,42 @@ export function OutcomeCards() {
           <SectionLabel index="05" centered>
             Built-In Trust, By Design
           </SectionLabel>
-          <h2 className="balance mt-5 font-extrabold leading-[0.95] tracking-[-0.038em] text-[clamp(30px,4.8vw,64px)] text-ig-ink">
-            Governance is part of the method, not an{' '}
-            <span className="serif-accent font-normal text-ig-purple">add-on</span>
+          <h2 className="sec-title mt-5">
+            <span>Governance is part of the method,</span>
+            <span className="sec-accent">not an add-on</span>
           </h2>
           <p className="mx-auto mt-5 max-w-[60ch] text-[15.5px] leading-[1.6] text-ig-muted md:text-[17px]">
             Security, privacy and compliance are checked at every stage, so teams can automate with confidence
           </p>
         </FadeIn>
 
-        {/* the original layout, four cards in one row: the mark and the
-            area, the title, what it means, its points, and the result at
-            the foot; drawn as clean white tiles */}
+        {/* the original layout, four cards in one row: the area and its
+            mark, the title, what it means, its points, and the result at
+            the foot */}
         <ul className="gd-grid">
           {OUTCOMES.map((pillar, i) => {
-            const Icon = pillar.icon;
             return (
               <FadeIn as="li" key={pillar.title} delay={Math.min(i * 80, 240)} className="gd-cell">
                 <article className="gd-card">
-                  <span className="gd-top">
-                    <span className="gd-mark">
-                      <Icon aria-hidden="true" strokeWidth={1.9} />
-                    </span>
+                  <div className="gd-main">
                     <span className="gd-kicker">{pillar.kicker}</span>
-                  </span>
-                  <h3 className="gd-title">{pillar.title}</h3>
-                  <p className="gd-body">{pillar.body}</p>
-                  <ul className="gd-points">
-                    {pillar.points.map((point) => (
-                      <li key={point}>
-                        <Check aria-hidden="true" strokeWidth={2.6} />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="gd-result">{pillar.target}</p>
+                    <h3 className="gd-title">{pillar.title}</h3>
+                    <p className="gd-body">{pillar.body}</p>
+                    <ul className="gd-points">
+                      {pillar.points.map((point) => (
+                        <li key={point}>
+                          <span className="gd-tick">
+                            <Check aria-hidden="true" strokeWidth={3} />
+                          </span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {/* the result, as the card's footer */}
+                  <p className="gd-result">
+                    {pillar.target}
+                  </p>
                 </article>
               </FadeIn>
             );

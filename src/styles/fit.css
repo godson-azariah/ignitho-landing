@@ -7,7 +7,8 @@
    - the navbar is a little shorter, and tighter between 1024 and 1199;
    - section padding and headings scale with the window's height as well
      as its width, so a section takes about one screen;
-   - the hero's type and laptop scale to the height, so the laptop shows;
+   - the hero's type and laptop scale to the height, so the laptop shows
+     (up to 1040px tall);
    - the film is held to a size that fits the height with its heading. */
 
 /* THE NAVBAR */
@@ -26,26 +27,67 @@
   }
 }
 
-/* THE HERO */
-@media (min-width: 768px) and (max-height: 860px) {
-  .hero-stage {
-    padding-top: 104px;
+/* the bar keeps the same side margins, in proportion, at every width: a
+   1360 cap on a 1366-1500 screen (or 1560 on a 1536-1700 one) left it 12px
+   from the edges, while a large monitor gives it about 170. The margin grows
+   with the width; the caps above still hold on wide screens. */
+@media (min-width: 1024px) {
+  header .tb-nav {
+    max-width: min(1360px, calc(100vw - 2 * clamp(16px, 9vw - 60px, 200px)));
   }
-  .hl {
-    font-size: clamp(34px, min(5vw, 8.2vh), 72px);
+}
+@media (min-width: 1536px) {
+  header .tb-nav {
+    max-width: min(1560px, calc(100vw - 2 * clamp(16px, 9vw - 60px, 200px)));
+  }
+}
+
+/* THE HERO, ANY SHORT WINDOW (up to 1040px tall, which covers every laptop
+   and a 1080p screen once the browser's bars are taken off): the words, the
+   gaps and the laptop all scale with the window's height, so the whole of
+   the laptop's screen and the four panels around it land in the first
+   view. The laptop's width is what is left of the height after the words:
+   its screen is 0.625 of its width tall. Above 1040px nothing changes. */
+@media (min-width: 768px) and (max-height: 1040px) {
+  .hero-stage {
+    padding-top: clamp(84px, 11.5vh, 116px);
   }
   .hw-kicker {
-    margin-bottom: 14px;
+    margin-bottom: clamp(10px, 1.8vh, 20px);
+  }
+  .hl {
+    font-size: clamp(34px, min(5vw, 7.2vh), 72px);
   }
   .hw-body {
-    margin-top: 16px;
+    max-width: 720px;
+    margin-top: clamp(12px, 2vh, 22px);
+    font-size: clamp(15px, 2vh, 19px);
+    line-height: 1.55;
   }
   .hw-actions {
-    margin-top: 22px;
+    margin-top: clamp(16px, 2.6vh, 28px);
   }
   .hero-scene {
-    --lw: clamp(300px, min(52cqw, 88vh), 750px);
-    margin-top: 32px;
+    --lw: clamp(300px, min(62cqw, calc(128vh - 228px)), 900px);
+    margin-top: clamp(20px, 3.4vh, 44px);
+  }
+  /* the lower two panels ride higher, so all four stay in view; the right
+     pair stacks, clear of the Ask FRIEND button in the corner */
+  .slot-bl {
+    top: 42%;
+  }
+  .slot-br {
+    top: calc(14% + 138px);
+  }
+}
+/* on a narrower laptop the Ask FRIEND button reaches further in, so the
+   right pair starts higher (level with the left top panel) */
+@media (min-width: 768px) and (max-width: 1400px) and (max-height: 1040px) {
+  .slot-tr {
+    top: 4%;
+  }
+  .slot-br {
+    top: calc(4% + 100px);
   }
 }
 
@@ -59,14 +101,8 @@
     padding-top: clamp(64px, 11vh, 112px);
     padding-bottom: clamp(64px, 11vh, 112px);
   }
-  .uf-title,
-  .gc-title {
-    font-size: clamp(30px, min(3.8vw, 6.4vh), 56px);
-  }
-  #suites h2,
-  #harness-overview h2,
-  #governance h2 {
-    font-size: clamp(30px, min(4.8vw, 7vh), 64px);
+  .sec-title {
+    font-size: clamp(30px, min(4.2vw, 6.4vh), 56px);
   }
   .uf-lede,
   .gc-lede {

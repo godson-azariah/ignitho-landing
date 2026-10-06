@@ -50,3 +50,22 @@
 .balance {
   text-wrap: balance;
 }
+
+/* ONE SECTION HEADING (every section but the hero and the closing band):
+   the same size, weight and tracking everywhere, always set as two lines,
+   the second in the brand purple. On a narrow phone a line may wrap, but
+   the pair and the two tones hold. */
+.sec-title {
+  font-size: clamp(30px, 4.2vw, 56px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.sec-title > span {
+  display: block;
+}
+.sec-title > .sec-accent {
+  color: var(--purple);
+}

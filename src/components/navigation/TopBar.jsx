@@ -33,7 +33,7 @@ export function TopBar({ menuOpen, onOpenMenu, goHome, navAction, openContact, a
           carries a hairline at rest and a deeper shadow once the page has
           moved under it. */}
       <nav
-        className={`relative mx-auto w-full max-w-[1360px] rounded-full bg-white transition-shadow duration-500 ease-out 2xl:max-w-[1560px] ${
+        className={`tb-nav relative mx-auto w-full max-w-[1360px] rounded-full bg-white transition-shadow duration-500 ease-out 2xl:max-w-[1560px] ${
           scrolled
             ? 'shadow-[0_0_0_1px_rgba(22,6,58,0.06),0_18px_40px_-20px_rgba(11,7,23,0.55)]'
             : 'shadow-[0_0_0_1px_rgba(22,6,58,0.06),0_10px_30px_-18px_rgba(11,7,23,0.5)]'

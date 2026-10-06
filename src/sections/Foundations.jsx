@@ -25,7 +25,7 @@ import { SHELL } from '../lib/layout.js';
 
 const FOUNDATIONS = SUITES.filter((s) => s.type === 'foundation');
 const SUBTITLE = 'Agentic AI';
-const CTA = 'Open its accelerators';
+const CTA = 'Open its agent';
 const INK = '#16063a';
 
 /* Apple's spring, by damping ratio and response (seconds), sampled into a
@@ -78,21 +78,20 @@ function Island({ suite, pill, closing, onClose }) {
     el.style.width = `${Math.min(r.width, 960)}px`;
     el.style.height = '';
     const w = el.offsetWidth;
-    /* on a wide screen it takes the full height the cards stood in, so it
-       replaces them rather than floating in the space they left */
-    if (r.width >= 768) el.style.height = `${r.height}px`;
+    /* its height is its contents' (no stretched, half-empty cards), centred
+       in the box the cards stood in */
     const h = el.offsetHeight;
     /* the contents grow out of the pill, not out of the island's middle */
     inner.current.style.transformOrigin = `${pill.left - r.left - Math.max(0, (r.width - w) / 2) + pill.width / 2}px ${pill.top - r.top}px`;
     /* centred in the cards' box */
     const left = Math.max(0, (r.width - w) / 2);
-    /* on a phone the cards are a tall column: centre it on the card that was
-       pressed instead, so it opens where the thumb is */
-    const cardMid = pill.top - r.top - 160;
-    const top =
-      r.width < 768
-        ? Math.max(0, Math.min(cardMid - h / 2, r.height - h))
-        : Math.max(0, (r.height - h) / 2);
+    /* on a phone the cards are a tall column: it opens over the card that
+       was pressed, from that card's top, and the other cards stay in place
+       (dimmed) around it, so the section never stands empty */
+    const phone = r.width < 768;
+    const top = phone
+      ? Math.max(0, Math.min(pill.cardTop - r.top, r.height - h))
+      : Math.max(0, (r.height - h) / 2);
     el.style.left = `${left}px`;
     el.style.top = `${top}px`;
 
@@ -103,6 +102,17 @@ function Island({ suite, pill, closing, onClose }) {
     const pr = pill.height / 2;
     const pillClip = `inset(${pt}px ${w - pl - pill.width}px ${h - pt - pill.height}px ${pl}px round ${pr}px)`;
     const openClip = 'inset(0px 0px 0px 0px round 28px)';
+
+    /* on a phone, bring the whole island into view if it opens past an
+       edge of the screen (never on the way back) */
+    if (phone && !closing) {
+      const st = el.getBoundingClientRect().top;
+      const sb = st + h;
+      let by = 0;
+      if (st < 88) by = st - 88;
+      else if (sb > window.innerHeight - 16) by = Math.min(st - 88, sb - window.innerHeight + 16);
+      if (by) window.scrollBy({ top: by, behavior: still() ? 'auto' : 'smooth' });
+    }
 
     if (still()) {
       el.classList.add('is-settled');
@@ -190,8 +200,16 @@ function Island({ suite, pill, closing, onClose }) {
     if (closing) return undefined;
     shell.current?.focus({ preventScroll: true });
     const onKey = (e) => e.key === 'Escape' && onClose(true);
+    /* a press anywhere outside the island closes it, as a popover does */
+    const onDown = (e) => {
+      if (shell.current && !shell.current.contains(e.target)) onClose(false);
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onDown);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onDown);
+    };
   }, [closing, onClose]);
 
   return (
@@ -218,16 +236,21 @@ function Island({ suite, pill, closing, onClose }) {
       </span>
 
       <div ref={inner} className="di-inner">
-        <div className="di-head">
+        {/* THE BANNER, after the App Store's Today cards: the island keeps
+            the card's own picture as its header, so the eye follows one
+            object growing; the suite, its line and the close sit on it */}
+        <div className="di-head di-banner">
+          <img className="di-banner-img" src={suite.imageUrl} alt="" decoding="async" />
           <span className="di-app" aria-hidden="true">
             <Icon strokeWidth={1.9} />
           </span>
           <div className="di-titles">
             <h3 className="di-name">{suite.name}</h3>
-            <p className="di-sub">{SUBTITLE}</p>
+            <p className="di-line">{suite.tagline}</p>
           </div>
-          <button type="button" className="di-close" aria-label="Close" onClick={() => onClose(false)}>
-            <X strokeWidth={2.4} />
+          <button type="button" className="di-close" onClick={() => onClose(false)}>
+            Close
+            <X strokeWidth={2.4} aria-hidden="true" />
           </button>
         </div>
 
@@ -236,6 +259,7 @@ function Island({ suite, pill, closing, onClose }) {
             <li key={a.name} className="di-card" style={{ '--i': i }}>
               <span className="di-tag">{a.type}</span>
               <span className="di-acc">{a.name}</span>
+              <span className="di-rule" aria-hidden="true" />
               <span className="di-desc">{a.desc}</span>
             </li>
           ))}
@@ -250,8 +274,14 @@ export function Foundations() {
   const [pill, setPill] = useState(null);
   const [closing, setClosing] = useState(false);
   const cardEls = useRef({});
-  const pillOf = (id) =>
-    cardEls.current[id]?.querySelector('[data-cta-pill]')?.getBoundingClientRect() ?? null;
+  /* the pill's rectangle, and the top of its card (where the island opens
+     on a phone) */
+  const pillOf = (id) => {
+    const card = cardEls.current[id];
+    const p = card?.querySelector('[data-cta-pill]')?.getBoundingClientRect();
+    if (!p) return null;
+    return { left: p.left, top: p.top, width: p.width, height: p.height, cardTop: card.getBoundingClientRect().top };
+  };
 
   const openFrom = (id) => {
     if (open) return;
@@ -284,7 +314,10 @@ export function Foundations() {
     <section id="accelerators" className="fr-section bg-b dots">
       <div className={SHELL}>
         <FadeIn className="uf-head plate">
-          <h2 className="uf-title">Built on three universal foundations</h2>
+          <h2 className="sec-title">
+            <span>Built on three</span>
+            <span className="sec-accent">universal foundations</span>
+          </h2>
           <p className="uf-lede">
             Every application runs on the same three suites, and each ships with its own accelerators. Choose
             a foundation to open its accelerators
@@ -294,7 +327,10 @@ export function Foundations() {
         <div className={`fr-suites ${open ? 'has-open' : ''} ${closing ? 'is-closing' : ''}`}>
           {FOUNDATIONS.map((s, i) => (
             <FadeIn key={s.id} delay={i * 90} className="fr-suite">
-              <div ref={(el) => (cardEls.current[s.id] = el)} className="fr-suite-in">
+              <div
+                ref={(el) => (cardEls.current[s.id] = el)}
+                className={`fr-suite-in ${open === s.id ? 'is-active' : ''}`}
+              >
                 <SuiteCard suite={s} index={i} subtitle={SUBTITLE} cta={CTA} ctaPill onOpen={openFrom} />
               </div>
             </FadeIn>

@@ -39,7 +39,7 @@ export const NAV_LINKS = ['Workflow', 'Applications', 'Capability Modules', 'The
 /* The product itself, which is a separate application on its own host. Kept
    here beside the destinations rather than inline in the two components that
    link to it, so the top bar and the menu sheet cannot drift apart. */
-export const SIGN_IN_URL = 'https://ignitho-login.vercel.app/';
+export const SIGN_IN_URL = 'https://dev-friend.ignitho.ai/login';
 
 /* THE contact form's industry options — the supplied list, verbatim and in its
    own order.

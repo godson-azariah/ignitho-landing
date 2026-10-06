@@ -74,7 +74,10 @@ export function AutonomousWorkflow() {
     <section id="workflow" ref={band} className="gc bg-c dots">
       <div className={SHELL}>
         <FadeIn className="gc-head plate">
-          <h2 className="gc-title">From Business Intent to Validated Production Code</h2>
+          <h2 className="sec-title">
+            <span>From Business Intent to</span>
+            <span className="sec-accent">Validated Production Code</span>
+          </h2>
           <p className="gc-lede">
             The method coordinates data, privacy, code generation, testing, governance and deployment as one
             continuous workflow
