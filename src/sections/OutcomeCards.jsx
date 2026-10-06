@@ -1,18 +1,17 @@
-/* "Governance is part of the method" (section 5), as four cards in a row:
-   the area with its mark at the top right, the title, what it means, how it
-   is enforced (the ticked points), and the result as the card's footer.
-   Each is a plain white card of words only, no pictures, icons or dark
-   grounds: the area in purple, the title, what it means, the ticked points
-   gathered in a soft lavender panel, and the result as a footer. The
-   standards the platform is held to sit below as pills. The words are in
-   data/outcomes.js. Styles in governance.css (.gd-). Earlier versions are
-   kept in design-research/backup. */
+/* "Governance is part of the method" (section 5), as four result-led cards
+   in a row, after Stripe's stat cards: the area and the control's name,
+   then what it delivers set large in purple, a hairline, what it means,
+   and how it is enforced (the ticked points). Plain white, no pictures,
+   icons or ornament; the results do the work. The words are in
+   data/outcomes.js. Styles
+   in governance.css (.gd-). Earlier versions are kept in
+   design-research/backup. */
 
 import { CornerMark } from '../components/ui/CornerMark.jsx';
 import { SectionLabel } from '../components/ui/SectionLabel.jsx';
 import { Check } from 'lucide-react';
 import { FadeIn } from '../components/ui/FadeIn.jsx';
-import { COMPLIANCE_MARKS, OUTCOMES } from '../data/outcomes.js';
+import { OUTCOMES } from '../data/outcomes.js';
 import { SHELL } from '../lib/layout.js';
 
 export function OutcomeCards() {
@@ -46,6 +45,8 @@ export function OutcomeCards() {
                   <div className="gd-main">
                     <span className="gd-kicker">{pillar.kicker}</span>
                     <h3 className="gd-title">{pillar.title}</h3>
+                    {/* the result leads, set large: what the control delivers */}
+                    <p className="gd-result">{pillar.target}</p>
                     <p className="gd-body">{pillar.body}</p>
                     <ul className="gd-points">
                       {pillar.points.map((point) => (
@@ -58,26 +59,11 @@ export function OutcomeCards() {
                       ))}
                     </ul>
                   </div>
-                  {/* the result, as the card's footer */}
-                  <p className="gd-result">
-                    {pillar.target}
-                  </p>
                 </article>
               </FadeIn>
             );
           })}
         </ul>
-
-        <FadeIn delay={200} className="plate">
-          <ul className="gd-marks">
-            {COMPLIANCE_MARKS.map((mark) => (
-              <li key={mark}>
-                <Check aria-hidden="true" strokeWidth={3} />
-                {mark}
-              </li>
-            ))}
-          </ul>
-        </FadeIn>
       </div>
     </section>
   );

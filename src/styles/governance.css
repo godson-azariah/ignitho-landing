@@ -875,3 +875,101 @@
   -webkit-mask-image: radial-gradient(110% 90% at 100% 0%, #000 18%, transparent 62%);
   mask-image: radial-gradient(110% 90% at 100% 0%, #000 18%, transparent 62%);
 }
+
+/* RESULT-LED (after Stripe's stat cards). Plain white, no ornament: the
+   area and the control's name, then the result set large in purple as the
+   card's headline, a hairline, what it means, and the ticked points in
+   plain rows. Across a row of four every block holds the same room, so the
+   results, sentences and points all start level. */
+.gd-card::before {
+  display: none;
+}
+.gd-card {
+  border: 1px solid rgb(22 6 58 / 0.07);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgb(22 6 58 / 0.04),
+    0 16px 36px -24px rgb(44 10 120 / 0.28);
+}
+.gd-main {
+  padding: 26px 24px 26px;
+}
+.gd-kicker {
+  min-height: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgb(22 6 58 / 0.5);
+}
+.gd-title {
+  min-height: 0;
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.gd-result {
+  margin: 18px 0 0;
+  padding: 0 0 20px;
+  border-bottom: 1px solid rgb(22 6 58 / 0.08);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--purple);
+  background: none;
+  text-wrap: balance;
+}
+.gd-body {
+  min-height: 0;
+  margin-top: 18px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgb(22 6 58 / 0.66);
+}
+.gd-points {
+  flex: 1;
+  gap: 9px;
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.gd-points li {
+  font-size: 0.8125rem;
+  color: rgb(22 6 58 / 0.78);
+}
+@media (min-width: 1100px) {
+  .gd-kicker {
+    min-height: 2.7em;
+  }
+  .gd-result {
+    min-height: calc(2.24em + 20px);
+  }
+  .gd-body {
+    min-height: 6.2em;
+  }
+}
+@media (min-width: 1300px) {
+  .gd-kicker {
+    min-height: 0;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1299px) {
+  .gd-body {
+    min-height: 7.75em;
+  }
+}
+@media (max-width: 599px) {
+  .gd-main {
+    padding: 22px 20px 22px;
+  }
+  .gd-result {
+    font-size: 1.5rem;
+  }
+}
+/* the result starts at the top of its room, level with its neighbours */
+.gd-result {
+  display: block;
+}
