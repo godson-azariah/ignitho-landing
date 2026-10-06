@@ -1,18 +1,21 @@
-/* The panel that slides down after tapping the menu button. Same links as the
-   top bar, plus the nine suites and both buttons.
+/* The menu sheet on phones and tablets (the top bar shows its menu button
+   only below `lg`, so desktop never sees this). A full white sheet: a round
+   close button in the top right, and every destination centred in one
+   column, then Contact Us and Log in as the last two lines. The current
+   section is set in purple.
 
-   While it is open the page behind it cannot scroll, and Escape closes it. */
+   It slides down to open and back up to close (overlay.css). While it is
+   open the page behind it cannot scroll, and Escape closes it. The violet
+   version is kept in design-research/backup. */
 
-import { ArrowRight, ArrowUpRight, X } from 'lucide-react';
-import { CERTS, NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
+import { X } from 'lucide-react';
+import { NAV_LINKS, SIGN_IN_URL } from '../../data/navigation.js';
 import { useOverlay } from '../../hooks/useOverlay.js';
-import { Button, PrimaryButton } from '../ui/Button.jsx';
-import { Wordmark } from '../ui/Wordmark.jsx';
 
-/* A full sheet over the page rather than a dropdown. It opens by sliding down
-   and closes by sliding back up the same way — the CSS holds `visibility`
-   through the whole exit so the close is never cut short. */
-export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activeNav }) {
+const ITEM =
+  'sheet-item block py-3.5 text-center text-[22px] font-semibold tracking-[-0.02em] transition-colors duration-300';
+
+export function PhoneMenu({ open, onClose, navAction, openContact, activeNav }) {
   useOverlay(open, onClose);
 
   return (
@@ -20,135 +23,61 @@ export function PhoneMenu({ open, onClose, goHome, navAction, openContact, activ
       className={`sheet fixed inset-0 z-[70] ${open ? 'is-open' : ''}`}
       role="dialog"
       aria-modal="true"
+      aria-label="Menu"
       aria-hidden={!open}
     >
-      <div className="sheet-panel dots-inv relative isolate h-full w-full overflow-y-auto bg-ig-violet text-white">
-        <div className="flex h-[76px] items-center justify-between gap-5 px-5 md:h-[92px] md:px-8">
-          {/* The light version: this sheet is painted in `ig-violet`, and the
-              plum "Ignitho's" measures 1.4:1 against it. */}
+      <div className="sheet-panel relative flex h-full w-full flex-col overflow-y-auto bg-white text-ig-ink">
+        <div className="flex justify-end px-5 pt-5">
           <button
-            onClick={() => {
-              onClose();
-              goHome();
-            }}
-            className="flex items-center"
-            aria-label="Ignitho's FRIEND Framework, back to the top"
-          >
-            <Wordmark tone="light" className="h-9 md:h-10" />
-          </button>
-          <Button
+            type="button"
             onClick={onClose}
-            variant="light"
-            className="px-7 py-4 text-[14px] font-semibold"
+            aria-label="Close menu"
+            className="grid h-11 w-11 place-items-center rounded-full border border-ig-ink/10 bg-white text-ig-ink transition-colors hover:bg-ig-ink/[0.04]"
           >
-            <X className="h-4 w-4" strokeWidth={2.4} />
-            Close
-          </Button>
+            <X className="h-[18px] w-[18px]" strokeWidth={2} />
+          </button>
         </div>
 
-        {/* `gap-x-0` below `lg`. Eleven fixed 40px column gaps put a 440px
-            floor under this grid, and a 412px phone's 372px of content width
-            cannot meet it — so the grid overflowed by 68px and pushed the nav
-            and the certifications 34px off centre inside their own columns.
-            Both children are `col-span-12` until `lg`, so there is nothing
-            for a horizontal gap to sit between until then. */}
-        <div className="mx-auto grid w-full max-w-[1360px] grid-cols-12 gap-x-0 gap-y-14 px-5 pb-16 pt-10 md:px-8 md:pt-16 lg:gap-x-10">
-          {/* primary destinations, set large */}
-          <nav className="col-span-12 lg:col-span-7">
-            {NAV_LINKS.map((label, i) => {
-              const on = label === activeNav;
-              return (
-                <button
-                  key={label}
-                  onClick={() => {
-                    onClose();
-                    navAction(label)();
-                  }}
-                  aria-current={on ? 'page' : undefined}
-                  style={{ animationDelay: `${180 + i * 70}ms` }}
-                  className="sheet-item group flex w-full items-center justify-between gap-6 border-b border-white/15 py-6 text-left first:border-t md:py-8"
-                >
-                  <span className="flex items-baseline gap-5">
-                    {/* Sky on this ground, NOT THE purple THE top bar uses.
-                        Same meaning, different surface — the brand gives dark
-                        grounds `--sky` for exactly this, which is why the hero's
-                        eyebrow is sky and not violet. Purple on violet would be
-                        barely a change at all. */}
-                    <span
-                      className={`font-mono text-[11px] font-bold tracking-[0.055em] transition-colors duration-300 ${
-                        on ? 'text-ig-sky' : 'text-white/35 group-hover:text-ig-teal-ring'
-                      }`}
-                    >
-                      0{i + 1}
-                    </span>
-                    <span
-                      className={`font-extrabold leading-[0.98] tracking-[-0.035em] text-[clamp(30px,4.4vw,56px)] transition-[transform,color] duration-500 ease-out group-hover:translate-x-2 ${
-                        on ? 'text-ig-sky' : ''
-                      }`}
-                    >
-                      {label}
-                    </span>
-                  </span>
-                  <ArrowUpRight
-                    className={`h-6 w-6 shrink-0 transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-ig-teal-ring md:h-8 md:w-8 ${
-                      on ? 'text-ig-sky' : 'text-white/30'
-                    }`}
-                    strokeWidth={1.8}
-                  />
-                </button>
-              );
-            })}
-          </nav>
-
-          <div className="col-span-12 lg:col-span-4 lg:col-start-9">
-            {/* Both actions are here, because below `lg` the bar carries
-                neither — it keeps to a wordmark and the menu control, so this
-                sheet is the only place a reader on a phone can reach either the
-                briefing or the application.
-
-                Sign in is `variant="light"` on this violet ground rather than
-                the top bar's violet: a violet pill on violet has no edge. Same
-                order as the bar — primary first, then the way in. */}
-            <div
-              style={{ animationDelay: '720ms' }}
-              className="sheet-item flex flex-wrap items-center gap-x-4 gap-y-3"
-            >
-              {/* the sheet closes first, or the dialog would open behind it */}
-              <PrimaryButton
+        {/* the destinations, centred in the sheet */}
+        <nav className="flex flex-1 flex-col items-center justify-center px-6 pb-24">
+          {NAV_LINKS.map((label, i) => {
+            const on = label === activeNav;
+            return (
+              <button
+                key={label}
+                type="button"
                 onClick={() => {
                   onClose();
-                  openContact();
+                  navAction(label)();
                 }}
+                aria-current={on ? 'page' : undefined}
+                style={{ animationDelay: `${160 + i * 50}ms` }}
+                className={`${ITEM} ${on ? 'text-ig-purple' : 'text-ig-ink hover:text-ig-purple'}`}
               >
-                Contact Us
-                <ArrowRight className="h-3.5 w-3.5" />
-              </PrimaryButton>
-              <Button
-                as="a"
-                href={SIGN_IN_URL}
-                variant="light"
-                className="px-6 py-3.5 text-[13px] font-semibold"
-              >
-                Log in
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-
-            <div
-              style={{ animationDelay: '780ms' }}
-              className="sheet-item mt-9 flex flex-wrap gap-x-5 gap-y-2 border-t border-white/15 pt-6"
-            >
-              {CERTS.map((cert) => (
-                <span
-                  key={cert}
-                  className="font-mono text-[11px] font-bold tracking-[0.055em] text-white/40"
-                >
-                  {cert}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+                {label}
+              </button>
+            );
+          })}
+          {/* the sheet closes first, or the dialog would open behind it */}
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              openContact();
+            }}
+            style={{ animationDelay: `${160 + NAV_LINKS.length * 50}ms` }}
+            className={`${ITEM} text-ig-ink hover:text-ig-purple`}
+          >
+            Contact Us
+          </button>
+          <a
+            href={SIGN_IN_URL}
+            style={{ animationDelay: `${210 + NAV_LINKS.length * 50}ms` }}
+            className={`${ITEM} text-ig-ink hover:text-ig-purple`}
+          >
+            Log in
+          </a>
+        </nav>
       </div>
     </div>
   );
