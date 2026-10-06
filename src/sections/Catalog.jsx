@@ -148,8 +148,8 @@ export function Catalog({ openSuite, searchQuery, setSearchQuery }) {
             Enterprise Automation Solutions
           </span>
           <h2 className="sec-title mt-6">
-            <span>A repeatable method, applied to</span>
-            <span className="sec-accent">enterprise automation</span>
+            <span>A Repeatable Method, Applied to</span>
+            <span className="sec-accent">Enterprise Automation</span>
           </h2>
           <p className="mx-auto mt-5 max-w-[60ch] text-[15.5px] leading-[1.6] text-ig-muted md:text-[17px]">
             Foundation and industry applications turn complex requirements into governed,

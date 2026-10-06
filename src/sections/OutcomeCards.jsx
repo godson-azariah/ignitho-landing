@@ -26,8 +26,8 @@ export function OutcomeCards() {
             Built-In Trust, By Design
           </SectionLabel>
           <h2 className="sec-title mt-5">
-            <span>Governance is part of the method,</span>
-            <span className="sec-accent">not an add-on</span>
+            <span>Governance Is Part of the Method,</span>
+            <span className="sec-accent">Not an Add-On</span>
           </h2>
           <p className="mx-auto mt-5 max-w-[60ch] text-[15.5px] leading-[1.6] text-ig-muted md:text-[17px]">
             Security, privacy and compliance are checked at every stage, so teams can automate with confidence

@@ -315,8 +315,8 @@ export function Foundations() {
       <div className={SHELL}>
         <FadeIn className="uf-head plate">
           <h2 className="sec-title">
-            <span>Built on three</span>
-            <span className="sec-accent">universal foundations</span>
+            <span>Built on Three</span>
+            <span className="sec-accent">Universal Foundations</span>
           </h2>
           <p className="uf-lede">
             Every application runs on the same three suites, and each ships with its own accelerators. Choose

@@ -190,8 +190,8 @@ export function HarnessOverview({ onExploreHarness }) {
             Method Overview
           </SectionLabel>
           <h2 className="sec-title mt-5">
-            <span>See the method</span>
-            <span className="sec-accent">in action</span>
+            <span>See the Method</span>
+            <span className="sec-accent">in Action</span>
           </h2>
           <p className="mx-auto mt-5 max-w-[60ch] text-[15.5px] leading-[1.6] text-ig-muted md:text-[17px]">
             See how business intent moves through governed orchestration, validation and
